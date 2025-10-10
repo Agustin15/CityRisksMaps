@@ -1,0 +1,25 @@
+.customMsj {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 19px;
+}
+
+.customTitle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+}
+
+.customBtnConfirm {
+    width: 8rem;
+    font-weight: bold;
+    background: rgb(216, 34, 34);
+}
+
+.customBtnConfirm {
+    width: 8rem;
+    font-weight: bold;
+    background: rgb(216, 34, 34);
+}
+
+.customBtnConfirm:hover {
+    background: rgb(184, 23, 23);
+}

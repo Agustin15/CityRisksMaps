@@ -1,0 +1,25 @@
+.backgroundMyLocation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 100px;
+    background: rgba(58, 144, 214, 0.3);
+}
+
+.myLocation {
+    border-radius: 100px;
+    width: 70%;
+    height: 70%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content {
+    border-radius: 100px;
+    width: 75%;
+    height: 75%;
+    background: linear-gradient(rgb(41, 137, 216),rgb(43, 124, 190));
+}
