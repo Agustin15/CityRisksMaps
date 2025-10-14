@@ -1,12 +1,14 @@
-import { createContext, useContext, useEffect, useRef } from "react";
+const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 import iconGeolocaton from "../assets/img/myLocation.png";
-import styles from "../components/map/placeDetails/PlaceDetails.module.css";
 
 const MapContext = createContext();
 
 export const MapProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
+  const [infoWindow, setInfoWindow] = useState();
   const markerUserLocation = useRef();
   const apiIsLoaded = useApiIsLoaded();
   const map = useMap();
@@ -31,7 +33,7 @@ export const MapProvider = ({ children }) => {
     controlGeolocation.style.height = "2.5rem";
 
     controlGeolocation.innerHTML = `
-      <img width="22px" height="22px" src=${iconGeolocaton}>
+      <img width="33px" height="33px" src=${iconGeolocaton}>
     `;
 
     controlGeolocation.addEventListener("click", () => {
@@ -63,6 +65,7 @@ export const MapProvider = ({ children }) => {
 
   const error = (error) => {
     alertSwalError(
+      "Ups, no pudimos encontrar la ubicacion",
       error.code == 1
         ? "Permiso para acceder a la ubicacion no habilitado"
         : "No se pudo obtener su ubicacion"
@@ -73,8 +76,81 @@ export const MapProvider = ({ children }) => {
     maximumAge: 0
   };
 
+  const handleClickOnMap = async (event, marker, setSelectedPlace) => {
+    if (event.detail.placeId) {
+      let placesDetails = await moreDetailsPlace(event.detail.placeId);
+
+      setSelectedPlace(placesDetails);
+    } else {
+      setSelectedPlace();
+      marker.position = event.detail.latLng;
+      getReverseGeocodification(event.detail.latLng);
+    }
+  };
+
+  const moreDetailsPlace = async (placeId) => {
+    try {
+      const response = await fetch(
+        `https://places.googleapis.com/v1/places/${placeId}?fields=*&languageCode=es&key=${API_KEY}`
+      );
+
+      const result = await response.json();
+
+      if (result) return result;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getReverseGeocodification = async (latLng) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.lat},${latLng.lng}&extra_computations=ADDRESS_DESCRIPTORS&extra_computations=BUILDING_AND_ENTRANCES&key=${API_KEY} `
+      );
+
+      const result = await response.json();
+      if (result.status == "OK") setInfoWindow(result);
+      else
+        alertSwalError(
+          "Ups,no pudimos encontrar la ubicacion",
+          "Error inesperado en la geocodificacion"
+        );
+
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPhotoDetails = async (namePhoto) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://places.googleapis.com/v1/${namePhoto}/media?key=${API_KEY}&maxHeightPx=240&maxWidthPx=384`
+      );
+
+      const result = response.url;
+      return result;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <MapContext.Provider value={{ handleMyLocation, markerUserLocation }}>
+    <MapContext.Provider
+      value={{
+        handleMyLocation,
+        handleClickOnMap,
+        moreDetailsPlace,
+        infoWindow,
+        setInfoWindow,
+        markerUserLocation,
+        getPhotoDetails,
+        loading
+      }}
+    >
       {children}
     </MapContext.Provider>
   );

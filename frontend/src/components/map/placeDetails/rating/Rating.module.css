@@ -1,0 +1,32 @@
+.rating {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 0.3rem;
+    margin-left: 0.7rem;
+    margin-top: -1.3rem;
+    font-size: 13px;
+}
+
+.rating img {
+    width: 81px;
+    height: 18px;
+}
+
+.rating .row,
+.rating .rowTwo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating .rowTwo {
+    gap: 0.4rem;
+}
+
+.rating .rowTwo img {
+    width: 14px;
+    height: 14px;
+}

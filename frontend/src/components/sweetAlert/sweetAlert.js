@@ -2,9 +2,9 @@ import Swal from "sweetalert2";
 import iconGeolocation from "../../assets/img/failedGeolocation.png";
 import styles from "./sweetalert.module.css";
 
-export const alertSwalError = (error) => {
+export const alertSwalError = (title,error) => {
   Swal.fire({
-    title: "Ups, no pudimos encontrar su ubicacion",
+    title: title,
     html: `
     <p class=${styles.customMsj}>${error}</p>
     `,

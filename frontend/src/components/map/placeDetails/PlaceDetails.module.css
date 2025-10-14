@@ -3,9 +3,11 @@
     left: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(151, 151, 151) rgb(243, 243, 243);
     top: 0;
     height: 100vh;
-    width: 24rem;
+    width: 26rem;
     background-color: white;
     z-index: 2;
     display: flex;
@@ -18,50 +20,87 @@
 .containDetails .header {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
+    justify-content: start;
+    gap: 0.9rem;
     width: 100%;
     border-bottom: 1px solid rgb(185, 185, 185);
+    padding-bottom: 0.4rem;
 }
 
 .containDetails .header h3 {
-    font-size: 15px;
+    font-size: 18px;
+    color: black;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-weight: 100;
+    padding-left: 3%;
+    gap: 0.7rem;
+    margin-top: 0;
+    width: 91%;
 }
 
-.containDetails .header img {
-    width: 100%;
-    height: 13rem;
+.containDetails .header h3 img {
+    width: 17px;
+    height: 17px;
+}
+
+.containDetails .aboutIt {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 97%;
+}
+
+.containDetails .aboutIt h4 {
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.containDetails .aboutIt p {
+    margin-top: 0;
+    margin-left: 0.5rem;
 }
 
 .containDetails .info {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     list-style: none;
     width: 99%;
     font-family: Arial, Helvetica, sans-serif;
     gap: 1.6rem;
+    margin-top: 0;
 }
 .containDetails .info li {
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: 99%;
     font-size: 15px;
 }
 
-.containDetails .info li img {
-    width: 31px;
-    height: 31px;
+.containDetails .info p {
+    width: 91%;
 }
 
-.containDetails .info li .close {
-    color: red;
-    font-weight: bold;
+.containDetails .info .boxIcon {
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(22, 163, 173);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containDetails .info .boxIcon img {
+    width: 19px;
+    height: 19px;
 }
 
-
-.containDetails .info li .open {
-    color: rgb(40, 211, 63);
-    font-weight: bold;
+.containDetails .info li a {
+    text-decoration: none;
+    color: rgb(30, 167, 185);
 }

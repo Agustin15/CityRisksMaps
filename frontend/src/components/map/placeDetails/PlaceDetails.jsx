@@ -1,32 +1,12 @@
 import styles from "./PlaceDetails.module.css";
-import iconClock from "../../../assets/img/clock.png";
 import iconAddress from "../../../assets/img/address.png";
+import iconPhone from "../../../assets/img/phone.png";
+import iconWeb from "../../../assets/img/web.png";
+import { OpeningDays } from "./openingDays/OpeningDays";
+import { Rating } from "./rating/Rating";
+import { ContainPhoto } from "./containPhoto/ContainPhoto";
 
 export const PlaceDetails = ({ place }) => {
-  console.log(place);
-
-  const nextPeriod = (openingHours, isOpen) => {
-    const period = openingHours.periods.find((period) => {
-      if (isOpen) {
-        if (period.close.day == new Date().getDay()) return period;
-      } else {
-        if (period.open.day == new Date().getDay() + 1) return period;
-      }
-    });
-
-    if (isOpen)
-      return "Cierra a las " + period.close.hours + ":" + period.close.minutes;
-    else
-      return (
-        "Abre a las " +
-        period.open.hours +
-        ":" +
-        period.open.minutes +
-        " del " +
-        getDay(new Date(period.open.nextDate).getDay())
-      );
-  };
-
   const getDay = (weekday) => {
     const days = [
       "Lunes",
@@ -44,34 +24,44 @@ export const PlaceDetails = ({ place }) => {
   return (
     <div className={styles.containDetails}>
       <div className={styles.header}>
-        <img src={place.photos[0].getUrl()}></img>
-        <h3>{place.name}</h3>
+        <ContainPhoto place={place} />
+        <h3>{place.displayName.text}</h3>
+        {place.rating && <Rating place={place} />}
       </div>
 
+      {place.editorialSummary && (
+        <div className={styles.aboutIt}>
+          <h4>Datos básicos</h4>
+          <p>{place.editorialSummary.text}</p>
+        </div>
+      )}
       <ul className={styles.info}>
-        {place.formatted_address && (
+        {place.formattedAddress && (
           <li>
-            <img src={iconAddress}></img>
-            {place.formatted_address}
+            <div className={styles.boxIcon} style={{ background: "red" }}>
+              <img src={iconAddress}></img>
+            </div>
+            <p>{place.formattedAddress}</p>
           </li>
         )}
-        {place.opening_hours && (
-          <li>
-            <img src={iconClock}></img>
-            <span
-              className={
-                place.opening_hours.isOpen(new Date())
-                  ? styles.open
-                  : styles.close
-              }
-            >
-              {place.opening_hours.isOpen(new Date()) ? "Abierto" : "Cerrado"}
-            </span>
+        {place.regularOpeningHours && (
+          <OpeningDays getDay={getDay} place={place} />
+        )}
 
-            {nextPeriod(
-              place.opening_hours,
-              place.opening_hours.isOpen(new Date())
-            )}
+        {place.nationalPhoneNumber && (
+          <li>
+            <div className={styles.boxIcon} style={{ background: "#1fcaa5ff" }}>
+              <img src={iconPhone}></img>
+            </div>
+            {place.nationalPhoneNumber}
+          </li>
+        )}
+        {place.websiteUri && (
+          <li>
+            <div className={styles.boxIcon}>
+              <img src={iconWeb}></img>
+            </div>
+            <a href={place.websiteUri}>{new URL(place.websiteUri).hostname}</a>
           </li>
         )}
       </ul>

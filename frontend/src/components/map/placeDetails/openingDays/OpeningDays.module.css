@@ -1,0 +1,81 @@
+.detailOpeningHours {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    justify-content: start;
+    width: 99%;
+    margin-top: -1rem;
+}
+
+.detailOpeningHours .iconInfo {
+    width: 24px;
+    height: 24px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detailOpeningHours .state {
+    display: flex;
+    justify-content: start;
+    gap: 1rem;
+    width: auto;
+    align-items: center;
+}
+
+.detailOpeningHours .state .boxIcon {
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(22, 62, 173);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.detailOpeningHours .close {
+    color: red;
+}
+
+.detailOpeningHours .open {
+    color: rgb(40, 211, 63);
+}
+
+.detailOpeningHours .optionMenuDays,
+.detailOpeningHours .openedOptionMenuDays {
+    opacity: 65%;
+    height: 13px;
+    width: 13px;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+.detailOpeningHours .openedOptionMenuDays {
+    transform: rotate(0deg);
+}
+
+.listOpeningDays {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 88%;
+    gap: 0.9rem;
+    margin-top: -0.9rem;
+}
+
+.listOpeningDays li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: start;
+    gap: 2rem;
+}
+
+.listOpeningDays .today {
+    font-weight: bold;
+}
