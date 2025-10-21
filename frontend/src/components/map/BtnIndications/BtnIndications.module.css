@@ -1,0 +1,20 @@
+.buttonStartRoute {
+    background: rgb(22, 178, 189);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.2rem;
+    height: 2rem;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 3px;
+}
+
+.buttonStartRoute:hover {
+    background: rgb(21, 157, 167);
+}
+.buttonStartRoute img {
+    width: 18px;
+    height: 18px;
+}

@@ -10,6 +10,7 @@ import fourStars from "../../../../assets/img/fourStars.png";
 import fourHalfStars from "../../../../assets/img/fourHalfStars.png";
 import fiveStars from "../../../../assets/img/fiveStars.png";
 import iconWheelchair from "../../../../assets/img/wheelchair.png";
+import { BtnIndications } from "../../BtnIndications/BtnIndications";
 import styles from "./Rating.module.css";
 
 export const Rating = ({ place }) => {
@@ -35,21 +36,29 @@ export const Rating = ({ place }) => {
 
     return ratingStar.stars;
   };
-  
 
   return (
     <div className={styles.rating}>
       <div className={styles.row}>
         <span>{place.rating}</span>
-        <img src={getStarsRating(place.rating)}></img>
+        <img className={styles.stars} src={getStarsRating(place.rating)}></img>
         <span>({place.userRatingCount})</span>
       </div>
       <div className={styles.rowTwo}>
-        <span>{place.primaryTypeDisplayName.text}</span>
-        {place.accessibilityOptions &&
-          place.accessibilityOptions.wheelchairAccessibleEntrance && (
-            <img title="Entrada accesible para gente en silla de ruedas" src={iconWheelchair}></img>
+        <div className={styles.data}>
+          {place.primaryTypeDisplayName && (
+            <span>{place.primaryTypeDisplayName.text}</span>
           )}
+          {place.accessibilityOptions &&
+            place.accessibilityOptions.wheelchairAccessibleEntrance && (
+              <img className={styles.wheelchair}
+                title="Entrada accesible para gente en silla de ruedas"
+                src={iconWheelchair}
+              ></img>
+            )}
+        </div>
+
+        <BtnIndications />
       </div>
     </div>
   );

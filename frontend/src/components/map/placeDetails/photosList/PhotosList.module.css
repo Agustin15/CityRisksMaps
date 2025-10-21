@@ -1,0 +1,121 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.list .containClose {
+    width: 99%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.list .containClose button {
+    margin-top: 1rem;
+    font-size: 18px;
+    height: 2.5rem;
+    width: 2.5rem;
+    background: rgba(110, 110, 110, 0.699);
+    border-radius: 99%;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.list li {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list .options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+}
+
+.list .options img {
+    width: 39px;
+    height: 39px;
+}
+
+.list .options span {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.list .options button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.list .options button:hover {
+    transform: scale(1.1);
+}
+
+.containLoading,
+.noData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.noData img {
+    width: 125px;
+    height: 125px;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #fff;
+    border-bottom-color: #278cc7;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.author {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.4rem;
+    width: 98%;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.author a {
+    color: white;
+    text-decoration: none;
+}
+
+.author a:hover {
+    text-decoration: underline;
+}
+
+.author img {
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+}

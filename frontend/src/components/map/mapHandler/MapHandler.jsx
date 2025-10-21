@@ -3,15 +3,21 @@ import { useEffect } from "react";
 
 export const MapHandler = ({ place, marker }) => {
   const map = useMap();
- 
+
   useEffect(() => {
     if (!map || !place || !marker) return;
 
-    if (place.geometry?.viewport) {
-      map.fitBounds(place.geometry?.viewport);
+    if (place.viewport) {
+      map.setZoom(15);
+      map.panTo({
+        lat: place.location.latitude,
+        lng: place.location.longitude
+      });
     }
-
-    marker.position = place.geometry?.location;
+    marker.position = {
+      lat: place.location.latitude,
+      lng: place.location.longitude
+    };
   }, [map, place, marker]);
   return null;
 };

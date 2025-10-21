@@ -5,6 +5,7 @@ import iconWeb from "../../../assets/img/web.png";
 import { OpeningDays } from "./openingDays/OpeningDays";
 import { Rating } from "./rating/Rating";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
+import { BtnIndications } from "../BtnIndications/BtnIndications";
 
 export const PlaceDetails = ({ place }) => {
   const getDay = (weekday) => {
@@ -25,8 +26,17 @@ export const PlaceDetails = ({ place }) => {
     <div className={styles.containDetails}>
       <div className={styles.header}>
         <ContainPhoto place={place} />
+
         <h3>{place.displayName.text}</h3>
-        {place.rating && <Rating place={place} />}
+        {place.rating || place.primaryTypeDisplayName ? (
+          <Rating place={place} />
+        ) : (
+          <div className={styles.row}>
+            <span>{place.addressComponents[1].longText}</span>
+
+            <BtnIndications></BtnIndications>
+          </div>
+        )}
       </div>
 
       {place.editorialSummary && (

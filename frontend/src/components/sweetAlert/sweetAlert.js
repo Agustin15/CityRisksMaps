@@ -18,3 +18,16 @@ export const alertSwalError = (title,error) => {
     }
   });
 };
+export const alertSwalLoading = () => {
+  Swal.fire({
+    title: "Localizando su ubicacion...",
+    imageUrl: iconGeolocation,
+    imageWidth: 70,
+    imageHeight: 70,
+    width:460,
+    customClass: {
+      title: styles.customTitle,
+      confirmButton: styles.customBtnConfirm
+    }
+  });
+};

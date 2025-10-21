@@ -3,19 +3,19 @@
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: 0.3rem;
     margin-left: 0.7rem;
-    margin-top: -1.3rem;
     font-size: 13px;
+    width: 98%;
 }
 
-.rating img {
+.rating .stars {
     width: 81px;
     height: 18px;
 }
 
 .rating .row,
-.rating .rowTwo {
+.rating .rowTwo,
+.rating .rowTwo .data {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,10 +23,21 @@
 }
 
 .rating .rowTwo {
-    gap: 0.4rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 98%;
 }
 
-.rating .rowTwo img {
+.rating .wheelchair {
     width: 14px;
     height: 14px;
 }
+
+.rating .rowTwo .data {
+    justify-content: start;
+    width: 85%;
+    gap: 0.3rem;
+}
+
+
