@@ -5,7 +5,8 @@ export class NeighborhoodCrime {
   #year;
 
   set propCrime(value) {
-    if (value.length == 0) throw new Error("Crime must not be empty");
+    if (value.length == 0)
+      throw new Error("Nombre de delito no puede estar vacio");
     this.#crime = value;
   }
 
@@ -14,7 +15,7 @@ export class NeighborhoodCrime {
   }
 
   set propNeighborhood(value) {
-    if (value.length == 0) throw new Error("Neighborhood must not be empty");
+    if (value.length == 0) throw new Error("Barrio no puede estar vacio");
     this.#neighborhood = value;
   }
 
@@ -22,7 +23,7 @@ export class NeighborhoodCrime {
     return this.#neighborhood;
   }
   set propYear(value) {
-    if (value < 2023) throw new Error("Year must be greater than year 2022");
+    if (value > new Date().getFullYear()) throw new Error("Año no puede ser mayor al año actual");
     this.#year = value;
   }
   get propYear() {
@@ -33,7 +34,7 @@ export class NeighborhoodCrime {
     return this.#quantity;
   }
   set propQuantity(value) {
-    if (value < 0) throw new Error("Quantity must not be less than zero");
+    if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
     this.#quantity = value;
   }
 }

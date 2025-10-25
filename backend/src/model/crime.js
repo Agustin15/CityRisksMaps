@@ -3,7 +3,7 @@ export class Crime {
   #description;
 
   set propCategory(value) {
-    if (value.length == 0) throw new Error("Category must not be empty");
+    if (value.length == 0) throw new Error("Categoria no puede estar vacia");
     this.#category = value;
   }
 
@@ -12,7 +12,7 @@ export class Crime {
   }
 
   set propDescription(value) {
-    if (value.length == 0) throw new Error("Description must not be empty");
+    if (value.length == 0) throw new Error("Descripcion no puede estar vacia");
     this.#description = value;
   }
 
