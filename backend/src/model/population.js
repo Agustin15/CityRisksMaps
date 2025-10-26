@@ -1,6 +1,7 @@
-class Population {
+export class Population {
   #idPopulation;
   #quantity;
+  #neighborhood;
   #year;
 
   set propIdPopulation(value) {
@@ -11,6 +12,15 @@ class Population {
 
   get propIdPopulation() {
     return this.#idPopulation;
+  }
+
+  set propNeighborhood(value) {
+    if (value.length == 0) throw new Error("Barrio no puede estar vacio");
+    this.#neighborhood = value;
+  }
+
+  get propNeighborhood() {
+    return this.#neighborhood;
   }
 
   get propQuantity() {

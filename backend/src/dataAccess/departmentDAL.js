@@ -13,7 +13,7 @@ export class DepartmentDAL {
 
       const result = await request.execute("AddDepartment");
 
-      return result;
+      return result.returnValue;
     } catch (error) {
       //   console.log("Error:", error.originalError.info.number);
       throw error;
@@ -32,7 +32,7 @@ export class DepartmentDAL {
 
       const result = await request.execute("UpdateDepartment");
 
-      return result;
+      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -48,7 +48,7 @@ export class DepartmentDAL {
 
       const result = await request.execute("DeleteDepartment");
 
-      return result;
+      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -67,7 +67,9 @@ export class DepartmentDAL {
       const result = await ps.execute({ name: department.propName });
       await ps.unprepare();
 
-      return result.recordset;
+      if (result.recordset.length > 0) {
+        return result.recordset[0];
+      } else null;
     } catch (error) {
       throw error;
     }

@@ -1,0 +1,56 @@
+.menuOptionPolygons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 1rem;
+    list-style: none;
+}
+
+.menuOptionPolygons li button {
+    width: auto;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 14px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px gray;
+    outline: none;
+    height: 2.3rem;
+    border: none;
+    cursor: pointer;
+}
+
+.menuOptionPolygons li img {
+    width: 22px;
+    height: 22px;
+}
+
+.menuOptionPolygons li button:hover {
+    box-shadow: none;
+}
+
+.menuOptionPolygons li .btnHurto {
+    background-color: rgb(243, 221, 22);
+}
+
+.menuOptionPolygons li .btnHurto:hover {
+    background-color: rgb(219, 199, 16);
+}
+
+.menuOptionPolygons li .btnAsesinato {
+    background-color: rgb(206, 25, 25);
+}
+.menuOptionPolygons li .btnAsesinato:hover {
+    background-color: rgb(182, 21, 21);
+}
+
+.menuOptionPolygons li .btnRapinia {
+    background-color: rgb(241, 86, 25);
+}
+.menuOptionPolygons li .btnRapinia:hover {
+    background-color: rgb(212, 76, 22);
+}

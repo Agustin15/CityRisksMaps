@@ -1,14 +1,16 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import { connection } from "./config/connection.js";
-import { DepartmentDAL } from "./dataAccess/departmentDAL.js";
+import { RoutesCrime } from "./route/routeCrime.js";
+import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 
-const departmentDAL = new DepartmentDAL();
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(cors({ origin: process.env.LOCALHOST_FRONTEND }));
 
 try {
   if (!process.env.PORT) throw "PORT not declared";
@@ -21,3 +23,7 @@ try {
   console.log("Internal server error:", error.message);
   process.exit(1);
 }
+
+app.use("/crimes/", RoutesCrime);
+app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
+

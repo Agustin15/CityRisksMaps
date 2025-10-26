@@ -164,7 +164,8 @@ export const MapProvider = ({ children }) => {
         markerUserLocation,
         loadingMyLocation,
         valueInput,
-        setValueInput
+        setValueInput,
+        neighbordhoodCoordinates
       }}
     >
       {children}

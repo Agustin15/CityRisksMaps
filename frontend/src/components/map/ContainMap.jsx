@@ -6,7 +6,6 @@ import {
   useAdvancedMarkerRef,
   InfoWindow
 } from "@vis.gl/react-google-maps";
-
 import { useState } from "react";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
@@ -19,6 +18,8 @@ import { DetailsStreet } from "./detailsStreet/DetailsStreet";
 import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
+import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
+import { ZoneCrimesProvider } from "../../contexts/ZoneCrimesContext";
 
 export const ContainMap = () => {
   const { markerUserLocation, handleClickOnMap, infoWindow, setInfoWindow } =
@@ -55,6 +56,12 @@ export const ContainMap = () => {
           <MyGeolocation />
         </MapControl>
         <MapHandler place={selectedPlace} marker={marker} />
+
+        <MapControl position={ControlPosition.RIGHT_TOP}>
+          <ZoneCrimesProvider>
+            <OptionsCrimes />
+          </ZoneCrimesProvider>
+        </MapControl>
 
         <InfoWindow
           onCloseClick={() => setInfoWindow()}
