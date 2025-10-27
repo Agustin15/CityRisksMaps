@@ -11,7 +11,7 @@ export const MapProvider = ({ children }) => {
   const [valueInput, setValueInput] = useState("");
   const [neighbordhoodCoordinates, setNeighbordhoodCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
-  const markerUserLocation = useRef();
+  const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
   const map = useMap();
 
@@ -23,7 +23,7 @@ export const MapProvider = ({ children }) => {
 
   const handleMyLocation = async () => {
     setLoadingMyLocation(true);
-    if (markerUserLocation.current && !markerUserLocation.current.position) {
+    if (!userLocation) {
       navigator.geolocation.watchPosition(success, error, options);
     } else {
       navigator.geolocation.getCurrentPosition(success, error, options);
@@ -79,10 +79,10 @@ export const MapProvider = ({ children }) => {
   const success = (pos) => {
     const crd = pos.coords;
 
-    markerUserLocation.current.position = {
+    setUserLocation({
       lat: crd.latitude,
       lng: crd.longitude
-    };
+    });
 
     map.setZoom(15);
     map.panTo({ lat: crd.latitude, lng: crd.longitude });
@@ -161,7 +161,7 @@ export const MapProvider = ({ children }) => {
         moreDetailsPlace,
         infoWindow,
         setInfoWindow,
-        markerUserLocation,
+        userLocation,
         loadingMyLocation,
         valueInput,
         setValueInput,

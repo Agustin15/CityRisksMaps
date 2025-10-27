@@ -9,8 +9,8 @@ export class NeighborhoodCrimeDAL {
 
       neighborhoodCrime.propCrime = categoryCrime;
       neighborhoodCrime.propNeighborhood = nameNeighborhood;
-      neighborhoodCrime.propQuantity = quantity;
-      neighborhoodCrime.propYear = year;
+      neighborhoodCrime.propQuantity = parseInt(quantity);
+      neighborhoodCrime.propYear = parseInt(year);
 
       const request = new sql.Request(connection.pool);
 
@@ -37,8 +37,8 @@ export class NeighborhoodCrimeDAL {
 
       neighborhoodCrime.propCrime = categoryCrime;
       neighborhoodCrime.propNeighborhood = nameNeighborhood;
-      neighborhoodCrime.propQuantity = quantity;
-      neighborhoodCrime.propYear = year;
+      neighborhoodCrime.propQuantity = parseInt(quantity);
+      neighborhoodCrime.propYear = parseInt(year);
 
       const request = new sql.Request(connection.pool);
 
@@ -94,7 +94,7 @@ export class NeighborhoodCrimeDAL {
       ps.input("crime", sql.VarChar(10));
 
       await ps.prepare(
-        "select DISTINCT year from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on N.name=NC.neighborhood where crime=@crime"
+        "select DISTINCT year from Neighborhoods_Crimes where crime=@crime ORDER BY year desc"
       );
 
       const result = await ps.execute({
@@ -113,7 +113,7 @@ export class NeighborhoodCrimeDAL {
       const neighborhoodCrime = new NeighborhoodCrime();
 
       neighborhoodCrime.propCrime = categoryCrime;
-      neighborhoodCrime.propYear = year;
+      neighborhoodCrime.propYear = parseInt(year);
 
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -121,7 +121,10 @@ export class NeighborhoodCrimeDAL {
       ps.input("year", sql.Int);
 
       await ps.prepare(
-        "select * from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on N.name=NC.neighborhood INNER JOIN Population P on P.neighborhood=NC.neighborhood where crime=@crime and NC.year=@year"
+        "select name,P.quantity as 'quantiyPopulation',P.year as 'yearPopulation',NC.quantity as " +
+          "'quantiyCrime',NC.year as 'yearCrime' from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on " +
+          "N.name=NC.neighborhood INNER JOIN Population P on P.neighborhood=NC.neighborhood" +
+          " where crime='Rapiña' and NC.year=2024"
       );
 
       const result = await ps.execute({

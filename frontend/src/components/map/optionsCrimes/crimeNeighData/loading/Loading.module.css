@@ -1,0 +1,9 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 66%;
+    width: 99%;
+    font-size: 18px;
+    font-weight: bold;
+}

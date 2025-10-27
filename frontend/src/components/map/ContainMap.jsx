@@ -22,7 +22,7 @@ import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
 import { ZoneCrimesProvider } from "../../contexts/ZoneCrimesContext";
 
 export const ContainMap = () => {
-  const { markerUserLocation, handleClickOnMap, infoWindow, setInfoWindow } =
+  const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
     useMapControls();
   const { showPhotos } = usePhotosPlace();
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -41,7 +41,7 @@ export const ContainMap = () => {
         gestureHandling="greedy"
         mapId="e511213c5dfb9c1e77fabd51"
       >
-        <AdvancedMarker position={null} ref={markerUserLocation}>
+        <AdvancedMarker position={userLocation ? userLocation : null}>
           <MyLocation />
         </AdvancedMarker>
 

@@ -81,7 +81,10 @@ export class quizDAL {
         "select * from Quizes where neighbordhood=@neighbordhood and YEAR(quizDate)=@year"
       );
 
-      await ps.execute({ neighbordhood: quiz.propNeighborhood, year: year });
+      await ps.execute({
+        neighbordhood: quiz.propNeighborhood,
+        year: parseInt(year)
+      });
 
       await ps.unprepare();
 

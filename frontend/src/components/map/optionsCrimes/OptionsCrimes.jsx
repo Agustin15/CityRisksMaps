@@ -4,12 +4,12 @@ import iconKill from "../../../assets/img/kill.png";
 import iconTheft from "../../../assets/img/theft.png";
 import iconHoldup from "../../../assets/img/holdup.png";
 import styles from "./OptionsCrimes.module.css";
-import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
+import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
-  const { getNeighborhoodsCrimeByYear } = useZoneCrimes();
+  const [crimeSelected, setCrimeSelected] = useState();
 
   const getCrimes = async () => {
     let optionGET = JSON.stringify({ option: "getCrimes" });
@@ -21,6 +21,7 @@ export const OptionsCrimes = () => {
       });
 
       const result = await response.json();
+      if (!response.ok) throw result.messageError;
 
       if (result) setCrimes(result);
     } catch (error) {
@@ -32,42 +33,42 @@ export const OptionsCrimes = () => {
     getCrimes();
   }, []);
 
-  const handleShowZones = (event, categoryCrime) => {
-    getNeighborhoodsCrimeByYear(new Date().getFullYear(), categoryCrime);
-  };
-
   return (
-    <ul className={styles.menuOptionPolygons}>
-      {crimes &&
-        crimes.map((crime, index) => (
-          <li key={index}>
-            <button
-              onClick={(event) => handleShowZones(event, crime.category)}
-              className={
-                crime.category == "Hurto"
-                  ? styles.btnHurto
-                  : crime.category == "Rapiña"
-                  ? styles.btnRapinia
-                  : crime.category == "Asesinato"
-                  ? styles.btnAsesinato
-                  : ""
-              }
-            >
-              Zonas de {crime.category}
-              <img
-                src={
+    <div className={styles.containOptionsCrimes}>
+      <ul className={styles.menuOptionsCrimes}>
+        {crimes &&
+          crimes.map((crime, index) => (
+            <li key={index}>
+              <button
+                onClick={() => setCrimeSelected(crime.category)}
+                className={
                   crime.category == "Hurto"
-                    ? iconTheft
+                    ? styles.btnHurto
                     : crime.category == "Rapiña"
-                    ? iconHoldup
+                    ? styles.btnRapinia
                     : crime.category == "Asesinato"
-                    ? iconKill
+                    ? styles.btnAsesinato
                     : ""
                 }
-              ></img>
-            </button>
-          </li>
-        ))}
-    </ul>
+              >
+                Zonas de {crime.category}
+                <img
+                  src={
+                    crime.category == "Hurto"
+                      ? iconTheft
+                      : crime.category == "Rapiña"
+                      ? iconHoldup
+                      : crime.category == "Asesinato"
+                      ? iconKill
+                      : ""
+                  }
+                ></img>
+              </button>
+            </li>
+          ))}
+      </ul>
+
+      {crimeSelected && <CrimeNeighbordhoods categoryCrime={crimeSelected} />}
+    </div>
   );
 };

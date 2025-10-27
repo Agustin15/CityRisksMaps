@@ -1,4 +1,12 @@
-.menuOptionPolygons {
+.containOptionCrimes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.menuOptionsCrimes {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,7 +15,7 @@
     list-style: none;
 }
 
-.menuOptionPolygons li button {
+.menuOptionsCrimes li button {
     width: auto;
     color: white;
     font-weight: bold;
@@ -24,33 +32,33 @@
     cursor: pointer;
 }
 
-.menuOptionPolygons li img {
+.menuOptionsCrimes li img {
     width: 22px;
     height: 22px;
 }
 
-.menuOptionPolygons li button:hover {
+.menuOptionsCrimes li button:hover {
     box-shadow: none;
 }
 
-.menuOptionPolygons li .btnHurto {
+.menuOptionsCrimes li .btnHurto {
     background-color: rgb(243, 221, 22);
 }
 
-.menuOptionPolygons li .btnHurto:hover {
+.menuOptionsCrimes li .btnHurto:hover {
     background-color: rgb(219, 199, 16);
 }
 
-.menuOptionPolygons li .btnAsesinato {
+.menuOptionsCrimes li .btnAsesinato {
     background-color: rgb(206, 25, 25);
 }
-.menuOptionPolygons li .btnAsesinato:hover {
+.menuOptionsCrimes li .btnAsesinato:hover {
     background-color: rgb(182, 21, 21);
 }
 
-.menuOptionPolygons li .btnRapinia {
+.menuOptionsCrimes li .btnRapinia {
     background-color: rgb(241, 86, 25);
 }
-.menuOptionPolygons li .btnRapinia:hover {
+.menuOptionsCrimes li .btnRapinia:hover {
     background-color: rgb(212, 76, 22);
 }

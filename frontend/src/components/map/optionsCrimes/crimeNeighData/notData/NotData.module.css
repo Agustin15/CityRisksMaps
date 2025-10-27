@@ -1,0 +1,18 @@
+.notData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    width: 99%;
+    height: 69%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.notData img {
+    width: 85px;
+    height: 85px;
+    opacity: 55%;
+    margin-right: 0.4rem;
+}
