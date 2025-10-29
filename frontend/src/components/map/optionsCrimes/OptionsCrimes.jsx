@@ -68,7 +68,12 @@ export const OptionsCrimes = () => {
           ))}
       </ul>
 
-      {crimeSelected && <CrimeNeighbordhoods categoryCrime={crimeSelected} />}
+      {crimeSelected && (
+        <CrimeNeighbordhoods
+          categoryCrime={crimeSelected}
+          setCrimeSelected={setCrimeSelected}
+        />
+      )}
     </div>
   );
 };

@@ -1,18 +1,13 @@
 import { connection } from "../config/connection.js";
-import { Crime } from "../model/crime.js";
 import sql from "mssql";
 
 export class CrimeDAL {
   async add(category, description) {
     try {
-      const crime = new Crime();
-      crime.propCategory = category;
-      crime.propDescription = description;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
-      request.input("description", sql.VarChar(700), crime.propDescription);
+      request.input("category", sql.VarChar(10), category);
+      request.input("description", sql.VarChar(700), description);
 
       const result = await request.execute("AddCrime");
 
@@ -22,16 +17,24 @@ export class CrimeDAL {
     }
   }
 
-  async update(category, description) {
+  async getIdentCurrentTable() {
     try {
-      const crime = new Crime();
-      crime.propCategory = category;
-      crime.propDescription = description;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
-      request.input("description", sql.VarChar(700), crime.propDescription);
+      const identCurrent = await request.execute("SELECT IDENT_CURRENT('Crimes')");
+
+      return identCurrent;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(category, description) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("category", sql.VarChar(10), category);
+      request.input("description", sql.VarChar(700), description);
 
       const result = await request.execute("UpdateCrime");
 
@@ -43,12 +46,9 @@ export class CrimeDAL {
 
   async delete(category) {
     try {
-      const crime = new Crime();
-      crime.propCategory = category;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
+      request.input("category", sql.VarChar(10), category);
 
       const result = await request.execute("DeleteCrime");
 
@@ -60,22 +60,17 @@ export class CrimeDAL {
 
   async getCrimeByCategory(category) {
     try {
-      const crime = new Crime();
-      crime.propCategory = category;
-
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("category", sql.Int);
 
       await ps.prepare("select * from crimes where category=@category");
       const result = await ps.execute({
-        category: crime.propCategory
+        category: category
       });
 
       await ps.unprepare();
 
-      if (result.recordset.length > 0) {
-        return result.recordset[0];
-      } else null;
+      return result;
     } catch (error) {
       throw error;
     }
@@ -90,7 +85,7 @@ export class CrimeDAL {
       const result = await ps.execute();
       await ps.unprepare();
 
-      return result.recordset;
+      return result;
     } catch (error) {
       throw error;
     }

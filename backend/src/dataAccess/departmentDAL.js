@@ -1,15 +1,11 @@
-import { Department } from "../model/Department.js";
 import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class DepartmentDAL {
   async add(name) {
     try {
-      const department = new Department();
-      department.propName = name;
-
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), department.propName);
+      request.input("name", sql.VarChar(30), name);
 
       const result = await request.execute("AddDepartment");
 
@@ -19,16 +15,23 @@ export class DepartmentDAL {
       throw error;
     }
   }
+  async getIdentCurrentTable() {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      const identCurrent = await request.execute("SELECT IDENT_CURRENT('Departments')");
+
+      return identCurrent;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async update(id, name) {
     try {
-      const department = new Department();
-      department.propIdDepartment = id;
-      department.propName = name;
-
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, department.propIdDepartment);
-      request.input("name", sql.VarChar(30), department.propName);
+      request.input("idDepartment", sql.Int, id);
+      request.input("name", sql.VarChar(30), name);
 
       const result = await request.execute("UpdateDepartment");
 
@@ -40,11 +43,8 @@ export class DepartmentDAL {
 
   async delete(id) {
     try {
-      const department = new Department();
-      department.propIdDepartment = id;
-
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, department.propIdDepartment);
+      request.input("idDepartment", sql.Int, id);
 
       const result = await request.execute("DeleteDepartment");
 
@@ -56,20 +56,15 @@ export class DepartmentDAL {
 
   async getDepartmentByName(name) {
     try {
-      const department = new Department();
-      department.propName = name;
-
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("name", sql.VarChar(30));
 
       await ps.prepare("select * from departments where name=@name");
 
-      const result = await ps.execute({ name: department.propName });
+      const result = await ps.execute({ name: name });
       await ps.unprepare();
 
-      if (result.recordset.length > 0) {
-        return result.recordset[0];
-      } else null;
+      return result;
     } catch (error) {
       throw error;
     }
@@ -84,7 +79,7 @@ export class DepartmentDAL {
       const result = await ps.execute();
       await ps.unprepare();
 
-      return result.recordset;
+      return result;
     } catch (error) {
       throw error;
     }

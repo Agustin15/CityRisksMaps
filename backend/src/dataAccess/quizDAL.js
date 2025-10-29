@@ -1,21 +1,14 @@
 import { connection } from "../config/connection.js";
-import { Quiz } from "../model/quiz.js";
 import sql from "mssql";
 
-export class quizDAL {
+export class QuizDAL {
   async add(email, nameNeighbordhood, secure) {
     try {
-      const quiz = new Quiz();
-
-      quiz.propEmail = email;
-      quiz.propSecure = secure;
-      quiz.propNeighborhood = nameNeighbordhood;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighborhood);
-      request.input("secure", sql.Bit, quiz.propSecure);
+      request.input("email", sql.VarChar(30), email);
+      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
+      request.input("secure", sql.Bit, secure);
 
       const result = await request.execute("AddQuiz");
 
@@ -25,19 +18,26 @@ export class quizDAL {
     }
   }
 
-  async update(email, nameNeighbordhood, secure) {
+  async getIdentCurrentTable() {
     try {
-      const quiz = new Quiz();
-
-      quiz.propEmail = email;
-      quiz.propSecure = secure;
-      quiz.propNeighborhood = nameNeighbordhood;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighborhood);
-      request.input("secure", sql.Bit, quiz.propSecure);
+      const identCurrent = await request.execute(
+        "SELECT IDENT_CURRENT('Quizes')"
+      );
+
+      return identCurrent;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async update(email, nameNeighbordhood, secure) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("email", sql.VarChar(30), email);
+      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
+      request.input("secure", sql.Bit, secure);
 
       const result = await request.execute("UpdateQuiz");
 
@@ -49,15 +49,10 @@ export class quizDAL {
 
   async delete(email, nameNeighbordhood) {
     try {
-      const quiz = new Quiz();
-
-      quiz.propEmail = email;
-      quiz.propNeighborhood = nameNeighbordhood;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighborhood);
+      request.input("email", sql.VarChar(30), email);
+      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
 
       const result = await request.execute("DeleteQuiz");
 
@@ -69,10 +64,6 @@ export class quizDAL {
 
   async getQuizesByNeighbordhoodAndYear(nameNeighbordhood, year) {
     try {
-      const quiz = new Quiz();
-
-      quiz.propNeighborhood = nameNeighbordhood;
-
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("neighbordhood", sql.VarChar(30));
       ps.input("year", sql.Int);
@@ -82,13 +73,13 @@ export class quizDAL {
       );
 
       await ps.execute({
-        neighbordhood: quiz.propNeighborhood,
+        neighbordhood: nameNeighbordhood,
         year: parseInt(year)
       });
 
       await ps.unprepare();
 
-      return result.recordset;
+      return result;
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,4 @@
-import { NeighborhoodCrimeDAL } from "../dataAccess/neighborhoodCrimeDAL.js";
-
-const neighborhoodCrimeDAL = new NeighborhoodCrimeDAL();
+import { NeighborhoodCrime } from "../model/neighborhoodCrime.js";
 
 export const getNeighborhoodsCrimeByYear = async (req, res) => {
   try {
@@ -10,11 +8,13 @@ export const getNeighborhoodsCrimeByYear = async (req, res) => {
     if (!categoryCrime)
       throw new Error("Categoria no definida", { cause: { code: 400 } });
 
+    const neighborhoodCrime = new NeighborhoodCrime();
+
+    neighborhoodCrime.propCrime = categoryCrime;
+    neighborhoodCrime.propYear = year;
+
     const neighborhoodsCrimes =
-      await neighborhoodCrimeDAL.getNeighborhoodsCrimeByYear(
-        categoryCrime,
-        year
-      );
+      await neighborhoodCrime.getNeighborhoodsCrimeByYear();
 
     res.status(200).json(neighborhoodsCrimes);
   } catch (error) {
@@ -29,8 +29,12 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
     if (!categoryCrime)
       throw new Error("Categoria no definida", { cause: { code: 400 } });
 
+    const neighborhoodCrime = new NeighborhoodCrime();
+
+    neighborhoodCrime.propCrime = categoryCrime;
+
     const yearsNeighborhoodsCrimes =
-      await neighborhoodCrimeDAL.getYearsNeighborhoodsCrime(categoryCrime);
+      await neighborhoodCrime.getYearsNeighborhoodsCrime();
 
     res.status(200).json(yearsNeighborhoodsCrimes);
   } catch (error) {

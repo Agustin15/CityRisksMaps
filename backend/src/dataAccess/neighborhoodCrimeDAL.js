@@ -1,27 +1,15 @@
 import { connection } from "../config/connection.js";
-import { NeighborhoodCrime } from "../model/neighborhoodCrime.js";
 import sql from "mssql";
 
 export class NeighborhoodCrimeDAL {
   async add(nameNeighborhood, categoryCrime, quantity, year) {
     try {
-      const neighborhoodCrime = new NeighborhoodCrime();
-
-      neighborhoodCrime.propCrime = categoryCrime;
-      neighborhoodCrime.propNeighborhood = nameNeighborhood;
-      neighborhoodCrime.propQuantity = parseInt(quantity);
-      neighborhoodCrime.propYear = parseInt(year);
-
       const request = new sql.Request(connection.pool);
 
-      request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
-      );
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input("quantity", sql.Int, neighborhoodCrime.propQuantity);
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("crime", sql.VarChar(10), categoryCrime);
+      request.input("quantity", sql.Int, quantity);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute("AddNeighborhoodCrime");
 
@@ -31,25 +19,28 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  async update(nameNeighborhood, categoryCrime, quantity, year) {
+  async getIdentCurrentTable() {
     try {
-      const neighborhoodCrime = new NeighborhoodCrime();
-
-      neighborhoodCrime.propCrime = categoryCrime;
-      neighborhoodCrime.propNeighborhood = nameNeighborhood;
-      neighborhoodCrime.propQuantity = parseInt(quantity);
-      neighborhoodCrime.propYear = parseInt(year);
-
       const request = new sql.Request(connection.pool);
 
-      request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
+      const identCurrent = await request.execute(
+        "SELECT IDENT_CURRENT('Neighborhoods_Crimes')"
       );
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input("quantity", sql.Int, neighborhoodCrime.propQuantity);
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+
+      return identCurrent;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async update(nameNeighborhood, categoryCrime, quantity, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("crime", sql.VarChar(10), categoryCrime);
+      request.input("quantity", sql.Int, quantity);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute("UpdateNeighborhoodCrime");
 
@@ -61,19 +52,10 @@ export class NeighborhoodCrimeDAL {
 
   async delete(nameNeighborhood, categoryCrime) {
     try {
-      const neighborhoodCrime = new NeighborhoodCrime();
-
-      neighborhoodCrime.propCrime = categoryCrime;
-      neighborhoodCrime.propNeighborhood = nameNeighborhood;
-
       const request = new sql.Request(connection.pool);
 
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
-      );
+      request.input("crime", sql.VarChar(10), categoryCrime);
+      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
 
       const result = await request.execute("DeleteNeighborhoodCrime");
 
@@ -85,10 +67,6 @@ export class NeighborhoodCrimeDAL {
 
   async getYearsNeighborhoodsCrime(categoryCrime) {
     try {
-      const neighborhoodCrime = new NeighborhoodCrime();
-
-      neighborhoodCrime.propCrime = categoryCrime;
-
       const ps = new sql.PreparedStatement(connection.pool);
 
       ps.input("crime", sql.VarChar(10));
@@ -98,43 +76,25 @@ export class NeighborhoodCrimeDAL {
       );
 
       const result = await ps.execute({
-        crime: neighborhoodCrime.propCrime
+        crime: categoryCrime
       });
 
-      return result.recordset;
+      return result;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
 
   async getNeighborhoodsCrimeByYear(categoryCrime, year) {
     try {
-      const neighborhoodCrime = new NeighborhoodCrime();
+      const request = new sql.Request(connection.pool);
 
-      neighborhoodCrime.propCrime = categoryCrime;
-      neighborhoodCrime.propYear = parseInt(year);
+      request.input("crime", sql.VarChar(10), categoryCrime);
+      request.input("year", sql.Int, year);
 
-      const ps = new sql.PreparedStatement(connection.pool);
-
-      ps.input("crime", sql.VarChar(10));
-      ps.input("year", sql.Int);
-
-      await ps.prepare(
-        "select name,P.quantity as 'quantiyPopulation',P.year as 'yearPopulation',NC.quantity as " +
-          "'quantiyCrime',NC.year as 'yearCrime' from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on " +
-          "N.name=NC.neighborhood INNER JOIN Population P on P.neighborhood=NC.neighborhood" +
-          " where crime='Rapiña' and NC.year=2024"
-      );
-
-      const result = await ps.execute({
-        crime: neighborhoodCrime.propCrime,
-        year: neighborhoodCrime.propYear
-      });
-
-      return result.recordset;
+      const result = await request.execute("NeighborhoodsCrimeByYear");
+      return result;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

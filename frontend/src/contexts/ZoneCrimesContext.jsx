@@ -50,13 +50,35 @@ export const ZoneCrimesProvider = ({ children }) => {
     return await fetchEndpoint(url, setLoadingYears);
   };
 
+  const defineCrimeRate = (quantiyCrime, quantiyPopulation) => {
+    return Math.floor(
+      (quantiyCrime / quantiyPopulation) * 100000
+    ).toLocaleString();
+  };
+
+  const defineCrimeRange = (rate, ranges) => {
+    const crimeRanges = [
+      { rate: rate >= ranges[0] && rate <= ranges[1], color: "#ffffe4ff" },
+      { rate: rate >= ranges[2] && rate <= ranges[3], color: "#ffff96ff" },
+      { rate: rate >= ranges[4] && rate <= ranges[5], color: "#fa7c06ff" },
+      { rate: rate >= ranges[6], color: "#f73d1cff" }
+    ];
+    const crimeRangeFound = crimeRanges.find((item) => item.rate == true);
+    if (crimeRangeFound) {
+      return crimeRangeFound.color;
+    }
+    return "gray";
+  };
+
   return (
     <ZoneCrimesContext.Provider
       value={{
         getNeighborhoodsCrimeByYear,
         getYearsNeighborhoodsCrime,
         loadingNeighborhoodsCrime,
-        loadingYears
+        loadingYears,
+        defineCrimeRate,
+        defineCrimeRange
       }}
     >
       {children}
