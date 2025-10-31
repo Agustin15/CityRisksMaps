@@ -9,7 +9,7 @@ const MapContext = createContext();
 export const MapProvider = ({ children }) => {
   const [infoWindow, setInfoWindow] = useState();
   const [valueInput, setValueInput] = useState("");
-  const [neighbordhoodCoordinates, setNeighbordhoodCoordinates] = useState();
+  const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
@@ -54,26 +54,14 @@ export const MapProvider = ({ children }) => {
 
     if (features) {
       features.forEach((feature) => {
-        neighbordhoodsCoordinates.push(
-          formatCoordinates(feature.geometry.coordinates.flat())
-        );
+        neighbordhoodsCoordinates.push({
+          neighborhood: feature.properties.nombre,
+          coordinates: formatCoordinates(feature.geometry.coordinates.flat())
+        });
       });
 
-      setNeighbordhoodCoordinates(neighbordhoodCoordinates);
+      setNeighbordhoodsCoordinates(neighbordhoodsCoordinates);
     }
-  };
-
-  const markPolygonsNeighbordhood = async () => {
-    neighbordhoodCoordinates.forEach((neighbordhoodCoordinates) => {
-      new google.maps.Polygon({
-        paths: neighbordhoodCoordinates,
-        strokeColor: "#201616ff",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#FF0000",
-        fillOpacity: 0.35
-      }).setMap(map);
-    });
   };
 
   const success = (pos) => {
@@ -165,7 +153,7 @@ export const MapProvider = ({ children }) => {
         loadingMyLocation,
         valueInput,
         setValueInput,
-        neighbordhoodCoordinates
+        neighbordhoodsCoordinates
       }}
     >
       {children}

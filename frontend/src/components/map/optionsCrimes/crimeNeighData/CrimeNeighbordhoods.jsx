@@ -3,7 +3,7 @@ import iconKill from "../../../../assets/img/kill.png";
 import iconTheft from "../../../../assets/img/theft.png";
 import iconHoldup from "../../../../assets/img/holdup.png";
 import { useEffect, useState } from "react";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { NotData } from "./notData/NotData";
 import { Loading } from "./loading/Loading";
 import { Table } from "./table/Table";
@@ -12,9 +12,13 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
   const {
     getNeighborhoodsCrimeByYear,
     getYearsNeighborhoodsCrime,
+    createPolygonsNeighbordhood,
     loadingYears,
+    polygons,
+    setPolygons,
     loadingNeighborhoodsCrime
   } = useZoneCrimes();
+
   const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
   const [years, setYears] = useState();
   const [yearSelected, setYearSelected] = useState();
@@ -35,15 +39,25 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
         categoryCrime
       );
 
-      if (neighborhoodsCrime) setNeighborhoodsCrimeByYear(neighborhoodsCrime);
+      if (neighborhoodsCrime) {
+        setNeighborhoodsCrimeByYear(neighborhoodsCrime);
+        createPolygonsNeighbordhood(neighborhoodsCrime, categoryCrime);
+      }
     }
+  };
+  const handleClose = () => {
+    polygons.forEach((polygon) => {
+      polygon.setMap(null);
+    });
+    setPolygons([]);
+    setCrimeSelected();
   };
 
   return (
     <div className={styles.containData}>
       <div className={styles.header}>
         <div className={styles.close}>
-          <button onClick={() => setCrimeSelected()}>x</button>
+          <button onClick={handleClose}>x</button>
         </div>
         <div className={styles.title}>
           <h3>{categoryCrime}s</h3>
@@ -94,7 +108,10 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
       )}
 
       {neighborhoodsCrimeByYear && (
-        <Table neighborhoodsCrimeByYear={neighborhoodsCrimeByYear} />
+        <Table
+          neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
+          crime={categoryCrime}
+        />
       )}
     </div>
   );

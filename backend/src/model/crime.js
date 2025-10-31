@@ -100,6 +100,7 @@ export class Crime {
       }
       return result.recordset;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

@@ -47,5 +47,6 @@ td {
     justify-content: start;
     align-items: center;
     width: 99%;
+    gap: 0.5rem;
     padding-left: 8%;
 }

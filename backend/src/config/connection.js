@@ -74,6 +74,7 @@ class Connection {
         trustServerCertificate: true
       }
     });
+    await this.pool.connect();
   }
 }
 

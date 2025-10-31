@@ -1,7 +1,8 @@
 import styles from "./Table.module.css";
-import { useZoneCrimes } from "../../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { ColorRate } from "./colorRate/ColorRate";
 
-export const Table = ({ neighborhoodsCrimeByYear }) => {
+export const Table = ({ neighborhoodsCrimeByYear, crime }) => {
   const { defineCrimeRate, defineCrimeRange } = useZoneCrimes();
 
   return (
@@ -25,6 +26,17 @@ export const Table = ({ neighborhoodsCrimeByYear }) => {
               >
                 <td>
                   <div className={styles.nameNeighborhood}>
+                    <ColorRate
+                      rate={
+                        neighborhoodCrime.quantiyCrime
+                          ? defineCrimeRate(
+                              neighborhoodCrime.quantiyCrime,
+                              neighborhoodCrime.quantiyPopulation
+                            )
+                          : null
+                      }
+                      crime={crime}
+                    />
                     {neighborhoodCrime.name}
                   </div>
                 </td>

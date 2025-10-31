@@ -19,7 +19,7 @@ import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
-import { ZoneCrimesProvider } from "../../contexts/ZoneCrimesContext";
+import { ZoneCrimesProvider } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =

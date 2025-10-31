@@ -21,7 +21,9 @@ export class CrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      const identCurrent = await request.execute("SELECT IDENT_CURRENT('Crimes')");
+      const identCurrent = await request.execute(
+        "SELECT IDENT_CURRENT('Crimes')"
+      );
 
       return identCurrent;
     } catch (error) {
@@ -78,11 +80,13 @@ export class CrimeDAL {
 
   async getCrimes() {
     try {
+     
       const ps = new sql.PreparedStatement(connection.pool);
 
       await ps.prepare("select * from crimes");
 
       const result = await ps.execute();
+
       await ps.unprepare();
 
       return result;
