@@ -1,11 +1,12 @@
 .notData {
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0;
     width: 99%;
-    height: 69%;
+    height: 75%;
     font-size: 16px;
     font-weight: bold;
 }

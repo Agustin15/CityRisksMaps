@@ -80,7 +80,6 @@ export class CrimeDAL {
 
   async getCrimes() {
     try {
-     
       const ps = new sql.PreparedStatement(connection.pool);
 
       await ps.prepare("select * from crimes");
@@ -91,6 +90,7 @@ export class CrimeDAL {
 
       return result;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

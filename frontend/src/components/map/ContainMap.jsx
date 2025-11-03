@@ -76,6 +76,8 @@ export const ContainMap = () => {
           <PhotosList place={selectedPlace} />
         </Modal>
       )}
+
+      
     </>
   );
 };

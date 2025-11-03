@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { createContext } from "react";
 import { useMapControls } from "../MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
+import { getDrawInfoWindow } from "./infoWindow.js";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 const ZoneCrimesContext = createContext();
 
@@ -62,8 +63,8 @@ export const ZoneCrimesProvider = ({ children }) => {
 
   const defineCrimeRange = (rate, ranges) => {
     const crimeRanges = [
-      { rate: rate >= ranges[0] && rate <= ranges[1], color: "#ffffe4ff" },
-      { rate: rate >= ranges[2] && rate <= ranges[3], color: "#ffff96ff" },
+      { rate: rate >= ranges[0] && rate <= ranges[1], color: "#ffffbfff" },
+      { rate: rate >= ranges[2] && rate <= ranges[3], color: "#f1f134ff" },
       { rate: rate >= ranges[4] && rate <= ranges[5], color: "#fa7c06ff" },
       { rate: rate >= ranges[6], color: "#f73d1cff" }
     ];
@@ -86,50 +87,60 @@ export const ZoneCrimesProvider = ({ children }) => {
     }
   };
 
-  const createPolygonsNeighbordhood = async (
-    neighbordhoodsCrime,
-    categoryCrime
-  ) => {
-    map.setZoom(12);
-    const polygons = [];
+  const createArrayForPolygons = (neighbordhoodsCrime, categoryCrime) => {
     const nhCrimeCoordinates = [];
-
     for (let nhCrime of neighbordhoodsCrime) {
       neighbordhoodsCoordinates.map((nhCoordinate) => {
         if (
           nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
         ) {
-          const rate = nhCrime.quantiyCrime
-            ? defineCrimeRate(nhCrime.quantiyCrime, nhCrime.quantiyPopulation)
-            : null;
+          const rate =
+            nhCrime.quantiyCrime >= 0
+              ? defineCrimeRate(nhCrime.quantiyCrime, nhCrime.quantiyPopulation)
+              : null;
 
-          const colorRange = rate ? getCrimeRange(rate, categoryCrime) : null;
+          const colorRange =
+            rate >= 0 ? getCrimeRange(rate, categoryCrime) : null;
 
           nhCrimeCoordinates.push({
             coordinates: nhCoordinate.coordinates,
             name: nhCrime.name,
+            rate: rate,
             rateColor: colorRange ? colorRange : "#bbbbbbff"
           });
         }
       });
     }
+    return nhCrimeCoordinates;
+  };
+
+  const createPolygonsNeighbordhood = async (
+    neighbordhoodsCrime,
+    categoryCrime
+  ) => {
+    map.setZoom(12);
+
+    const nhCrimeCoordinates = createArrayForPolygons(
+      neighbordhoodsCrime,
+      categoryCrime
+    );
 
     nhCrimeCoordinates.forEach((nhCrimeCoordinate) => {
       const polygon = new google.maps.Polygon({
         paths: nhCrimeCoordinate.coordinates,
         strokeColor: "#8d8d8dff",
-        strokeOpacity: 0.8,
+        strokeOpacity: 1,
         strokeWeight: 1,
         fillColor: nhCrimeCoordinate.rateColor,
-        fillOpacity: 0.55,
+        fillOpacity: 0.4,
         clickable: true,
-        data: { neighborhood: nhCrimeCoordinate.name }
+        data: nhCrimeCoordinate
       });
       polygon.setMap(map);
 
       const infoWindow = new google.maps.InfoWindow();
       polygon.addListener("mouseover", function (event) {
-        infoWindow.setContent(`<a>${this.data.neighborhood}</a>`);
+        infoWindow.setContent(getDrawInfoWindow(this.data, categoryCrime));
         infoWindow.setPosition(event.latLng);
 
         infoWindow.open(map);
@@ -140,6 +151,7 @@ export const ZoneCrimesProvider = ({ children }) => {
       });
       polygons.push(polygon);
     });
+
     setPolygons(polygons);
   };
 

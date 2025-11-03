@@ -1,8 +1,9 @@
 .loading {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 66%;
+    height: 76%;
     width: 99%;
     font-size: 18px;
     font-weight: bold;

@@ -87,6 +87,7 @@ export class NeighborhoodCrimeDAL {
 
   async getNeighborhoodsCrimeByYear(categoryCrime, year) {
     try {
+    
       const request = new sql.Request(connection.pool);
 
       request.input("crime", sql.VarChar(10), categoryCrime);

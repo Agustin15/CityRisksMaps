@@ -37,9 +37,11 @@ td {
 
 .table .trGray {
     background-color: rgb(192, 225, 248);
+    cursor: pointer;
 }
 .table .trWhite {
     background-color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 .table .nameNeighborhood {
