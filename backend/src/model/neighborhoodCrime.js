@@ -21,8 +21,10 @@ export class NeighborhoodCrime {
   }
 
   set propCrime(value) {
-    if (value.trim().length == 0)
-      throw new Error("Nombre de delito no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Nombre de delito no puede estar vacio", {
+        cause: { code: 400 }
+      });
     this.#crime = value.trim();
   }
 
@@ -31,8 +33,8 @@ export class NeighborhoodCrime {
   }
 
   set propNeighborhood(value) {
-    if (value.trim().length == 0)
-      throw new Error("Barrio no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Barrio no puede estar vacio", { cause: { code: 400 } });
     this.#neighborhood = value.trim();
   }
 
@@ -40,8 +42,10 @@ export class NeighborhoodCrime {
     return this.#neighborhood;
   }
   set propYear(value) {
-    if (value > new Date().getFullYear())
-      throw new Error("Año no puede ser mayor al año actual");
+    if (!value || value > new Date().getFullYear())
+      throw new Error("Año no puede ser mayor al año actual", {
+        cause: { code: 400 }
+      });
     this.#year = value;
   }
   get propYear() {
@@ -58,12 +62,7 @@ export class NeighborhoodCrime {
 
   async add() {
     try {
-      const returnValue = await neighborhoodCrimeDal.add(
-        this.propNeighborhood,
-        this.propCrime,
-        this.propQuantity,
-        this.propYear
-      );
+      const returnValue = await neighborhoodCrimeDal.add(this);
 
       return returnValue;
     } catch (error) {
@@ -71,23 +70,9 @@ export class NeighborhoodCrime {
     }
   }
 
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await neighborhoodCrimeDal.getIdentCurrentTable();
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update() {
     try {
-      const returnValue = await neighborhoodCrimeDal.update(
-        this.propNeighborhood,
-        this.propCrime,
-        this.propQuantity,
-        this.propYear
-      );
+      const returnValue = await neighborhoodCrimeDal.update(this);
 
       return returnValue;
     } catch (error) {
@@ -97,10 +82,7 @@ export class NeighborhoodCrime {
 
   async delete() {
     try {
-      const returnValue = await neighborhoodCrimeDal.delete(
-        this.propNeighborhood,
-        this.propCrime
-      );
+      const returnValue = await neighborhoodCrimeDal.delete(this);
       return returnValue;
     } catch (error) {
       throw error;
@@ -109,7 +91,7 @@ export class NeighborhoodCrime {
   async getYearsNeighborhoodsCrime() {
     try {
       const result = await neighborhoodCrimeDal.getYearsNeighborhoodsCrime(
-        this.propCrime
+        this
       );
 
       return result.recordset;
@@ -121,8 +103,19 @@ export class NeighborhoodCrime {
   async getNeighborhoodsCrimeByYear() {
     try {
       const result = await neighborhoodCrimeDal.getNeighborhoodsCrimeByYear(
-        this.propCrime,
-        this.propYear
+        this
+      );
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCategoryCrimeInNeighborhood() {
+    try {
+      const result = await neighborhoodCrimeDal.getCategoryCrimeInNeighborhood(
+        this
       );
 
       return result.recordset;

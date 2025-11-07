@@ -1,9 +1,12 @@
 .ulReferences {
     display: flex;
+    justify-content: start;
     flex-direction: row;
     align-items: start;
+    width: 98%;
     gap: 0.5rem;
     padding: 0;
+    padding-left: 2%;
     margin-top: 0;
 }
 

@@ -2,11 +2,11 @@ import sql from "mssql";
 import { connection } from "../config/connection";
 
 export class NeighborhoodDAL {
-  async add(name, idDepartment) {
+  async add(neighbordhood) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
-      request.input("idDepartment", sql.Int, idDepartment);
+      request.input("name", sql.VarChar(30), neighbordhood.propName);
+      request.input("idDepartment", sql.Int, neighbordhood.propDepartment);
 
       const result = await request.execute("AddNeighborhood");
 
@@ -15,25 +15,12 @@ export class NeighborhoodDAL {
       throw error;
     }
   }
-  async getIdentCurrentTable() {
+
+  async update(neighbordhood) {
     try {
       const request = new sql.Request(connection.pool);
-
-      const identCurrent = await request.execute(
-        "SELECT IDENT_CURRENT('Neighborhoods')"
-      );
-
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update(name, idDepartment) {
-    try {
-      const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
-      request.input("idDepartment", sql.Int, idDepartment);
+      request.input("name", sql.VarChar(30), neighbordhood.propName);
+      request.input("idDepartment", sql.Int, neighbordhood.propDepartment);
 
       const result = await request.execute("UpdateNeighborhood");
 
@@ -43,10 +30,10 @@ export class NeighborhoodDAL {
     }
   }
 
-  async delete(name) {
+  async delete(neighborhood) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
+      request.input("name", sql.VarChar(30), neighborhood.propName);
 
       const result = await request.execute("DeleteNeighborhood");
 
@@ -71,14 +58,14 @@ export class NeighborhoodDAL {
     }
   }
 
-  async getNeighborhoodByName(name) {
+  async getNeighborhoodByName(neighbordhood) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("name", sql.VarChar(30));
 
       await ps.prepare("select * from neighborhoods where name=@name");
 
-      const result = await ps.execute({ name: name });
+      const result = await ps.execute({ name: neighbordhood.propName });
       await ps.unprepare();
 
       return result;

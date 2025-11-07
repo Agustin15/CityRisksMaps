@@ -2,13 +2,13 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class QuizDAL {
-  async add(email, nameNeighbordhood, secure) {
+  async add(quiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), email);
-      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
-      request.input("secure", sql.Bit, secure);
+      request.input("email", sql.VarChar(30), quiz.propEmail);
+      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
+      request.input("secure", sql.Bit, quiz.propSecure);
 
       const result = await request.execute("AddQuiz");
 
@@ -18,26 +18,13 @@ export class QuizDAL {
     }
   }
 
-  async getIdentCurrentTable() {
+  async update(quiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      const identCurrent = await request.execute(
-        "SELECT IDENT_CURRENT('Quizes')"
-      );
-
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-  async update(email, nameNeighbordhood, secure) {
-    try {
-      const request = new sql.Request(connection.pool);
-
-      request.input("email", sql.VarChar(30), email);
-      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
-      request.input("secure", sql.Bit, secure);
+      request.input("email", sql.VarChar(30), quiz.propEmail);
+      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
+      request.input("secure", sql.Bit, quiz.propSecure);
 
       const result = await request.execute("UpdateQuiz");
 
@@ -47,12 +34,12 @@ export class QuizDAL {
     }
   }
 
-  async delete(email, nameNeighbordhood) {
+  async delete(quiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), email);
-      request.input("neighbordhood", sql.VarChar(30), nameNeighbordhood);
+      request.input("email", sql.VarChar(30), quiz.propEmail);
+      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
 
       const result = await request.execute("DeleteQuiz");
 
@@ -62,7 +49,7 @@ export class QuizDAL {
     }
   }
 
-  async getQuizesByNeighbordhoodAndYear(nameNeighbordhood, year) {
+  async getQuizesByNeighbordhoodAndYear(quiz, year) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("neighbordhood", sql.VarChar(30));
@@ -73,7 +60,7 @@ export class QuizDAL {
       );
 
       await ps.execute({
-        neighbordhood: nameNeighbordhood,
+        neighbordhood: quiz.propNeighbordhood,
         year: parseInt(year)
       });
 

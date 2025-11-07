@@ -19,7 +19,8 @@ export class Quiz {
   set propEmail(value) {
     let regexEmail = /\S+@\S+\.\S+/;
 
-    if (!regexEmail.test(value)) throw new Error("Ingrese un correo valido");
+    if (!regexEmail.test(value))
+      throw new Error("Ingrese un correo valido", { cause: { code: 400 } });
 
     this.#email = value;
   }
@@ -30,7 +31,9 @@ export class Quiz {
 
   set propSecure(value) {
     if (value != 0 && value != 1)
-      throw new Error("Debe completar sensacion de seguridad");
+      throw new Error("Debe completar sensacion de seguridad", {
+        cause: { code: 400 }
+      });
     this.#secure = value;
   }
 
@@ -39,8 +42,10 @@ export class Quiz {
   }
 
   set propNeighborhood(value) {
-    if (value.trim().length == 0)
-      throw new Error("Nombre del barrio no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Nombre del barrio no puede estar vacio", {
+        cause: { code: 400 }
+      });
     this.#neighborhood = value.trim();
   }
 
@@ -50,11 +55,7 @@ export class Quiz {
 
   async add() {
     try {
-      const returnValue = await quizDAL.add(
-        this.propEmail,
-        this.propNeighborhood,
-        this.propSecure
-      );
+      const returnValue = await quizDAL.add(this);
 
       return returnValue;
     } catch (error) {
@@ -62,21 +63,9 @@ export class Quiz {
     }
   }
 
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await quizDAL.getIdentCurrentTable();
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
   async update() {
     try {
-      const returnValue = await quizDAL.update(
-        this.propEmail,
-        this.propNeighborhood,
-        this.propSecure
-      );
+      const returnValue = await quizDAL.update(this);
 
       return returnValue;
     } catch (error) {
@@ -86,10 +75,7 @@ export class Quiz {
 
   async delete() {
     try {
-      const returnValue = await quizDAL.delete(
-        this.propEmail,
-        this.propNeighborhood
-      );
+      const returnValue = await quizDAL.delete(this);
 
       return returnValue;
     } catch (error) {
@@ -99,16 +85,7 @@ export class Quiz {
 
   async getQuizesByNeighbordhoodAndYear(year) {
     try {
-      const result = await quizDAL.getQuizesByNeighbordhoodAndYear(
-        this.propNeighborhood,
-        year
-      );
-
-      if (result.recordset.length > 0) {
-        return result.recordset.map((quiz) => {
-          return new Quiz(quiz.email, quiz.secure, quiz.neighbordhood);
-        });
-      }
+      const result = await quizDAL.getQuizesByNeighbordhoodAndYear(this, year);
 
       return result.recordset;
     } catch (error) {

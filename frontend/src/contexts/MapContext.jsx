@@ -17,9 +17,13 @@ export const MapProvider = ({ children }) => {
 
   useEffect(() => {
     if (!apiIsLoaded || !map) return;
-    createNeighbordhoodCoordinates();
-    handleMyLocation();
+    loadMap();
   }, [map]);
+
+  const loadMap = async () => {
+    await createNeighbordhoodCoordinates();
+    handleMyLocation();
+  };
 
   const handleMyLocation = async () => {
     setLoadingMyLocation(true);
@@ -28,6 +32,12 @@ export const MapProvider = ({ children }) => {
     } else {
       navigator.geolocation.getCurrentPosition(success, error, options);
     }
+  };
+
+  const formatCoordinates = (coordinates) => {
+    return coordinates.map((coordinate) => {
+      return { lat: coordinate[1], lng: coordinate[0] };
+    });
   };
 
   const getCoordinatesNeighbordhoods = async () => {
@@ -40,12 +50,6 @@ export const MapProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const formatCoordinates = (coordinates) => {
-    return coordinates.map((coordinate) => {
-      return { lat: coordinate[1], lng: coordinate[0] };
-    });
   };
 
   const createNeighbordhoodCoordinates = async () => {

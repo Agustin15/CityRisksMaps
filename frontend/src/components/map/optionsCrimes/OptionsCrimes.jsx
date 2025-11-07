@@ -5,11 +5,13 @@ import iconTheft from "../../../assets/img/theft.png";
 import iconHoldup from "../../../assets/img/holdup.png";
 import styles from "./OptionsCrimes.module.css";
 import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
+import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
   const [crimeSelected, setCrimeSelected] = useState();
+  const { loadCrimeDataNeighborhoods, polygons } = useZoneCrimes();
 
   const getCrimes = async () => {
     let optionGET = JSON.stringify({ option: "getCrimes" });
@@ -33,6 +35,11 @@ export const OptionsCrimes = () => {
     getCrimes();
   }, []);
 
+  const handleClickOption = (crime) => {
+    loadCrimeDataNeighborhoods(crime.category);
+    setCrimeSelected(crime.category);
+  };
+
   return (
     <div className={styles.containOptionsCrimes}>
       <ul className={styles.menuOptionsCrimes}>
@@ -40,7 +47,7 @@ export const OptionsCrimes = () => {
           crimes.map((crime, index) => (
             <li key={index}>
               <button
-                onClick={() => setCrimeSelected(crime.category)}
+                onClick={(event) => handleClickOption(crime)}
                 className={
                   crime.category == "Hurto"
                     ? styles.btnHurto

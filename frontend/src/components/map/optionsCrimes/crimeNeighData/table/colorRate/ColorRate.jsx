@@ -6,7 +6,9 @@ export const ColorRate = ({ rate, crime }) => {
 
   return (
     <div
-      style={{ background: rate ? getCrimeRange(rate, crime) : "#bbbbbbff" }}
+      style={{
+        background: rate == null ? "#bbbbbbff" : getCrimeRange(rate, crime)
+      }}
       className={styles.referenceRate}
     ></div>
   );

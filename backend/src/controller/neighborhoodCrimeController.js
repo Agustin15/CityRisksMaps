@@ -4,10 +4,6 @@ export const getNeighborhoodsCrimeByYear = async (req, res) => {
   try {
     const { year, categoryCrime } = JSON.parse(req.params.optionGet);
 
-    if (!year) throw new Error("Año no definido", { cause: { code: 400 } });
-    if (!categoryCrime)
-      throw new Error("Categoria no definida", { cause: { code: 400 } });
-
     const neighborhoodCrime = new NeighborhoodCrime();
 
     neighborhoodCrime.propCrime = categoryCrime;
@@ -26,9 +22,6 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
   try {
     const { categoryCrime } = JSON.parse(req.params.optionGet);
 
-    if (!categoryCrime)
-      throw new Error("Categoria no definida", { cause: { code: 400 } });
-
     const neighborhoodCrime = new NeighborhoodCrime();
 
     neighborhoodCrime.propCrime = categoryCrime;
@@ -39,5 +32,23 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
     res.status(200).json(yearsNeighborhoodsCrimes);
   } catch (error) {
     res.status(404).json({ messageError: error.message });
+  }
+};
+
+export const getCategoryCrimeInNeighborhood = async (req, res) => {
+  try {
+    const { categoryCrime, neighborhood } = JSON.parse(req.params.optionGet);
+
+    const neighborhoodCrime = new NeighborhoodCrime();
+
+    neighborhoodCrime.propNeighborhood = neighborhood;
+    neighborhoodCrime.propCrime = categoryCrime;
+
+    const categoryCrimeInNeighborhood =
+      await neighborhoodCrime.getCategoryCrimeInNeighborhood();
+
+    return res.status(200).json(categoryCrimeInNeighborhood);
+  } catch (error) {
+    return res.status(404).json({ messageError: error.message });
   }
 };

@@ -22,7 +22,9 @@ export class Population {
 
   set propIdPopulation(value) {
     if (typeof value != "number")
-      throw new Error("Id poblacion debe ser un numero");
+      throw new Error("Id poblacion debe ser un numero", {
+        cause: { code: 400 }
+      });
     this.#idPopulation = value;
   }
 
@@ -31,8 +33,8 @@ export class Population {
   }
 
   set propNeighborhood(value) {
-    if (value.trim().length == 0)
-      throw new Error("Barrio no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Barrio no puede estar vacio", { cause: { code: 400 } });
     this.#neighborhood = value.trim();
   }
 
@@ -44,13 +46,18 @@ export class Population {
     return this.#quantity;
   }
   set propQuantity(value) {
-    if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
+    if (!value || value < 0)
+      throw new Error("Cantidad no puede ser un numero negativo", {
+        cause: { code: 400 }
+      });
     this.#quantity = value;
   }
 
   set propYear(value) {
-    if (value > new Date().getFullYear())
-      throw new Error("Año no puede ser mayor al año actual");
+    if (!value || value > new Date().getFullYear())
+      throw new Error("Año no puede ser mayor al año actual", {
+        cause: { code: 400 }
+      });
     this.#year = value;
   }
   get propYear() {
@@ -59,11 +66,7 @@ export class Population {
 
   async add() {
     try {
-      const returnValue = await populationDAL.add(
-        this.propNeighborhood,
-        this.propQuantity,
-        this.propYear
-      );
+      const returnValue = await populationDAL.add(this);
 
       return returnValue;
     } catch (error) {
@@ -71,22 +74,9 @@ export class Population {
     }
   }
 
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await populationDAL.getIdentCurrentTable();
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update() {
     try {
-      const returnValue = await populationDAL.update(
-        this.propIdPopulation,
-        this.propNeighborhood,
-        this.propQuantity
-      );
+      const returnValue = await populationDAL.update(this);
 
       return returnValue;
     } catch (error) {
@@ -96,7 +86,7 @@ export class Population {
 
   async delete() {
     try {
-      const returnValue = await populationDAL.delete(this.propIdPopulation);
+      const returnValue = await populationDAL.delete(this);
 
       return returnValue;
     } catch (error) {
@@ -106,17 +96,9 @@ export class Population {
 
   async getPopulationById() {
     try {
-      const result = await populationDAL.getPopulationById(
-        this.propIdPopulation
-      );
-
+      const result = await populationDAL.getPopulationById(this);
       if (result.recordset.length > 0) {
-        return new Population(
-          result.recordset[0].idPopulation,
-          result.recordset[0].quantity,
-          result.recordset[0].neighborhood,
-          result.recordset[0].year
-        );
+        return result.recordset[0];
       } else null;
     } catch (error) {
       throw error;
@@ -126,17 +108,11 @@ export class Population {
   async getPopulationByNeighborhoodAndYear() {
     try {
       const result = await populationDAL.getPopulationByNeighborhoodAndYear(
-        this.propNeighborhood,
-        this.propYear
+        this
       );
 
       if (result.recordset.length > 0) {
-        return new Population(
-          result.recordset[0].idPopulation,
-          result.recordset[0].quantity,
-          result.recordset[0].neighborhood,
-          result.recordset[0].year
-        );
+        return result.recordset[0];
       } else null;
     } catch (error) {
       throw error;
@@ -145,17 +121,8 @@ export class Population {
 
   async getPopulations() {
     try {
-      if (result.recordset.length > 0) {
-        return result.recordset.map((population) => {
-          return new Population(
-            population.idPopulation,
-            population.quantity,
-            population.neighborhood,
-            population.year
-          );
-        });
-      }
-      return result.recordset;
+      const result = await populationDAL.getPopulations();
+      result.recordset;
     } catch (error) {
       throw error;
     }

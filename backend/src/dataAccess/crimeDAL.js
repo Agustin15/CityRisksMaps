@@ -2,12 +2,12 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class CrimeDAL {
-  async add(category, description) {
+  async add(crime) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), category);
-      request.input("description", sql.VarChar(700), description);
+      request.input("category", sql.VarChar(10), crime.propCategory);
+      request.input("description", sql.VarChar(700), crime.propDescription);
 
       const result = await request.execute("AddCrime");
 
@@ -17,26 +17,12 @@ export class CrimeDAL {
     }
   }
 
-  async getIdentCurrentTable() {
+  async update(crime) {
     try {
       const request = new sql.Request(connection.pool);
 
-      const identCurrent = await request.execute(
-        "SELECT IDENT_CURRENT('Crimes')"
-      );
-
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update(category, description) {
-    try {
-      const request = new sql.Request(connection.pool);
-
-      request.input("category", sql.VarChar(10), category);
-      request.input("description", sql.VarChar(700), description);
+      request.input("category", sql.VarChar(10), crime.propCategory);
+      request.input("description", sql.VarChar(700), crime.propDescription);
 
       const result = await request.execute("UpdateCrime");
 
@@ -46,11 +32,11 @@ export class CrimeDAL {
     }
   }
 
-  async delete(category) {
+  async delete(crime) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), category);
+      request.input("category", sql.VarChar(10), crime.propCategory);
 
       const result = await request.execute("DeleteCrime");
 
@@ -60,14 +46,14 @@ export class CrimeDAL {
     }
   }
 
-  async getCrimeByCategory(category) {
+  async getCrimeByCategory(crime) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("category", sql.Int);
 
       await ps.prepare("select * from crimes where category=@category");
       const result = await ps.execute({
-        category: category
+        category: crime.propCategory
       });
 
       await ps.unprepare();

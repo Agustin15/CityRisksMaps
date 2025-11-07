@@ -2,15 +2,17 @@ import styles from "./CrimeNeighbordhoods.module.css";
 import iconKill from "../../../../assets/img/kill.png";
 import iconTheft from "../../../../assets/img/theft.png";
 import iconHoldup from "../../../../assets/img/holdup.png";
-import { useState } from "react";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
 
 export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
-  const { polygons, setPolygons, loadingNeighborhoodsCrime } = useZoneCrimes();
-
-  const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
+  const {
+    polygons,
+    setPolygons,
+    neighborhoodsCrimeByYear,
+    setIndexChartActive
+  } = useZoneCrimes();
 
   const handleClose = () => {
     polygons.forEach((polygon) => {
@@ -18,6 +20,7 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
     });
     setCrimeSelected();
     setPolygons([]);
+    setIndexChartActive(null);
   };
 
   return (
@@ -42,17 +45,9 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
         </div>
       </div>
 
-      <LoadCrimesInNeighborhoods
-        setNeighborhoodsCrimeByYear={setNeighborhoodsCrimeByYear}
-        categoryCrime={categoryCrime}
-      />
+      <LoadCrimesInNeighborhoods categoryCrime={categoryCrime} />
 
-      {neighborhoodsCrimeByYear && (
-        <Table
-          neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
-          crime={categoryCrime}
-        />
-      )}
+      {neighborhoodsCrimeByYear && <Table crime={categoryCrime} />}
     </div>
   );
 };

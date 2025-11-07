@@ -2,36 +2,24 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class DepartmentDAL {
-  async add(name) {
+  async add(departament) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
+      request.input("name", sql.VarChar(30), departament.propName);
 
       const result = await request.execute("AddDepartment");
 
       return result.returnValue;
     } catch (error) {
-      //   console.log("Error:", error.originalError.info.number);
-      throw error;
-    }
-  }
-  async getIdentCurrentTable() {
-    try {
-      const request = new sql.Request(connection.pool);
-
-      const identCurrent = await request.execute("SELECT IDENT_CURRENT('Departments')");
-
-      return identCurrent;
-    } catch (error) {
       throw error;
     }
   }
 
-  async update(id, name) {
+  async update(departament) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, id);
-      request.input("name", sql.VarChar(30), name);
+      request.input("idDepartment", sql.Int, departament.propIdDepartment);
+      request.input("name", sql.VarChar(30), departament.propName);
 
       const result = await request.execute("UpdateDepartment");
 
@@ -41,10 +29,10 @@ export class DepartmentDAL {
     }
   }
 
-  async delete(id) {
+  async delete(departament) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, id);
+      request.input("idDepartment", sql.Int, departament.propIdDepartment);
 
       const result = await request.execute("DeleteDepartment");
 
@@ -54,14 +42,14 @@ export class DepartmentDAL {
     }
   }
 
-  async getDepartmentByName(name) {
+  async getDepartmentByName(departament) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("name", sql.VarChar(30));
 
       await ps.prepare("select * from departments where name=@name");
 
-      const result = await ps.execute({ name: name });
+      const result = await ps.execute({ name: departament.propName });
       await ps.unprepare();
 
       return result;

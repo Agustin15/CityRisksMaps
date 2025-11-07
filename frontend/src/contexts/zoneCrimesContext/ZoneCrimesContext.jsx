@@ -10,8 +10,12 @@ export const ZoneCrimesProvider = ({ children }) => {
   const [loadingYears, setLoadingYears] = useState(false);
   const [loadingNeighborhoodsCrime, setLoadingNeighborhoodsCrime] =
     useState(false);
-  const { neighbordhoodsCoordinates } = useMapControls();
   const [polygons, setPolygons] = useState([]);
+  const [yearSelected, setYearSelected] = useState();
+  const [years, setYears] = useState();
+  const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
+  const { neighbordhoodsCoordinates } = useMapControls();
+  const [indexChartActive, setIndexChartActive] = useState(null);
 
   const map = useMap();
 
@@ -95,17 +99,20 @@ export const ZoneCrimesProvider = ({ children }) => {
           nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
         ) {
           const rate =
-            nhCrime.quantiyCrime >= 0
-              ? defineCrimeRate(nhCrime.quantiyCrime, nhCrime.quantiyPopulation)
-              : null;
+            nhCrime.quantiyCrime == null
+              ? null
+              : defineCrimeRate(
+                  nhCrime.quantiyCrime,
+                  nhCrime.quantiyPopulation
+                );
 
           const colorRange =
-            rate >= 0 ? getCrimeRange(rate, categoryCrime) : null;
+            rate == null ? null : getCrimeRange(rate, categoryCrime);
 
           nhCrimeCoordinates.push({
             coordinates: nhCoordinate.coordinates,
             name: nhCrime.name,
-            rate: rate,
+            quantityCrime: nhCrime.quantiyCrime,
             rateColor: colorRange ? colorRange : "#bbbbbbff"
           });
         }
@@ -118,6 +125,8 @@ export const ZoneCrimesProvider = ({ children }) => {
     neighbordhoodsCrime,
     categoryCrime
   ) => {
+    
+    const polygons = [];
     map.setZoom(12);
 
     const nhCrimeCoordinates = createArrayForPolygons(
@@ -155,18 +164,54 @@ export const ZoneCrimesProvider = ({ children }) => {
     setPolygons(polygons);
   };
 
+  const loadCrimesByYear = async (year, categoryCrime) => {
+    polygons.forEach((polygon) => {
+      polygon.setMap(null);
+    });
+    setPolygons([]);
+
+    setYearSelected(year);
+    let neighborhoodsCrime = await getNeighborhoodsCrimeByYear(
+      year,
+      categoryCrime
+    );
+
+    if (neighborhoodsCrime) {
+      setNeighborhoodsCrimeByYear(neighborhoodsCrime);
+      createPolygonsNeighbordhood(neighborhoodsCrime, categoryCrime);
+    }
+  };
+
+  const loadCrimeDataNeighborhoods = async (categoryCrime) => {
+    let years = await getYearsNeighborhoodsCrime(categoryCrime);
+
+    if (years) {
+      setYearSelected(years[0].year);
+      setYears(years);
+      loadCrimesByYear(years[0].year, categoryCrime);
+    }
+  };
+
   return (
     <ZoneCrimesContext.Provider
       value={{
-        getNeighborhoodsCrimeByYear,
         getYearsNeighborhoodsCrime,
-        loadingNeighborhoodsCrime,
         loadingYears,
+        years,
+        yearSelected,
+        getNeighborhoodsCrimeByYear,
+        loadingNeighborhoodsCrime,
+        neighborhoodsCrimeByYear,
+        setNeighborhoodsCrimeByYear,
+        loadCrimeDataNeighborhoods,
+        loadCrimesByYear,
         defineCrimeRate,
         getCrimeRange,
         createPolygonsNeighbordhood,
         polygons,
-        setPolygons
+        setPolygons,
+        setIndexChartActive,
+        indexChartActive
       }}
     >
       {children}

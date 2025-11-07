@@ -2,13 +2,17 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class PopulationDAL {
-  async add(neighborhoodName, quantity, year) {
+  async add(population) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("neighbordhood", sql.VarChar(30), neighborhoodName);
-      request.input("quantity", sql.Int, quantity);
-      request.input("year", sql.Int, year);
+      request.input(
+        "neighbordhood",
+        sql.VarChar(30),
+        population.propNeighborhood
+      );
+      request.input("quantity", sql.Int, population.propQuantity);
+      request.input("year", sql.Int, population.propYear);
 
       const result = await request.execute("AddPopulation");
 
@@ -18,28 +22,18 @@ export class PopulationDAL {
     }
   }
 
-  async getIdentCurrentTable() {
+  async update(population) {
     try {
       const request = new sql.Request(connection.pool);
 
-      const identCurrent = await request.execute(
-        "SELECT IDENT_CURRENT('Population')"
+      request.input("idPopulation", sql.Int, population.propIdPopulation);
+      request.input("quantity", sql.Int, population.propQuantity);
+      request.input("year", sql.Int, population.propYear);
+      request.input(
+        "neighbordhood",
+        sql.VarChar(30),
+        population.propNeighborhood
       );
-
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update(idPopulation, neighborhoodName, quantity, year) {
-    try {
-      const request = new sql.Request(connection.pool);
-
-      request.input("idPopulation", sql.Int, idPopulation);
-      request.input("quantity", sql.Int, quantity);
-      request.input("year", sql.Int, year);
-      request.input("neighbordhood", sql.VarChar(30), neighborhoodName);
 
       const result = await request.execute("UpdatePopulation");
 
@@ -49,11 +43,11 @@ export class PopulationDAL {
     }
   }
 
-  async delete(idPopulation) {
+  async delete(population) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("idPopulation", sql.Int, idPopulation);
+      request.input("idPopulation", sql.Int, population.propIdPopulation);
 
       const result = await request.execute("DeletePopulation");
 
@@ -63,7 +57,7 @@ export class PopulationDAL {
     }
   }
 
-  async getPopulationById(idPopulation) {
+  async getPopulationById(population) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("idPopulation", sql.Int);
@@ -72,7 +66,7 @@ export class PopulationDAL {
         "select * from population where idPopulation=@idPopulation"
       );
       const result = await ps.execute({
-        idPopulation: idPopulation
+        idPopulation: population.propIdPopulation
       });
       await ps.unprepare();
 
@@ -82,7 +76,7 @@ export class PopulationDAL {
     }
   }
 
-  async getPopulationByNeighborhoodAndYear(neighborhoodName, year) {
+  async getPopulationByNeighborhoodAndYear(population) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("neighborhood", sql.VarChar(30));
@@ -92,8 +86,8 @@ export class PopulationDAL {
         "select * from population where neighborhood=@neighborhood and year=@year"
       );
       const result = await ps.execute({
-        neighborhood: neighborhoodName,
-        year: year
+        neighborhood: population.propNeighborhood,
+        year: population.propYear
       });
 
       await ps.unprepare();

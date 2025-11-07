@@ -12,8 +12,8 @@ export class Neighborhood {
   }
 
   set propName(value) {
-    if (value.trim().length == 0)
-      throw new Error("Nombre no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Nombre no puede estar vacio", { cause: { code: 400 } });
     this.#name = value.trim();
   }
 
@@ -23,7 +23,9 @@ export class Neighborhood {
 
   set propDepartment(value) {
     if (typeof value != "number")
-      throw new Error("Id de departamento debe ser un numero");
+      throw new Error("Id de departamento debe ser un numero", {
+        cause: { code: 400 }
+      });
     this.#department = value;
   }
 
@@ -33,10 +35,7 @@ export class Neighborhood {
 
   async add() {
     try {
-      const returnValue = await neighborhoodDal.add(
-        this.propName,
-        this.propDepartment
-      );
+      const returnValue = await neighborhoodDal.add(this);
 
       return returnValue;
     } catch (error) {
@@ -44,21 +43,9 @@ export class Neighborhood {
     }
   }
 
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await neighborhoodDal.getIdentCurrentTable();
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update() {
     try {
-      const returnValue = await neighborhoodDal.update(
-        this.propName,
-        this.propDepartment
-      );
+      const returnValue = await neighborhoodDal.update(this);
 
       return returnValue;
     } catch (error) {
@@ -68,7 +55,7 @@ export class Neighborhood {
 
   async delete() {
     try {
-      const returnValue = await neighborhoodDal.delete(this.propName);
+      const returnValue = await neighborhoodDal.delete(this);
       return returnValue;
     } catch (error) {
       throw error;
@@ -79,29 +66,18 @@ export class Neighborhood {
     try {
       const result = await neighborhoodDal.getNeighborhoods();
 
-      if (result.recordset.length > 0) {
-        return result.recordset.map((neighbordhood) => {
-          return new Neighborhood(
-            neighbordhood.name,
-            neighbordhood.idDepartment
-          );
-        });
-      }
       return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getNeighborhoodByName(name) {
+  async getNeighborhoodByName() {
     try {
-      const result = await neighborhoodDal.getNeighborhoodByName(name);
+      const result = await neighborhoodDal.getNeighborhoodByName(this);
 
       if (result.recordset.length > 0) {
-        return new Neighborhood(
-          result.recordset[0].name,
-          result.recordset[0].idDepartment
-        );
+        return result.recordset[0];
       } else null;
     } catch (error) {
       throw error;

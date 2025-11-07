@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getCategoryCrimeInNeighborhood,
   getNeighborhoodsCrimeByYear,
   getYearsNeighborhoodsCrime
 } from "../controller/neighborhoodCrimeController.js";
@@ -22,5 +23,7 @@ RoutesNeighborhoodCrime.get("/:optionGet", (req, res) => {
       return getNeighborhoodsCrimeByYear(req, res);
     case "getYearsNeighborhoodsCrime":
       return getYearsNeighborhoodsCrime(req, res);
+    case "getCategoryCrimeInNeighborhood":
+      return getCategoryCrimeInNeighborhood(req, res);
   }
 });

@@ -11,8 +11,8 @@ export class Department {
   }
 
   set propName(value) {
-    if (value.trim().length == 0)
-      throw new Error("Nombre no puede estar vacio");
+    if (!value || value.trim().length == 0)
+      throw new Error("Nombre no puede estar vacio", { cause: { code: 400 } });
     this.#name = value.trim();
   }
 
@@ -21,7 +21,9 @@ export class Department {
   }
   set propIdDepartment(value) {
     if (typeof value != "number")
-      throw new Error("Id departamento debe ser un numero");
+      throw new Error("Id departamento debe ser un numero", {
+        cause: { code: 400 }
+      });
     this.#idDepartment = value;
   }
 
@@ -31,17 +33,8 @@ export class Department {
 
   async add() {
     try {
-      const returnValue = await departmentDAL.add(this.propName);
+      const returnValue = await departmentDAL.add(this);
       return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await departmentDAL.getIdentCurrentTable();
-      return identCurrent;
     } catch (error) {
       throw error;
     }
@@ -49,10 +42,7 @@ export class Department {
 
   async update() {
     try {
-      const returnValue = await departmentDAL.update(
-        this.propIdDepartment,
-        this.propName
-      );
+      const returnValue = await departmentDAL.update(this);
 
       return returnValue;
     } catch (error) {
@@ -62,7 +52,7 @@ export class Department {
 
   async delete() {
     try {
-      const returnValue = await departmentDAL.delete(this.propIdDepartment);
+      const returnValue = await departmentDAL.delete(this);
 
       return returnValue;
     } catch (error) {
@@ -72,13 +62,10 @@ export class Department {
 
   async getDepartmentByName() {
     try {
-      const result = await departmentDAL.getDepartmentByName(this.propName);
+      const result = await departmentDAL.getDepartmentByName(this);
 
       if (result.recordset.length > 0) {
-        return new Department(
-          result.recordset[0].idDepartment,
-          result.recordset[0].name
-        );
+        return result.recordset[0];
       } else null;
     } catch (error) {
       throw error;
@@ -89,11 +76,6 @@ export class Department {
     try {
       const result = await departmentDAL.getDepartments();
 
-      if (result.recordset.length > 0) {
-        return result.recordset.map((departament) => {
-          return new Department(departament.idDepartment, departament.name);
-        });
-      }
       return result.recordset;
     } catch (error) {
       throw error;

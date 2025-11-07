@@ -1,15 +1,19 @@
 import styles from "./Table.module.css";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { ColorRate } from "./colorRate/ColorRate";
 import { useMapControls } from "../../../../../contexts/MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
+import { NotData } from "../notData/NotData";
+import { Loading } from "../loading/Loading";
+import { Rows } from "./rows/Rows";
+import { useState } from "react";
 
-export const Table = ({ neighborhoodsCrimeByYear, crime }) => {
-  const { defineCrimeRate, polygons } = useZoneCrimes();
+export const Table = ({ crime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
+  const { polygons, neighborhoodsCrimeByYear, loadingNeighborhoodsCrime } =
+    useZoneCrimes();
   const map = useMap();
 
-  const handleClickNeighborhood = (event, neighborhoodCrime) => {
+  const handleClickNeighborhood = (neighborhoodCrime) => {
     const nhCoordinatesFound = neighbordhoodsCoordinates.find(
       (nhCoordinates) => nhCoordinates.neighborhood == neighborhoodCrime.name
     );
@@ -33,6 +37,7 @@ export const Table = ({ neighborhoodsCrimeByYear, crime }) => {
     const polygonFound = polygons.find(
       (polygon) => polygon.data.name == neighborhoodCrime.name
     );
+
     if (polygonFound) {
       polygonFound.setOptions({
         strokeColor: "#00bd10ff",
@@ -56,46 +61,31 @@ export const Table = ({ neighborhoodsCrimeByYear, crime }) => {
           </thead>
 
           <tbody>
-            {neighborhoodsCrimeByYear.map((neighborhoodCrime, index) => (
-              <tr
-                onClick={(event) =>
-                  handleClickNeighborhood(event, neighborhoodCrime)
-                }
-                key={index}
-                className={index % 2 == 0 ? styles.trGray : styles.trWhite}
-              >
-                <td>
-                  <div className={styles.nameNeighborhood}>
-                    <ColorRate
-                      rate={
-                        neighborhoodCrime.quantiyCrime
-                          ? defineCrimeRate(
-                              neighborhoodCrime.quantiyCrime,
-                              neighborhoodCrime.quantiyPopulation
-                            )
-                          : null
-                      }
-                      crime={crime}
-                    />
-                    {neighborhoodCrime.name}
-                  </div>
-                </td>
-                <td>
-                  {neighborhoodCrime.quantiyCrime
-                    ? neighborhoodCrime.quantiyCrime
-                    : "Sin Datos"}
-                </td>
-                <td>{neighborhoodCrime.quantiyPopulation.toLocaleString()}</td>
-                <td>
-                  {neighborhoodCrime.quantiyCrime
-                    ? defineCrimeRate(
-                        neighborhoodCrime.quantiyCrime,
-                        neighborhoodCrime.quantiyPopulation
-                      )
-                    : "Sin datos"}
+            {loadingNeighborhoodsCrime && (
+              <tr>
+                <td colSpan={4} rowSpan={4}>
+                  <Loading />
                 </td>
               </tr>
-            ))}
+            )}
+            {!loadingNeighborhoodsCrime && !neighborhoodsCrimeByYear && (
+              <tr>
+                <td colSpan={4} rowSpan={4}>
+                  <NotData />
+                </td>
+              </tr>
+            )}
+            {!loadingNeighborhoodsCrime &&
+              neighborhoodsCrimeByYear &&
+              neighborhoodsCrimeByYear.map((neighborhoodCrime, index) => (
+                <Rows
+                  key={index}
+                  neighborhoodCrime={neighborhoodCrime}
+                  handleClickNeighborhood={handleClickNeighborhood}
+                  crime={crime}
+                  numberRow={index}
+                />
+              ))}
           </tbody>
         </table>
       </div>

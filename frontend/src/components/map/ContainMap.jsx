@@ -6,7 +6,7 @@ import {
   useAdvancedMarkerRef,
   InfoWindow
 } from "@vis.gl/react-google-maps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { MyLocation } from "./myLocation/MyLocation";
@@ -24,6 +24,7 @@ import { ZoneCrimesProvider } from "../../contexts/zoneCrimesContext/ZoneCrimesC
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
     useMapControls();
+
   const { showPhotos } = usePhotosPlace();
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [markerRef, marker] = useAdvancedMarkerRef();
@@ -76,8 +77,6 @@ export const ContainMap = () => {
           <PhotosList place={selectedPlace} />
         </Modal>
       )}
-
-      
     </>
   );
 };

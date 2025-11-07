@@ -3,55 +3,10 @@ import { NotData } from "../notData/NotData";
 import { Loading } from "../loading/Loading";
 import { References } from "../references/References";
 import { FilterYears } from "../filterYears/FilterYears";
-import { useEffect } from "react";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { useState } from "react";
 
-export const LoadCrimesInNeighborhoods = ({
-  setNeighborhoodsCrimeByYear,
-  categoryCrime
-}) => {
-  const [showReferences, setShowReferences] = useState(false);
-  const [years, setYears] = useState();
-  const [yearSelected, setYearSelected] = useState();
-
-  const {
-    getNeighborhoodsCrimeByYear,
-    getYearsNeighborhoodsCrime,
-    createPolygonsNeighbordhood,
-    loadingYears
-  } = useZoneCrimes();
-
-  const loadCrimeDataNeighborhoods = async (
-    setNeighborhoodsCrimeByYear,
-    setYearSelected,
-    setYears
-  ) => {
-    let years = await getYearsNeighborhoodsCrime(categoryCrime);
-
-    if (years) {
-      setYearSelected(years[0].year);
-      setYears(years);
-
-      let neighborhoodsCrime = await getNeighborhoodsCrimeByYear(
-        years[0].year,
-        categoryCrime
-      );
-
-      if (neighborhoodsCrime) {
-        setNeighborhoodsCrimeByYear(neighborhoodsCrime);
-        createPolygonsNeighbordhood(neighborhoodsCrime, categoryCrime);
-      }
-    }
-  };
-
-  useEffect(() => {
-    loadCrimeDataNeighborhoods(
-      setNeighborhoodsCrimeByYear,
-      setYearSelected,
-      setYears
-    );
-  }, []);
+export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
+  const { loadingYears, years } = useZoneCrimes();
 
   return (
     <div className={styles.containDetails}>
@@ -70,11 +25,9 @@ export const LoadCrimesInNeighborhoods = ({
             con la verdadera realidad del riesgo en cada zona.
           </p>
 
-          <div className={styles.containReferences}>
-            <References categoryCrime={categoryCrime} />
-          </div>
+          <References categoryCrime={categoryCrime} />
 
-          <FilterYears years={years} yearSelected={yearSelected} />
+          <FilterYears categoryCrime={categoryCrime} />
         </>
       )}
     </div>

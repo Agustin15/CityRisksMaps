@@ -5,6 +5,10 @@ export const getDrawInfoWindow = (data, categoryCrime) => {
         <span>${data.name}</span>
         <div style="background:${data.rateColor}"></div>
         </div>
-        <p>Tasa de ${categoryCrime + "s:" + (data.rate?data.rate:"Sin datos")}</p>
+        <p>Denuncias de ${
+          categoryCrime +
+          " " +
+          +(data.quantityCrime == null ? "Sin Datos" : data.quantityCrime)
+        }</p>
         </div>`;
 };

@@ -12,8 +12,10 @@ export class Crime {
   }
 
   set propCategory(value) {
-    if (value.trim().length == 0)
-      throw new Error("Categoria no puede estar vacia");
+    if (!value || value.trim().length == 0)
+      throw new Error("Categoria no puede estar vacia", {
+        cause: { code: 400 }
+      });
     this.#category = value.trim();
   }
 
@@ -22,8 +24,10 @@ export class Crime {
   }
 
   set propDescription(value) {
-    if (value.trim().length == 0)
-      throw new Error("Descripcion no puede estar vacia");
+    if (!value || value.trim().length == 0)
+      throw new Error("Descripcion no puede estar vacia", {
+        cause: { code: 400 }
+      });
     this.#description = value.trim();
   }
 
@@ -33,10 +37,7 @@ export class Crime {
 
   async add() {
     try {
-      const returnValue = await crimeDAL.add(
-        this.propCategory,
-        this.propDescription
-      );
+      const returnValue = await crimeDAL.add(this);
 
       return returnValue;
     } catch (error) {
@@ -44,21 +45,9 @@ export class Crime {
     }
   }
 
-  async getIdentCurrentTable() {
-    try {
-      const identCurrent = await crimeDAL.getIdentCurrentTable();
-      return identCurrent;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async update() {
     try {
-      const returnValue = await crimeDAL.update(
-        this.propCategory,
-        this.propDescription
-      );
+      const returnValue = await crimeDAL.update(this);
 
       return returnValue;
     } catch (error) {
@@ -68,7 +57,7 @@ export class Crime {
 
   async delete() {
     try {
-      const returnValue = await crimeDAL.delete(this.propCategory);
+      const returnValue = await crimeDAL.delete(this);
 
       return returnValue;
     } catch (error) {
@@ -78,12 +67,9 @@ export class Crime {
 
   async getCrimeByCategory() {
     try {
-      const result = await crimeDAL.getCrimeByCategory(this.propCategory);
+      const result = await crimeDAL.getCrimeByCategory(this);
       if (result.recordset.length > 0) {
-        return new Crime(
-          result.recordset[0].category,
-          result.recordset[0].description
-        );
+        return result.recordset[0];
       } else null;
     } catch (error) {
       throw error;
@@ -93,11 +79,7 @@ export class Crime {
   async getCrimes() {
     try {
       const result = await crimeDAL.getCrimes();
-      if (result.recordset.length > 0) {
-        result.recordset.map((crime) => {
-          return new Crime(crime.category, crime.description);
-        });
-      }
+
       return result.recordset;
     } catch (error) {
       console.log(error);
