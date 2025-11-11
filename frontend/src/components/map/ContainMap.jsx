@@ -6,29 +6,34 @@ import {
   useAdvancedMarkerRef,
   InfoWindow
 } from "@vis.gl/react-google-maps";
+const MAP_ID = import.meta.env.VITE_MAP_ID;
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { MyLocation } from "./myLocation/MyLocation";
 import { PlaceAutocomplete } from "./placeAutocomplete/PlaceAutocomplete";
+import "./placeAutocomplete/PlaceAutocomplete.css";
 import { MapHandler } from "./mapHandler/MapHandler";
 import { PlaceDetails } from "./placeDetails/PlaceDetails";
-import "./placeAutocomplete/PlaceAutocomplete.css";
 import { DetailsStreet } from "./detailsStreet/DetailsStreet";
 import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
-import { ZoneCrimesProvider } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { MenuRoute } from "./menuRoute/MenuRoute";
 import { useState } from "react";
 import { useRoutes } from "../../contexts/RoutesContext";
+import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
+import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
     useMapControls();
+  const { polygons } = useZoneCrimes();
   const { showPhotos } = usePhotosPlace();
   const { showMenuRoutes } = useRoutes();
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
@@ -40,9 +45,12 @@ export const ContainMap = () => {
         defaultCenter={{ lat: -34.8340562, lng: -56.3622838 }}
         streetViewControl={true}
         onClick={(event) => handleClickOnMap(event, marker, setSelectedPlace)}
+        onMousemove={(event) =>
+          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected)
+        }
         zoomControl={true}
         gestureHandling="greedy"
-        mapId="e511213c5dfb9c1e77fabd51"
+        mapId={MAP_ID}
       >
         <AdvancedMarker position={userLocation ? userLocation : null}>
           <MyLocation />
@@ -62,9 +70,7 @@ export const ContainMap = () => {
         <MapHandler place={selectedPlace} marker={marker} />
 
         <MapControl position={ControlPosition.RIGHT_TOP}>
-          <ZoneCrimesProvider>
-            <OptionsCrimes />
-          </ZoneCrimesProvider>
+          <OptionsCrimes />
         </MapControl>
 
         <InfoWindow
@@ -75,6 +81,14 @@ export const ContainMap = () => {
             <DetailsStreet place={selectedPlace} infoWindow={infoWindow} />
           )}
         </InfoWindow>
+
+        {polygonSelected && (
+          <AdvancedMarker
+            position={polygonSelected ? polygonSelected.data.center : null}
+          >
+            <InfoWindowNeighborhood polygonSelected={polygonSelected} />
+          </AdvancedMarker>
+        )}
       </Map>
 
       {showPhotos && (

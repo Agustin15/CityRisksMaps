@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { createContext } from "react";
 import { useMapControls } from "../MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
-import { getDrawInfoWindow } from "./infoWindow.js";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 const ZoneCrimesContext = createContext();
 
@@ -110,6 +109,7 @@ export const ZoneCrimesProvider = ({ children }) => {
             rate == null ? null : getCrimeRange(rate, categoryCrime);
 
           nhCrimeCoordinates.push({
+            categoryCrime: categoryCrime,
             coordinates: nhCoordinate.coordinates,
             name: nhCrime.name,
             quantityCrime: nhCrime.quantiyCrime,
@@ -125,7 +125,6 @@ export const ZoneCrimesProvider = ({ children }) => {
     neighbordhoodsCrime,
     categoryCrime
   ) => {
-    
     const polygons = [];
     map.setZoom(12);
 
@@ -147,17 +146,6 @@ export const ZoneCrimesProvider = ({ children }) => {
       });
       polygon.setMap(map);
 
-      const infoWindow = new google.maps.InfoWindow();
-      polygon.addListener("mouseover", function (event) {
-        infoWindow.setContent(getDrawInfoWindow(this.data, categoryCrime));
-        infoWindow.setPosition(event.latLng);
-
-        infoWindow.open(map);
-      });
-
-      polygon.addListener("mouseout", function (event) {
-        infoWindow.close();
-      });
       polygons.push(polygon);
     });
 

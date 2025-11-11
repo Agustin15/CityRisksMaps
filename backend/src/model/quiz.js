@@ -98,6 +98,15 @@ export class Quiz {
     }
   }
 
+  async getQuizesYears() {
+    try {
+      const result = await quizDAL.getQuizesYears();
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
   async getQuizesByNeighbordhoodAndYear(year) {
     try {
       const result = await quizDAL.getQuizesByNeighbordhoodAndYear(this, year);

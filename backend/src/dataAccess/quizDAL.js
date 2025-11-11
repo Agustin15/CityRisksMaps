@@ -83,6 +83,21 @@ export class QuizDAL {
     }
   }
 
+  async getQuizesYears() {
+    try {
+      const ps = new sql.PreparedStatement(connection.pool);
+  
+      const result = await ps.prepare("select DISTINCT Year(quizDate) from Quizes ORDER BY Year(quizDate)");
+
+      await ps.execute();
+
+      await ps.unprepare();
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
   async getQuizesByNeighbordhoodAndYear(quiz, year) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);

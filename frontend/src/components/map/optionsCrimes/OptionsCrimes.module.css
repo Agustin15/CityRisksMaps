@@ -19,6 +19,7 @@
 .menuOptionsCrimes li button {
     width: auto;
     color: white;
+    background-color: blue;
     font-weight: bold;
     display: flex;
     justify-content: center;

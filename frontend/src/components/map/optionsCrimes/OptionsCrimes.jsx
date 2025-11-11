@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import styles from "./OptionsCrimes.module.css";
 import iconKill from "../../../assets/img/kill.png";
 import iconTheft from "../../../assets/img/theft.png";
 import iconHoldup from "../../../assets/img/holdup.png";
-import styles from "./OptionsCrimes.module.css";
+import iconQuizes from "../../../assets/img/quizes.png";
+import { useState } from "react";
+import { useEffect } from "react";
 import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
@@ -11,7 +12,7 @@ const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
   const [crimeSelected, setCrimeSelected] = useState();
-  const { loadCrimeDataNeighborhoods, polygons } = useZoneCrimes();
+  const { loadCrimeDataNeighborhoods } = useZoneCrimes();
 
   const getCrimes = async () => {
     let optionGET = JSON.stringify({ option: "getCrimes" });
@@ -43,11 +44,17 @@ export const OptionsCrimes = () => {
   return (
     <div className={styles.containOptionsCrimes}>
       <ul className={styles.menuOptionsCrimes}>
+        <li>
+          <button>
+            Encuestas percepcion
+            <img src={iconQuizes}></img>
+          </button>
+        </li>
         {crimes &&
           crimes.map((crime, index) => (
             <li key={index}>
               <button
-                onClick={(event) => handleClickOption(crime)}
+                onClick={() => handleClickOption(crime)}
                 className={
                   crime.category == "Hurto"
                     ? styles.btnHurto

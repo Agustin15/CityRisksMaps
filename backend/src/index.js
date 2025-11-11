@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
+import { RoutesQuiz } from "./route/routeQuiz.js";
+
 dotenv.config();
 
 const app = express();
@@ -23,3 +25,4 @@ try {
 
 app.use("/crimes/", RoutesCrime);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
+app.use("/quizes/", RoutesQuiz);

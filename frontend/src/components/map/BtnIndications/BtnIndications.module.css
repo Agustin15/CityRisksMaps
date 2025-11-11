@@ -1,20 +1,22 @@
 .buttonStartRoute {
-    background: rgb(22, 178, 189);
+    background: rgb(35, 159, 175);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2.2rem;
-    height: 2rem;
+    width: 2.5rem;
+    color: white;
+    font-weight: bold;
+    height: 2.5rem;
     border: none;
     cursor: pointer;
     outline: none;
-    border-radius: 3px;
+    border-radius:100px;
 }
 
 .buttonStartRoute:hover {
-    background: rgb(21, 157, 167);
+     background: rgb(30, 134, 148);
 }
 .buttonStartRoute img {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
 }
