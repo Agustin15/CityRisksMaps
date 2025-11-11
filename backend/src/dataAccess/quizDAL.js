@@ -12,6 +12,18 @@ export class QuizDAL {
 
       const result = await request.execute("AddQuiz");
 
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("Correo invalido", { cause: { code: 400 } });
+        case -2:
+          throw new Error("No hay registro de un barrio con nombre", {
+            cause: { code: 404 }
+          });
+        case -3:
+          throw new Error("Error inesperado al agregar encuesta", {
+            cause: { code: 502 }
+          });
+      }
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -28,6 +40,15 @@ export class QuizDAL {
 
       const result = await request.execute("UpdateQuiz");
 
+      if (result.returnValue == -1)
+        throw new Error("Correo invalido", {
+          cause: { code: 400 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al actualizar encuesta", {
+          cause: { code: 502 }
+        });
+
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -40,8 +61,21 @@ export class QuizDAL {
 
       request.input("email", sql.VarChar(30), quiz.propEmail);
       request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
+      request.input("quizDate", sql.Date, quiz.propQuizDate);
 
       const result = await request.execute("DeleteQuiz");
+
+      if (result.returnValue == -1)
+        throw new Error(
+          "No hay registro de una encuesta en este con este corre,en este barrio y este año",
+          {
+            cause: { code: 404 }
+          }
+        );
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al eliminar encuesta", {
+          cause: { code: 502 }
+        });
 
       return result.returnValue;
     } catch (error) {

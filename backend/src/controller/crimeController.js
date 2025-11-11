@@ -6,7 +6,6 @@ export const getCrimes = async (req, res) => {
     const crimes = await crime.getCrimes();
     res.status(200).json(crimes);
   } catch (error) {
-    // (error.error.originalError.info.number)
     res.status(404).json({ messageError: error.message });
   }
 };

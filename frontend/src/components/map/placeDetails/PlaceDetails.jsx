@@ -34,7 +34,7 @@ export const PlaceDetails = ({ place }) => {
           <div className={styles.row}>
             <span>{place.addressComponents[1].longText}</span>
 
-            <BtnIndications></BtnIndications>
+            <BtnIndications place={place}></BtnIndications>
           </div>
         )}
       </div>

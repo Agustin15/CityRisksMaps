@@ -10,6 +10,19 @@ export class NeighborhoodDAL {
 
       const result = await request.execute("AddNeighborhood");
 
+      if (result.returnValue == -1)
+        throw new Error("Ya hay un barrio registrado con este nombre", {
+          cause: { code: 409 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("No hay un departamento registrado con este ID", {
+          cause: { code: 404 }
+        });
+      else if (result.returnValue == -3)
+        throw new Error("Error inesperado al agregar barrio", {
+          cause: { code: 502 }
+        });
+
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -24,6 +37,15 @@ export class NeighborhoodDAL {
 
       const result = await request.execute("UpdateNeighborhood");
 
+      if (result.returnValue == -1)
+        throw new Error("No hay un departamento registrado con este ID", {
+          cause: { code: 404 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al actualizar barrio", {
+          cause: { code: 502 }
+        });
+
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -36,6 +58,15 @@ export class NeighborhoodDAL {
       request.input("name", sql.VarChar(30), neighborhood.propName);
 
       const result = await request.execute("DeleteNeighborhood");
+
+      if (result.returnValue == -1)
+        throw new Error("No hay un barrio registrado con este nombre", {
+          cause: { code: 404 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al eliminar barrio", {
+          cause: { code: 502 }
+        });
 
       return result.returnValue;
     } catch (error) {

@@ -16,6 +16,33 @@ export class PopulationDAL {
 
       const result = await request.execute("AddPopulation");
 
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("No hay un barrio registrado con este nombre", {
+            cause: { code: 404 }
+          });
+        case -2:
+          throw new Error(
+            "Ya existe una poblacion asociada a este barrio en este año",
+            {
+              cause: { code: 409 }
+            }
+          );
+        case -3:
+          throw new Error("Cantidad de poblacion no debe ser menor a cero", {
+            cause: { code: 400 }
+          });
+        case -4:
+          throw new Error("Año debe ser menor al año actual", {
+            cause: { code: 400 }
+          });
+
+        case -5:
+          throw new Error("Error inesperado al agregar poblacion", {
+            cause: { code: 502 }
+          });
+      }
+
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -37,6 +64,36 @@ export class PopulationDAL {
 
       const result = await request.execute("UpdatePopulation");
 
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("No hay registro de una poblacion con este ID", {
+            cause: { code: 404 }
+          });
+        case -2:
+          throw new Error("No hay registro de un barrio con nombre", {
+            cause: { code: 404 }
+          });
+        case -3:
+          throw new Error("Cantidad de poblacion no debe ser menor a cero", {
+            cause: { code: 400 }
+          });
+        case -4:
+          throw new Error("Año debe ser menor al año actual", {
+            cause: { code: 400 }
+          });
+        case -5:
+          throw new Error(
+            "Ya hay registro de una poblacion con este barrio y este año",
+            {
+              cause: { code: 409 }
+            }
+          );
+        case -6:
+          throw new Error("Error inesperado al actualizar poblacion", {
+            cause: { code: 502 }
+          });
+      }
+
       return result.returnValue;
     } catch (error) {
       throw error;
@@ -50,6 +107,18 @@ export class PopulationDAL {
       request.input("idPopulation", sql.Int, population.propIdPopulation);
 
       const result = await request.execute("DeletePopulation");
+
+      if (result.returnValue == -1) {
+        throw new Error("No hay registro de una poblacion con este ID", {
+          cause: { code: 404 }
+        });
+      }
+
+      if (result.returnValue == -2) {
+        throw new Error("Error inesperado al eliminar poblacion", {
+          cause: { code: 502 }
+        });
+      }
 
       return result.returnValue;
     } catch (error) {

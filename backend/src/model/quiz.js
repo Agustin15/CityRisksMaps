@@ -5,15 +5,18 @@ export class Quiz {
   #email;
   #secure;
   #neighborhood;
+  #quizDate;
 
   constructor(
     email = "correo@gmail.com",
     secure = 0,
-    neighbordhood = "desconocido"
+    neighbordhood = "desconocido",
+    quizDate = new Date()
   ) {
     this.propEmail = email;
     this.propSecure = secure;
     this.propNeighborhood = neighbordhood;
+    this.propQuizDate = quizDate;
   }
 
   set propEmail(value) {
@@ -51,6 +54,18 @@ export class Quiz {
 
   get propNeighborhood() {
     return this.#neighborhood;
+  }
+
+  set propQuizDate(value) {
+    if (!value || new Date(value) > new Date())
+      throw new Error("Fecha de encuesta no debe ser mayor a fecha actual", {
+        cause: { code: 400 }
+      });
+    this.#quizDate = value;
+  }
+
+  get propQuizDate() {
+    return this.#quizDate;
   }
 
   async add() {

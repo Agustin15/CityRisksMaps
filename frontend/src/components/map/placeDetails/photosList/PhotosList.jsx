@@ -33,7 +33,6 @@ export const PhotosList = ({ place }) => {
     );
   };
 
-  console.log(photosDetails);
   return (
     <ul className={styles.list}>
       <div className={styles.containClose}>

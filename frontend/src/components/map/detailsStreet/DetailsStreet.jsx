@@ -1,8 +1,7 @@
 import styles from "./DetailsStreet.module.css";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
 
-export const DetailsStreet = ({ infoWindow }) => {
- 
+export const DetailsStreet = ({ place, infoWindow }) => {
   return (
     <div className={styles.containDetailsStreet}>
       <div className={styles.column}>
@@ -11,7 +10,8 @@ export const DetailsStreet = ({ infoWindow }) => {
           {infoWindow.results[infoWindow.results.length - 2].formatted_address}
         </span>
       </div>
-      <BtnIndications />
+
+      <BtnIndications place={place} />
     </div>
   );
 };

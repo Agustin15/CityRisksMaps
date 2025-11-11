@@ -11,6 +11,15 @@ export class CrimeDAL {
 
       const result = await request.execute("AddCrime");
 
+      if (result.returnValue == -1)
+        throw new Error("Ya hay un crimen registrado con esta categoria", {
+          cause: { code: 409 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al agregar crimen", {
+          cause: { code: 502 }
+        });
+
       result.returnValue;
     } catch (error) {
       throw error;
@@ -26,6 +35,15 @@ export class CrimeDAL {
 
       const result = await request.execute("UpdateCrime");
 
+      if (result.returnValue == -1)
+        throw new Error("No hay registrado un crimen con esta categoria", {
+          cause: { code: 404 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al actualizar crimen", {
+          cause: { code: 502 }
+        });
+
       result.returnValue;
     } catch (error) {
       throw error;
@@ -39,6 +57,15 @@ export class CrimeDAL {
       request.input("category", sql.VarChar(10), crime.propCategory);
 
       const result = await request.execute("DeleteCrime");
+
+      if (result.returnValue == -1)
+        throw new Error("No hay registrado un crimen con esta categoria", {
+          cause: { code: 404 }
+        });
+      else if (result.returnValue == -2)
+        throw new Error("Error inesperado al agregar crimen", {
+          cause: { code: 502 }
+        });
 
       result.returnValue;
     } catch (error) {

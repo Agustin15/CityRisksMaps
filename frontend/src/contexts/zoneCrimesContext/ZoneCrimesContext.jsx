@@ -142,7 +142,7 @@ export const ZoneCrimesProvider = ({ children }) => {
         strokeWeight: 1,
         fillColor: nhCrimeCoordinate.rateColor,
         fillOpacity: 0.4,
-        clickable: true,
+        clickable: false,
         data: nhCrimeCoordinate
       });
       polygon.setMap(map);

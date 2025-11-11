@@ -6,7 +6,6 @@ import {
   useAdvancedMarkerRef,
   InfoWindow
 } from "@vis.gl/react-google-maps";
-import { useEffect, useState } from "react";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { MyLocation } from "./myLocation/MyLocation";
@@ -20,12 +19,15 @@ import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
 import { ZoneCrimesProvider } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { MenuRoute } from "./menuRoute/MenuRoute";
+import { useState } from "react";
+import { useRoutes } from "../../contexts/RoutesContext";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
     useMapControls();
-
   const { showPhotos } = usePhotosPlace();
+  const { showMenuRoutes } = useRoutes();
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -51,6 +53,7 @@ export const ContainMap = () => {
         <MapControl position={ControlPosition.TOP_LEFT}>
           <PlaceAutocomplete marker={marker} onPlaceSelect={setSelectedPlace} />
           {selectedPlace && <PlaceDetails place={selectedPlace} />}
+          {showMenuRoutes && <MenuRoute />}
         </MapControl>
 
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
@@ -68,7 +71,9 @@ export const ContainMap = () => {
           onCloseClick={() => setInfoWindow()}
           position={infoWindow ? infoWindow.results[0].geometry.location : null}
         >
-          {infoWindow && <DetailsStreet infoWindow={infoWindow} />}
+          {infoWindow && (
+            <DetailsStreet place={selectedPlace} infoWindow={infoWindow} />
+          )}
         </InfoWindow>
       </Map>
 

@@ -13,7 +13,7 @@ import iconWheelchair from "../../../../assets/img/wheelchair.png";
 import { BtnIndications } from "../../BtnIndications/BtnIndications";
 import styles from "./Rating.module.css";
 
-export const Rating = ({ place }) => {
+export const Rating = ({ setSelectedPlace, place }) => {
   const getStarsRating = (rating) => {
     const ratingStars = [
       { rating: { min: 0.0, maz: 0.4 }, stars: ceroStars },
@@ -51,14 +51,15 @@ export const Rating = ({ place }) => {
           )}
           {place.accessibilityOptions &&
             place.accessibilityOptions.wheelchairAccessibleEntrance && (
-              <img className={styles.wheelchair}
+              <img
+                className={styles.wheelchair}
                 title="Entrada accesible para gente en silla de ruedas"
                 src={iconWheelchair}
               ></img>
             )}
         </div>
 
-        <BtnIndications />
+        <BtnIndications setSelectedPlace={setSelectedPlace} place={place} />
       </div>
     </div>
   );

@@ -1,9 +1,15 @@
 import iconDestiny from "../../../assets/img/destiny.png";
+import { useRoutes } from "../../../contexts/RoutesContext";
 import styles from "./BtnIndications.module.css";
 
-export const BtnIndications = () => {
+export const BtnIndications = ({ place }) => {
+  const { handleClickRoute } = useRoutes();
+
   return (
-    <button className={styles.buttonStartRoute}>
+    <button
+      onClick={() => handleClickRoute(place)}
+      className={styles.buttonStartRoute}
+    >
       <img src={iconDestiny}></img>
     </button>
   );
