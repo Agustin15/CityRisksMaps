@@ -98,22 +98,14 @@ export class QuizDAL {
       throw error;
     }
   }
-  async getQuizesByNeighbordhoodAndYear(quiz, year) {
+  async getQuizesNeighbordhoodByYear(year) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("neighbordhood", sql.VarChar(30));
-      ps.input("year", sql.Int);
+      const request = new sql.Request(connection.pool);
+      request.input("year", sql.Int,year);
 
-      const result = await ps.prepare(
-        "select * from Quizes where neighbordhood=@neighbordhood and YEAR(quizDate)=@year"
+      const result = await request.execute(
+       "QuizesNeighbordhoodByYear"
       );
-
-      await ps.execute({
-        neighbordhood: quiz.propNeighbordhood,
-        year: parseInt(year)
-      });
-
-      await ps.unprepare();
 
       return result;
     } catch (error) {

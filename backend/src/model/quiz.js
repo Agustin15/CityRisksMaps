@@ -109,7 +109,7 @@ export class Quiz {
   }
   async getQuizesByNeighbordhoodAndYear(year) {
     try {
-      const result = await quizDAL.getQuizesByNeighbordhoodAndYear(this, year);
+      const result = await quizDAL.getQuizesNeighbordhoodByYear(year);
 
       return result.recordset;
     } catch (error) {

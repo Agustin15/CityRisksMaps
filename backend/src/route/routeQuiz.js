@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getQuizesByNeighbordhoodAndYear,
+  getQuizesNeighbordhoodByYear,
   getQuizesYears
 } from "../controller/quizController.js";
 
@@ -13,13 +13,15 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
   if (JSON.parse(!req.params).optionGet) {
     res.status(400).send("optionGet no definido");
   }
-  const optionGet = JSON.parse(!req.params).optionGet;
+  const option = JSON.parse(!req.params).optionGet.option;
 
-  switch (optionGet) {
+  if (!option) res.status(400).send("option no definido");
+
+  switch (option) {
     case "getQuizesYears":
       return getQuizesYears;
 
-    case "getQuizesByNeighbordhoodAndYear":
-      return getQuizesByNeighbordhoodAndYear;
+    case "getQuizesNeighbordhoodByYear":
+      return getQuizesNeighbordhoodByYear;
   }
 });

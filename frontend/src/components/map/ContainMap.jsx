@@ -7,6 +7,8 @@ import {
   InfoWindow
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
+
+import { QuizesProvider } from "../../contexts/QuizesContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { MyLocation } from "./myLocation/MyLocation";
@@ -70,7 +72,9 @@ export const ContainMap = () => {
         <MapHandler place={selectedPlace} marker={marker} />
 
         <MapControl position={ControlPosition.RIGHT_TOP}>
-          <OptionsCrimes />
+          <QuizesProvider>
+            <OptionsCrimes />
+          </QuizesProvider>
         </MapControl>
 
         <InfoWindow

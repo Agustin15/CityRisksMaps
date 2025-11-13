@@ -5,6 +5,7 @@ import iconHoldup from "../../../../assets/img/holdup.png";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
+import { useQuizes } from "../../../../contexts/QuizesContext";
 
 export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
   const {

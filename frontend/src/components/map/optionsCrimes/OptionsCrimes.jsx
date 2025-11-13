@@ -7,12 +7,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useQuizes } from "../../../contexts/QuizesContext";
+import { ContainQuizes } from "../quizes/containQuizes/ContainQuizes";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
   const [crimeSelected, setCrimeSelected] = useState();
   const { loadCrimeDataNeighborhoods } = useZoneCrimes();
+  const { setShowQuizes, showQuizes } = useQuizes();
 
   const getCrimes = async () => {
     let optionGET = JSON.stringify({ option: "getCrimes" });
@@ -44,12 +47,14 @@ export const OptionsCrimes = () => {
   return (
     <div className={styles.containOptionsCrimes}>
       <ul className={styles.menuOptionsCrimes}>
-        <li>
-          <button>
-            Encuestas percepcion
-            <img src={iconQuizes}></img>
-          </button>
-        </li>
+        {crimes && (
+          <li>
+            <button onClick={() => setShowQuizes(true)}>
+              Encuestas percepcion
+              <img src={iconQuizes}></img>
+            </button>
+          </li>
+        )}
         {crimes &&
           crimes.map((crime, index) => (
             <li key={index}>
@@ -88,6 +93,7 @@ export const OptionsCrimes = () => {
           setCrimeSelected={setCrimeSelected}
         />
       )}
+      {showQuizes && <ContainQuizes />}
     </div>
   );
 };

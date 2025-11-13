@@ -11,7 +11,7 @@ export const getQuizesYears = async (req, res) => {
   }
 };
 
-export const getQuizesByNeighbordhoodAndYear = async (req, res) => {
+export const getQuizesNeighbordhoodByYear = async (req, res) => {
   const { year, neighborhood } = JSON.parse(req.params.optionGet);
 
   const quiz = new Quiz();
