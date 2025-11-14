@@ -2,25 +2,31 @@ import styles from "./CrimeNeighbordhoods.module.css";
 import iconKill from "../../../../assets/img/kill.png";
 import iconTheft from "../../../../assets/img/theft.png";
 import iconHoldup from "../../../../assets/img/holdup.png";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
-import { useQuizes } from "../../../../contexts/QuizesContext";
 
 export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
   const {
     polygons,
     setPolygons,
     neighborhoodsCrimeByYear,
-    setIndexChartActive
+    setIndexChartActive,
+    setNeighborhoodsCrimeByYear,
+    setYears,
+    setYearSelected
   } = useZoneCrimes();
 
   const handleClose = () => {
     polygons.forEach((polygon) => {
       polygon.setMap(null);
     });
-    setCrimeSelected();
+
+    setYearSelected();
+    setYears();
+    setNeighborhoodsCrimeByYear();
     setPolygons([]);
+    setCrimeSelected();
     setIndexChartActive(null);
   };
 
@@ -48,7 +54,7 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
 
       <LoadCrimesInNeighborhoods categoryCrime={categoryCrime} />
 
-      {neighborhoodsCrimeByYear && <Table crime={categoryCrime} />}
+      <Table crime={categoryCrime} />
     </div>
   );
 };

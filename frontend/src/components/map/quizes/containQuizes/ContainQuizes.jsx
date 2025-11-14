@@ -2,13 +2,18 @@ import styles from "./ContainQuizes.module.css";
 import { useQuizes } from "../../../../contexts/QuizesContext";
 import iconQuizes from "../../../../assets/img/quizes.png";
 import { Table } from "../Table";
-
+import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
+import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 
 export const ContainQuizes = () => {
-  const { setShowQuizes, neighborhoodsQuizesByYear } = useQuizes();
+  const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();
+  const { setYears, setYearSelected } = useZoneCrimes();
 
   const handleClose = () => {
-    setShowQuizes(true);
+    setNeighborhoodsQuizesByYear();
+    setYears();
+    setYearSelected();
+    setShowQuizes(false);
   };
 
   return (
@@ -23,7 +28,9 @@ export const ContainQuizes = () => {
         </div>
       </div>
 
-      {neighborhoodsQuizesByYear && <Table />}
+      <LoadDataQuizes />
+
+      <Table />
     </div>
   );
 };

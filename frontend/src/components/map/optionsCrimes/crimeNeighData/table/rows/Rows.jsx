@@ -1,4 +1,4 @@
-import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 import { ColorRate } from "../colorRate/ColorRate";
 import styles from "../Table.module.css";
 import { Chart } from "../chart/Chart";

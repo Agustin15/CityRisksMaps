@@ -1,16 +1,16 @@
 import { createContext, useContext, useState } from "react";
 import { useMapControls } from "./MapContext";
+import { useZoneCrimes } from "./ZoneCrimesContext";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 const QuizesContext = createContext();
 
 export const QuizesProvider = ({ children }) => {
   const [showQuizes, setShowQuizes] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [loadingQuizes, setLoadingQuizes] = useState(false);
   const [neighborhoodsQuizesByYear, setNeighborhoodsQuizesByYear] = useState();
-  const [years, setYears] = useState();
-  const [yearSelected, setYearSelected] = useState();
+
+  const { setYears, setYearSelected, setLoadingYears } = useZoneCrimes();
   const { neighbordhoodsCoordinates } = useMapControls();
 
   const fetchEndpoint = async (url, method, setLoading) => {
@@ -37,9 +37,9 @@ export const QuizesProvider = ({ children }) => {
   const getQuizesYears = async () => {
     const optionGet = JSON.stringify({ option: "getQuizesYears" });
 
-    const url = `${localhostBackend}/${optionGet}`;
+    const url = `${localhostBackend}/quizes/${optionGet}`;
 
-    return await fetchEndpoint(url, "GET", setLoading);
+    return await fetchEndpoint(url, "GET", setLoadingYears);
   };
 
   const getQuizesNeighbordhoodByYear = async (year) => {
@@ -48,7 +48,7 @@ export const QuizesProvider = ({ children }) => {
       year: year
     });
 
-    const url = `${localhostBackend}/${optionGet}`;
+    const url = `${localhostBackend}/quizes/${optionGet}`;
 
     return await fetchEndpoint(url, "GET", setLoadingQuizes);
   };
@@ -61,11 +61,25 @@ export const QuizesProvider = ({ children }) => {
 
   const loadDataQuizes = async () => {
     const years = await getQuizesYears();
-
     if (years) {
-      setYearSelected(years[0]);
+      setYearSelected(years[0].year);
       setYears(years);
-      loadQuizesDataNeighborhoodsByYear(years[0]);
+      loadQuizesDataNeighborhoodsByYear(years[0].year);
+    }
+  };
+
+  const getRangeSecureQuiz = (percentaje) => {
+    switch (true) {
+      case percentaje >= 80:
+        return "#ffffbfff";
+      case percentaje >= 60 && percentaje < 80:
+        return "#f1f134ff";
+      case percentaje >= 40 && percentaje < 60:
+        return "#f77963ff";
+      case percentaje >= 20 && percentaje < 40:
+        return "#d45129ff";
+      case percentaje >= 0 && percentaje < 20:
+        return "#ee2f29ff";
     }
   };
 
@@ -73,13 +87,13 @@ export const QuizesProvider = ({ children }) => {
     <QuizesContext.Provider
       value={{
         neighborhoodsQuizesByYear,
-        loading,
+        setNeighborhoodsQuizesByYear,
         loadingQuizes,
-        years,
-        yearSelected,
         showQuizes,
         setShowQuizes,
-        loadDataQuizes
+        loadDataQuizes,
+        loadQuizesDataNeighborhoodsByYear,
+        getRangeSecureQuiz
       }}
     >
       {children}

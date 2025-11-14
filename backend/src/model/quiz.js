@@ -111,6 +111,17 @@ export class Quiz {
     try {
       const result = await quizDAL.getQuizesNeighbordhoodByYear(year);
 
+      if (result.recordset.length > 0) {
+        result.recordset.forEach((result) => {
+          if (result.secure == null) result.secure = 0;
+          if (result.insecure == null) result.insecure = 0;
+
+          result.total = result.secure + result.insecure;
+
+          result.percentage =
+            result.total == 0 ? 0 : (result.secure * 100) / result.total;
+        });
+      }
       return result.recordset;
     } catch (error) {
       throw error;

@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import { createContext } from "react";
-import { useMapControls } from "../MapContext";
+import { useMapControls } from "./MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
+
 const ZoneCrimesContext = createContext();
 
 export const ZoneCrimesProvider = ({ children }) => {
@@ -184,8 +185,11 @@ export const ZoneCrimesProvider = ({ children }) => {
     <ZoneCrimesContext.Provider
       value={{
         getYearsNeighborhoodsCrime,
+        setLoadingYears,
         loadingYears,
+        setYears,
         years,
+        setYearSelected,
         yearSelected,
         getNeighborhoodsCrimeByYear,
         loadingNeighborhoodsCrime,

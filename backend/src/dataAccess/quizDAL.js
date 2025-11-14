@@ -20,6 +20,13 @@ export class QuizDAL {
             cause: { code: 404 }
           });
         case -3:
+          throw new Error(
+            "Ya tienes registrada una encuesta en este barrio y este año",
+            {
+              cause: { code: 409 }
+            }
+          );
+        case -4:
           throw new Error("Error inesperado al agregar encuesta", {
             cause: { code: 502 }
           });
@@ -86,10 +93,12 @@ export class QuizDAL {
   async getQuizesYears() {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
-  
-      const result = await ps.prepare("select DISTINCT Year(quizDate) from Quizes ORDER BY Year(quizDate)");
 
-      await ps.execute();
+      await ps.prepare(
+        "select DISTINCT Year(quizDate) as year from Quizes ORDER BY Year(quizDate)"
+      );
+
+      const result = await ps.execute();
 
       await ps.unprepare();
 
@@ -101,11 +110,9 @@ export class QuizDAL {
   async getQuizesNeighbordhoodByYear(year) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("year", sql.Int,year);
+      request.input("year", sql.Int, year);
 
-      const result = await request.execute(
-       "QuizesNeighbordhoodByYear"
-      );
+      const result = await request.execute("QuizesNeighbordhoodByYear");
 
       return result;
     } catch (error) {

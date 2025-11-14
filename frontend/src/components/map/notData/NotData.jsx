@@ -1,4 +1,4 @@
-import iconNotData from "../../../../../assets/img/notData.png";
+import iconNotData from "../../../assets/img/notData.png";
 import styles from "./NotData.module.css";
 
 export const NotData = () => {

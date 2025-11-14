@@ -1,11 +1,10 @@
 import styles from "./Table.module.css";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../contexts/ZoneCrimesContext";
 import { useMapControls } from "../../../../../contexts/MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
-import { NotData } from "../notData/NotData";
-import { Loading } from "../loading/Loading";
+import { NotData } from "../../../notData/NotData";
+import { Loading } from "../../../loading/Loading";
 import { Rows } from "./rows/Rows";
-import { useState } from "react";
 
 export const Table = ({ crime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
@@ -55,7 +54,11 @@ export const Table = ({ crime }) => {
             <tr>
               <th>Barrio</th>
               <th>Cantidad</th>
-              <th>Poblacion {neighborhoodsCrimeByYear[0].yearPopulation}</th>
+              <th>
+                Poblacion
+                {neighborhoodsCrimeByYear &&
+                  neighborhoodsCrimeByYear[0].yearPopulation}
+              </th>
               <th>Tasa 100.000 habits.</th>
             </tr>
           </thead>

@@ -1,13 +1,24 @@
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useQuizes } from "../../../contexts/QuizesContext";
+import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
 import styles from "./FilterYears.module.css";
 
 export const FilterYears = ({ categoryCrime }) => {
   const { loadCrimesByYear, years, yearSelected, setIndexChartActive } =
     useZoneCrimes();
 
+  const { loadQuizesDataNeighborhoodsByYear } = useQuizes();
+
   const getCrimesByYear = async (yearSelected) => {
-    setIndexChartActive(null);
     loadCrimesByYear(yearSelected, categoryCrime);
+  };
+
+  const handleClickYear = (yearSelected) => {
+    setIndexChartActive(null);
+    if (categoryCrime) {
+      getCrimesByYear(yearSelected);
+    } else {
+      loadQuizesDataNeighborhoodsByYear(yearSelected);
+    }
   };
 
   return (
@@ -15,7 +26,7 @@ export const FilterYears = ({ categoryCrime }) => {
       {years.map((yearObject, index) => (
         <li key={index}>
           <button
-            onClick={() => getCrimesByYear(yearObject.year)}
+            onClick={() => handleClickYear(yearObject.year)}
             className={
               yearObject.year == yearSelected
                 ? styles.yearSelected

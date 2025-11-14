@@ -4,7 +4,7 @@ import { ContainMap } from "./components/map/ContainMap";
 import { MapProvider } from "./contexts/MapContext";
 import { RoutesProvider } from "./contexts/RoutesContext";
 import { PhotosProvider } from "./contexts/PhotosContext";
-import { ZoneCrimesProvider } from "./contexts/zoneCrimesContext/ZoneCrimesContext";
+import { ZoneCrimesProvider } from "./contexts/ZoneCrimesContext";
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
 function App() {

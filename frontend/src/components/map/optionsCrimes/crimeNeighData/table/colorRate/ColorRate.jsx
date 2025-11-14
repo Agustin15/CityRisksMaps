@@ -1,4 +1,4 @@
-import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 import styles from "./ColorRate.module.css";
 
 export const ColorRate = ({ rate, crime }) => {

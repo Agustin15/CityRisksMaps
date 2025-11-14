@@ -1,6 +1,7 @@
 import { useQuizes } from "../../../contexts/QuizesContext";
-import { Loading } from "../optionsCrimes/crimeNeighData/loading/Loading";
-import { NotData } from "../optionsCrimes/crimeNeighData/notData/NotData";
+import { NotData } from "../notData/NotData";
+import { Loading } from "../loading/Loading";
+import { Rows } from "./rows/Rows";
 import styles from "./Table.module.css";
 
 export const Table = () => {
@@ -14,6 +15,8 @@ export const Table = () => {
               <th>Barrio</th>
               <th>Puntuacion seguridad</th>
               <th>Puntuacion inseguridad</th>
+              <th>Encuestas</th>
+              <th>Porcentaje de seguridad</th>
             </tr>
           </thead>
 
@@ -32,17 +35,11 @@ export const Table = () => {
                 </td>
               </tr>
             )}
-            {/* {!loadingQuizes &&
+            {!loadingQuizes &&
               neighborhoodsQuizesByYear &&
-              neighborhoodsQuizesByYear.map((neighborhoodQuiz, index) => (
-                // <Rows
-                //   key={index}
-                //   neighborhoodCrime={neighborhoodQuiz}
-                //   handleClickNeighborhood={handleClickNeighborhood}
-                //   crime={crime}
-                //   numberRow={index}
-                // />
-              ))} */}
+              neighborhoodsQuizesByYear.map((quiz, index) => (
+                <Rows key={index} numberRow={index} quiz={quiz} />
+              ))}
           </tbody>
         </table>
       </div>

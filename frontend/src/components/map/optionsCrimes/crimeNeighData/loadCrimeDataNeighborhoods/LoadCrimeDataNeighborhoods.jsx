@@ -1,9 +1,9 @@
 import styles from "./LoadCrimeDataNeighborhoods.module.css";
-import { NotData } from "../notData/NotData";
-import { Loading } from "../loading/Loading";
+import { NotData } from "../../../notData/NotData";
+import { Loading } from "../../../loading/Loading";
 import { References } from "../references/References";
-import { FilterYears } from "../filterYears/FilterYears";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { FilterYears } from "../../../filterYears/FilterYears";
+import { useZoneCrimes } from "../../../../../contexts/ZoneCrimesContext";
 
 export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
   const { loadingYears, years } = useZoneCrimes();

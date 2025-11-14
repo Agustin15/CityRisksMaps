@@ -21,7 +21,7 @@ import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
-import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useZoneCrimes } from "../../contexts/ZoneCrimesContext.jsx";
 import { MenuRoute } from "./menuRoute/MenuRoute";
 import { useState } from "react";
 import { useRoutes } from "../../contexts/RoutesContext";
