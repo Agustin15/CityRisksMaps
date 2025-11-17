@@ -18,32 +18,33 @@ export class NeighborhoodCrimeDAL {
       const result = await request.execute("AddNeighborhoodCrime");
 
       switch (result.returnValue) {
-        case -1:
+         case -1:
+          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
+            cause: { code: 400 }
+          });
+
+        case -2:
+          throw new Error("Año debe ser menor al año actual", {
+            cause: { code: 400 }
+          });
+
+        case -3:
           throw new Error("No hay registrado un barrio con este nombre", {
             cause: { code: 404 }
           });
-        case -2:
+        case -4:
           throw new Error("No hay registrado un crimen con esta categoria", {
             cause: { code: 404 }
           });
-        case -3:
+        case -5:
           throw new Error(
             "Ya hay registrado un crimen en este barrio en este año",
             {
               cause: { code: 409 }
             }
           );
-        case -4:
-          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
-            cause: { code: 400 }
-          });
-
-        case -5:
-          throw new Error("Año debe ser menor al año actual", {
-            cause: { code: 400 }
-          });
-
-        case -5:
+       
+        case -6:
           throw new Error("Error inesperado al agregar crimen en barrio", {
             cause: { code: 502 }
           });
@@ -71,22 +72,23 @@ export class NeighborhoodCrimeDAL {
       const result = await request.execute("UpdateNeighborhoodCrime");
 
       switch (result.returnValue) {
-        case -1:
+          case -1:
+          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
+            cause: { code: 400 }
+          });
+        case -2:
+          throw new Error("Año debe ser menor al año actual", {
+            cause: { code: 400 }
+          });
+
+        case -3:
           throw new Error(
             "No hay registrado un crimen en este barrio y este año",
             {
               cause: { code: 404 }
             }
           );
-        case -2:
-          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
-            cause: { code: 400 }
-          });
-        case -3:
-          throw new Error("Año debe ser menor al año actual", {
-            cause: { code: 400 }
-          });
-
+      
         case -4:
           throw new Error("Error inesperado al actualizar crimen en barrio", {
             cause: { code: 502 }

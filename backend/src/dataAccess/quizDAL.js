@@ -74,7 +74,7 @@ export class QuizDAL {
 
       if (result.returnValue == -1)
         throw new Error(
-          "No hay registro de una encuesta en este con este corre,en este barrio y este año",
+          "No hay registro de una encuesta en este con este correo,en este barrio y este año",
           {
             cause: { code: 404 }
           }
