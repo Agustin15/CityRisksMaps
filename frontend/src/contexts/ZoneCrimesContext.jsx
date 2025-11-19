@@ -114,7 +114,8 @@ export const ZoneCrimesProvider = ({ children }) => {
             coordinates: nhCoordinate.coordinates,
             name: nhCrime.name,
             quantityCrime: nhCrime.quantiyCrime,
-            rateColor: colorRange ? colorRange : "#bbbbbbff"
+            rateColor: colorRange ? colorRange : "#bbbbbbff",
+            type: "crime"
           });
         }
       });
@@ -154,10 +155,12 @@ export const ZoneCrimesProvider = ({ children }) => {
   };
 
   const loadCrimesByYear = async (year, categoryCrime) => {
-    polygons.forEach((polygon) => {
-      polygon.setMap(null);
-    });
-    setPolygons([]);
+    if (polygons.length > 0) {
+      polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+      setPolygons([]);
+    }
 
     setYearSelected(year);
     let neighborhoodsCrime = await getNeighborhoodsCrimeByYear(

@@ -10,7 +10,6 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
   const {
     polygons,
     setPolygons,
-    neighborhoodsCrimeByYear,
     setIndexChartActive,
     setNeighborhoodsCrimeByYear,
     setYears,
@@ -18,14 +17,16 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
   } = useZoneCrimes();
 
   const handleClose = () => {
-    polygons.forEach((polygon) => {
-      polygon.setMap(null);
-    });
+    if (polygons.length > 0) {
+      polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+      setPolygons([]);
+    }
 
     setYearSelected();
     setYears();
     setNeighborhoodsCrimeByYear();
-    setPolygons([]);
     setCrimeSelected();
     setIndexChartActive(null);
   };

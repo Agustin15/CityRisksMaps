@@ -7,9 +7,16 @@ import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 
 export const ContainQuizes = () => {
   const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();
-  const { setYears, setYearSelected } = useZoneCrimes();
+  const { setYears, setYearSelected, setPolygons, polygons } = useZoneCrimes();
 
   const handleClose = () => {
+    if (polygons.length > 0) {
+      polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+      setPolygons([]);
+    }
+
     setNeighborhoodsQuizesByYear();
     setYears();
     setYearSelected();

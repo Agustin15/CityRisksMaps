@@ -7,15 +7,25 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
         <span>{polygonSelected.data.name}</span>
         <div style={{ background: polygonSelected.data.rateColor }}></div>
       </div>
-      <p>
-        Denuncias de
-        {" " +
-          polygonSelected.data.categoryCrime +
-          ":" +
-          +(polygonSelected.data.quantityCrime == null
-            ? "Sin Datos"
-            : polygonSelected.data.quantityCrime)}
-      </p>
+      {polygonSelected.data.type == "crime" ? (
+        <p>
+          Denuncias de
+          {" " +
+            polygonSelected.data.categoryCrime +
+            ":" +
+            +(polygonSelected.data.quantityCrime == null
+              ? "Sin Datos"
+              : polygonSelected.data.quantityCrime)}
+        </p>
+      ) : (
+        <p>
+          Percepcion de seguridad:
+          {polygonSelected.data.total == 0
+            ? "Sin encuestas"
+            : polygonSelected.data.percentage+"%"}
+         
+        </p>
+      )}
     </div>
   );
 };
