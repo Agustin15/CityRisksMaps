@@ -48,8 +48,8 @@ export class QuizDAL {
       const result = await request.execute("UpdateQuiz");
 
       if (result.returnValue == -1)
-        throw new Error("Correo invalido", {
-          cause: { code: 400 }
+        throw new Error("Encuesta no encontrada", {
+          cause: { code: 404 }
         });
       else if (result.returnValue == -2)
         throw new Error("Error inesperado al actualizar encuesta", {
