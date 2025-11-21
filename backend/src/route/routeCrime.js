@@ -1,5 +1,8 @@
 import express from "express";
-import { getCrimes } from "../controller/crimeController.js";
+import {
+  getCrimesTypeOptions,
+  getAllTypeCrimes
+} from "../controller/crimeController.js";
 
 export const RoutesCrime = express.Router();
 
@@ -17,6 +20,8 @@ RoutesCrime.get("/:optionGet", (req, res) => {
 
   switch (option) {
     case "getCrimes":
-      return getCrimes(req, res);
+      return getCrimesTypeOptions(req, res);
+    case "getAllTypeCrimes":
+      return getAllTypeCrimes(req, res);
   }
 });

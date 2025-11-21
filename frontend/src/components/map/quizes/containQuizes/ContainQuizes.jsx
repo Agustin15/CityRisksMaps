@@ -29,6 +29,7 @@ export const ContainQuizes = () => {
         <div className={styles.close}>
           <button onClick={handleClose}>x</button>
         </div>
+        
         <div className={styles.title}>
           <h3>Encuestas de percepcion</h3>
           <img src={iconQuizes}></img>

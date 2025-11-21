@@ -76,13 +76,21 @@ export class Crime {
     }
   }
 
-  async getCrimes() {
+  async getAllTypeCrimes() {
     try {
-      const result = await crimeDAL.getCrimes();
+      const result = await crimeDAL.getAllTypeCrimes();
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCrimesTypeOptions() {
+    try {
+      const result = await crimeDAL.getCrimesTypeOptions();
 
       return result.recordset;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

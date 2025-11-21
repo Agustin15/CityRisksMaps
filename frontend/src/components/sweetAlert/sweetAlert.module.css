@@ -8,18 +8,20 @@
     font-size: 24px;
 }
 
-.customBtnConfirm {
+.customBtnConfirm,
+.customBtnConfirmWarning {
     width: 8rem;
     font-weight: bold;
     background: rgb(216, 34, 34);
 }
 
-.customBtnConfirm {
-    width: 8rem;
-    font-weight: bold;
-    background: rgb(216, 34, 34);
+.customBtnConfirmWarning {
+    background: rgb(199, 108, 34);
 }
 
 .customBtnConfirm:hover {
     background: rgb(184, 23, 23);
+}
+.customBtnConfirmWarning:hover {
+    background: rgb(180, 94, 23);
 }

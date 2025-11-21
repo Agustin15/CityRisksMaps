@@ -91,19 +91,26 @@ export class CrimeDAL {
     }
   }
 
-  async getCrimes() {
+  async getAllTypeCrimes() {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare("select * from crimes");
-
-      const result = await ps.execute();
-
-      await ps.unprepare();
+      const result = await request.execute("GetAllTypeCrimes");
 
       return result;
     } catch (error) {
-      console.log(error);
+      throw error;
+    }
+  }
+
+  async getCrimesTypeOptions() {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      const result = await request.execute("CrimesTypeOptions");
+
+      return result;
+    } catch (error) {
       throw error;
     }
   }

@@ -10,6 +10,7 @@ export const QuizesProvider = ({ children }) => {
   const [showQuizes, setShowQuizes] = useState(false);
   const [loadingQuizes, setLoadingQuizes] = useState(false);
   const [neighborhoodsQuizesByYear, setNeighborhoodsQuizesByYear] = useState();
+  const [newQuiz, setNewQuiz] = useState(false);
   const map = useMap();
 
   const { setYears, setYearSelected, setLoadingYears, setPolygons } =
@@ -146,7 +147,9 @@ export const QuizesProvider = ({ children }) => {
         setShowQuizes,
         loadDataQuizes,
         loadQuizesDataNeighborhoodsByYear,
-        getRangeSecureQuiz
+        getRangeSecureQuiz,
+        setNewQuiz,
+        newQuiz
       }}
     >
       {children}

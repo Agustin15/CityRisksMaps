@@ -8,7 +8,6 @@ import {
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
-import { QuizesProvider } from "../../contexts/QuizesContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { MyLocation } from "./myLocation/MyLocation";
@@ -27,6 +26,9 @@ import { useState } from "react";
 import { useRoutes } from "../../contexts/RoutesContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
+import { FormAdd } from "./quizes/formAdd/FormAdd.jsx";
+import { useQuizes } from "../../contexts/QuizesContext.jsx";
+import { FormAddQuizProvider } from "../../contexts/FormAddQuizContext.jsx";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
@@ -34,6 +36,8 @@ export const ContainMap = () => {
   const { polygons } = useZoneCrimes();
   const { showPhotos } = usePhotosPlace();
   const { showMenuRoutes } = useRoutes();
+  const { newQuiz } = useQuizes();
+
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
@@ -72,9 +76,7 @@ export const ContainMap = () => {
         <MapHandler place={selectedPlace} marker={marker} />
 
         <MapControl position={ControlPosition.RIGHT_TOP}>
-          <QuizesProvider>
-            <OptionsCrimes />
-          </QuizesProvider>
+          <OptionsCrimes />
         </MapControl>
 
         <InfoWindow
@@ -98,6 +100,14 @@ export const ContainMap = () => {
       {showPhotos && (
         <Modal>
           <PhotosList place={selectedPlace} />
+        </Modal>
+      )}
+
+      {newQuiz && (
+        <Modal>
+          <FormAddQuizProvider>
+            <FormAdd />
+          </FormAddQuizProvider>
         </Modal>
       )}
     </>
