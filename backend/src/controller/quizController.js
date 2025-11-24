@@ -1,9 +1,9 @@
 import { Quiz } from "../model/quiz.js";
+import { QuizService } from "../service/quizService.js";
 
 export const getQuizesYears = async (req, res) => {
   try {
-    const quiz = new Quiz();
-    const years = await quiz.getQuizesYears();
+    const years = await QuizService.getQuizesYears();
 
     if (years && years.length == 0)
       throw new Error("No hay años registrados de encuestas");
@@ -18,8 +18,9 @@ export const getQuizesNeighbordhoodByYear = async (req, res) => {
   try {
     const { year } = JSON.parse(req.params.optionGet);
 
-    const quiz = new Quiz();
-    const quizes = await quiz.getQuizesByNeighbordhoodAndYear(year);
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+    
+    const quizes = await QuizService.getQuizesByNeighbordhoodAndYear(year);
 
     if (quizes && quizes.length == 0)
       throw new Error("No hay registro de encuestas en este año");

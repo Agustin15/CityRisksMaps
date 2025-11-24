@@ -5,6 +5,9 @@
     gap: 1rem;
     width: 100%;
 }
+.reasons label {
+    width: 60%;
+}
 
 .reasons ul {
     display: flex;

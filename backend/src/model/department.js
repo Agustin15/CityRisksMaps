@@ -6,20 +6,20 @@ export class Department {
   #name;
 
   constructor(idDepartment = 0, name = "desconocido") {
-    this.propIdDepartment = idDepartment;
-    this.propName = name;
+    this.idDepartment = idDepartment;
+    this.name = name;
   }
 
-  set propName(value) {
+  set name(value) {
     if (!value || value.trim().length == 0)
       throw new Error("Nombre no puede estar vacio", { cause: { code: 400 } });
     this.#name = value.trim();
   }
 
-  get propName() {
+  get name() {
     return this.#name;
   }
-  set propIdDepartment(value) {
+  set idDepartment(value) {
     if (typeof value != "number")
       throw new Error("Id departamento debe ser un numero", {
         cause: { code: 400 }
@@ -27,58 +27,7 @@ export class Department {
     this.#idDepartment = value;
   }
 
-  get propIdDepartment() {
+  get idDepartment() {
     return this.#idDepartment;
-  }
-
-  async add() {
-    try {
-      const returnValue = await departmentDAL.add(this);
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update() {
-    try {
-      const returnValue = await departmentDAL.update(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async delete() {
-    try {
-      const returnValue = await departmentDAL.delete(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getDepartmentByName() {
-    try {
-      const result = await departmentDAL.getDepartmentByName(this);
-
-      if (result.recordset.length > 0) {
-        return result.recordset[0];
-      } else null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getDepartments() {
-    try {
-      const result = await departmentDAL.getDepartments();
-
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
   }
 }

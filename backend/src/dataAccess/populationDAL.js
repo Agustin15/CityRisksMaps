@@ -2,17 +2,17 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class PopulationDAL {
-  async add(population) {
+  static async add(population) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input(
         "neighbordhood",
         sql.VarChar(30),
-        population.propNeighborhood
+        population.neighborhood.name
       );
-      request.input("quantity", sql.Int, population.propQuantity);
-      request.input("year", sql.Int, population.propYear);
+      request.input("quantity", sql.Int, population.quantity);
+      request.input("year", sql.Int, population.year);
 
       const result = await request.execute("AddPopulation");
 
@@ -49,17 +49,17 @@ export class PopulationDAL {
     }
   }
 
-  async update(population) {
+  static async update(population) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("idPopulation", sql.Int, population.propIdPopulation);
-      request.input("quantity", sql.Int, population.propQuantity);
-      request.input("year", sql.Int, population.propYear);
+      request.input("idPopulation", sql.Int, population.idPopulation);
+      request.input("quantity", sql.Int, population.quantity);
+      request.input("year", sql.Int, population.year);
       request.input(
         "neighbordhood",
         sql.VarChar(30),
-        population.propNeighborhood
+        population.neighborhood.name
       );
 
       const result = await request.execute("UpdatePopulation");
@@ -95,17 +95,17 @@ export class PopulationDAL {
           });
       }
 
-      return result.returnValue;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async delete(population) {
+  static async delete(idPopulation) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("idPopulation", sql.Int, population.propIdPopulation);
+      request.input("idPopulation", sql.Int, idPopulation);
 
       const result = await request.execute("DeletePopulation");
 
@@ -127,7 +127,7 @@ export class PopulationDAL {
     }
   }
 
-  async getPopulationById(population) {
+  static async getPopulationById(idPopulation) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("idPopulation", sql.Int);
@@ -136,17 +136,17 @@ export class PopulationDAL {
         "select * from population where idPopulation=@idPopulation"
       );
       const result = await ps.execute({
-        idPopulation: population.propIdPopulation
+        idPopulation: idPopulation
       });
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getPopulationByNeighborhoodAndYear(population) {
+  static async getPopulationByNeighborhoodAndYear(name, year) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("neighborhood", sql.VarChar(30));
@@ -156,19 +156,19 @@ export class PopulationDAL {
         "select * from population where neighborhood=@neighborhood and year=@year"
       );
       const result = await ps.execute({
-        neighborhood: population.propNeighborhood,
-        year: population.propYear
+        neighborhood: name,
+        year: year
       });
 
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getPopulations() {
+  static async getPopulations() {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -176,7 +176,7 @@ export class PopulationDAL {
 
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

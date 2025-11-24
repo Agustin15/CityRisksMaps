@@ -1,6 +1,5 @@
-import { NeighborhoodCrimeDAL } from "../dataAccess/neighborhoodCrimeDAL.js";
-
-const neighborhoodCrimeDal = new NeighborhoodCrimeDAL();
+import { Crime } from "./crime.js";
+import { Neighborhood } from "./neighborhood.js";
 
 export class NeighborhoodCrime {
   #crime;
@@ -9,118 +8,54 @@ export class NeighborhoodCrime {
   #year;
 
   constructor(
-    crime = "desconocido",
-    neighbordhood = "desconocido",
+    crime = new Crime(),
+    neighbordhood = new Neighborhood(),
     quantity = 0,
     year = new Date().getFullYear()
   ) {
-    this.propCrime = crime;
-    this.propNeighborhood = neighbordhood;
+    this.crime = crime;
+    this.neighborhood = neighbordhood;
     this.propQuantity = quantity;
     this.propYear = year;
   }
 
-  set propCrime(value) {
-    if (!value || value.trim().length == 0)
-      throw new Error("Nombre de delito no puede estar vacio", {
+  set crime(value) {
+    if (value == 0)
+      throw new Error("Debe indicar un crimen", {
         cause: { code: 400 }
       });
-    this.#crime = value.trim();
+    this.#crime = value;
   }
 
-  get propCrime() {
+  get crime() {
     return this.#crime;
   }
 
-  set propNeighborhood(value) {
-    if (!value || value.trim().length == 0)
-      throw new Error("Barrio no puede estar vacio", { cause: { code: 400 } });
-    this.#neighborhood = value.trim();
+  set neighborhood(value) {
+    if (value == null)
+      throw new Error("Debe indicar un barrio", { cause: { code: 400 } });
+    this.#neighborhood = value;
   }
 
-  get propNeighborhood() {
+  get neighborhood() {
     return this.#neighborhood;
   }
-  set propYear(value) {
+  set year(value) {
     if (!value || value > new Date().getFullYear())
       throw new Error("Año no puede ser mayor al año actual", {
         cause: { code: 400 }
       });
     this.#year = value;
   }
-  get propYear() {
+  get year() {
     return this.#year;
   }
 
-  get propQuantity() {
+  get quantity() {
     return this.#quantity;
   }
-  set propQuantity(value) {
+  set quantity(value) {
     if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
     this.#quantity = value;
-  }
-
-  async add() {
-    try {
-      const returnValue = await neighborhoodCrimeDal.add(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update() {
-    try {
-      const returnValue = await neighborhoodCrimeDal.update(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async delete() {
-    try {
-      const returnValue = await neighborhoodCrimeDal.delete(this);
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-  async getYearsNeighborhoodsCrime() {
-    try {
-      const result = await neighborhoodCrimeDal.getYearsNeighborhoodsCrime(
-        this
-      );
-
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getNeighborhoodsCrimeByYear() {
-    try {
-      const result = await neighborhoodCrimeDal.getNeighborhoodsCrimeByYear(
-        this
-      );
-
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getCategoryCrimeInNeighborhood() {
-    try {
-      const result = await neighborhoodCrimeDal.getCategoryCrimeInNeighborhood(
-        this
-      );
-
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
   }
 }

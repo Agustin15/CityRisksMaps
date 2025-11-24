@@ -1,0 +1,63 @@
+import { QuizDAL } from "../dataAccess/quizDAL.js";
+
+export class QuizService {
+  static async add(quiz) {
+    try {
+      const idQuizAdded = await QuizDAL.add(quiz);
+
+      return idQuizAdded;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async update(quiz) {
+    try {
+      const updated = await QuizDAL.update(quiz);
+
+      return updated;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async delete(idQuiz) {
+    try {
+      const deleted = await QuizDAL.delete(idQuiz);
+
+      return deleted;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getQuizesYears() {
+    try {
+      const result = await QuizDAL.getQuizesYears();
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getQuizesByNeighbordhoodAndYear(year) {
+    try {
+      const result = await QuizDAL.getQuizesNeighbordhoodByYear(year);
+
+      if (result.length > 0) {
+        result.forEach((result) => {
+          if (result.secure == null) result.secure = 0;
+          if (result.insecure == null) result.insecure = 0;
+
+          result.total = result.secure + result.insecure;
+
+          result.percentage =
+            result.total == 0 ? 0 : (result.secure * 100) / result.total;
+        });
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+}

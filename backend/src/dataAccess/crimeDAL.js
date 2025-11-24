@@ -2,12 +2,12 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class CrimeDAL {
-  async add(crime) {
+  static async add(crime) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
-      request.input("description", sql.VarChar(700), crime.propDescription);
+      request.input("category", sql.VarChar(10), crime.category);
+      request.input("description", sql.VarChar(700), crime.description);
 
       const result = await request.execute("AddCrime");
 
@@ -26,12 +26,12 @@ export class CrimeDAL {
     }
   }
 
-  async update(crime) {
+  static async update(crime) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
-      request.input("description", sql.VarChar(700), crime.propDescription);
+      request.input("category", sql.VarChar(10), crime.category);
+      request.input("description", sql.VarChar(700), crime.description);
 
       const result = await request.execute("UpdateCrime");
 
@@ -50,11 +50,11 @@ export class CrimeDAL {
     }
   }
 
-  async delete(crime) {
+  static async delete(category) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.propCategory);
+      request.input("category", sql.VarChar(10), category);
 
       const result = await request.execute("DeleteCrime");
 
@@ -73,43 +73,43 @@ export class CrimeDAL {
     }
   }
 
-  async getCrimeByCategory(crime) {
+  static async getCrimeByCategory(category) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("category", sql.Int);
 
       await ps.prepare("select * from crimes where category=@category");
       const result = await ps.execute({
-        category: crime.propCategory
+        category: category
       });
 
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getAllTypeCrimes() {
+  static async getAllTypeCrimes() {
     try {
       const request = new sql.Request(connection.pool);
 
       const result = await request.execute("GetAllTypeCrimes");
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getCrimesTypeOptions() {
+  static async getCrimesTypeOptions() {
     try {
       const request = new sql.Request(connection.pool);
 
       const result = await request.execute("CrimesTypeOptions");
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

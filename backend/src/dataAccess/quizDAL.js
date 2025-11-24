@@ -2,13 +2,13 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class QuizDAL {
-  async add(quiz) {
+  static async add(quiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
-      request.input("secure", sql.Bit, quiz.propSecure);
+      request.input("email", sql.VarChar(30), quiz.email);
+      request.input("neighbordhood", sql.VarChar(30), quiz.neighbordhood.name);
+      request.input("secure", sql.Bit, quiz.secure);
 
       const result = await request.execute("AddQuiz");
 
@@ -37,13 +37,13 @@ export class QuizDAL {
     }
   }
 
-  async update(quiz) {
+  static async update(quiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
-      request.input("secure", sql.Bit, quiz.propSecure);
+      request.input("email", sql.VarChar(30), quiz.email);
+      request.input("neighbordhood", sql.VarChar(30), quiz.neighbordhood.name);
+      request.input("secure", sql.Bit, quiz.secure);
 
       const result = await request.execute("UpdateQuiz");
 
@@ -62,13 +62,11 @@ export class QuizDAL {
     }
   }
 
-  async delete(quiz) {
+  static async delete(idQuiz) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.propEmail);
-      request.input("neighbordhood", sql.VarChar(30), quiz.propNeighbordhood);
-      request.input("quizDate", sql.Date, quiz.propQuizDate);
+      request.input("idQuiz", sql.Int, idQuiz);
 
       const result = await request.execute("DeleteQuiz");
 
@@ -90,7 +88,7 @@ export class QuizDAL {
     }
   }
 
-  async getQuizesYears() {
+  static async getQuizesYears() {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -102,19 +100,19 @@ export class QuizDAL {
 
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
-  async getQuizesNeighbordhoodByYear(year) {
+  static async getQuizesNeighbordhoodByYear(year) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("year", sql.Int, year);
 
       const result = await request.execute("QuizesNeighbordhoodByYear");
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

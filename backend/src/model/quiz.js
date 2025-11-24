@@ -1,4 +1,5 @@
 import { QuizDAL } from "../dataAccess/quizDAL.js";
+import { Neighborhood } from "./neighborhood.js";
 const quizDAL = new QuizDAL();
 
 export class Quiz {
@@ -10,16 +11,16 @@ export class Quiz {
   constructor(
     email = "correo@gmail.com",
     secure = 0,
-    neighbordhood = "desconocido",
+    neighbordhood = new Neighborhood(),
     quizDate = new Date()
   ) {
-    this.propEmail = email;
-    this.propSecure = secure;
-    this.propNeighborhood = neighbordhood;
-    this.propQuizDate = quizDate;
+    this.email = email;
+    this.secure = secure;
+    this.neighborhood = neighbordhood;
+    this.quizDate = quizDate;
   }
 
-  set propEmail(value) {
+  set email(value) {
     let regexEmail = /\S+@\S+\.\S+/;
 
     if (!regexEmail.test(value))
@@ -28,11 +29,11 @@ export class Quiz {
     this.#email = value;
   }
 
-  get propEmail() {
+  get email() {
     return this.#email;
   }
 
-  set propSecure(value) {
+  set secure(value) {
     if (value != 0 && value != 1)
       throw new Error("Debe completar sensacion de seguridad", {
         cause: { code: 400 }
@@ -40,23 +41,23 @@ export class Quiz {
     this.#secure = value;
   }
 
-  get propSecure() {
+  get secure() {
     return this.#secure;
   }
 
-  set propNeighborhood(value) {
-    if (!value || value.trim().length == 0)
-      throw new Error("Nombre del barrio no puede estar vacio", {
+  set neighborhood(value) {
+    if (value == null)
+      throw new Error("Debe indicar un barrio", {
         cause: { code: 400 }
       });
-    this.#neighborhood = value.trim();
+    this.#neighborhood = value;
   }
 
-  get propNeighborhood() {
+  get neighborhood() {
     return this.#neighborhood;
   }
 
-  set propQuizDate(value) {
+  set quizDate(value) {
     if (!value || new Date(value) > new Date())
       throw new Error("Fecha de encuesta no debe ser mayor a fecha actual", {
         cause: { code: 400 }
@@ -64,67 +65,7 @@ export class Quiz {
     this.#quizDate = value;
   }
 
-  get propQuizDate() {
+  get quizDate() {
     return this.#quizDate;
-  }
-
-  async add() {
-    try {
-      const returnValue = await quizDAL.add(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update() {
-    try {
-      const returnValue = await quizDAL.update(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async delete() {
-    try {
-      const returnValue = await quizDAL.delete(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getQuizesYears() {
-    try {
-      const result = await quizDAL.getQuizesYears();
-
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
-  }
-  async getQuizesByNeighbordhoodAndYear(year) {
-    try {
-      const result = await quizDAL.getQuizesNeighbordhoodByYear(year);
-
-      if (result.recordset.length > 0) {
-        result.recordset.forEach((result) => {
-          if (result.secure == null) result.secure = 0;
-          if (result.insecure == null) result.insecure = 0;
-
-          result.total = result.secure + result.insecure;
-
-          result.percentage =
-            result.total == 0 ? 0 : (result.secure * 100) / result.total;
-        });
-      }
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
   }
 }

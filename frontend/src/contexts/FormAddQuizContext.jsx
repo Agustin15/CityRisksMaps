@@ -11,6 +11,7 @@ export const FormAddQuizProvider = ({ children }) => {
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [allTypeCrimes, setAllTypeCrimes] = useState();
   const [emailEntered, setEmailEntered] = useState();
+  const [perceptionSelected, setPerceptionSelected] = useState();
   const [msjErrorEmail, setMsjErrorEmail] = useState();
   const [checked, setChecked] = useState();
   const { setNewQuiz } = useQuizes();
@@ -64,16 +65,13 @@ export const FormAddQuizProvider = ({ children }) => {
       case "neighborhood":
         if (value.length == 0) return "Debe seleccionar un barrio";
         break;
-      case "perception":
-        if (value.length == 0) return "Debe seleccionar una percepcion";
-        break;
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const quiz = { email: "", neighborhood: "", perception: "" };
+    const quiz = { email: "", neighborhood: "", perception: "", reasons: "" };
     let msjError;
 
     const formData = new FormData(event.target);
@@ -86,6 +84,11 @@ export const FormAddQuizProvider = ({ children }) => {
       quiz[key] = value;
     }
 
+    if (!perceptionSelected)
+      return alertSwalWarning("Debe seleccionar una percepcion");
+
+    quiz.perception = perceptionSelected;
+
     const notChecked = Object.values(checked).reduce((ac, check) => {
       if (!check) ac++;
     }, 0);
@@ -93,6 +96,8 @@ export const FormAddQuizProvider = ({ children }) => {
     if (!checked || notChecked == Object.values(checked)) {
       return alertSwalWarning("Debe seleccionar al menos una razon");
     }
+
+    quiz.reasons = checked;
   };
 
   return (
@@ -110,7 +115,8 @@ export const FormAddQuizProvider = ({ children }) => {
         msjErrorEmail,
         setMsjErrorEmail,
         handleClose,
-        handleSubmit
+        handleSubmit,
+        setPerceptionSelected
       }}
     >
       {children}

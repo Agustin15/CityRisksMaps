@@ -2,8 +2,10 @@ const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
-import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
-
+import {
+  useApiIsLoaded,
+  useMap,
+} from "@vis.gl/react-google-maps";
 const MapContext = createContext();
 
 export const MapProvider = ({ children }) => {
@@ -13,6 +15,8 @@ export const MapProvider = ({ children }) => {
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
+
+
   const map = useMap();
 
   useEffect(() => {

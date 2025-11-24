@@ -2,6 +2,7 @@ import styles from "./FormAdd.module.css";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { Reasons } from "./reasons/Reasons";
 import { useFormQuiz } from "../../../../contexts/FormAddQuizContext";
+import { Perception } from "./perception/Perception";
 
 export const FormAdd = () => {
   const { neighbordhoodsCoordinates } = useMapControls();
@@ -11,7 +12,8 @@ export const FormAdd = () => {
     handleEmailChanged,
     handleClose,
     handleSubmit,
-    allTypeCrimes
+    allTypeCrimes,
+    setPerceptionSelected
   } = useFormQuiz();
 
   const abc = [
@@ -90,19 +92,7 @@ export const FormAdd = () => {
           </select>
         </div>
 
-        <div className={styles.perception}>
-          <label className={styles.lblTitle}>Percepcion:</label>
-          <div className={styles.columnPerception}>
-            <div className={styles.rowPerception}>
-              <input type="radio" name="perception" value={"secure"}></input>
-              <label>Seguro</label>
-            </div>
-            <div className={styles.rowPerception}>
-              <input type="radio" name="perception" value={"insecure"}></input>
-              <label>Inseguro</label>
-            </div>
-          </div>
-        </div>
+        <Perception setPerceptionSelected={setPerceptionSelected} />
 
         <Reasons />
 

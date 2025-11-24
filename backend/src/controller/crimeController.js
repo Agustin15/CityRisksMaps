@@ -1,9 +1,8 @@
-import { Crime } from "../model/crime.js";
+import { CrimeService } from "../service/crimeService.js";
 
 export const getCrimesTypeOptions = async (req, res) => {
   try {
-    const crime = new Crime();
-    const crimes = await crime.getCrimesTypeOptions();
+    const crimes = await CrimeService.getCrimesTypeOptions();
 
     if (crimes && crimes.length == 0)
       throw new Error(
@@ -18,8 +17,7 @@ export const getCrimesTypeOptions = async (req, res) => {
 
 export const getAllTypeCrimes = async (req, res) => {
   try {
-    const crime = new Crime();
-    const crimes = await crime.getAllTypeCrimes();
+    const crimes = await CrimeService.getAllTypeCrimes();
 
     if (crimes && crimes.length == 0)
       throw new Error("No se encontraron categorias de crimenes en el sistema");

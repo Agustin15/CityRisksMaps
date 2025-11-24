@@ -1,0 +1,68 @@
+import { CrimeDAL } from "../dataAccess/crimeDAL.js";
+
+export class CrimeService {
+  static async add(crime) {
+    try {
+      if (crime == null) throw new Error("Debe indicar un crimen para agregar");
+
+      const added = await CrimeDAL.add(crime);
+
+      return added;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async update(crime) {
+    try {
+      if (crime == null) throw new Error("Debe indicar un crimen para editar");
+      const updated = await CrimeDAL.update(crime);
+
+      return updated;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async delete(category) {
+    try {
+     
+      const returnValue = await CrimeDAL.delete(category);
+
+      return returnValue;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getCrimeByCategory(category) {
+    try {
+      const result = await CrimeDAL.getCrimeByCategory(category);
+
+      if (result.recordset.length > 0) {
+        return result[0];
+      } else null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAllTypeCrimes() {
+    try {
+      const result = await CrimeDAL.getAllTypeCrimes();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getCrimesTypeOptions() {
+    try {
+      const result = await CrimeDAL.getCrimesTypeOptions();
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+}

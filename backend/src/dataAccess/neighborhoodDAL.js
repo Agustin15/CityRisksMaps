@@ -2,11 +2,15 @@ import sql from "mssql";
 import { connection } from "../config/connection";
 
 export class NeighborhoodDAL {
-  async add(neighbordhood) {
+  static async add(neighbordhood) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), neighbordhood.propName);
-      request.input("idDepartment", sql.Int, neighbordhood.propDepartment);
+      request.input("name", sql.VarChar(30), neighbordhood.name);
+      request.input(
+        "idDepartment",
+        sql.Int,
+        neighbordhood.department.idDepartment
+      );
 
       const result = await request.execute("AddNeighborhood");
 
@@ -29,11 +33,15 @@ export class NeighborhoodDAL {
     }
   }
 
-  async update(neighbordhood) {
+  static async update(neighbordhood) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), neighbordhood.propName);
-      request.input("idDepartment", sql.Int, neighbordhood.propDepartment);
+      request.input("name", sql.VarChar(30), neighbordhood.name);
+      request.input(
+        "idDepartment",
+        sql.Int,
+        neighbordhood.department.idDepartment
+      );
 
       const result = await request.execute("UpdateNeighborhood");
 
@@ -52,10 +60,10 @@ export class NeighborhoodDAL {
     }
   }
 
-  async delete(neighborhood) {
+  static async delete(name) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), neighborhood.propName);
+      request.input("name", sql.VarChar(30), name);
 
       const result = await request.execute("DeleteNeighborhood");
 
@@ -74,7 +82,7 @@ export class NeighborhoodDAL {
     }
   }
 
-  async getNeighborhoods() {
+  static async getNeighborhoods() {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -83,23 +91,23 @@ export class NeighborhoodDAL {
       const result = await ps.execute();
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getNeighborhoodByName(neighbordhood) {
+  static async getNeighborhoodByName(name) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("name", sql.VarChar(30));
 
       await ps.prepare("select * from neighborhoods where name=@name");
 
-      const result = await ps.execute({ name: neighbordhood.propName });
+      const result = await ps.execute({ name: name });
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

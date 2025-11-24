@@ -1,18 +1,20 @@
-import { NeighborhoodCrime } from "../model/neighborhoodCrime.js";
+import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js";
 
 export const getNeighborhoodsCrimeByYear = async (req, res) => {
   try {
     const { year, categoryCrime } = JSON.parse(req.params.optionGet);
 
-    const neighborhoodCrime = new NeighborhoodCrime();
-
-    neighborhoodCrime.propCrime = categoryCrime;
-    neighborhoodCrime.propYear = year;
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
 
     const neighborhoodsCrimes =
-      await neighborhoodCrime.getNeighborhoodsCrimeByYear();
+      await NeighborhoodCrimeService.getNeighborhoodsCrimeByYear(
+        categoryCrime,
+        year
+      );
 
-    if (neighborhoodsCrimes && neighborhoodCrime.length == 0)
+    if (neighborhoodsCrimes.length == 0)
       throw new Error("No hay registros de crimenes en barrios en este año");
 
     res.status(200).json(neighborhoodsCrimes);
@@ -25,12 +27,11 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
   try {
     const { categoryCrime } = JSON.parse(req.params.optionGet);
 
-    const neighborhoodCrime = new NeighborhoodCrime();
-
-    neighborhoodCrime.propCrime = categoryCrime;
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
 
     const yearsNeighborhoodsCrimes =
-      await neighborhoodCrime.getYearsNeighborhoodsCrime();
+      await NeighborhoodCrimeService.getYearsNeighborhoodsCrime(categoryCrime);
 
     if (yearsNeighborhoodsCrimes && yearsNeighborhoodsCrimes.length == 0)
       throw new Error("No hay registros de años de crimenes en barrios");
@@ -45,13 +46,17 @@ export const getCategoryCrimeInNeighborhood = async (req, res) => {
   try {
     const { categoryCrime, neighborhood } = JSON.parse(req.params.optionGet);
 
-    const neighborhoodCrime = new NeighborhoodCrime();
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
 
-    neighborhoodCrime.propNeighborhood = neighborhood;
-    neighborhoodCrime.propCrime = categoryCrime;
+    if (!neighborhood)
+      throw new Error("Debe ingresar un barrio para la busqueda");
 
     const categoryCrimeInNeighborhood =
-      await neighborhoodCrime.getCategoryCrimeInNeighborhood();
+      await NeighborhoodCrimeService.getCategoryCrimeInNeighborhood(
+        categoryCrime,
+        neighborhood
+      );
 
     if (categoryCrimeInNeighborhood && categoryCrimeInNeighborhood.length == 0)
       throw new Error("No hay registros de este crimen en este barrio");

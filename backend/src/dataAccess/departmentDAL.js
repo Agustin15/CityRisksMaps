@@ -2,10 +2,10 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class DepartmentDAL {
-  async add(departament) {
+  static async add(departament) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), departament.propName);
+      request.input("name", sql.VarChar(30), departament.name);
 
       const result = await request.execute("AddDepartment");
 
@@ -24,11 +24,11 @@ export class DepartmentDAL {
     }
   }
 
-  async update(departament) {
+  static async update(departament) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, departament.propIdDepartment);
-      request.input("name", sql.VarChar(30), departament.propName);
+      request.input("idDepartment", sql.Int, departament.idDepartment);
+      request.input("name", sql.VarChar(30), departament.name);
 
       const result = await request.execute("UpdateDepartment");
 
@@ -51,10 +51,10 @@ export class DepartmentDAL {
     }
   }
 
-  async delete(departament) {
+  static async delete(idDepartment) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int, departament.propIdDepartment);
+      request.input("idDepartment", sql.Int,idDepartment);
 
       const result = await request.execute("DeleteDepartment");
       if (result.returnValue == -1)
@@ -72,23 +72,23 @@ export class DepartmentDAL {
     }
   }
 
-  async getDepartmentByName(departament) {
+  static async getDepartmentByName(name) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
       ps.input("name", sql.VarChar(30));
 
       await ps.prepare("select * from departments where name=@name");
 
-      const result = await ps.execute({ name: departament.propName });
+      const result = await ps.execute({ name: name });
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getDepartments() {
+  static async getDepartments() {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -97,7 +97,7 @@ export class DepartmentDAL {
       const result = await ps.execute();
       await ps.unprepare();
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

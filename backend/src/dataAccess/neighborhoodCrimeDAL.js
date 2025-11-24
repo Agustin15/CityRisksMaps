@@ -2,23 +2,23 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class NeighborhoodCrimeDAL {
-  async add(neighborhoodCrime) {
+  static async add(neighborhoodCrime) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input(
         "neighborhood",
         sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
+        neighborhoodCrime.neighborhood.name
       );
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input("quantity", sql.Int, neighborhoodCrime.propQuantity);
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+      request.input("crime", sql.VarChar(10), neighborhoodCrime.crime.category);
+      request.input("quantity", sql.Int, neighborhoodCrime.quantity);
+      request.input("year", sql.Int, neighborhoodCrime.year);
 
       const result = await request.execute("AddNeighborhoodCrime");
 
       switch (result.returnValue) {
-         case -1:
+        case -1:
           throw new Error("Cantidad de denuncias debe ser mayor a cero", {
             cause: { code: 400 }
           });
@@ -43,7 +43,7 @@ export class NeighborhoodCrimeDAL {
               cause: { code: 409 }
             }
           );
-       
+
         case -6:
           throw new Error("Error inesperado al agregar crimen en barrio", {
             cause: { code: 502 }
@@ -55,24 +55,24 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  async update(neighborhoodCrime) {
+  static async update(neighborhoodCrime) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input(
         "neighborhood",
         sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
+        neighborhoodCrime.neighborhood.name
       );
 
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input("quantity", sql.Int, neighborhoodCrime.propQuantity);
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+      request.input("crime", sql.VarChar(10), neighborhoodCrime.crime.category);
+      request.input("quantity", sql.Int, neighborhoodCrime.quantity);
+      request.input("year", sql.Int, neighborhoodCrime.year);
 
       const result = await request.execute("UpdateNeighborhoodCrime");
 
       switch (result.returnValue) {
-          case -1:
+        case -1:
           throw new Error("Cantidad de denuncias debe ser mayor a cero", {
             cause: { code: 400 }
           });
@@ -88,7 +88,7 @@ export class NeighborhoodCrimeDAL {
               cause: { code: 404 }
             }
           );
-      
+
         case -4:
           throw new Error("Error inesperado al actualizar crimen en barrio", {
             cause: { code: 502 }
@@ -101,17 +101,13 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  async delete(neighborhoodCrime) {
+  static async delete(category, nameNeighborhood, year) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
-      );
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+      request.input("crime", sql.VarChar(10), category);
+      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute("DeleteNeighborhoodCrime");
 
@@ -134,7 +130,7 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  async getYearsNeighborhoodsCrime(neighborhoodCrime) {
+  static async getYearsNeighborhoodsCrime(category) {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
@@ -145,44 +141,40 @@ export class NeighborhoodCrimeDAL {
       );
 
       const result = await ps.execute({
-        crime: neighborhoodCrime.propCrime
+        crime: category
       });
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
 
-  async getNeighborhoodsCrimeByYear(neighborhoodCrime) {
+  static async getNeighborhoodsCrimeByYear(category, year) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
-      request.input("year", sql.Int, neighborhoodCrime.propYear);
+      request.input("crime", sql.VarChar(10), category);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute("NeighborhoodsCrimeByYear");
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
   }
-  async getCategoryCrimeInNeighborhood(neighborhoodCrime) {
+  static async getCategoryCrimeInNeighborhood(category, nameNeighborhood) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.propNeighborhood
-      );
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.propCrime);
+      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("crime", sql.VarChar(10), category);
 
       const result = await request.execute(
         "QuantityCategoryCrimeInNeighborhood"
       );
 
-      return result;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

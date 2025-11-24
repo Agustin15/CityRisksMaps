@@ -1,6 +1,4 @@
-import { PopulationDAL } from "../dataAccess/populationDAL.js";
-
-const populationDAL = new PopulationDAL();
+import { Neighborhood } from "./neighborhood.js";
 
 export class Population {
   #idPopulation;
@@ -11,16 +9,16 @@ export class Population {
   constructor(
     idPopulation = 0,
     quantity = 0,
-    neighborhood = "desconocido",
+    neighborhood = new Neighborhood(),
     year = new Date.getFullYear()
   ) {
-    this.propIdPopulation = idPopulation;
-    this.propQuantity = quantity;
-    this.propNeighborhood = neighborhood;
-    this.propYear = year;
+    this.idPopulation = idPopulation;
+    this.quantity = quantity;
+    this.neighborhood = neighborhood;
+    this.year = year;
   }
 
-  set propIdPopulation(value) {
+  set idPopulation(value) {
     if (typeof value != "number")
       throw new Error("Id poblacion debe ser un numero", {
         cause: { code: 400 }
@@ -28,24 +26,24 @@ export class Population {
     this.#idPopulation = value;
   }
 
-  get propIdPopulation() {
+  get idPopulation() {
     return this.#idPopulation;
   }
 
-  set propNeighborhood(value) {
-    if (!value || value.trim().length == 0)
-      throw new Error("Barrio no puede estar vacio", { cause: { code: 400 } });
-    this.#neighborhood = value.trim();
+  set neighborhood(value) {
+    if (value == null)
+      throw new Error("Debe indicar un barrio", { cause: { code: 400 } });
+    this.#neighborhood = value;
   }
 
-  get propNeighborhood() {
+  get neighborhood() {
     return this.#neighborhood;
   }
 
-  get propQuantity() {
+  get quantity() {
     return this.#quantity;
   }
-  set propQuantity(value) {
+  set quantity(value) {
     if (!value || value < 0)
       throw new Error("Cantidad no puede ser un numero negativo", {
         cause: { code: 400 }
@@ -53,78 +51,15 @@ export class Population {
     this.#quantity = value;
   }
 
-  set propYear(value) {
+  set year(value) {
     if (!value || value > new Date().getFullYear())
       throw new Error("Año no puede ser mayor al año actual", {
         cause: { code: 400 }
       });
     this.#year = value;
   }
-  get propYear() {
+  get year() {
     return this.#year;
   }
 
-  async add() {
-    try {
-      const returnValue = await populationDAL.add(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update() {
-    try {
-      const returnValue = await populationDAL.update(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async delete() {
-    try {
-      const returnValue = await populationDAL.delete(this);
-
-      return returnValue;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getPopulationById() {
-    try {
-      const result = await populationDAL.getPopulationById(this);
-      if (result.recordset.length > 0) {
-        return result.recordset[0];
-      } else null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getPopulationByNeighborhoodAndYear() {
-    try {
-      const result = await populationDAL.getPopulationByNeighborhoodAndYear(
-        this
-      );
-
-      if (result.recordset.length > 0) {
-        return result.recordset[0];
-      } else null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getPopulations() {
-    try {
-      const result = await populationDAL.getPopulations();
-      result.recordset;
-    } catch (error) {
-      throw error;
-    }
-  }
 }
