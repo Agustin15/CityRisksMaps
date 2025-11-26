@@ -13,7 +13,7 @@ export const FormAddQuizProvider = ({ children }) => {
   const [emailEntered, setEmailEntered] = useState();
   const [perceptionSelected, setPerceptionSelected] = useState();
   const [msjErrorEmail, setMsjErrorEmail] = useState();
-  const [checked, setChecked] = useState();
+  const [checked, setChecked] = useState([]);
   const { setNewQuiz } = useQuizes();
 
   const fetchGetAllTypeCrimes = async () => {
@@ -87,17 +87,15 @@ export const FormAddQuizProvider = ({ children }) => {
     if (!perceptionSelected)
       return alertSwalWarning("Debe seleccionar una percepcion");
 
-    quiz.perception = perceptionSelected;
+    quiz.perception = perceptionSelected == "secure" ? true : false;
 
-    const notChecked = Object.values(checked).reduce((ac, check) => {
-      if (!check) ac++;
-    }, 0);
-
-    if (!checked || notChecked == Object.values(checked)) {
+    if (checked.length == 0) {
       return alertSwalWarning("Debe seleccionar al menos una razon");
     }
 
     quiz.reasons = checked;
+
+    console.log(quiz);
   };
 
   return (

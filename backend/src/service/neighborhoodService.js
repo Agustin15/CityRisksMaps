@@ -1,4 +1,4 @@
-import { NeighborhoodDAL } from "../dataAccess/neighborhoodDal";
+import { NeighborhoodDAL } from "../dataAccess/neighborhoodDal.js";
 
 export class NeighborhoodService {
   static async add(neighbordhood) {

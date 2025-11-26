@@ -1,36 +1,38 @@
-import { QuizDAL } from "../dataAccess/quizDAL.js";
 import { Neighborhood } from "./neighborhood.js";
-const quizDAL = new QuizDAL();
+import { Participant } from "./participant.js";
 
 export class Quiz {
-  #email;
+  #idQuiz;
+  #participant;
   #secure;
   #neighborhood;
   #quizDate;
 
   constructor(
-    email = "correo@gmail.com",
+    idQuiz = 0,
+    participant = new Participant(),
     secure = 0,
     neighbordhood = new Neighborhood(),
     quizDate = new Date()
   ) {
-    this.email = email;
+    this.idQuiz = idQuiz;
+    this.Participant = participant;
     this.secure = secure;
     this.neighborhood = neighbordhood;
     this.quizDate = quizDate;
   }
 
-  set email(value) {
-    let regexEmail = /\S+@\S+\.\S+/;
+  set idQuiz(value) {
+    if (typeof value != "number")
+      throw new Error("ID de encuesta debe ser un numero", {
+        cause: { code: 400 }
+      });
 
-    if (!regexEmail.test(value))
-      throw new Error("Ingrese un correo valido", { cause: { code: 400 } });
-
-    this.#email = value;
+    this.#idQuiz = value;
   }
 
-  get email() {
-    return this.#email;
+  get idQuiz() {
+    return this.#idQuiz;
   }
 
   set secure(value) {
@@ -43,6 +45,18 @@ export class Quiz {
 
   get secure() {
     return this.#secure;
+  }
+
+  set participant(value) {
+    if (value == null)
+      throw new Error("Debe indicar un participante", {
+        cause: { code: 400 }
+      });
+    this.#participant = value;
+  }
+
+  get participant() {
+    return this.#participant;
   }
 
   set neighborhood(value) {
@@ -58,10 +72,8 @@ export class Quiz {
   }
 
   set quizDate(value) {
-    if (!value || new Date(value) > new Date())
-      throw new Error("Fecha de encuesta no debe ser mayor a fecha actual", {
-        cause: { code: 400 }
-      });
+    if (!value || new Date(value) == "Invalid Date")
+      throw new Error("Fecha de encuesta no valida");
     this.#quizDate = value;
   }
 

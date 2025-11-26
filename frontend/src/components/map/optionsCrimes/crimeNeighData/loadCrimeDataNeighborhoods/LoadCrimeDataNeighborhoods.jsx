@@ -1,5 +1,4 @@
 import styles from "./LoadCrimeDataNeighborhoods.module.css";
-import { NotData } from "../../../notData/NotData";
 import { Loading } from "../../../loading/Loading";
 import { References } from "../references/References";
 import { FilterYears } from "../../../filterYears/FilterYears";
@@ -11,8 +10,6 @@ export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
   return (
     <div className={styles.containDetails}>
       {loadingYears && <Loading />}
-
-      {!loadingYears && !years && <NotData />}
 
       {!loadingYears && years && (
         <>

@@ -1,7 +1,8 @@
 import express from "express";
 import {
   getQuizesNeighbordhoodByYear,
-  getQuizesYears
+  getQuizesYears,
+  add
 } from "../controller/quizController.js";
 
 export const RoutesQuiz = express.Router();
@@ -25,3 +26,5 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
       return getQuizesNeighbordhoodByYear(req, res);
   }
 });
+
+RoutesQuiz.post("/", add);

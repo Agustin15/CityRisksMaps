@@ -2,11 +2,11 @@ import { connection } from "../config/connection.js";
 import sql from "mssql";
 
 export class QuizDAL {
-  static async add(quiz) {
+  static async add(quiz, transaction) {
     try {
-      const request = new sql.Request(connection.pool);
+      const request = new sql.Request(transaction);
 
-      request.input("email", sql.VarChar(30), quiz.email);
+      request.input("participant", sql.VarChar(30), quiz.participant.email);
       request.input("neighbordhood", sql.VarChar(30), quiz.neighbordhood.name);
       request.input("secure", sql.Bit, quiz.secure);
 
@@ -14,14 +14,20 @@ export class QuizDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Correo invalido", { cause: { code: 400 } });
+          throw new Error(
+            "No hay registro de un participante con este correo en el sistema",
+            {
+              cause: { code: 400 }
+            }
+          );
+
         case -2:
           throw new Error("No hay registro de un barrio con nombre", {
             cause: { code: 404 }
           });
         case -3:
           throw new Error(
-            "Ya tienes registrada una encuesta en este barrio y este año",
+            "Ya tiene registrada una encuesta en este barrio y en este año",
             {
               cause: { code: 409 }
             }
@@ -41,10 +47,9 @@ export class QuizDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("email", sql.VarChar(30), quiz.email);
-      request.input("neighbordhood", sql.VarChar(30), quiz.neighbordhood.name);
-      request.input("secure", sql.Bit, quiz.secure);
-
+      request.input("idQuiz", sql.Int, quiz.idQuiz);
+       request.input("secure", sql.Int, quiz.secure);
+  
       const result = await request.execute("UpdateQuiz");
 
       if (result.returnValue == -1)

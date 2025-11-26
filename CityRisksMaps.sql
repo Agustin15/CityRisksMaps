@@ -9,13 +9,13 @@ name VARCHAR(30) NOT NULL UNIQUE,
 
 CREATE TABLE Neighborhoods(
 name VARCHAR(30) Primary key,
-department INT FOREIGN KEY REFERENCES Departments(idDepartment) ON UPDATE CASCADE ON DELETE CASCADE
+department INT NOT NULL FOREIGN KEY REFERENCES Departments(idDepartment) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
 CREATE TABLE Population (
 idPopulation INT IDENTITY (1,1) Primary key,
-neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
+neighborhood VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
 quantity INT NOT NULL CHECK(quantity>=0),
 year INT NOT NULL CHECK(year<=YEAR(GETDATE()))
 );
@@ -35,13 +35,30 @@ year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
 
+
+CREATE TABLE Participants(
+email VARCHAR(30) PRIMARY KEY CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
+created DATETIME NOT NULL DEFAULT GETDATE(),
+lastIncome DATETIME DEFAULT GETDATE(),
+);
+
+
+CREATE TABLE Verifications_Codes(
+code VARCHAR(6) PRIMARY KEY CHECK(LEN(code)=6 and code LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'),
+participant VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
+expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
+attempts INT NOT NULL CHECK(attempts>=0 and attempts<=4)
+);
+
+
 CREATE TABLE Quizes(
 idQuiz INT IDENTITY(1,1) PRIMARY KEY,
-email VARCHAR(30) CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
-neighborhood VARCHAR(30) FOREIGN KEY REFERENCES  Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
+participant VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
+neighborhood VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES  Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
 secure bit NOT NULL,
-quizDate DATE NOT NULL CHECK(quizDate<=GETDATE()),
+quizDate DATE NOT NULL CHECK(quizDate<=GETDATE())
 );
+
 
 CREATE TABLE Quizes_Crimes(
 quiz INT FOREIGN KEY REFERENCES Quizes(idQuiz) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -52,7 +69,8 @@ Primary key(quiz,crime),
 
 GO
 
---ADD
+--------------------------------------------------------------------------------------------------------------
+--Department PROCEDURES
 
 CREATE OR ALTER PROCEDURE AddDepartment @name VARCHAR(30) AS
 BEGIN
@@ -70,6 +88,133 @@ RETURN 1
 END
 GO
 
+
+
+CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
+BEGIN
+
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+RETURN -1
+
+IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
+RETURN -2
+
+UPDATE Departments set name=@name where idDepartment=@idDepartment;
+
+IF(@@ERROR<>0)
+RETURN -3
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE DeleteDepartment @idDepartment INT AS
+BEGIN
+IF NOT EXISTS(select * from Departments where idDepartment=@idDepartment)
+RETURN -1
+
+DELETE from Departments where idDepartment=@idDepartment;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE AllDepartments AS
+BEGIN
+select * from Departments;
+END
+GO
+
+CREATE OR ALTER PROCEDURE DepartmentByName @name INT AS
+BEGIN
+select * from Departments where name=@name
+END
+GO
+
+CREATE OR ALTER PROCEDURE DepartmentById @idDepartment INT AS
+BEGIN
+select * from Departments where idDepartment=@idDepartment
+END
+
+GO
+------------------------------------------------------------------------------------------------------------------
+--Crimes  PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(10),@description VARCHAR(700) AS
+
+BEGIN
+
+IF EXISTS (select * from Crimes where category=@category)
+RETURN -1
+
+INSERT INTO Crimes VALUES(@category,@description);
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(10),@description VARCHAR(700) AS
+
+BEGIN
+
+IF NOT EXISTS (select * from Crimes where category=@category)
+RETURN -1
+
+UPDATE Crimes set description=@description where category=@category;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE DeleteCrime @category VARCHAR(10) AS
+BEGIN
+
+IF NOT EXISTS(select * from Crimes where category=@category)
+RETURN -1
+
+DELETE from Crimes where category=@category;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE CrimesTypeOptions AS
+BEGIN
+
+select * from Crimes where category ='Asesinato' or category ='Hurto' or category ='Rapiña';
+END
+GO
+
+CREATE OR ALTER PROCEDURE GetAllTypeCrimes AS
+BEGIN
+
+select * from Crimes;
+END
+
+GO
+
+------------------------------------------------------------------------------------------------------------------
+--Neighborhoods PROCEDURES
 
 CREATE OR ALTER PROCEDURE AddNeighborhood @name VARCHAR(30), @idDepartment INT AS
 
@@ -92,6 +237,52 @@ RETURN 1
 END
 
 GO
+
+CREATE OR ALTER PROCEDURE UpdateNeighborhood @name VARCHAR(30),@idDepartment INT AS
+BEGIN
+
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+RETURN -1
+
+UPDATE Neighborhoods set department=@idDepartment where name=@name;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteNeighborhood @neighborhood VARCHAR(30) AS
+BEGIN
+
+IF NOT EXISTS(select * from Neighborhood where name=@neighborhood)
+RETURN -1
+DELETE from Neighborhood where name=@neighborhood;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE AllNeighborhoods AS
+BEGIN
+select * from Neighborhoods;
+END
+GO
+
+CREATE OR ALTER PROCEDURE NeighborhoodByName @name VARCHAR(30) AS
+BEGIN
+select * from Neighborhoods where name=@name;
+END
+GO
+
+------------------------------------------------------------------------------------------------------------------
+--Population PROCEDURES
 
 CREATE OR ALTER PROCEDURE AddPopulation @neighbordhood VARCHAR(30), @quantity INT,@year INT AS
 
@@ -117,161 +308,6 @@ RETURN 1
 
 END
 
-GO
-
-CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(10),@description VARCHAR(700) AS
-
-BEGIN
-
-IF EXISTS (select * from Crimes where category=@category)
-RETURN -1
-
-INSERT INTO Crimes VALUES(@category,@description);
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(10),@quantity INT,@year INT AS
-
-BEGIN
-
-IF @quantity<0
-RETURN -1
-
-IF @year>YEAR(GETDATE())
-RETURN -2
-IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
-RETURN -3
-
-IF NOT EXISTS (select * from Crimes where category=@crime)
-RETURN -4
-
-IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year)
-RETURN -5
-
-INSERT INTO Neighborhoods_Crimes VALUES(@neighborhood,@crime,@quantity,@year)
-
-IF(@@ERROR<>0)
-RETURN -6
-
-RETURN 1
-END
-GO
-
-
-CREATE TYPE UT_CategoriesCrimes AS TABLE
-(
-    id INT IDENTITY(1,1),
-    category VARCHAR(10) NOT NULL
-)
-GO
-
-
-CREATE OR ALTER PROCEDURE AddQuiz @email VARCHAR(30),@neighborhood VARCHAR(30),@secure BIT, @categoryCrimes UT_CategoriesCrimes READONLY AS
-BEGIN
-
-IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
-RETURN -1
-
-IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
-RETURN -2
-
-IF EXISTS (select * from Quizes where email=@email and YEAR(quizDate)=YEAR(GETDATE()) and neighborhood=@neighborhood)
-RETURN -3
-
-INSERT INTO Quizes VALUES(@email,@neighborhood,@secure,GETDATE());
-
-
-RETURN IDENT_CURRENT('Quizes');
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE AddQuizCrime @idQuiz INT,@categoryCrimes UT_CategoriesCrimes READONLY AS
-BEGIN
-
-
-IF NOT EXISTS (select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-IF ((select COUNT(category) from @categoryCrimes)=0)
-RETURN -2
-
-BEGIN TRAN
-
-IF ((select COUNT(category) from @categoryCrimes)>0)
-BEGIN
-DECLARE @count int=1;
-DECLARE @rows int;
-SELECT @rows=COUNT(*) FROM @categoryCrimes;
-
-WHILE @count<=@rows
-BEGIN
-
-INSERT INTO Quizes_Crimes VALUES(@idQuiz,(select category from @categoryCrimes where id=@count));
-
-IF(@@ERROR<>0)
-BEGIN
-ROLLBACK TRAN 
-RETURN -2
-END
-
-SET @count = @count + 1 
-
-END
-END
-
-COMMIT TRAN
-
-RETURN 1
-
-END
-GO
-
-
---Update
-
-CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
-BEGIN
-
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -1
-
-IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
-RETURN -2
-
-UPDATE Departments set name=@name where idDepartment=@idDepartment;
-
-IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE UpdateNeighborhood @name VARCHAR(30),@idDepartment INT AS
-BEGIN
-
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -1
-
-UPDATE Neighborhoods set department=@idDepartment where name=@name;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
 GO
 
 
@@ -304,14 +340,13 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(10),@description VARCHAR(700) AS
-
+CREATE OR ALTER PROCEDURE DeletePopulation @idPopulation INT AS
 BEGIN
 
-IF NOT EXISTS (select * from Crimes where category=@category)
+IF NOT EXISTS(select * from Population where @idPopulation=idPopulation )
 RETURN -1
 
-UPDATE Crimes set description=@description where category=@category;
+DELETE from Population where idPopulation=@idPopulation ;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -319,8 +354,40 @@ RETURN -2
 RETURN 1
 
 END
-
 GO
+
+
+
+------------------------------------------------------------------------------------------------------------------
+--NeighborhoodCrimes PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(10),@quantity INT,@year INT AS
+
+BEGIN
+
+IF @quantity<0
+RETURN -1
+
+IF @year>YEAR(GETDATE())
+RETURN -2
+IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
+RETURN -3
+
+IF NOT EXISTS (select * from Crimes where category=@crime)
+RETURN -4
+
+IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year)
+RETURN -5
+
+INSERT INTO Neighborhoods_Crimes VALUES(@neighborhood,@crime,@quantity,@year)
+
+IF(@@ERROR<>0)
+RETURN -6
+
+RETURN 1
+END
+GO
+
 
 CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(10),@quantity INT,@year INT AS
 
@@ -345,92 +412,6 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE UpdateQuiz @idQuiz INT,@secure BIT AS
-BEGIN
-
-IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-UPDATE Quizes set secure=@secure where idQuiz=@idQuiz;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
---DELETE 
-
-CREATE OR ALTER PROCEDURE DeleteDepartment @idDepartment INT AS
-BEGIN
-
-
-IF NOT EXISTS(select * from Departments where idDepartment=@idDepartment)
-RETURN -1
-
-DELETE from Departments where idDepartment=@idDepartment;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeleteNeighborhood @neighborhood VARCHAR(30) AS
-BEGIN
-
-IF NOT EXISTS(select * from Neighborhood where name=@neighborhood)
-RETURN -1
-DELETE from Neighborhood where name=@neighborhood;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeletePopulation @idPopulation INT AS
-BEGIN
-
-IF NOT EXISTS(select * from Population where @idPopulation=idPopulation )
-RETURN -1
-
-DELETE from Population where idPopulation=@idPopulation ;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeleteCrime @category VARCHAR(10) AS
-BEGIN
-
-IF NOT EXISTS(select * from Crimes where category=@category)
-RETURN -1
-
-DELETE from Crimes where category=@category;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
 CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(10),@neighborhood VARCHAR(30),@year INT AS
 BEGIN
 
@@ -447,55 +428,7 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE DeleteQuiz @idQuiz INT AS
-BEGIN
 
-IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-DELETE from Quizes where idQuiz=@idQuiz;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeleteQuizCrime @idQuiz INT,@category VARCHAR AS
-BEGIN
-
-IF NOT EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@category)
-RETURN -1
-
-DELETE from Quizes_Crimes where quiz=@idQuiz and crime=@category;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
---GET
-CREATE OR ALTER PROCEDURE CrimesTypeOptions AS
-BEGIN
-
-select * from Crimes where category ='Asesinato' or category ='Hurto' or category ='Rapiña';
-END
-GO
-
-CREATE OR ALTER PROCEDURE GetAllTypeCrimes AS
-BEGIN
-
-select * from Crimes;
-END
-
-GO
 
 CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(10),@year INT AS
 BEGIN
@@ -521,6 +454,156 @@ END
 
 GO
 
+
+------------------------------------------------------------------------------------------------------------------
+--Participants PROCEDURES
+
+
+CREATE OR ALTER PROCEDURE AddParticipant @email VARCHAR(30) AS
+
+BEGIN
+
+IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
+RETURN -1
+
+IF EXISTS (select * from Participants where email=@email)
+RETURN -2
+
+INSERT INTO Participants(email,lastIncome) VALUES(@email,NULL)
+
+IF(@@ERROR<>0)
+RETURN -3
+
+RETURN 1
+END
+GO
+
+CREATE OR ALTER PROCEDURE ParticipantByEmail @email VARCHAR(30) AS
+BEGIN 
+select * from Participants where email=@email
+END
+
+GO
+
+------------------------------------------------------------------------------------------------------------------
+--VerificationsCodes PROCEDURES
+
+
+CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(6),@participant VARCHAR(30),@expiration DATETIME,@attempts INT AS
+
+BEGIN
+
+IF @code NOT LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'
+RETURN -1
+
+IF NOT EXISTS (select * from Participants where email=@participant)
+RETURN -2
+
+IF EXISTS (select * from Verifications_Codes where code=@code)
+RETURN -3
+
+INSERT INTO Verifications_Codes VALUES(@code,@participant,@expiration,@attempts)
+
+IF(@@ERROR<>0)
+RETURN -4
+
+RETURN 1
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE UpdateVerificationCode @code VARCHAR(6),@attempts INT AS
+BEGIN
+
+IF NOT EXISTS(select * from Verifications_Codes where code=@code)
+RETURN -1
+
+IF LEN(@code)!=6 and @code NOT LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'
+RETURN -2
+
+IF @attempts<0 or @attempts>4
+RETURN -3
+
+UPDATE Verifications_Codes set attempts=@attempts where code=@code;
+
+IF(@@ERROR<>0)
+RETURN -4
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE VerificationCodeByCode @code VARCHAR(6) AS
+BEGIN 
+
+select * from Verifications_Codes where code=@code
+END
+
+GO
+
+------------------------------------------------------------------------------------------------------------------
+--Quizes PROCEDURES
+
+
+CREATE OR ALTER PROCEDURE AddQuiz @participant VARCHAR(30),@neighborhood VARCHAR(30),@secure BIT AS
+BEGIN
+
+
+IF NOT EXISTS (select * from  Participants where email=@participant)
+RETURN -1
+
+IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
+RETURN -2
+
+IF EXISTS (select * from Quizes where participant=@participant and YEAR(quizDate)=YEAR(GETDATE()) and neighborhood=@neighborhood)
+RETURN -3
+
+INSERT INTO Quizes VALUES(@participant,@neighborhood,@secure,GETDATE());
+IF(@@ERROR<>0)
+RETURN -4
+
+RETURN IDENT_CURRENT('Quizes');
+
+END
+GO
+
+
+
+CREATE OR ALTER PROCEDURE UpdateQuiz @idQuiz INT,@secure BIT AS
+BEGIN
+
+IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
+RETURN -1
+
+UPDATE Quizes set secure=@secure where idQuiz=@idQuiz;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE DeleteQuiz @idQuiz INT AS
+BEGIN
+
+IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
+RETURN -1
+
+DELETE from Quizes where idQuiz=@idQuiz;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
 CREATE OR ALTER PROCEDURE QuizesNeighbordhoodByYear @year INT AS
 BEGIN 
 
@@ -533,13 +616,56 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuizAlreadyExist @email VARCHAR(30),@neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
 BEGIN 
 
-select * from Quizes where email=@email and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
+select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
 END
 
 GO
+
+
+------------------------------------------------------------------------------------------------------------------
+--QuizesCrimes PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddQuizCrime @idQuiz INT,@crime VARCHAR(10)AS
+BEGIN
+
+IF NOT EXISTS (select * from Quizes where idQuiz=@idQuiz)
+RETURN -1
+
+IF NOT EXISTS (select * from Crimes where category=@crime)
+RETURN -2
+
+IF EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@crime)
+RETURN -3
+
+INSERT INTO Quizes_Crimes VALUES(@idQuiz,@crime);
+IF(@@ERROR<>0)
+RETURN -4
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE DeleteQuizCrime @idQuiz INT,@category VARCHAR AS
+BEGIN
+
+IF NOT EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@category)
+RETURN -1
+
+DELETE from Quizes_Crimes where quiz=@idQuiz and crime=@category;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
 
 CREATE OR ALTER PROCEDURE CrimesQuiz @idQuiz INT AS
 BEGIN 
@@ -549,8 +675,7 @@ END
 
 GO
 
-
-
+------------------------------------------------------------------------------------------------------------------
 
 EXEC AddDepartment 'Montevideo';
 

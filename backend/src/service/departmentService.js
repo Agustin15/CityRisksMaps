@@ -16,7 +16,7 @@ export class DepartmentService {
     try {
       if (department == null)
         throw new Error("Debe indicar un departamento para editar");
-      
+
       const updated = await DepartmentDAL.update(department);
 
       return updated;
@@ -39,7 +39,18 @@ export class DepartmentService {
     try {
       const result = await DepartmentDAL.getDepartmentByName(name);
 
-      if (result.recordset.length > 0) {
+      if (result.length > 0) {
+        return result[0];
+      } else null;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getDepartmentById(idDepartment) {
+    try {
+      const result = await DepartmentDAL.getDepartmentById(idDepartment);
+
+      if (result.length > 0) {
         return result[0];
       } else null;
     } catch (error) {

@@ -1,5 +1,5 @@
 import sql from "mssql";
-import { connection } from "../config/connection";
+import { connection } from "../config/connection.js";
 
 export class NeighborhoodDAL {
   static async add(neighbordhood) {
@@ -84,12 +84,9 @@ export class NeighborhoodDAL {
 
   static async getNeighborhoods() {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare("select * from neighborhoods");
-
-      const result = await ps.execute();
-      await ps.unprepare();
+      const result = await request.execute("AllNeighborhoods");
 
       return result.recordset;
     } catch (error) {
@@ -99,13 +96,10 @@ export class NeighborhoodDAL {
 
   static async getNeighborhoodByName(name) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("name", sql.VarChar(30));
+      const request = new sql.Request(connection.pool);
+      request.input("name", sql.VarChar(30), name);
 
-      await ps.prepare("select * from neighborhoods where name=@name");
-
-      const result = await ps.execute({ name: name });
-      await ps.unprepare();
+      const result = await request.execute("NeighborhoodByName");
 
       return result.recordset;
     } catch (error) {

@@ -20,7 +20,7 @@ export class DepartmentDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -47,14 +47,14 @@ export class DepartmentDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
   static async delete(idDepartment) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idDepartment", sql.Int,idDepartment);
+      request.input("idDepartment", sql.Int, idDepartment);
 
       const result = await request.execute("DeleteDepartment");
       if (result.returnValue == -1)
@@ -68,38 +68,45 @@ export class DepartmentDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
   static async getDepartmentByName(name) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("name", sql.VarChar(30));
+      const request = new sql.Request(connection.pool);
+      request.input("name", sql.VarChar, name);
 
-      await ps.prepare("select * from departments where name=@name");
+      const result = await request.execute("DepartmentByName");
 
-      const result = await ps.execute({ name: name });
-      await ps.unprepare();
+      result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async getDepartmentById(idDepartment) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idDepartment", sql.Int, idDepartment);
+
+      const result = await request.execute("DepartmentById");
 
       return result.recordset;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
   static async getDepartments() {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare("select * from  departments");
-
-      const result = await ps.execute();
-      await ps.unprepare();
+      const result = await request.execute("AllDepartments");
 
       return result.recordset;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 }

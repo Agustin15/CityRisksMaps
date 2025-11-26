@@ -1,9 +1,12 @@
 import { QuizDAL } from "../dataAccess/quizDAL.js";
 
 export class QuizService {
-  static async add(quiz) {
+  static async add(quiz, transaction) {
     try {
-      const idQuizAdded = await QuizDAL.add(quiz);
+      if (quiz == null)
+        throw new Error("Debe indicar una encuesta para agregar");
+
+      const idQuizAdded = await QuizDAL.add(quiz, transaction);
 
       return idQuizAdded;
     } catch (error) {
@@ -13,6 +16,9 @@ export class QuizService {
 
   static async update(quiz) {
     try {
+      if (quiz == null)
+        throw new Error("Debe indicar una encuesta para editar");
+
       const updated = await QuizDAL.update(quiz);
 
       return updated;

@@ -1,12 +1,13 @@
-import { Quiz } from "./quiz";
+import { Quiz } from "./quiz.js";
+import { Crime } from "./crime.js";
 
 export class QuizCrime {
   #quiz;
-  #crimes;
+  #crime;
 
-  constructor(quiz = new Quiz(), crime = []) {
+  constructor(quiz = new Quiz(), crime = new Crime()) {
     this.quiz = quiz;
-    this.crimes = crime;
+    this.crime = crime;
   }
 
   set quiz(value) {
@@ -20,10 +21,10 @@ export class QuizCrime {
 
   set crimes(value) {
     if (value == null) throw new Error("Debe indicar una crimen");
-    this.#crimes = value;
+    this.#crime = value;
   }
 
   get crimes() {
-    return this.#crimes;
+    return this.#crime;
   }
 }

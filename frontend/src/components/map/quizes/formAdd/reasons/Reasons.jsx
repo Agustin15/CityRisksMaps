@@ -19,17 +19,12 @@ export const Reasons = () => {
     fetchGetAllTypeCrimes();
   }, []);
 
-  useEffect(() => {
-    if (!allTypeCrimes) return;
-    const checked = {};
-
-    allTypeCrimes.map((crime) => ({ ...checked, [crime.category]: false }));
-
-    setChecked(checked);
-  }, [allTypeCrimes]);
-
   const handleChange = (category) => {
-    setChecked({ ...checked, [category]: checked[category] ? false : true });
+    if (checked.find((check) => check == category)) {
+      setChecked(checked.filter((check) => check != category));
+    } else {
+      setChecked([...checked, category]);
+    }
   };
 
   return (
@@ -49,7 +44,7 @@ export const Reasons = () => {
                   uncheckedIcon={false}
                   onColor="#3dcfe2ff"
                   onChange={() => handleChange(crime.category)}
-                  checked={checked[crime.category]}
+                  checked={checked.find((check) => check == crime.category)}
                 ></Switch>
                 {crime.category}
               </li>

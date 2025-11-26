@@ -1,4 +1,5 @@
 import { CrimeDAL } from "../dataAccess/crimeDAL.js";
+import { Crime } from "../model/crime.js";
 
 export class CrimeService {
   static async add(crime) {
@@ -26,7 +27,6 @@ export class CrimeService {
 
   static async delete(category) {
     try {
-     
       const returnValue = await CrimeDAL.delete(category);
 
       return returnValue;
@@ -64,5 +64,21 @@ export class CrimeService {
     } catch (error) {
       throw error;
     }
+  }
+
+  static async validAndMappingCrimes(crimes) {
+    const crimesMapping = [];
+
+    for (const crime in crimes) {
+      const crimeFound = await CrimeService.getCrimeByCategory(crime);
+
+      if (!crimeFound)
+        throw new Error(
+          "No hay registro de un crimen con esta categoria en el sistema"
+        );
+
+      crimesMapping.push(new Crime(crimeFound.category, crimeFound.description));
+    }
+    return crimes;
   }
 }
