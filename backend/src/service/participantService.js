@@ -1,12 +1,12 @@
 import { ParticipantDAL } from "../dataAccess/participantDAL.js";
 
 export class ParticipantService {
-  static async add(participant) {
+  static async add(participant, transaction) {
     try {
       if (!participant)
         throw new Error("Debe indicar un participante para agregar");
 
-      const added = await ParticipantDAL.add(participant);
+      const added = await ParticipantDAL.add(participant, transaction);
 
       return added;
     } catch (error) {

@@ -19,7 +19,9 @@ export const getNeighborhoodsCrimeByYear = async (req, res) => {
 
     res.status(200).json(neighborhoodsCrimes);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };
 
@@ -38,7 +40,9 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
 
     res.status(200).json(yearsNeighborhoodsCrimes);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };
 
@@ -63,6 +67,8 @@ export const getCategoryCrimeInNeighborhood = async (req, res) => {
 
     return res.status(200).json(categoryCrimeInNeighborhood);
   } catch (error) {
-    return res.status(404).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };

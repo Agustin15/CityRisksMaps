@@ -9,7 +9,8 @@
 }
 
 .customBtnConfirm,
-.customBtnConfirmWarning {
+.customBtnConfirmWarning,
+.customBtnConfirSuccess {
     width: 8rem;
     font-weight: bold;
     background: rgb(216, 34, 34);
@@ -19,9 +20,17 @@
     background: rgb(199, 108, 34);
 }
 
+.customBtnConfirmSuccess {
+    background: rgb(49, 196, 35);
+}
+
 .customBtnConfirm:hover {
     background: rgb(184, 23, 23);
 }
 .customBtnConfirmWarning:hover {
     background: rgb(180, 94, 23);
+}
+
+.customBtnConfirmSuccess:hover {
+    background: rgb(37, 145, 27);
 }

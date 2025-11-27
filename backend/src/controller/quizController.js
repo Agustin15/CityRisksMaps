@@ -64,7 +64,9 @@ export const getQuizesYears = async (req, res) => {
 
     res.status(200).json(years);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };
 
@@ -80,6 +82,8 @@ export const getQuizesNeighbordhoodByYear = async (req, res) => {
       throw new Error("No hay registro de encuestas en este año");
     res.status(200).json(quizes);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };

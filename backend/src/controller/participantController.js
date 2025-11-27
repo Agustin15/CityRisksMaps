@@ -2,10 +2,16 @@ import { Participant } from "../model/participant.js";
 import { ParticipantService } from "../service/participantService.js";
 import { VerificationCode } from "../model/verificationCode.js";
 import { VerificationCodeService } from "../service/verificationCodeService.js";
+import { connection } from "../config/connection.js";
+import sql from "mssql";
 
-const verifiyParticipant = async (req, res) => {
+export const verifyParticipant = async (req, res) => {
+  let transaction;
   try {
     const { email } = req.body;
+
+    if (!process.env.EMAIL_FROM) throw new Error("EMAIL_FROM no declarada");
+    if (!process.env.APP_PASSWORD) throw new Error("APP_PASSWORD no declarada");
 
     const participant = new Participant(email);
 
@@ -13,27 +19,32 @@ const verifiyParticipant = async (req, res) => {
       email
     );
 
-    if (!participantFound) {
-      await ParticipantService.add(participant);
-    }
-
     const verificationCode = new VerificationCode();
+    let codeCreated = verificationCode.generateCode();
+    verificationCode.code = codeCreated;
     verificationCode.expiration = verificationCode.generateExpiration();
-    verificationCode.attempts = 0;
     verificationCode.participant = participant;
 
-    while (true) {
-      let codeCreated = verificationCode.generateCode();
+    transaction = new sql.Transaction(connection.pool);
 
-      const codeAlreadyExist =
-        await VerificationCodeService.getVerificationCode(codeCreated);
+    await transaction.begin(4);
 
-      if (!codeAlreadyExist) {
-        verificationCode.code = code;
-        break;
-      }
+    if (!participantFound) {
+      await ParticipantService.add(participant, transaction);
     }
+
+    await VerificationCodeService.add(verificationCode, transaction);
+
+    await VerificationCodeService.sendVerificationCode(codeCreated, email);
+
+    await transaction.commit();
+
+    res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    if (transaction) await transaction.rollback();
+
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };

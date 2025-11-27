@@ -4,7 +4,8 @@
     align-items: center;
     gap: 1rem;
     width: 35%;
-    height: 94%;
+    height: auto;
+    padding-bottom: 4rem;
     background: white;
     border-radius: 5px;
     font-family: Arial, Helvetica, sans-serif;
@@ -48,6 +49,7 @@
     align-items: center;
     gap: 2rem;
 }
+
 .containForm .column {
     display: flex;
     flex-direction: column;
@@ -78,16 +80,6 @@
 
 .containForm label {
     width: 55%;
-}
-
-.containForm input[type="email"] {
-    width: 55%;
-    height: 2.3rem;
-    border: 1px solid gray;
-    font-size: 16px;
-    border-radius: 5px;
-    padding-left: 0.5rem;
-    outline: none;
 }
 
 .containForm input:hover {

@@ -1,0 +1,126 @@
+.verifyEmail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.verifyEmail h4 {
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.verifyEmail h4 img {
+    width: 29px;
+    height: 29px;
+}
+
+.rowOne {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.rowOne button,
+.enterCode button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    padding: 1rem;
+    height: 2rem;
+    border-radius: 4px;
+    background-color: rgb(21, 128, 170);
+    border: none;
+    color: white;
+    font-size: 15px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px rgb(94, 94, 94);
+}
+
+.rowOne button:hover,
+.enterCode button:hover {
+    background-color: rgb(22, 83, 107);
+    box-shadow: none;
+}
+
+.columnOne {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65%;
+    gap: 0.5rem;
+    position: relative;
+}
+.columnOne label {
+    width: 85%;
+}
+
+.columnOne p {
+    color: red;
+    width: auto;
+    font-size: 14px;
+    position: absolute;
+    margin-top: 4.4rem;
+    margin-left: 1rem;
+    width: 89%;
+}
+
+.columnOne input {
+    width: 86%;
+    height: 2.2rem;
+    border: 1px solid gray;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 0.5rem;
+    outline: none;
+    box-shadow: 1px 1px 1px rgb(192, 192, 192);
+}
+
+.columnOne input[type="email"]:hover {
+    border: 2px solid rgb(103, 175, 209);
+}
+
+.enterCode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+.enterCode .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.enterCode label {
+    width: 79%;
+}
+
+.enterCode input {
+    width: 79%;
+}
+
+.enterCode button {
+    margin-top: 0.5rem;
+}
+
+.enterCode .btnSendAgain {
+    box-shadow: none;
+    border: none;
+    background: none;
+    color: rgb(44, 151, 194);
+    margin-top: -0.5rem;
+}
+.enterCode .btnSendAgain:hover {
+    background: none;
+    text-decoration: underline;
+}
+

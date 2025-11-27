@@ -4,18 +4,15 @@ import { randomInt } from "node:crypto";
 export class VerificationCode {
   #code;
   #expiration;
-  #attempts;
   #participant;
 
   constructor(
     code = "000FFF",
     expiration = new Date(),
-    attempts = 0,
     participant = new Participant()
   ) {
     this.code = code;
     this.expiration = expiration;
-    this.attempts = attempts;
     this.participant = participant;
   }
 
@@ -40,15 +37,7 @@ export class VerificationCode {
   get expiration() {
     return this.#expiration;
   }
-  set attempts(value) {
-    if (value < 0 || value > 4)
-      throw new Error("Intento debe ser un numero entre 0 y 4");
-    this.#attempts = value;
-  }
 
-  get attempts() {
-    return this.#attempts;
-  }
   set participant(value) {
     if (!value) throw new Error("Debe indicar un participante");
     this.#participant = value;
@@ -73,6 +62,6 @@ export class VerificationCode {
   }
 
   generateExpiration() {
-    return new Date().getMilliseconds() + 24 * 60 * 60 * 1000;
+    return new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   }
 }

@@ -41,7 +41,7 @@ export const QuizesProvider = ({ children }) => {
   const getQuizesYears = async () => {
     const optionGet = JSON.stringify({ option: "getQuizesYears" });
 
-    const url = `${localhostBackend}/quizes/${optionGet}`;
+    const url = `${localhostBackend}/quiz/${optionGet}`;
 
     return await fetchEndpoint(url, "GET", setLoadingYears);
   };
@@ -52,7 +52,7 @@ export const QuizesProvider = ({ children }) => {
       year: year
     });
 
-    const url = `${localhostBackend}/quizes/${optionGet}`;
+    const url = `${localhostBackend}/quiz/${optionGet}`;
 
     return await fetchEndpoint(url, "GET", setLoadingQuizes);
   };

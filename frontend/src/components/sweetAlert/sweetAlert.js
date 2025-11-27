@@ -18,12 +18,14 @@ export const alertSwalError = (title, error) => {
     }
   });
 };
-export const alertSwalLoading = () => {
+
+export const alertSwalErrorQuiz = (title, error) => {
   Swal.fire({
-    title: "Localizando su ubicacion...",
-    imageUrl: iconGeolocation,
-    imageWidth: 70,
-    imageHeight: 70,
+    title: title,
+    icon: "error",
+    html: `
+    <p class=${styles.customMsj}>${error}</p>
+    `,
     width: 460,
     customClass: {
       title: styles.customTitle,
@@ -31,6 +33,7 @@ export const alertSwalLoading = () => {
     }
   });
 };
+
 
 export const alertSwalWarning = (error) => {
   Swal.fire({
@@ -43,6 +46,22 @@ export const alertSwalWarning = (error) => {
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirmWarning
+    }
+  });
+};
+
+
+export const alertSwalSuccess = (error) => {
+  Swal.fire({
+    title: "¡Exito!",
+    html: `
+    <p class=${styles.customMsj}>${error}</p>
+    `,
+    icon: "success",
+    width: 420,
+    customClass: {
+      title: styles.customTitle,
+      confirmButton: styles.customBtnConfirmSuccess
     }
   });
 };

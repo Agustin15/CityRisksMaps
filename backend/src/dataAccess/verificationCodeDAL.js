@@ -1,10 +1,9 @@
 import sql from "mssql";
-import { connection } from "../config/connection.js";
 
 export class VerificationCodeDAL {
-  static async add(verificationCode) {
+  static async add(verificationCode, transaction) {
     try {
-      const request = new sql.Request(connection.pool);
+      const request = new sql.Request(transaction);
 
       request.input("code", sql.VarChar, verificationCode.code);
       request.input(
@@ -13,19 +12,23 @@ export class VerificationCodeDAL {
         verificationCode.participant.email
       );
       request.input("expiration", sql.DateTime, verificationCode.expiration);
-      request.input("attempts", sql.Int, verificationCode.Int);
 
       const result = await request.execute("AddVerificationCode");
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Formato de codigo no valido");
+          throw new Error(
+            "Fecha de expiration debe ser mayor a la fecha actual del sistema"
+          );
+
         case -2:
-          throw new Error("No hay registro participante en el sistema");
+          throw new Error(
+            "No hay registro de un participante con este correo en el sistema"
+          );
 
         case -3:
           throw new Error(
-            "Ya hay registro de este codigo de verificacion en el sistema"
+            "Ya existe este codigo de verificacion en el sistema"
           );
 
         case -4:
@@ -37,13 +40,16 @@ export class VerificationCodeDAL {
       throw new Error(error);
     }
   }
-  static async getVerificationCode(code) {
+
+  static async getVerificationCodeMostRecentlyByEmail(email, transaction) {
     try {
-      const request = new sql.Request(connection.pool);
+      const request = new sql.Request(transaction);
 
-      request.input("code", sql.VarChar, code);
+      request.input("email", sql.VarChar, email);
 
-      const result = await request.execute("VerificationCodeByCode");
+      const result = await request.execute(
+        "VerificationCodeMostRecentlyByEmail"
+      );
 
       return result.recordset;
     } catch (error) {

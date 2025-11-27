@@ -11,7 +11,9 @@ export const getCrimesTypeOptions = async (req, res) => {
 
     res.status(200).json(crimes);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };
 
@@ -24,6 +26,8 @@ export const getAllTypeCrimes = async (req, res) => {
 
     res.status(200).json(crimes);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };

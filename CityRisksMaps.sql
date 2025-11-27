@@ -44,10 +44,9 @@ lastIncome DATETIME DEFAULT GETDATE(),
 
 
 CREATE TABLE Verifications_Codes(
-code VARCHAR(6) PRIMARY KEY CHECK(LEN(code)=6 and code LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'),
+code VARCHAR(60) PRIMARY KEY,
 participant VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
 expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
-attempts INT NOT NULL CHECK(attempts>=0 and attempts<=4)
 );
 
 
@@ -478,6 +477,20 @@ RETURN 1
 END
 GO
 
+CREATE OR ALTER PROCEDURE DeleteParticipant @email VARCHAR(30) AS
+BEGIN 
+
+IF NOT EXISTS(select * from Participants where email=@email)
+RETURN -1
+
+delete from Participants where email=@email
+IF(@@ERROR<>0)
+RETURN -2
+
+END
+
+GO
+
 CREATE OR ALTER PROCEDURE ParticipantByEmail @email VARCHAR(30) AS
 BEGIN 
 select * from Participants where email=@email
@@ -485,15 +498,17 @@ END
 
 GO
 
+--EXEC  DeleteParticipant  'agus20m05@gmail.com'
+
 ------------------------------------------------------------------------------------------------------------------
 --VerificationsCodes PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(6),@participant VARCHAR(30),@expiration DATETIME,@attempts INT AS
+CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(30),@expiration DATETIME,@attempts INT AS
 
 BEGIN
 
-IF @code NOT LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'
+IF @expiration<GETDATE()
 RETURN -1
 
 IF NOT EXISTS (select * from Participants where email=@participant)
@@ -512,33 +527,10 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE UpdateVerificationCode @code VARCHAR(6),@attempts INT AS
-BEGIN
-
-IF NOT EXISTS(select * from Verifications_Codes where code=@code)
-RETURN -1
-
-IF LEN(@code)!=6 and @code NOT LIKE '[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]'
-RETURN -2
-
-IF @attempts<0 or @attempts>4
-RETURN -3
-
-UPDATE Verifications_Codes set attempts=@attempts where code=@code;
-
-IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE VerificationCodeByCode @code VARCHAR(6) AS
+CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByEmail @email VARCHAR(30) AS
 BEGIN 
 
-select * from Verifications_Codes where code=@code
+select TOP 1 *  from Verifications_Codes where participant=@email ORDER BY expiration DESC
 END
 
 GO

@@ -2,9 +2,9 @@ import sql from "mssql";
 import { connection } from "../config/connection.js";
 
 export class ParticipantDAL {
-  static async add(participant) {
+  static async add(participant, transaction) {
     try {
-      const request = new sql.Request(connection.pool);
+      const request = new sql.Request(transaction);
 
       request.input("email", sql.VarChar, participant.email);
 

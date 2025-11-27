@@ -3,8 +3,12 @@ import { useMapControls } from "../../../../contexts/MapContext";
 import { Reasons } from "./reasons/Reasons";
 import { useFormQuiz } from "../../../../contexts/FormAddQuizContext";
 import { Perception } from "./perception/Perception";
+import { useCookies } from "react-cookie";
+import { VerifyEmail } from "./verifyEmail/VerifyEmail";
 
 export const FormAdd = () => {
+  const [cookies] = useCookies();
+
   const { neighbordhoodsCoordinates } = useMapControls();
   const {
     emailEntered,
@@ -68,38 +72,31 @@ export const FormAdd = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className={styles.column}>
-          <label>Correo:</label>
-          <input
-            autoComplete="off"
-            type="email"
-            name="email"
-            placeholder="Ingrese su correo"
-            value={emailEntered}
-            onChange={(event) => handleEmailChanged(event.target.value)}
-          ></input>
-          {msjErrorEmail && <p>{msjErrorEmail}</p>}
-        </div>
+        {!cookies.email ? <VerifyEmail /> : <label>{cookies.email}</label>}
 
-        <div className={styles.column}>
-          <label>Barrio:</label>
-          <select name="neighborhood">
-            {orderNeighborhoodsByAlphabet().map((neighborhood, index) => (
-              <option key={index} value={neighborhood}>
-                {neighborhood}
-              </option>
-            ))}
-          </select>
-        </div>
+        {cookies.email && (
+          <>
+            <div className={styles.column}>
+              <label>Barrio:</label>
+              <select name="neighborhood">
+                {orderNeighborhoodsByAlphabet().map((neighborhood, index) => (
+                  <option key={index} value={neighborhood}>
+                    {neighborhood}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <Perception setPerceptionSelected={setPerceptionSelected} />
+            <Perception setPerceptionSelected={setPerceptionSelected} />
 
-        <Reasons />
+            <Reasons />
 
-        {allTypeCrimes && (
-          <button type="submit" className={styles.send}>
-            Enviar
-          </button>
+            {allTypeCrimes && (
+              <button type="submit" className={styles.send}>
+                Enviar
+              </button>
+            )}
+          </>
         )}
       </form>
     </div>

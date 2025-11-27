@@ -9,6 +9,7 @@ const FormAddQuizContext = createContext();
 
 export const FormAddQuizProvider = ({ children }) => {
   const [loadingCrimes, setLoadingCrimes] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [allTypeCrimes, setAllTypeCrimes] = useState();
   const [emailEntered, setEmailEntered] = useState();
   const [perceptionSelected, setPerceptionSelected] = useState();
@@ -94,8 +95,6 @@ export const FormAddQuizProvider = ({ children }) => {
     }
 
     quiz.reasons = checked;
-
-    console.log(quiz);
   };
 
   return (
@@ -105,6 +104,8 @@ export const FormAddQuizProvider = ({ children }) => {
         setAllTypeCrimes,
         loadingCrimes,
         setLoadingCrimes,
+        loading,
+        setLoading,
         fetchGetAllTypeCrimes,
         checked,
         setChecked,
