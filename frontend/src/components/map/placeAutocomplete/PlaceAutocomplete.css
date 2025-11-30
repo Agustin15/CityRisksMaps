@@ -29,7 +29,8 @@
   width: 15.7rem;
   height: 2.7rem;
   border: none;
-  border-radius: 25px;
+  border-radius: 6px;
+  box-shadow: 2px 2px 2px gray;
   padding-left: 3rem;
   position: relative;
   z-index: 3;

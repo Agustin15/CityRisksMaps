@@ -48,7 +48,7 @@ export class NeighborhoodService {
     try {
       const result = await NeighborhoodDAL.getNeighborhoodByName(name);
 
-      if (result.recordset.length > 0) {
+      if (result.length > 0) {
         return result[0];
       } else null;
     } catch (error) {

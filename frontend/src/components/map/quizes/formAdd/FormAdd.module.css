@@ -80,6 +80,8 @@
 
 .containForm label {
     width: 55%;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .containForm input:hover {
@@ -90,7 +92,7 @@
     width: 56%;
     height: 2.4rem;
     border: 1px solid gray;
-    font-size: 17px;
+    font-size: 15px;
     border-radius: 5px;
     padding-left: 0.5rem;
     outline: none;
@@ -132,6 +134,7 @@
 
 .perception .rowPerception label {
     font-size: 15px;
+    font-weight: 100;
 }
 
 .perception .rowPerception input {

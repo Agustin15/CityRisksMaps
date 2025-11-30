@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { useMapControls } from "./MapContext";
-import { useZoneCrimes } from "./ZoneCrimesContext";
+import { useMapControls } from "../MapContext";
+import { useZoneCrimes } from "../ZoneCrimesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
@@ -13,7 +13,7 @@ export const QuizesProvider = ({ children }) => {
   const [newQuiz, setNewQuiz] = useState(false);
   const map = useMap();
 
-  const { setYears, setYearSelected, setLoadingYears, setPolygons } =
+  const { setYears, setYearSelected, setLoadingYears, setPolygons, polygons } =
     useZoneCrimes();
   const { neighbordhoodsCoordinates } = useMapControls();
 
@@ -97,11 +97,13 @@ export const QuizesProvider = ({ children }) => {
       );
 
       if (nhQuizFound) {
+        let rateColor =
+          nhQuizFound.total == 0
+            ? "#bbbbbbff"
+            : getRangeSecureQuiz(nhQuizFound.percentage);
+
         neighbordhoodsDataForPolygons.push({
-          rateColor:
-            nhQuizFound.total == 0
-              ? "#bbbbbbff"
-              : getRangeSecureQuiz(nhQuizFound.percentage),
+          rateColor: rateColor,
           coordinates: nhCoordinate.coordinates,
           name: nhQuizFound.name,
           total: nhQuizFound.total,
@@ -115,7 +117,12 @@ export const QuizesProvider = ({ children }) => {
   };
 
   const createPolygonsNeighbordhood = (nhQuizes) => {
-    const polygons = [];
+    if (polygons.length > 0)
+      polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+
+    const polygonsCreated = [];
     const neighbordhoodsDataForPolygons = createArrayForPolygons(nhQuizes);
 
     neighbordhoodsDataForPolygons.forEach((nhData) => {
@@ -131,10 +138,10 @@ export const QuizesProvider = ({ children }) => {
       });
       polygon.setMap(map);
 
-      polygons.push(polygon);
+      polygonsCreated.push(polygon);
     });
 
-    setPolygons(polygons);
+    setPolygons(polygonsCreated);
   };
 
   return (

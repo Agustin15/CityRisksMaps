@@ -1,7 +1,7 @@
 import styles from "./FormAdd.module.css";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { Reasons } from "./reasons/Reasons";
-import { useFormQuiz } from "../../../../contexts/FormAddQuizContext";
+import { useFormQuiz } from "../../../../contexts/quizesContext/FormAddQuizContext";
 import { Perception } from "./perception/Perception";
 import { useCookies } from "react-cookie";
 import { VerifyEmail } from "./verifyEmail/VerifyEmail";
@@ -11,13 +11,11 @@ export const FormAdd = () => {
 
   const { neighbordhoodsCoordinates } = useMapControls();
   const {
-    emailEntered,
-    msjErrorEmail,
-    handleEmailChanged,
     handleClose,
     handleSubmit,
     allTypeCrimes,
-    setPerceptionSelected
+    setValuesForm,
+    valuesForm
   } = useFormQuiz();
 
   const abc = [
@@ -59,7 +57,31 @@ export const FormAdd = () => {
       });
     });
 
+    neighborhoodsOrderByAlphabet.unshift("Seleccionar");
+
     return neighborhoodsOrderByAlphabet;
+  };
+
+  const handleChange = (event) => {
+    let { name, value } = event;
+
+    if (name == "reasons") {
+      if (valuesForm.reasons.find((reason) => reason == value)) {
+        setValuesForm({
+          ...valuesForm,
+          [name]: valuesForm.reasons.filter((reason) => reason != value)
+        });
+      } else {
+        setValuesForm({
+          ...valuesForm,
+          [name]: [...valuesForm.reasons, value]
+        });
+      }
+    } else {
+      if (name == "perception") value = value == "secure" ? 1 : 0;
+
+      setValuesForm({ ...valuesForm, [name]: value });
+    }
   };
 
   return (
@@ -72,13 +94,20 @@ export const FormAdd = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {!cookies.email ? <VerifyEmail /> : <label>{cookies.email}</label>}
+        {!cookies.email ? (
+          <VerifyEmail />
+        ) : (
+          <label>Correo: {cookies.email}</label>
+        )}
 
         {cookies.email && (
           <>
             <div className={styles.column}>
               <label>Barrio:</label>
-              <select name="neighborhood">
+              <select
+                onChange={(event) => handleChange(event.target)}
+                name="neighborhoodSelected"
+              >
                 {orderNeighborhoodsByAlphabet().map((neighborhood, index) => (
                   <option key={index} value={neighborhood}>
                     {neighborhood}
@@ -87,9 +116,9 @@ export const FormAdd = () => {
               </select>
             </div>
 
-            <Perception setPerceptionSelected={setPerceptionSelected} />
+            <Perception handleChange={handleChange} />
 
-            <Reasons />
+            <Reasons handleChange={handleChange} />
 
             {allTypeCrimes && (
               <button type="submit" className={styles.send}>

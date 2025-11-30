@@ -1,9 +1,9 @@
 import styles from "./ContainQuizes.module.css";
-import { useQuizes } from "../../../../contexts/QuizesContext";
 import iconQuizes from "../../../../assets/img/quizes.png";
+import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
+import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 import { Table } from "../Table";
 import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 
 export const ContainQuizes = () => {
   const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();

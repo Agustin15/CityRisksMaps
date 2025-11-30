@@ -11,7 +11,7 @@ export class NeighborhoodCrimeDAL {
         sql.VarChar(30),
         neighborhoodCrime.neighborhood.name
       );
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.crime.category);
+      request.input("crime", sql.VarChar(20), neighborhoodCrime.crime.category);
       request.input("quantity", sql.Int, neighborhoodCrime.quantity);
       request.input("year", sql.Int, neighborhoodCrime.year);
 
@@ -65,7 +65,7 @@ export class NeighborhoodCrimeDAL {
         neighborhoodCrime.neighborhood.name
       );
 
-      request.input("crime", sql.VarChar(10), neighborhoodCrime.crime.category);
+      request.input("crime", sql.VarChar(20), neighborhoodCrime.crime.category);
       request.input("quantity", sql.Int, neighborhoodCrime.quantity);
       request.input("year", sql.Int, neighborhoodCrime.year);
 
@@ -105,7 +105,7 @@ export class NeighborhoodCrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("crime", sql.VarChar(10), category);
+      request.input("crime", sql.VarChar(20), category);
       request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
       request.input("year", sql.Int, year);
 
@@ -134,7 +134,7 @@ export class NeighborhoodCrimeDAL {
     try {
       const ps = new sql.PreparedStatement(connection.pool);
 
-      ps.input("crime", sql.VarChar(10));
+      ps.input("crime", sql.VarChar(20));
 
       await ps.prepare(
         "select DISTINCT year from Neighborhoods_Crimes where crime=@crime ORDER BY year desc"
@@ -154,7 +154,7 @@ export class NeighborhoodCrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("crime", sql.VarChar(10), category);
+      request.input("crime", sql.VarChar(20), category);
       request.input("year", sql.Int, year);
 
       const result = await request.execute("NeighborhoodsCrimeByYear");
@@ -168,7 +168,7 @@ export class NeighborhoodCrimeDAL {
       const request = new sql.Request(connection.pool);
 
       request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
-      request.input("crime", sql.VarChar(10), category);
+      request.input("crime", sql.VarChar(20), category);
 
       const result = await request.execute(
         "QuantityCategoryCrimeInNeighborhood"

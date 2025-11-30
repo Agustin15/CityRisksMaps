@@ -6,7 +6,7 @@ export class CrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.category);
+      request.input("category", sql.VarChar(20), crime.category);
       request.input("description", sql.VarChar(700), crime.description);
 
       const result = await request.execute("AddCrime");
@@ -30,7 +30,7 @@ export class CrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), crime.category);
+      request.input("category", sql.VarChar(20), crime.category);
       request.input("description", sql.VarChar(700), crime.description);
 
       const result = await request.execute("UpdateCrime");
@@ -54,7 +54,7 @@ export class CrimeDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("category", sql.VarChar(10), category);
+      request.input("category", sql.VarChar(20), category);
 
       const result = await request.execute("DeleteCrime");
 
@@ -75,15 +75,11 @@ export class CrimeDAL {
 
   static async getCrimeByCategory(category) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("category", sql.Int);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare("select * from crimes where category=@category");
-      const result = await ps.execute({
-        category: category
-      });
+      request.input("category", sql.VarChar(20), category);
 
-      await ps.unprepare();
+      const result = await request.execute("CrimeByCategory");
 
       return result.recordset;
     } catch (error) {

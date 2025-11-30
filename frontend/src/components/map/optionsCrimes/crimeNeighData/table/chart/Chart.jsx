@@ -1,9 +1,9 @@
-const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 import styles from "./Chart.module.css";
 import iconNoData from "../../../../../../assets/img/notData.png";
+import { useState } from "react";
 import { useEffect } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
-import { useState } from "react";
+const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 

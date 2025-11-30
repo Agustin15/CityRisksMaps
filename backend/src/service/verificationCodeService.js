@@ -19,13 +19,10 @@ export class VerificationCodeService {
     }
   }
 
-  static async getVerificationCodeMostRecentlyByEmail(email, transaction) {
+  static async getVerificationCodeMostRecentlyByEmail(email) {
     try {
       const result =
-        await VerificationCodeDAL.getVerificationCodeMostRecentlyByEmail(
-          email,
-          transaction
-        );
+        await VerificationCodeDAL.getVerificationCodeMostRecentlyByEmail(email);
 
       if (result.length > 0) {
         return result[0];

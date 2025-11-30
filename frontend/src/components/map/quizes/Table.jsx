@@ -1,8 +1,8 @@
-import { useQuizes } from "../../../contexts/QuizesContext";
+import styles from "./Table.module.css";
+import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 import { NotData } from "../notData/NotData";
 import { Loading } from "../loading/Loading";
 import { Rows } from "./rows/Rows";
-import styles from "./Table.module.css";
 
 export const Table = () => {
   const { loadingQuizes, neighborhoodsQuizesByYear } = useQuizes();

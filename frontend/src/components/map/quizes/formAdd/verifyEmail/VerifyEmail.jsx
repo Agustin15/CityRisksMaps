@@ -1,12 +1,12 @@
-import iconInfo from "../../../../../assets/img/info.png";
 import styles from "./VerifyEmail.module.css";
-import { useState } from "react";
-import { useFormQuiz } from "../../../../../contexts/FormAddQuizContext";
+import iconInfo from "../../../../../assets/img/info.png";
 import {
   alertSwalErrorQuiz,
   alertSwalSuccess,
   alertSwalWarning
 } from "../../../../sweetAlert/sweetAlert";
+import { useState } from "react";
+import { useFormQuiz } from "../../../../../contexts/quizesContext/FormAddQuizContext";
 import { VerificationCode } from "./verificationCode/VerificationCode";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 

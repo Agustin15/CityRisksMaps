@@ -7,7 +7,7 @@ export class QuizDAL {
       const request = new sql.Request(transaction);
 
       request.input("participant", sql.VarChar(30), quiz.participant.email);
-      request.input("neighbordhood", sql.VarChar(30), quiz.neighbordhood.name);
+      request.input("neighborhood", sql.VarChar(30), quiz.neighborhood.name);
       request.input("secure", sql.Bit, quiz.secure);
 
       const result = await request.execute("AddQuiz");
@@ -48,8 +48,8 @@ export class QuizDAL {
       const request = new sql.Request(connection.pool);
 
       request.input("idQuiz", sql.Int, quiz.idQuiz);
-       request.input("secure", sql.Int, quiz.secure);
-  
+      request.input("secure", sql.Bit, quiz.secure);
+
       const result = await request.execute("UpdateQuiz");
 
       if (result.returnValue == -1)

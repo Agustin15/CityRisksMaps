@@ -1,13 +1,13 @@
 import styles from "../FormAdd.module.css";
 
-export const Perception = ({setPerceptionSelected}) => {
+export const Perception = ({ handleChange }) => {
   return (
     <div className={styles.perception}>
       <label className={styles.lblTitle}>Percepcion:</label>
       <div className={styles.columnPerception}>
         <div className={styles.rowPerception}>
           <input
-            onChange={(event) => setPerceptionSelected(event.target.value)}
+            onChange={(event) => handleChange(event.target)}
             type="radio"
             name="perception"
             value={"secure"}
@@ -16,7 +16,7 @@ export const Perception = ({setPerceptionSelected}) => {
         </div>
         <div className={styles.rowPerception}>
           <input
-            onChange={(event) => setPerceptionSelected(event.target.value)}
+            onChange={(event) => handleChange(event.target)}
             type="radio"
             name="perception"
             value={"insecure"}

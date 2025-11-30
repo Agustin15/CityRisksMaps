@@ -22,14 +22,14 @@ year INT NOT NULL CHECK(year<=YEAR(GETDATE()))
 
 
 CREATE TABLE Crimes(
-category VARCHAR(10) Primary key CHECK(category in('Asesinato','Rapiña','Hurto')),
+category VARCHAR(20) Primary key,
 description VARCHAR(700) NOT NULL
 );
 
 
 CREATE TABLE Neighborhoods_Crimes(
 neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
-crime VARCHAR(10) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
+crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
 quantity INT CHECK(quantity>=0),
 year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
@@ -61,10 +61,9 @@ quizDate DATE NOT NULL CHECK(quizDate<=GETDATE())
 
 CREATE TABLE Quizes_Crimes(
 quiz INT FOREIGN KEY REFERENCES Quizes(idQuiz) ON UPDATE CASCADE ON DELETE CASCADE,
-crime VARCHAR(10) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
+crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
 Primary key(quiz,crime),
 );
-
 
 GO
 
@@ -145,7 +144,7 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --Crimes  PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(10),@description VARCHAR(700) AS
+CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(20),@description VARCHAR(700) AS
 
 BEGIN
 
@@ -163,7 +162,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(10),@description VARCHAR(700) AS
+CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(20),@description VARCHAR(700) AS
 
 BEGIN
 
@@ -181,7 +180,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE DeleteCrime @category VARCHAR(10) AS
+CREATE OR ALTER PROCEDURE DeleteCrime @category VARCHAR(20) AS
 BEGIN
 
 IF NOT EXISTS(select * from Crimes where category=@category)
@@ -208,6 +207,14 @@ CREATE OR ALTER PROCEDURE GetAllTypeCrimes AS
 BEGIN
 
 select * from Crimes;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE CrimeByCategory @category VARCHAR(30) AS
+BEGIN
+
+select * from Crimes where category=@category;
 END
 
 GO
@@ -360,7 +367,7 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --NeighborhoodCrimes PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(10),@quantity INT,@year INT AS
+CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(20),@quantity INT,@year INT AS
 
 BEGIN
 
@@ -388,7 +395,7 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(10),@quantity INT,@year INT AS
+CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(20),@quantity INT,@year INT AS
 
 BEGIN
 
@@ -411,7 +418,7 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(10),@neighborhood VARCHAR(30),@year INT AS
+CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@neighborhood VARCHAR(30),@year INT AS
 BEGIN
 
 IF NOT EXISTS(select * from Neighborhoods_Crimes where crime=@crime and neighborhood=@neighborhood and @year=year)
@@ -429,7 +436,7 @@ GO
 
 
 
-CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(10),@year INT AS
+CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(20),@year INT AS
 BEGIN
 
 
@@ -445,7 +452,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuantityCategoryCrimeInNeighborhood @neighborhood VARCHAR(30),@crime VARCHAR(10) AS
+CREATE OR ALTER PROCEDURE QuantityCategoryCrimeInNeighborhood @neighborhood VARCHAR(30),@crime VARCHAR(20) AS
 BEGIN 
 
 select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime ORDER BY YEAR;
@@ -504,7 +511,7 @@ GO
 --VerificationsCodes PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(30),@expiration DATETIME,@attempts INT AS
+CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(30),@expiration DATETIME AS
 
 BEGIN
 
@@ -517,7 +524,7 @@ RETURN -2
 IF EXISTS (select * from Verifications_Codes where code=@code)
 RETURN -3
 
-INSERT INTO Verifications_Codes VALUES(@code,@participant,@expiration,@attempts)
+INSERT INTO Verifications_Codes VALUES(@code,@participant,@expiration)
 
 IF(@@ERROR<>0)
 RETURN -4
@@ -620,7 +627,7 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --QuizesCrimes PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddQuizCrime @idQuiz INT,@crime VARCHAR(10)AS
+CREATE OR ALTER PROCEDURE AddQuizCrime @idQuiz INT,@crime VARCHAR(20)AS
 BEGIN
 
 IF NOT EXISTS (select * from Quizes where idQuiz=@idQuiz)
@@ -642,7 +649,7 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE DeleteQuizCrime @idQuiz INT,@category VARCHAR AS
+CREATE OR ALTER PROCEDURE DeleteQuizCrime @idQuiz INT,@category VARCHAR(20) AS
 BEGIN
 
 IF NOT EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@category)
@@ -819,6 +826,11 @@ EXEC AddCrime 'Rapiña','Se clasifican como Rapiñas todos los incidentes en que s
 intentó sustraer, por medio de la fuerza o amenaza de uso de la fuerza,
 cualquier objeto o propiedad, al cuidado o bajo la custodia de otra o varias
 personas.'
+
+
+EXEC AddCrime 'Tráfico de drogas','El delito de tráfico de drogas se define como un delito contra la salud pública que se 
+comete al ejecutar actos de cultivo, elaboración o tráfico, o al promover, favorecer o facilitar el 
+consumo ilegal de drogas tóxicas, estupefacientes o sustancias psicotrópicas, o cuando se poseen con los fines mencionados.'
 
 
 

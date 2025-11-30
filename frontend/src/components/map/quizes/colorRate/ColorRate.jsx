@@ -1,5 +1,5 @@
-import { useQuizes } from "../../../../contexts/QuizesContext";
 import styles from "./ColorRate.module.css";
+import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 
 export const ColorRate = ({ total, percentage }) => {
   const { getRangeSecureQuiz } = useQuizes();

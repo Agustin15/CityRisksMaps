@@ -5,10 +5,10 @@ import iconHoldup from "../../../assets/img/holdup.png";
 import iconQuizes from "../../../assets/img/quizes.png";
 import { useState } from "react";
 import { useEffect } from "react";
-import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
-import { useQuizes } from "../../../contexts/QuizesContext";
+import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 import { ContainQuizes } from "../quizes/containQuizes/ContainQuizes";
+import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const OptionsCrimes = () => {

@@ -7,6 +7,7 @@ import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesQuiz } from "./route/routeQuiz.js";
 import { RoutesParticipant } from "./route/routeParticipant.js";
 import { RoutesVerificationCode } from "./route/routeVerificationCode.js";
+import cookieParser from "cookie-parser";
 
 const limiterOptions = {
   windowMs: 30 * 60 * 1000,
@@ -32,7 +33,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: process.env.LOCALHOST_FRONTEND, credentials: true }));
-
+app.use(cookieParser())
 app.use(limitRate);
 
 try {

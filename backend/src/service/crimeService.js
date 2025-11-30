@@ -38,8 +38,7 @@ export class CrimeService {
   static async getCrimeByCategory(category) {
     try {
       const result = await CrimeDAL.getCrimeByCategory(category);
-
-      if (result.recordset.length > 0) {
+      if (result.length > 0) {
         return result[0];
       } else null;
     } catch (error) {
@@ -69,7 +68,7 @@ export class CrimeService {
   static async validAndMappingCrimes(crimes) {
     const crimesMapping = [];
 
-    for (const crime in crimes) {
+    for (const crime of crimes) {
       const crimeFound = await CrimeService.getCrimeByCategory(crime);
 
       if (!crimeFound)
@@ -77,8 +76,11 @@ export class CrimeService {
           "No hay registro de un crimen con esta categoria en el sistema"
         );
 
-      crimesMapping.push(new Crime(crimeFound.category, crimeFound.description));
+      crimesMapping.push(
+        new Crime(crimeFound.category, crimeFound.description)
+      );
     }
-    return crimes;
+
+    return crimesMapping;
   }
 }

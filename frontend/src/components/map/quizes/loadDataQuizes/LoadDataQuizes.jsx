@@ -1,10 +1,11 @@
 import styles from "./LoadDataQuizes.module.css";
 import iconAdd from "../../../../assets/img/add.png";
+import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 import { Loading } from "../../loading/Loading";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { References } from "../references/References";
-import { useQuizes } from "../../../../contexts/QuizesContext";
+
 
 export const LoadDataQuizes = () => {
   const { loadingYears, years } = useZoneCrimes();

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const comprobateVerificationCode = async (req, res) => {
   try {
-    const { email, codeEntered } = req.body();
+    const { email, codeEntered } = req.body;
 
     if (!email || email.length == 0) throw new Error("Debe ingresar un correo");
 
@@ -27,17 +27,14 @@ export const comprobateVerificationCode = async (req, res) => {
     if (new Date(verificationCodeFound.expiration) <= new Date() || !match)
       throw new Error("Codigo de verificacion ingresado no valido");
 
-    const token = jwt.sign(
-      { email: email, hash: verificationCodeFound.code },
-      proccess.env.SECRET_KEY_TOKEN,
-      {
-        expiresIn: "1 day"
-      }
-    );
+    const token = jwt.sign({ email: email }, process.env.SECRET_KEY_TOKEN, {
+      expiresIn: "1 day"
+    });
 
     res.cookie("authToken", token, {
       maxAge: 24 * 60 * 60 * 1000,
-      httpOnly: true
+      httpOnly: true,
+      sameSite: "none"
     });
 
     res.status(200).json(true);

@@ -13,35 +13,43 @@ import sql from "mssql";
 export const add = async (req, res) => {
   let transaction;
   try {
-    const { email, nameNeighborhood, perception, crimes } = req.body;
+    const { email, neighborhoodSelected, perception, reasons } = req.body;
+    let crimesMapping;
 
     const participant = new Participant(email);
-    const crimesMapping = await CrimeService.validAndMappingCrimes(crimes);
 
+    if (reasons.length > 0) {
+      crimesMapping = await CrimeService.validAndMappingCrimes(reasons);
+    }
     const neighbordhoodFound = await NeighborhoodService.getNeighborhoodByName(
-      nameNeighborhood
+      neighborhoodSelected
     );
+
     const departmentFound = await DepartmentService.getDepartmentById(
-      neighbordhoodFound.idDepartment
+      neighbordhoodFound.department
     );
     const department = new Department(
       departmentFound.idDepartment,
       departmentFound.name
     );
-    const neighbordhood = new Neighborhood(neighbordhoodFound.name, department);
+
+    const neighborhood = new Neighborhood(neighbordhoodFound.name, department);
 
     const quiz = new Quiz();
+
     quiz.participant = participant;
     quiz.secure = perception;
-    quiz.neighborhood = neighbordhood;
+    quiz.neighborhood = neighborhood;
 
     transaction = new sql.Transaction(connection.pool);
-    await transaction.begin("SERIALIZABLE");
+    await transaction.begin(4);
 
     const idQuizAdded = await QuizService.add(quiz, transaction);
-    quiz.idQuiz = idQuizAdded;
 
-    await QuizCrimeService.add(quiz, crimesMapping, transaction);
+    if (crimesMapping) {
+      quiz.idQuiz = idQuizAdded;
+      await QuizCrimeService.add(quiz, crimesMapping, transaction);
+    }
 
     await transaction.commit();
 

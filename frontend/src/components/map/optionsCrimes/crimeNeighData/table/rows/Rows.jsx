@@ -1,6 +1,6 @@
+import styles from "../Table.module.css";
 import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 import { ColorRate } from "../colorRate/ColorRate";
-import styles from "../Table.module.css";
 import { Chart } from "../chart/Chart";
 
 export const Rows = ({

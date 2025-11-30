@@ -51,11 +51,11 @@ export const alertSwalWarning = (error) => {
 };
 
 
-export const alertSwalSuccess = (error) => {
+export const alertSwalSuccess = (msj) => {
   Swal.fire({
     title: "¡Exito!",
     html: `
-    <p class=${styles.customMsj}>${error}</p>
+    <p class=${styles.customMsj}>${msj}</p>
     `,
     icon: "success",
     width: 420,

@@ -1,4 +1,5 @@
 import sql from "mssql";
+import { connection } from "../config/connection.js";
 
 export class VerificationCodeDAL {
   static async add(verificationCode, transaction) {
@@ -41,9 +42,9 @@ export class VerificationCodeDAL {
     }
   }
 
-  static async getVerificationCodeMostRecentlyByEmail(email, transaction) {
+  static async getVerificationCodeMostRecentlyByEmail(email) {
     try {
-      const request = new sql.Request(transaction);
+      const request = new sql.Request(connection.pool);
 
       request.input("email", sql.VarChar, email);
 

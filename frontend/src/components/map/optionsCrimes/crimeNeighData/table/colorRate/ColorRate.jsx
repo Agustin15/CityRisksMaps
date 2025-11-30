@@ -1,5 +1,5 @@
-import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 import styles from "./ColorRate.module.css";
+import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 
 export const ColorRate = ({ rate, crime }) => {
   const { getCrimeRange } = useZoneCrimes();

@@ -1,7 +1,7 @@
+import "./PlaceAutocomplete.css";
+import iconClose from "../../../assets/img/close.png";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useEffect, useRef, useState } from "react";
-import iconClose from "../../../assets/img/close.png";
-import "./PlaceAutocomplete.css";
 import { useMapControls } from "../../../contexts/MapContext";
 import { geocodingPlace } from "./GeocodingPlace";
 

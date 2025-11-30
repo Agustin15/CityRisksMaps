@@ -1,5 +1,5 @@
-import myLocation from "../../../assets/img/myLocation.png";
 import styles from "./MyGeolocation.module.css";
+import myLocation from "../../../assets/img/myLocation.png";
 import { useMapControls } from "../../../contexts/MapContext";
 
 export const MyGeolocation = () => {

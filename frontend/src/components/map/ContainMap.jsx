@@ -8,8 +8,12 @@ import {
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
+import { useState } from "react";
+import { useRoutes } from "../../contexts/RoutesContext";
+import { useQuizes } from "../../contexts/quizesContext/QuizesContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
+import { useZoneCrimes } from "../../contexts/ZoneCrimesContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
 import { PlaceAutocomplete } from "./placeAutocomplete/PlaceAutocomplete";
 import "./placeAutocomplete/PlaceAutocomplete.css";
@@ -20,15 +24,11 @@ import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
 import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
-import { useZoneCrimes } from "../../contexts/ZoneCrimesContext.jsx";
 import { MenuRoute } from "./menuRoute/MenuRoute";
-import { useState } from "react";
-import { useRoutes } from "../../contexts/RoutesContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { FormAdd } from "./quizes/formAdd/FormAdd.jsx";
-import { useQuizes } from "../../contexts/QuizesContext.jsx";
-import { FormAddQuizProvider } from "../../contexts/FormAddQuizContext.jsx";
+import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizContext.jsx";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
