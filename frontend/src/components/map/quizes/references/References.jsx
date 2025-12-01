@@ -10,14 +10,17 @@ export const References = () => {
   ];
 
   return (
-    <ul className={styles.ulReferences}>
-      {references &&
-        references.map((data, index) => (
-          <li key={index}>
-            <div style={{ backgroundColor: data.color }}></div>
-            <span>{data.range}</span>
-          </li>
-        ))}
-    </ul>
+    <div className={styles.references}>
+      <h4>Referencias de tasas de denuncias:</h4>
+      <ul className={styles.ulReferences}>
+        {references &&
+          references.map((data, index) => (
+            <li key={index}>
+              <div style={{ backgroundColor: data.color }}></div>
+              <span>{data.range}</span>
+            </li>
+          ))}
+      </ul>
+    </div>
   );
 };

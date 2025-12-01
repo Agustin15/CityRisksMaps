@@ -122,4 +122,18 @@ export class QuizDAL {
       throw error;
     }
   }
+
+  static async getSecurityPercentagesInNeighborhood(neighbordhood) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("neighborhood", sql.VarChar(30), neighbordhood);
+
+      const result = await request.execute("QuizQuantitySecureInNeighborhood");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

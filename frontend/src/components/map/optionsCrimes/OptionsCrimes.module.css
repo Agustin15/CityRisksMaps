@@ -43,6 +43,11 @@
     box-shadow: none;
 }
 
+.menuOptionsCrimes li .showQuizesSelected {
+    box-shadow: none;
+    background-color: rgb(39, 39, 202);
+}
+
 .menuOptionsCrimes li .btnHurto {
     background-color: rgb(243, 221, 22);
 }

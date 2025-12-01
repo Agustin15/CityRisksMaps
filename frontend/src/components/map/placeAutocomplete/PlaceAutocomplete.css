@@ -1,5 +1,5 @@
 .pac-container {
-  width: 20rem !important;
+  width: 18rem !important;
   left: 2.5rem !important;
   border-radius: 5px;
 }
@@ -23,49 +23,54 @@
 
 .autocompleteContainer {
   margin-left: 2rem;
+  position: relative;
 }
 
 .autocompleteContainer input {
-  width: 15.7rem;
-  height: 2.7rem;
+  width: 17rem;
+  height: 2.5rem;
   border: none;
-  border-radius: 6px;
-  box-shadow: 2px 2px 2px gray;
-  padding-left: 3rem;
-  position: relative;
+  border-radius: 8px;
+  box-shadow: 1px 1px 1px gray;
+  padding-left: 1rem;
+  padding-right: 3.5rem;
   z-index: 3;
   margin-top: 0.5rem;
-  padding-right: 2.4rem;
   outline: none;
   color: rgb(53, 53, 53);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
-  background-image: url("../../../assets/img/search.png");
-  background-size: 28px;
-  background-position-y: 0.5rem;
-  background-position-x: 0.6rem;
-  background-repeat: no-repeat;
+}
+
+.autocompleteContainer input::placeholder {
+  color: rgb(124, 124, 124);
 }
 
 .autocompleteContainer button {
   position: absolute;
   z-index: 7;
-  opacity: 86%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: none;
   border: none;
-  margin-left: 18.6rem;
-  height: 2.8rem;
-  margin-top: 0.6rem;
+  margin-left: 18.5rem;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+  width: 4rem;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  height: 2.7rem;
+  margin-top: 0.5rem;
   cursor: pointer;
+  background-color: rgb(55, 128, 211);
 }
-.autocompleteContainer button img {
-  width: 22px;
-  height: 22px;
+.autocompleteContainer button:hover {
+  background-color: rgb(49, 117, 194);
 }
 
-.autocompleteContainer input::placeholder {
-  color: rgb(124, 124, 124);
+.autocompleteContainer button img {
+  width: 21px;
+  height: 21px;
 }

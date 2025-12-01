@@ -440,10 +440,12 @@ CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(20),@year INT 
 BEGIN
 
 
-select name,P.quantity as 'quantiyPopulation',P.year as 'yearPopulation',NC.quantity as 'quantiyCrime',NC.year as 'yearCrime'
+select name,P.quantity as 'quantityPopulation',P.year as 'yearPopulation',NC.quantity as 'quantityCrime',NC.year as 'yearCrime'
 from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on N.name=NC.neighborhood INNER JOIN 
+
 (select * from Population where (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
 (select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)  as 'diferencia' 
+
 from Population ORDER BY 'diferencia' asc)) P on P.neighborhood=NC.neighborhood 
 where crime=@crime and NC.year=@year ORDER BY (CASE when NC.quantity is null then null WHEN NC.quantity is not null 
 THEN((CAST (NC.quantity AS DECIMAL(7,2))/P.quantity)*100000) END) desc;
@@ -505,7 +507,13 @@ END
 
 GO
 
---EXEC  DeleteParticipant  'agus20m05@gmail.com'
+CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
+BEGIN 
+
+select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
+END
+
+GO
 
 ------------------------------------------------------------------------------------------------------------------
 --VerificationsCodes PROCEDURES
@@ -615,13 +623,24 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
-BEGIN 
+CREATE OR ALTER PROCEDURE QuizQuantitySecureInNeighborhood @neighborhood VARCHAR(30) AS
+BEGIN
 
-select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
+select Neighborhoods.name,t1.year,t1.quantityQuizes,t2.quantitySecure  
+from Neighborhoods INNER JOIN
+
+(select neighborhood,YEAR(quizDate) as 'year',COUNT(*) as 'quantityQuizes' from Quizes where neighborhood=@neighborhood 
+GROUP BY neighborhood,YEAR(quizDate)) as t1 on t1.neighborhood=Neighborhoods.name LEFT JOIN
+
+(select neighborhood,YEAR(quizDate) as 'year',COUNT(*) as 'quantitySecure' from Quizes where neighborhood=@neighborhood 
+and secure=1 GROUP BY neighborhood,YEAR(quizDate)) as t2 on t1.neighborhood=Neighborhoods.name 
+
+ORDER BY t1.year asc; 
+
 END
 
 GO
+
 
 
 ------------------------------------------------------------------------------------------------------------------
@@ -675,7 +694,7 @@ END
 GO
 
 ------------------------------------------------------------------------------------------------------------------
-
+--EXEC  DeleteParticipant  'agus20m05@gmail.com'
 EXEC AddDepartment 'Montevideo';
 
 EXEC AddNeighborhood 'Aguada',1;

@@ -2,6 +2,7 @@ import express from "express";
 import {
   getQuizesNeighbordhoodByYear,
   getQuizesYears,
+  getSecurityPercentagesInNeighborhood,
   add
 } from "../controller/quizController.js";
 
@@ -24,6 +25,9 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
 
     case "getQuizesNeighbordhoodByYear":
       return getQuizesNeighbordhoodByYear(req, res);
+
+    case "getSecurityPercentagesInNeighborhood":
+      return getSecurityPercentagesInNeighborhood(req, res);
   }
 });
 

@@ -1,11 +1,11 @@
 import styles from "./LoadDataQuizes.module.css";
 import iconAdd from "../../../../assets/img/add.png";
+import iconEdit from "../../../../assets/img/edit.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 import { Loading } from "../../loading/Loading";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { References } from "../references/References";
-
 
 export const LoadDataQuizes = () => {
   const { loadingYears, years } = useZoneCrimes();
@@ -15,13 +15,17 @@ export const LoadDataQuizes = () => {
     <div className={styles.containDetails}>
       {loadingYears && <Loading />}
 
-      <div className={styles.containAdd}>
+      <div className={styles.containOptionsQuiz}>
         <button
+          className={styles.btnAddQuiz}
           onClick={() => {
             if (!newQuiz) setNewQuiz(true);
           }}
         >
           Nueva encuesta <img src={iconAdd}></img>
+        </button>
+        <button className={styles.btnEditQuiz}>
+          Editar encuesta <img src={iconEdit}></img>
         </button>
       </div>
       {!loadingYears && years && (

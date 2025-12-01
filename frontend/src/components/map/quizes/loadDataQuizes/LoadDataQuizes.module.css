@@ -29,36 +29,46 @@
     margin-top: 0;
 }
 
-.containDetails .containAdd {
+.containDetails .containOptionsQuiz {
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 98%;
+    width: 99%;
+    padding-bottom: 0.5rem;
+    padding-left: 1%;
+    gap: 1rem;
+    border-bottom: 1px solid rgb(206, 206, 206);
 }
 
-.containDetails button {
+.containDetails .containOptionsQuiz button {
     color: white;
-    background-color: rgb(48, 48, 230);
-    border-radius: 45px;
+    border-radius: 4px;
     border: none;
     height: 1.9rem;
     width: auto;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    margin-top: 1rem;
+    padding: 0 0.5rem 0 0.5rem;
+    margin-top: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 2px 2px 2px gray;
     cursor: pointer;
+    box-shadow: 2px 2px 2px gray;
 }
 
-.containDetails button:hover {   
+.containDetails .containOptionsQuiz button:hover {
     box-shadow: none;
 }
 
-.containDetails img {
-    width: 21px;
-    height: 21px;
+.containDetails .containOptionsQuiz .btnAddQuiz {
+    background-color: rgb(51, 207, 77);
+}
+
+.containDetails .containOptionsQuiz .btnEditQuiz {
+    background-color: rgb(30, 147, 182);
+}
+
+.containDetails .containOptionsQuiz button img {
+    width: 19px;
+    height: 19px;
 }

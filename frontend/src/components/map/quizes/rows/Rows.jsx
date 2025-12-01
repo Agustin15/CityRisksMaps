@@ -1,4 +1,5 @@
 import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
 import styles from "../Table.module.css";
 
@@ -30,18 +31,18 @@ export const Rows = ({ numberRow, quiz }) => {
 
         <td>{quiz.total == 0 ? "Sin encuestas" : quiz.percentage + "%"}</td>
       </tr>
-      {/* {indexChartActive == numberRow && (
+      {indexChartActive == numberRow && (
         <tr>
-          <td colSpan={4}>
+          <td colSpan={5}>
             {
               <Chart
-                categoryCrime={crime}
-                nameNeighborhood={neighborhoodCrime.name}
+                categoryCrime={null}
+                nameNeighborhood={quiz.name}
               />
             }
           </td>
         </tr>
-      )} */}
+      )}
     </>
   );
 };

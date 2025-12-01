@@ -44,8 +44,10 @@ export const OptionsCrimes = () => {
     setCrimeSelected(crime.category);
   };
   const handleClickQuizes = () => {
-    loadDataQuizes();
-    setShowQuizes(true);
+    if (!showQuizes) {
+      loadDataQuizes();
+      setShowQuizes(true);
+    }
   };
 
   return (
@@ -53,7 +55,10 @@ export const OptionsCrimes = () => {
       <ul className={styles.menuOptionsCrimes}>
         {crimes && (
           <li>
-            <button onClick={handleClickQuizes}>
+            <button
+              className={showQuizes ? styles.showQuizesSelected : ""}
+              onClick={handleClickQuizes}
+            >
               Encuestas percepcion
               <img src={iconQuizes}></img>
             </button>

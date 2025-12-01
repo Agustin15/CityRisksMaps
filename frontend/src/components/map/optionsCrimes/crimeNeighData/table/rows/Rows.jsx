@@ -1,7 +1,7 @@
 import styles from "../Table.module.css";
 import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
 import { ColorRate } from "../colorRate/ColorRate";
-import { Chart } from "../chart/Chart";
+import { Chart } from "../../../../chart/Chart";
 
 export const Rows = ({
   handleClickNeighborhood,
@@ -30,11 +30,11 @@ export const Rows = ({
           <div className={styles.nameNeighborhood}>
             <ColorRate
               rate={
-                neighborhoodCrime.quantiyCrime == null
+                neighborhoodCrime.quantityCrime == null
                   ? null
                   : defineCrimeRate(
-                      neighborhoodCrime.quantiyCrime,
-                      neighborhoodCrime.quantiyPopulation
+                      neighborhoodCrime.quantityCrime,
+                      neighborhoodCrime.quantityPopulation
                     )
               }
               crime={crime}
@@ -43,17 +43,17 @@ export const Rows = ({
           </div>
         </td>
         <td>
-          {neighborhoodCrime.quantiyCrime == null
+          {neighborhoodCrime.quantityCrime == null
             ? "Sin Datos"
-            : neighborhoodCrime.quantiyCrime}
+            : neighborhoodCrime.quantityCrime}
         </td>
-        <td>{neighborhoodCrime.quantiyPopulation.toLocaleString()}</td>
+        <td>{neighborhoodCrime.quantityPopulation.toLocaleString()}</td>
         <td>
-          {neighborhoodCrime.quantiyCrime == null
+          {neighborhoodCrime.quantityCrime == null
             ? "Sin Datos"
             : defineCrimeRate(
-                neighborhoodCrime.quantiyCrime,
-                neighborhoodCrime.quantiyPopulation
+                neighborhoodCrime.quantityCrime,
+                neighborhoodCrime.quantityPopulation
               )}
         </td>
       </tr>

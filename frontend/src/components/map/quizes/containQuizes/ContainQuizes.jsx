@@ -7,7 +7,13 @@ import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
 
 export const ContainQuizes = () => {
   const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();
-  const { setYears, setYearSelected, setPolygons, polygons } = useZoneCrimes();
+  const {
+    setYears,
+    setYearSelected,
+    setPolygons,
+    polygons,
+    setIndexChartActive
+  } = useZoneCrimes();
 
   const handleClose = () => {
     if (polygons.length > 0) {
@@ -17,6 +23,7 @@ export const ContainQuizes = () => {
       setPolygons([]);
     }
 
+    setIndexChartActive(null);
     setNeighborhoodsQuizesByYear();
     setYears();
     setYearSelected();
@@ -29,7 +36,7 @@ export const ContainQuizes = () => {
         <div className={styles.close}>
           <button onClick={handleClose}>x</button>
         </div>
-        
+
         <div className={styles.title}>
           <h3>Encuestas de percepcion</h3>
           <img src={iconQuizes}></img>

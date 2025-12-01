@@ -61,8 +61,8 @@ export const ZoneCrimesProvider = ({ children }) => {
     return await fetchEndpoint(url, setLoadingYears);
   };
 
-  const defineCrimeRate = (quantiyCrime, quantiyPopulation) => {
-    return Math.floor((quantiyCrime / quantiyPopulation) * 100000);
+  const defineCrimeRate = (quantityCrime, quantityPopulation) => {
+    return Math.floor((quantityCrime / quantityPopulation) * 100000);
   };
 
   const defineCrimeRange = (rate, ranges) => {
@@ -72,6 +72,7 @@ export const ZoneCrimesProvider = ({ children }) => {
       { rate: rate >= ranges[4] && rate <= ranges[5], color: "#fa7c06ff" },
       { rate: rate >= ranges[6], color: "#f73d1cff" }
     ];
+
     const crimeRangeFound = crimeRanges.find((item) => item.rate == true);
     if (crimeRangeFound) {
       return crimeRangeFound.color;
@@ -99,22 +100,23 @@ export const ZoneCrimesProvider = ({ children }) => {
           nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
         ) {
           const rate =
-            nhCrime.quantiyCrime == null
+            nhCrime.quantityCrime == null
               ? null
               : defineCrimeRate(
-                  nhCrime.quantiyCrime,
-                  nhCrime.quantiyPopulation
+                  nhCrime.quantityCrime,
+                  nhCrime.quantityPopulation
                 );
 
           const colorRange =
             rate == null ? null : getCrimeRange(rate, categoryCrime);
 
           nhCrimeCoordinates.push({
+            name: nhCrime.name,
+            quantityCrime: nhCrime.quantityCrime,
+            rate: rate,
+            rateColor: colorRange ? colorRange : "#bbbbbbff",
             categoryCrime: categoryCrime,
             coordinates: nhCoordinate.coordinates,
-            name: nhCrime.name,
-            quantityCrime: nhCrime.quantiyCrime,
-            rateColor: colorRange ? colorRange : "#bbbbbbff",
             type: "crime"
           });
         }
@@ -167,6 +169,8 @@ export const ZoneCrimesProvider = ({ children }) => {
       year,
       categoryCrime
     );
+
+    console.log(neighborhoodsCrime);
 
     if (neighborhoodsCrime) {
       setNeighborhoodsCrimeByYear(neighborhoodsCrime);

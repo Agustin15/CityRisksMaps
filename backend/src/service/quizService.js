@@ -66,4 +66,27 @@ export class QuizService {
       throw error;
     }
   }
+
+  static async getSecurityPercentagesInNeighborhood(neighborhood) {
+    try {
+      const result = await QuizDAL.getSecurityPercentagesInNeighborhood(
+        neighborhood
+      );
+
+      if (result.length > 0) {
+        result.forEach((quizData) => {
+          quizData.quantitySecure = quizData.quantitySecure
+            ? quizData.quantitySecure
+            : 0;
+
+          quizData.securityPercentage =
+            (quizData.quantitySecure * 100) / quizData.quantityQuizes;
+        });
+      }
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

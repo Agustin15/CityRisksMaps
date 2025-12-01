@@ -95,3 +95,26 @@ export const getQuizesNeighbordhoodByYear = async (req, res) => {
       .json({ messageError: error.message });
   }
 };
+
+export const getSecurityPercentagesInNeighborhood = async (req, res) => {
+  try {
+    const { neighborhood } = JSON.parse(req.params.optionGet);
+
+    if (!neighborhood)
+      throw new Error("Debe ingresar un barrio  para la busqueda");
+
+    const quizesSecurityPercentages =
+      await QuizService.getSecurityPercentagesInNeighborhood(neighborhood);
+
+    if (quizesSecurityPercentages.length == 0)
+      throw new Error(
+        "No se hay registros de encuestas de este barrio en el sistema"
+      );
+
+    res.status(200).json(quizesSecurityPercentages);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};

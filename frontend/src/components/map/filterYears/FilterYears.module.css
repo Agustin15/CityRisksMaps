@@ -3,9 +3,9 @@
     justify-content: start;
     align-items: center;
     width: 98%;
-    padding: 0;
-    padding-bottom: 0.5rem;
-    padding-left: 1%;
+    margin: 0;
+    margin-top: 0.5rem;
+    padding: 0 0 0.5rem 1%;
     gap: 1rem;
     list-style: none;
     overflow-x: scroll;
@@ -27,6 +27,10 @@
     color: rgb(255, 255, 255);
     border: none;
     box-shadow: none;
+}
+
+.years li .yearSelected:hover {
+    background-color: rgb(40, 98, 173);
 }
 
 .years li .yearUnselected {
