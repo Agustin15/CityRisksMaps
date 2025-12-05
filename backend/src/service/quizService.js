@@ -1,4 +1,4 @@
-import { QuizDAL } from "../dataAccess/quizDAL.js";
+import { QuizDAL } from "../dataAccessLayer/quizDAL.js";
 
 export class QuizService {
   static async add(quiz, transaction) {
@@ -83,6 +83,41 @@ export class QuizService {
             (quizData.quantitySecure * 100) / quizData.quantityQuizes;
         });
       }
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getYearsOfParticipantQuizes(participant) {
+    try {
+      const result = await QuizDAL.getYearsOfParticipantQuizes(participant);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getQuizesByParticipantAndYear(participant, year) {
+    try {
+      const result = await QuizDAL.getQuizesByParticipantAndYear(
+        participant,
+        year
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getLimitQuizesByParticipantAndYear(participant, year, offset) {
+    try {
+      const result = await QuizDAL.getLimitQuizesByParticipantAndYear(
+        participant,
+        year,
+        offset
+      );
 
       return result;
     } catch (error) {

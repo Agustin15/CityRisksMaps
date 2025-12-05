@@ -1,0 +1,97 @@
+.pac-container {
+  width: 22.6rem !important;
+  left: 1.5rem !important;
+  margin-top: 0.5rem !important;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.pac-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.pac-item:hover {
+  background-color: #f0f0f0;
+}
+
+.pac-item-query {
+  font-weight: bold;
+  color: #333;
+}
+
+.autocompleteContainer {
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 4;
+  width: auto;
+  padding: 0.6rem;
+  background-color: white;
+}
+
+.autocompleteContainer input {
+  width: 14rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 5px;
+  padding-left: 2rem;
+  padding-right: 5rem;
+  position: relative;
+  z-index: 3;
+  outline: none;
+  background-color: #eeeeee;
+  color: rgb(71, 71, 71);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  background-image: url("../../../assets/img/destinyAddress.png");
+  background-repeat: no-repeat;
+  background-size: 21px;
+  background-position-y: 0.6rem;
+  background-position-x: 0.3rem;
+}
+
+.autocompleteContainer input::placeholder {
+  color: rgb(124, 124, 124);
+}
+
+.autocompleteContainer .showClose,
+.autocompleteContainer .showSearch {
+  position: absolute;
+  z-index: 7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  margin-left: 19rem;
+  width: auto;
+  height: 2.6rem;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  background: none;
+}
+.autocompleteContainer .hideClose {
+  display: none;
+}
+
+.autocompleteContainer .showSearch {
+  margin-left: 15rem;
+}
+.autocompleteContainer .hideSearch {
+  display: none;
+}
+
+.autocompleteContainer button img {
+  width: 21px;
+  height: 21px;
+}

@@ -1,66 +1,27 @@
 import styles from "./FormAdd.module.css";
-import { useMapControls } from "../../../../contexts/MapContext";
 import { Reasons } from "./reasons/Reasons";
-import { useFormQuiz } from "../../../../contexts/quizesContext/FormAddQuizContext";
 import { Perception } from "./perception/Perception";
+import { VerifyEmail } from "../verifyEmail/VerifyEmail";
+import { VerifyProvider } from "../../../../contexts/VerifyContext";
+import { NotData } from "./notData/NotData";
+import { Loading } from "./loading/Loading";
+import { useFormQuiz } from "../../../../contexts/quizesContext/FormAddQuizContext";
 import { useCookies } from "react-cookie";
-import { VerifyEmail } from "./verifyEmail/VerifyEmail";
+import { useEffect } from "react";
 
 export const FormAdd = () => {
   const [cookies] = useCookies();
 
-  const { neighbordhoodsCoordinates } = useMapControls();
   const {
     handleClose,
     handleSubmit,
+    loadingNeigh,
     allTypeCrimes,
+    getNeighborhoodsNotUsed,
+    neighborhoodsNotUsed,
     setValuesForm,
     valuesForm
   } = useFormQuiz();
-
-  const abc = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "Ñ",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z"
-  ];
-
-  const orderNeighborhoodsByAlphabet = () => {
-    const neighborhoodsOrderByAlphabet = [];
-    abc.forEach((letter) => {
-      neighbordhoodsCoordinates.forEach((neighborhoodCoord) => {
-        if (letter == neighborhoodCoord.neighborhood.substring(0, 1))
-          neighborhoodsOrderByAlphabet.push(neighborhoodCoord.neighborhood);
-      });
-    });
-
-    neighborhoodsOrderByAlphabet.unshift("Seleccionar");
-
-    return neighborhoodsOrderByAlphabet;
-  };
 
   const handleChange = (event) => {
     let { name, value } = event;
@@ -84,6 +45,12 @@ export const FormAdd = () => {
     }
   };
 
+  useEffect(() => {
+    if (neighborhoodsNotUsed) return;
+    getNeighborhoodsNotUsed();
+  }, []);
+
+  console.log(neighborhoodsNotUsed);
   return (
     <div className={styles.containForm}>
       <div className={styles.header}>
@@ -95,32 +62,41 @@ export const FormAdd = () => {
 
       <form onSubmit={handleSubmit}>
         {!cookies.email ? (
-          <VerifyEmail />
+          <VerifyProvider>
+            <VerifyEmail />
+          </VerifyProvider>
         ) : (
           <label>Correo: {cookies.email}</label>
         )}
 
         {cookies.email && (
           <>
-            <div className={styles.column}>
-              <label>Barrio:</label>
-              <select
-                onChange={(event) => handleChange(event.target)}
-                name="neighborhoodSelected"
-              >
-                {orderNeighborhoodsByAlphabet().map((neighborhood, index) => (
-                  <option key={index} value={neighborhood}>
-                    {neighborhood}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {loadingNeigh && <Loading />}
+            {!loadingNeigh && !neighborhoodsNotUsed && (
+              <NotData msj={"No hay registros de barrios en el sistema"} />
+            )}
+
+            {neighborhoodsNotUsed && loadingNeigh == false && (
+              <div className={styles.column}>
+                <label>Barrio:</label>
+                <select
+                  onChange={(event) => handleChange(event.target)}
+                  name="neighborhoodSelected"
+                >
+                  {neighborhoodsNotUsed.map((neighborhood, index) => (
+                    <option key={index} value={neighborhood.name}>
+                      {neighborhood.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <Perception handleChange={handleChange} />
 
             <Reasons handleChange={handleChange} />
 
-            {allTypeCrimes && (
+            {allTypeCrimes && neighborhoodsNotUsed && (
               <button type="submit" className={styles.send}>
                 Enviar
               </button>

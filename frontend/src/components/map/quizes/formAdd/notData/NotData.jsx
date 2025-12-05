@@ -1,11 +1,11 @@
 import iconNotData from "../../../../../assets/img/notData.png";
 import styles from "./NotData.module.css";
 
-export const NotData = () => {
+export const NotData = ({msj}) => {
   return (
     <div className={styles.notData}>
       <img src={iconNotData}></img>
-      <span>No se encontraron registros de crimenes en el sistema</span>
+      <span>{msj}</span>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { VerificationCodeDAL } from "../dataAccess/verificationCodeDAL.js";
+import { VerificationCodeDAL } from "../dataAccessLayer/verificationCodeDAL.js";
 import bcrypt from "bcrypt";
 
 export class VerificationCodeService {
@@ -51,8 +51,8 @@ export class VerificationCodeService {
           "Verificacion de encuesta sobre percepcion de seguridad barrio",
         html: `<p>¡Hola!, hemos recibido una solicitud para verificar su correo para proseguir
               con la encuesta.</p>
-              <p>Ingrese este codigo para verificar la encuesta</p>
-          ${code}
+              <p>Ingrese este codigo para la verificacion</p>
+          <h3>${code}</h3>
 
           <p>El codigo caducara en 24 horas</p>
 

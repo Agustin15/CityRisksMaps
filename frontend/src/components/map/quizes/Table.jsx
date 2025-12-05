@@ -1,11 +1,23 @@
 import styles from "./Table.module.css";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
+import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
+import { useMapControls } from "../../../contexts/MapContext";
+import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../notData/NotData";
 import { Loading } from "../loading/Loading";
 import { Rows } from "./rows/Rows";
+import { focusPolygon } from "../optionsCrimes/crimeNeighData/table/focusPolygon.js";
 
 export const Table = () => {
+  const map = useMap();
   const { loadingQuizes, neighborhoodsQuizesByYear } = useQuizes();
+  const { neighbordhoodsCoordinates } = useMapControls();
+  const { loadingYears, polygons } = useZoneCrimes();
+
+  const handleClickNeighborhood = (neighborhood) => {
+    focusPolygon(neighbordhoodsCoordinates, neighborhood, polygons, map);
+  };
+
   return (
     <div className={styles.containTable}>
       <div className={styles.scroll}>
@@ -21,24 +33,31 @@ export const Table = () => {
           </thead>
 
           <tbody>
-            {loadingQuizes && (
+            {loadingQuizes == true && (
               <tr>
                 <td colSpan={4} rowSpan={4}>
                   <Loading />
                 </td>
               </tr>
             )}
-            {!loadingQuizes && !neighborhoodsQuizesByYear && (
-              <tr>
-                <td colSpan={4} rowSpan={4}>
-                  <NotData />
-                </td>
-              </tr>
-            )}
-            {!loadingQuizes &&
+            {loadingYears == false &&
+              loadingQuizes == false &&
+              !neighborhoodsQuizesByYear && (
+                <tr>
+                  <td colSpan={4} rowSpan={4}>
+                    <NotData />
+                  </td>
+                </tr>
+              )}
+            {loadingQuizes == false &&
               neighborhoodsQuizesByYear &&
               neighborhoodsQuizesByYear.map((quiz, index) => (
-                <Rows key={index} numberRow={index} quiz={quiz} />
+                <Rows
+                  key={index}
+                  numberRow={index}
+                  quiz={quiz}
+                  handleClickNeighborhood={handleClickNeighborhood}
+                />
               ))}
           </tbody>
         </table>

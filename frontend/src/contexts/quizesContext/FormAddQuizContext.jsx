@@ -2,29 +2,37 @@ import { useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import { useQuizes } from "./QuizesContext";
+import { useCookies } from "react-cookie";
+import { useZoneCrimes } from "../ZoneCrimesContext.jsx";
+
 import {
   alertSwalSuccess,
   alertSwalWarning
 } from "../../components/sweetAlert/sweetAlert.js";
-import { useCookies } from "react-cookie";
-import { fetchGetAllTypeCrimes, fetchSendQuiz } from "./fetchQuizes.js";
-import { useZoneCrimes } from "../ZoneCrimesContext.jsx";
+import {
+  fetchGetAllTypeCrimes,
+  fetchGetNeighborhoodsNotUsed,
+  fetchSendQuiz
+} from "./fetchsFormAddQuizes.js";
 
 const FormAddQuizContext = createContext();
 
 export const FormAddQuizProvider = ({ children }) => {
   const [cookies] = useCookies();
   const [loadingCrimes, setLoadingCrimes] = useState(false);
+  const [loadingNeigh, setLoadingNeigh] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [allTypeCrimes, setAllTypeCrimes] = useState();
-  const [emailEntered, setEmailEntered] = useState();
-  const [msjErrorEmail, setMsjErrorEmail] = useState();
+  const [neighborhoodsNotUsed, setNeighborhoodsNotUsed] = useState();
+
   const [valuesForm, setValuesForm] = useState({
     email: cookies && cookies.email ? cookies.email : "",
     neighborhoodSelected: "",
     perception: "",
     reasons: []
   });
+
   const { setNewQuiz, loadQuizesDataNeighborhoodsByYear, loadDataQuizes } =
     useQuizes();
   const { yearSelected } = useZoneCrimes();
@@ -32,16 +40,8 @@ export const FormAddQuizProvider = ({ children }) => {
   const getAllTypeCrimes = () =>
     fetchGetAllTypeCrimes(setLoadingCrimes, setAllTypeCrimes);
 
-  const handleEmailChanged = (email) => {
-    let regexEmail = /\S+@\S+\.\S+/;
-    if (!regexEmail.test(email)) {
-      setMsjErrorEmail("Ingrese un correo valido");
-    } else {
-      setMsjErrorEmail();
-    }
-
-    setEmailEntered(email);
-  };
+  const getNeighborhoodsNotUsed = () =>
+    fetchGetNeighborhoodsNotUsed(setLoadingNeigh, setNeighborhoodsNotUsed);
 
   const cleanForm = () => {
     document.querySelector("form").reset();
@@ -54,9 +54,8 @@ export const FormAddQuizProvider = ({ children }) => {
   };
 
   const handleClose = () => {
-    setMsjErrorEmail();
-    setEmailEntered();
     setAllTypeCrimes();
+    setNeighborhoodsNotUsed();
     cleanForm();
     setNewQuiz(false);
   };
@@ -104,23 +103,23 @@ export const FormAddQuizProvider = ({ children }) => {
 
       cleanForm();
       alertSwalSuccess("¡Encuesta realizada exitosamente!");
+      return getNeighborhoodsNotUsed();
     }
   };
 
   return (
     <FormAddQuizContext.Provider
       value={{
+        getNeighborhoodsNotUsed,
+        neighborhoodsNotUsed,
         allTypeCrimes,
         setAllTypeCrimes,
         loadingCrimes,
         setLoadingCrimes,
+        loadingNeigh,
         loading,
         setLoading,
         getAllTypeCrimes,
-        emailEntered,
-        handleEmailChanged,
-        msjErrorEmail,
-        setMsjErrorEmail,
         handleClose,
         handleSubmit,
         valuesForm,

@@ -77,4 +77,16 @@ export class QuizCrimeDAL {
       throw new Error(error);
     }
   }
+  static async getQuizCrimesById(idQuiz) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idQuiz", sql.Int, idQuiz);
+      const result = await request.execute("CrimesQuiz");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

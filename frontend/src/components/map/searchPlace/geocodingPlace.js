@@ -1,7 +1,7 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import { alertSwalError } from "../../sweetAlert/sweetAlert.js";
 
-export const geocodingPlace = async (address) => {
+export const geocodingPlaceByAddress = async (address) => {
   try {
     const response = await fetch(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY}`

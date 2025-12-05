@@ -1,4 +1,4 @@
-import { PopulationDAL } from "../dataAccess/populationDAL.js";
+import { PopulationDAL } from "../dataAccessLayer/populationDAL.js";
 
 export class PopulationService {
   static async add(population) {

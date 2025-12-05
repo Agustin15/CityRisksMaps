@@ -1,4 +1,4 @@
-import { NeighborhoodDAL } from "../dataAccess/neighborhoodDal.js";
+import { NeighborhoodDAL } from "../dataAccessLayer/neighborhoodDAL.js";
 
 export class NeighborhoodService {
   static async add(neighbordhood) {
@@ -51,6 +51,17 @@ export class NeighborhoodService {
       if (result.length > 0) {
         return result[0];
       } else null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getNeighborhoodsWithoutQuizByYear(year) {
+    try {
+      const result = await NeighborhoodDAL.getNeighborhoodsWithoutQuizByYear(
+        year
+      );
+      return result;
     } catch (error) {
       throw error;
     }

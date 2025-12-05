@@ -84,7 +84,6 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
 
       const result = await response.json();
 
-      console.log(result);
       if (result.length > 0) setDataChart(result);
     } catch (error) {
       console.log(error);

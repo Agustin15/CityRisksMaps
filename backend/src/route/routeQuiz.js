@@ -3,7 +3,11 @@ import {
   getQuizesNeighbordhoodByYear,
   getQuizesYears,
   getSecurityPercentagesInNeighborhood,
-  add
+  getYearsOfParticipantQuizes,
+  add,
+  getQuizesByParticipantAndYear,
+  getLimitQuizesByParticipantAndYear,
+  deleteQuiz
 } from "../controller/quizController.js";
 
 export const RoutesQuiz = express.Router();
@@ -28,7 +32,20 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
 
     case "getSecurityPercentagesInNeighborhood":
       return getSecurityPercentagesInNeighborhood(req, res);
+
+    case "getYearsOfParticipantQuizes":
+      return getYearsOfParticipantQuizes(req, res);
+
+    case "getQuizesByParticipantAndYear":
+      return getQuizesByParticipantAndYear(req, res);
+
+    case "getLimitQuizesByParticipantAndYear":
+      return getLimitQuizesByParticipantAndYear(req, res);
+
+    case "getLimitQuizesByParticipantAndYear":
+      return getLimitQuizesByParticipantAndYear(req, res);
   }
 });
 
 RoutesQuiz.post("/", add);
+RoutesQuiz.delete("/:idQuiz", deleteQuiz);

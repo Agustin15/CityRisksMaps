@@ -1,7 +1,7 @@
 import styles from "./Reasons.module.css";
 import { useEffect } from "react";
 import { useFormQuiz } from "../../../../../contexts/quizesContext/FormAddQuizContext";
-import { Loading } from "../../../loading/Loading";
+import { Loading } from "../loading/Loading";
 import { NotData } from "../notData/NotData";
 import Switch from "react-switch";
 
@@ -18,7 +18,12 @@ export const Reasons = ({ handleChange }) => {
     <div className={styles.reasons}>
       <label>Tipos de crimenes que ocurren (opcional):</label>
       {loadingCrimes && <Loading />}
-      {!loadingCrimes && !allTypeCrimes && <NotData />}
+      {!loadingCrimes && !allTypeCrimes && (
+        <NotData
+          msj={"No se encontraron registros de crimenes en el sistema"}
+        />
+      )}
+      
       {!loadingCrimes && allTypeCrimes && (
         <ul>
           {valuesForm.reasons &&

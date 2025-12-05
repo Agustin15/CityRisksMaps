@@ -4,6 +4,7 @@ import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
+import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
 import { RoutesQuiz } from "./route/routeQuiz.js";
 import { RoutesParticipant } from "./route/routeParticipant.js";
 import { RoutesVerificationCode } from "./route/routeVerificationCode.js";
@@ -33,7 +34,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: process.env.LOCALHOST_FRONTEND, credentials: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(limitRate);
 
 try {
@@ -48,6 +49,7 @@ try {
 }
 
 app.use("/crimes/", RoutesCrime);
+app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
 app.use("/participant/", limitRateVerificationCode, RoutesParticipant);
 app.use(

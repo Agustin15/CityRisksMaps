@@ -1,6 +1,3 @@
-import { DepartmentDAL } from "../dataAccess/departmentDAL.js";
-const departmentDAL = new DepartmentDAL();
-
 export class Department {
   #idDepartment;
   #name;

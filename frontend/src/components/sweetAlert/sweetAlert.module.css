@@ -5,10 +5,11 @@
 
 .customTitle {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .customBtnConfirm,
+.customBtnCancel,
 .customBtnConfirmWarning,
 .customBtnConfirSuccess {
     width: 8rem;
@@ -16,6 +17,13 @@
     background: rgb(216, 34, 34);
 }
 
+.customBtnCancel {
+    background: rgb(150, 150, 150);
+}
+
+.customBtnCancel:hover {
+    background: rgb(131, 131, 131);
+}
 .customBtnConfirmWarning {
     background: rgb(199, 108, 34);
 }

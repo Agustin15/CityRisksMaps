@@ -1,4 +1,4 @@
-import { DepartmentDAL } from "../dataAccess/departmentDAL.js";
+import { DepartmentDAL } from "../dataAccessLayer/departmentDAL.js";
 
 export class DepartmentService {
   static async add(department) {

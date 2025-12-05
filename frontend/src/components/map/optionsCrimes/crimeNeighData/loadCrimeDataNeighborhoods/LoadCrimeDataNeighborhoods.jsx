@@ -9,9 +9,9 @@ export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
 
   return (
     <div className={styles.containDetails}>
-      {loadingYears && <Loading />}
+      {loadingYears == true && <Loading />}
 
-      {!loadingYears && years && (
+      {loadingYears == false && years && (
         <>
           <p>
             Los datos mostrados a continuacion son estadisticas de denuncias

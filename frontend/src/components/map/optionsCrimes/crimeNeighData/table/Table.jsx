@@ -5,45 +5,20 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../../../notData/NotData";
 import { Loading } from "../../../loading/Loading";
 import { Rows } from "./rows/Rows";
+import { focusPolygon } from "./focusPolygon.js";
 
 export const Table = ({ crime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
-  const { polygons, neighborhoodsCrimeByYear, loadingNeighborhoodsCrime } =
-    useZoneCrimes();
+  const {
+    polygons,
+    neighborhoodsCrimeByYear,
+    loadingNeighborhoodsCrime,
+    loadingYears
+  } = useZoneCrimes();
   const map = useMap();
 
-  const handleClickNeighborhood = (neighborhoodCrime) => {
-    const nhCoordinatesFound = neighbordhoodsCoordinates.find(
-      (nhCoordinates) => nhCoordinates.neighborhood == neighborhoodCrime.name
-    );
-
-    polygons.forEach((polygon) => {
-      polygon.setOptions({
-        strokeColor: "#8d8d8dff",
-        strokeOpacity: 1,
-        strokeWeight: 1
-      });
-    });
-
-    let bounds = new google.maps.LatLngBounds();
-    nhCoordinatesFound.coordinates.map((nhCoordinate) =>
-      bounds.extend(nhCoordinate)
-    );
-
-    map.setZoom(15);
-    map.panTo(bounds.getCenter());
-
-    const polygonFound = polygons.find(
-      (polygon) => polygon.data.name == neighborhoodCrime.name
-    );
-
-    if (polygonFound) {
-      polygonFound.setOptions({
-        strokeColor: "#00bd10ff",
-        strokeOpacity: 1.0,
-        strokeWeight: 11
-      });
-    }
+  const handleClickNeighborhood = (neighborhood) => {
+    focusPolygon(neighbordhoodsCoordinates, neighborhood, polygons, map);
   };
 
   return (
@@ -64,21 +39,23 @@ export const Table = ({ crime }) => {
           </thead>
 
           <tbody>
-            {loadingNeighborhoodsCrime && (
+            {loadingNeighborhoodsCrime == true && (
               <tr>
                 <td colSpan={4} rowSpan={4}>
                   <Loading />
                 </td>
               </tr>
             )}
-            {!loadingNeighborhoodsCrime && !neighborhoodsCrimeByYear && (
-              <tr>
-                <td colSpan={4} rowSpan={4}>
-                  <NotData />
-                </td>
-              </tr>
-            )}
-            {!loadingNeighborhoodsCrime &&
+            {loadingYears == false &&
+              loadingNeighborhoodsCrime == false &&
+              !neighborhoodsCrimeByYear && (
+                <tr>
+                  <td colSpan={4} rowSpan={4}>
+                    <NotData />
+                  </td>
+                </tr>
+              )}
+            {loadingNeighborhoodsCrime == false &&
               neighborhoodsCrimeByYear &&
               neighborhoodsCrimeByYear.map((neighborhoodCrime, index) => (
                 <Rows

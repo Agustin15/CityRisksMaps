@@ -1,12 +1,12 @@
 import { DepartmentService } from "../service/departmentService.js";
-import { Neighborhood } from "../model/neighborhood.js";
-import { Quiz } from "../model/quiz.js";
+import { Neighborhood } from "../entity/neighborhood.js";
+import { Quiz } from "../entity/quiz.js";
 import { NeighborhoodService } from "../service/neighborhoodService.js";
 import { QuizService } from "../service/quizService.js";
-import { Department } from "../model/department.js";
+import { Department } from "../entity/department.js";
 import { QuizCrimeService } from "../service/quizCrimeService.js";
 import { CrimeService } from "../service/crimeService.js";
-import { Participant } from "../model/participant.js";
+import { Participant } from "../entity/participant.js";
 import { connection } from "../config/connection.js";
 import sql from "mssql";
 
@@ -25,9 +25,13 @@ export const add = async (req, res) => {
       neighborhoodSelected
     );
 
+    if (!neighbordhoodFound)
+      throw new Error("No se encontro un barrio con este nombre");
+
     const departmentFound = await DepartmentService.getDepartmentById(
       neighbordhoodFound.department
     );
+
     const department = new Department(
       departmentFound.idDepartment,
       departmentFound.name
@@ -57,6 +61,22 @@ export const add = async (req, res) => {
   } catch (error) {
     if (transaction) await transaction.rollback();
 
+    res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
+  }
+};
+
+export const deleteQuiz = async (req, res) => {
+  try {
+    const { idQuiz } = req.params;
+
+    if (!idQuiz) throw new Error("Debe indicar un encuesta a eliminar");
+
+    await QuizService.delete(idQuiz);
+
+    res.status(200).json(true);
+  } catch (error) {
     res
       .status(error.cause ? error.cause.code : 502)
       .json({ messageError: error.message });
@@ -108,10 +128,89 @@ export const getSecurityPercentagesInNeighborhood = async (req, res) => {
 
     if (quizesSecurityPercentages.length == 0)
       throw new Error(
-        "No se hay registros de encuestas de este barrio en el sistema"
+        "No hay registros de encuestas de este barrio en el sistema"
       );
 
     res.status(200).json(quizesSecurityPercentages);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getYearsOfParticipantQuizes = async (req, res) => {
+  try {
+    const { participantEmail } = JSON.parse(req.params.optionGet);
+
+    if (!participantEmail)
+      throw new Error("Debe ingresar un correo para la busqueda");
+
+    const years = await QuizService.getYearsOfParticipantQuizes(
+      participantEmail
+    );
+
+    if (years.length == 0)
+      throw new Error(
+        "No se encontraron registros de encuestas con este correo"
+      );
+
+    res.status(200).json(years);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getQuizesByParticipantAndYear = async (req, res) => {
+  try {
+    const { participantEmail, year } = JSON.parse(req.params.optionGet);
+
+    if (!participantEmail)
+      throw new Error("Debe ingresar un correo para la busqueda");
+
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+
+    const quizes = await QuizService.getQuizesByParticipantAndYear(
+      participantEmail,
+      year
+    );
+
+    if (quizes.length == 0)
+      throw new Error(
+        "No se encontraron registros de encuestas con este correo y este año"
+      );
+
+    res.status(200).json(quizes);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getLimitQuizesByParticipantAndYear = async (req, res) => {
+  try {
+    const { participantEmail, year, offset } = JSON.parse(req.params.optionGet);
+
+    if (!participantEmail)
+      throw new Error("Debe ingresar un correo para la busqueda");
+
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+
+    if (typeof offset != "number") throw new Error("Indice no indicado");
+
+    const quizes = await QuizService.getLimitQuizesByParticipantAndYear(
+      participantEmail,
+      year,
+      offset
+    );
+
+    if (quizes.length == 0)
+      throw new Error("No se encontraron registros de encuestas");
+
+    res.status(200).json(quizes);
   } catch (error) {
     res
       .status(error.cause ? error.cause.code : 404)

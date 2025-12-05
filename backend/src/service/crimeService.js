@@ -1,5 +1,5 @@
-import { CrimeDAL } from "../dataAccess/crimeDAL.js";
-import { Crime } from "../model/crime.js";
+import { CrimeDAL } from "../dataAccessLayer/crimeDAL.js";
+import { Crime } from "../entity/crime.js";
 
 export class CrimeService {
   static async add(crime) {

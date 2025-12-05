@@ -1,71 +1,62 @@
 .containOptionCrimes {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
+    top: 0;
     gap: 1rem;
-    width: 105%;
+    height: 100vh;
     position: relative;
 }
 
 .menuOptionsCrimes {
+    margin-top: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    background-color: rgb(54, 54, 54);
+    color: white;
     gap: 1rem;
-    margin-right: 2rem;
+    padding: 0;
+    width: 6rem;
+    height: 100vh;
     list-style: none;
 }
 
-.menuOptionsCrimes li button {
-    width: auto;
-    color: white;
-    background-color: blue;
-    font-weight: bold;
+.contentMenu {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.menuOptionsCrimes li {
+    display: flex;
+    flex-direction: column-reverse;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 14px;
-    border-radius: 3px;
-    box-shadow: 2px 2px 2px gray;
-    outline: none;
-    height: 2.3rem;
-    border: none;
+    width: 99%;
+    font-size: 15px;
+    height: 4rem;
+    border-bottom: 1px solid rgb(44, 44, 44);
+    padding-bottom: 0.3rem;
     cursor: pointer;
+}
+.menuOptionsCrimes li:hover {
+    border-right: 3px solid white;
 }
 
 .menuOptionsCrimes li img {
-    width: 22px;
-    height: 22px;
+    width: 27px;
+    height: 27px;
 }
 
-.menuOptionsCrimes li button:hover {
-    box-shadow: none;
+.menuOptionsCrimes .myLocation {
+    border-top: 1px solid rgb(44, 44, 44);
+    height: 4rem;
+    margin-bottom: 0.5rem;
 }
 
-.menuOptionsCrimes li .showQuizesSelected {
-    box-shadow: none;
-    background-color: rgb(39, 39, 202);
-}
-
-.menuOptionsCrimes li .btnHurto {
-    background-color: rgb(243, 221, 22);
-}
-
-.menuOptionsCrimes li .btnHurto:hover {
-    background-color: rgb(219, 199, 16);
-}
-
-.menuOptionsCrimes li .btnAsesinato {
-    background-color: rgb(206, 25, 25);
-}
-.menuOptionsCrimes li .btnAsesinato:hover {
-    background-color: rgb(182, 21, 21);
-}
-
-.menuOptionsCrimes li .btnRapinia {
-    background-color: rgb(241, 86, 25);
-}
-.menuOptionsCrimes li .btnRapinia:hover {
-    background-color: rgb(212, 76, 22);
+.menuOptionsCrimes .myLocation img {
+    width: 32px;
+    height: 32px;
 }

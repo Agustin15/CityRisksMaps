@@ -15,20 +15,20 @@ import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
 import { useZoneCrimes } from "../../contexts/ZoneCrimesContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
-import { PlaceAutocomplete } from "./placeAutocomplete/PlaceAutocomplete";
-import "./placeAutocomplete/PlaceAutocomplete.css";
 import { MapHandler } from "./mapHandler/MapHandler";
+import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
 import { PlaceDetails } from "./placeDetails/PlaceDetails";
 import { DetailsStreet } from "./detailsStreet/DetailsStreet";
 import { PhotosList } from "./placeDetails/photosList/photosList";
 import { Modal } from "./modal/Modal";
-import { MyGeolocation } from "./myGeolocation/MyGeolocation";
 import { OptionsCrimes } from "./optionsCrimes/OptionsCrimes";
 import { MenuRoute } from "./menuRoute/MenuRoute";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { FormAdd } from "./quizes/formAdd/FormAdd.jsx";
 import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizContext.jsx";
+import { ListUserQuizes } from "./quizes/listUserQuizes/ListUserQuizes.jsx";
+import { ListQuizesProvider } from "../../contexts/quizesContext/ListQuizesContext.jsx";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
@@ -36,8 +36,7 @@ export const ContainMap = () => {
   const { polygons } = useZoneCrimes();
   const { showPhotos } = usePhotosPlace();
   const { showMenuRoutes } = useRoutes();
-  const { newQuiz } = useQuizes();
-
+  const { newQuiz, showListQuizes } = useQuizes();
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
@@ -50,11 +49,18 @@ export const ContainMap = () => {
         defaultZoom={15}
         defaultCenter={{ lat: -34.8340562, lng: -56.3622838 }}
         streetViewControl={true}
+        streetViewControlOptions={{
+          position: ControlPosition.LEFT_BOTTOM
+        }}
         onClick={(event) => handleClickOnMap(event, marker, setSelectedPlace)}
         onMousemove={(event) =>
           handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected)
         }
         zoomControl={true}
+        zoomControlOptions={{
+          position: ControlPosition.LEFT_BOTTOM,
+
+        }}
         gestureHandling="greedy"
         mapId={MAP_ID}
       >
@@ -65,14 +71,11 @@ export const ContainMap = () => {
         <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
 
         <MapControl position={ControlPosition.TOP_LEFT}>
-          <PlaceAutocomplete marker={marker} onPlaceSelect={setSelectedPlace} />
+          <SearchPlace onPlaceSelect={setSelectedPlace} />
           {selectedPlace && <PlaceDetails place={selectedPlace} />}
           {showMenuRoutes && <MenuRoute />}
         </MapControl>
 
-        <MapControl position={ControlPosition.RIGHT_BOTTOM}>
-          <MyGeolocation />
-        </MapControl>
         <MapHandler place={selectedPlace} marker={marker} />
 
         <MapControl position={ControlPosition.RIGHT_TOP}>
@@ -108,6 +111,13 @@ export const ContainMap = () => {
           <FormAddQuizProvider>
             <FormAdd />
           </FormAddQuizProvider>
+        </Modal>
+      )}
+      {showListQuizes && (
+        <Modal>
+          <ListQuizesProvider>
+            <ListUserQuizes />
+          </ListQuizesProvider>
         </Modal>
       )}
     </>

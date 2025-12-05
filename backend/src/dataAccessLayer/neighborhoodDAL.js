@@ -29,7 +29,7 @@ export class NeighborhoodDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -56,7 +56,7 @@ export class NeighborhoodDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -78,7 +78,7 @@ export class NeighborhoodDAL {
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -90,7 +90,7 @@ export class NeighborhoodDAL {
 
       return result.recordset;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -103,7 +103,21 @@ export class NeighborhoodDAL {
 
       return result.recordset;
     } catch (error) {
-      throw error;
+      throw new Error(error);
+    }
+  }
+
+  static async getNeighborhoodsWithoutQuizByYear(year) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("NeighborhoodsWithoutQuizByYear");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

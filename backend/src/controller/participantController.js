@@ -1,6 +1,6 @@
-import { Participant } from "../model/participant.js";
+import { Participant } from "../entity/participant.js";
 import { ParticipantService } from "../service/participantService.js";
-import { VerificationCode } from "../model/verificationCode.js";
+import { VerificationCode } from "../entity/verificationCode.js";
 import { VerificationCodeService } from "../service/verificationCodeService.js";
 import { connection } from "../config/connection.js";
 import sql from "mssql";

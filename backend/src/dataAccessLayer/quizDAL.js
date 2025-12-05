@@ -1,5 +1,6 @@
 import { connection } from "../config/connection.js";
 import sql from "mssql";
+import { QuizCrimeDAL } from "./quizCrimeDAL.js";
 
 export class QuizDAL {
   static async add(quiz, transaction) {
@@ -76,12 +77,9 @@ export class QuizDAL {
       const result = await request.execute("DeleteQuiz");
 
       if (result.returnValue == -1)
-        throw new Error(
-          "No hay registro de una encuesta en este con este correo,en este barrio y este año",
-          {
-            cause: { code: 404 }
-          }
-        );
+        throw new Error("No hay registro de esta encuesta en el sistema", {
+          cause: { code: 404 }
+        });
       else if (result.returnValue == -2)
         throw new Error("Error inesperado al eliminar encuesta", {
           cause: { code: 502 }
@@ -130,6 +128,56 @@ export class QuizDAL {
       request.input("neighborhood", sql.VarChar(30), neighbordhood);
 
       const result = await request.execute("QuizQuantitySecureInNeighborhood");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getYearsOfParticipantQuizes(participant) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("participant", sql.VarChar(30), participant);
+
+      const result = await request.execute("YearsOfParticipantQuizes");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getQuizesByParticipantAndYear(participant, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("participant", sql.VarChar(30), participant);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("QuizesByParticipantAndYear");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getLimitQuizesByParticipantAndYear(participant, year, offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("participant", sql.VarChar(30), participant);
+      request.input("year", sql.Int, year);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("QuizesLimitByParticipantAndYear");
+
+      if (result.recordset.length > 0) {
+        for (const quiz of result.recordset) {
+          const crimesQuiz = await QuizCrimeDAL.getQuizCrimesById(quiz.idQuiz);
+          quiz["crimesQuiz"] = crimesQuiz;
+        }
+      }
 
       return result.recordset;
     } catch (error) {

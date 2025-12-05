@@ -157,6 +157,7 @@ export const ZoneCrimesProvider = ({ children }) => {
   };
 
   const loadCrimesByYear = async (year, categoryCrime) => {
+    
     if (polygons.length > 0) {
       polygons.forEach((polygon) => {
         polygon.setMap(null);
@@ -169,8 +170,6 @@ export const ZoneCrimesProvider = ({ children }) => {
       year,
       categoryCrime
     );
-
-    console.log(neighborhoodsCrime);
 
     if (neighborhoodsCrime) {
       setNeighborhoodsCrimeByYear(neighborhoodsCrime);

@@ -1,21 +1,22 @@
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import styles from "../Table.module.css";
 import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
-import styles from "../Table.module.css";
+import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
 
-export const Rows = ({ numberRow, quiz }) => {
+export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
   const { indexChartActive, setIndexChartActive } = useZoneCrimes();
 
-  const handleClickRow = () => {
+  const handleClickRow = (neighborhood) => {
     if (indexChartActive == numberRow) {
       setIndexChartActive(null);
     } else setIndexChartActive(numberRow);
+    handleClickNeighborhood(neighborhood);
   };
 
   return (
     <>
       <tr
-        onClick={() => handleClickRow()}
+        onClick={() => handleClickRow(quiz.name)}
         key={numberRow}
         className={numberRow % 2 == 0 ? styles.trGray : styles.trWhite}
       >
@@ -34,12 +35,7 @@ export const Rows = ({ numberRow, quiz }) => {
       {indexChartActive == numberRow && (
         <tr>
           <td colSpan={5}>
-            {
-              <Chart
-                categoryCrime={null}
-                nameNeighborhood={quiz.name}
-              />
-            }
+            {<Chart categoryCrime={null} nameNeighborhood={quiz.name} />}
           </td>
         </tr>
       )}

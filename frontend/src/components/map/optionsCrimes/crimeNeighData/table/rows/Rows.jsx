@@ -16,7 +16,7 @@ export const Rows = ({
     if (indexChartActive == numberRow) {
       setIndexChartActive(null);
     } else setIndexChartActive(numberRow);
-    handleClickNeighborhood(neighborhoodCrime);
+    handleClickNeighborhood(neighborhoodCrime.name);
   };
 
   return (

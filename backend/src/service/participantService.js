@@ -1,4 +1,4 @@
-import { ParticipantDAL } from "../dataAccess/participantDAL.js";
+import { ParticipantDAL } from "../dataAccessLayer/participantDAL.js";
 
 export class ParticipantService {
   static async add(participant, transaction) {

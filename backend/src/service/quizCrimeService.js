@@ -1,5 +1,5 @@
-import { QuizCrimeDAL } from "../dataAccess/quizCrimeDAL.js";
-import { QuizCrime } from "../model/quizCrime.js";
+import { QuizCrimeDAL } from "../dataAccessLayer/quizCrimeDAL.js";
+import { QuizCrime } from "../entity/quizCrime.js";
 
 export class QuizCrimeService {
   static async add(quiz, crimes, transaction) {

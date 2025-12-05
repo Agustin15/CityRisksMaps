@@ -281,11 +281,20 @@ select * from Neighborhoods;
 END
 GO
 
+CREATE OR ALTER PROCEDURE NeighborhoodsWithoutQuizByYear @year INT AS
+BEGIN
+select name from Neighborhoods where name NOT IN(select neighborhood from Quizes where YEAR(quizDate)=@year) ORDER BY name asc;
+END
+GO
+
+
 CREATE OR ALTER PROCEDURE NeighborhoodByName @name VARCHAR(30) AS
 BEGIN
 select * from Neighborhoods where name=@name;
 END
 GO
+
+
 
 ------------------------------------------------------------------------------------------------------------------
 --Population PROCEDURES
@@ -642,6 +651,32 @@ END
 GO
 
 
+CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(30) AS
+BEGIN
+
+
+select DISTINCT YEAR(quizDate) as 'year' from Quizes where participant=@participant ORDER BY YEAR(quizDate) desc
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE QuizesByParticipantAndYear @participant VARCHAR(30),@year INT AS
+BEGIN
+
+select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc;
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE QuizesLimitByParticipantAndYear @participant VARCHAR(30),@offset INT,@year INT AS
+BEGIN
+
+select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc OFFSET @offset ROWS
+FETCH NEXT 10 ROWS ONLY
+
+END
+GO
+
 
 ------------------------------------------------------------------------------------------------------------------
 --QuizesCrimes PROCEDURES
@@ -683,7 +718,6 @@ RETURN 1
 
 END
 GO
-
 
 CREATE OR ALTER PROCEDURE CrimesQuiz @idQuiz INT AS
 BEGIN 

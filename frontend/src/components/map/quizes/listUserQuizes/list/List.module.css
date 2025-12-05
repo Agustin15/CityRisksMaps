@@ -1,0 +1,83 @@
+.containList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 26rem;
+}
+
+.containList ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 0;
+    gap: 0;
+    width: 99%;
+    overflow-y: scroll;
+}
+
+.containList ul .notData {
+    width: auto;
+    height: 69%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.containList ul .notData img {
+    width: 65px;
+    height: 65px;
+    opacity: 65%;
+}
+
+.containList ul .loading {
+    font-weight: bold;
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 69%;
+}
+
+.containList .pagination {
+    margin-top: 0.5rem;
+    border-top: 1px solid gray;
+    padding-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.containList .pagination button {
+    width: 1.8rem;
+    height: 1.7rem;
+    border: none;
+    border-radius: 3px;
+    color: rgb(26, 26, 26);
+    border: 1px solid rgb(170, 170, 170);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.containList .pagination button:hover {
+    background-color: rgb(172, 172, 172);
+}
+.containList .pagination .currentPage {
+    background-color: rgb(72, 144, 226);
+    color: white;
+    border: none;
+}
+
+.containList .pagination .currentPage:hover {
+    background-color: rgb(72, 144, 226);
+}

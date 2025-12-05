@@ -1,4 +1,4 @@
-import { NeighborhoodCrimeDAL } from "../dataAccess/neighborhoodCrimeDAL.js";
+import { NeighborhoodCrimeDAL } from "../dataAccessLayer/neighborhoodCrimeDAL.js";
 
 export class NeighborhoodCrimeService {
   static async add(neighbordhoodCrime) {

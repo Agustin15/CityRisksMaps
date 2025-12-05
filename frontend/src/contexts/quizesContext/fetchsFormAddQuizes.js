@@ -2,6 +2,40 @@ import { alertSwalErrorQuiz } from "../../components/sweetAlert/sweetAlert.js";
 
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
+export const fetchGetNeighborhoodsNotUsed = async (
+  setLoading,
+  setNeighborhoodsNotUsed
+) => {
+  setLoading(true);
+
+  const optionGet = JSON.stringify({
+    option: "getNeighborhoodsWithoutQuizByYear",
+    year: new Date().getFullYear()
+  });
+
+  try {
+    const response = await fetch(
+      localhostBackend + "/neighborhood/" + optionGet,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include"
+      }
+    );
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.messageError);
+
+    if (result) {
+      setNeighborhoodsNotUsed(result);
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export const fetchGetAllTypeCrimes = async (
   setLoadingCrimes,
   setAllTypeCrimes
@@ -25,6 +59,7 @@ export const fetchGetAllTypeCrimes = async (
     setLoadingCrimes(false);
   }
 };
+
 export const fetchSendQuiz = async (setLoading, valuesForm) => {
   setLoading(true);
   try {
