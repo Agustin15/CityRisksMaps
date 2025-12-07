@@ -7,7 +7,7 @@ export const ColorRate = ({ total, percentage }) => {
   return (
     <div
       style={{
-        background: total == 0 ? "#bbbbbbff" : getRangeSecureQuiz(percentage)
+        background: total == 0 ? "#bbbbbbff" : getRangeSecureQuiz(percentage).color
       }}
       className={styles.referenceRange}
     ></div>

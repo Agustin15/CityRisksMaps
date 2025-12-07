@@ -2,6 +2,7 @@ import styles from "../Table.module.css";
 import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
 import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { PolygonDraw } from "../polygonDraw/PolygonDraw";
 
 export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
   const { indexChartActive, setIndexChartActive } = useZoneCrimes();
@@ -35,7 +36,13 @@ export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
       {indexChartActive == numberRow && (
         <tr>
           <td colSpan={5}>
-            {<Chart categoryCrime={null} nameNeighborhood={quiz.name} />}
+            {
+              <div className={styles.moreDetails}>
+                <h4>{quiz.name}</h4>
+                <PolygonDraw quiz={quiz} />
+                <Chart categoryCrime={null} nameNeighborhood={quiz.name} />
+              </div>
+            }
           </td>
         </tr>
       )}

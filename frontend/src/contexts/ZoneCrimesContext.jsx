@@ -67,15 +67,27 @@ export const ZoneCrimesProvider = ({ children }) => {
 
   const defineCrimeRange = (rate, ranges) => {
     const crimeRanges = [
-      { rate: rate >= ranges[0] && rate <= ranges[1], color: "#ffffbfff" },
-      { rate: rate >= ranges[2] && rate <= ranges[3], color: "#f1f134ff" },
-      { rate: rate >= ranges[4] && rate <= ranges[5], color: "#fa7c06ff" },
-      { rate: rate >= ranges[6], color: "#f73d1cff" }
+      {
+        rate: rate >= ranges[0] && rate <= ranges[1],
+        color: "#ffffbfff",
+        level: "Seguro"
+      },
+      {
+        rate: rate >= ranges[2] && rate <= ranges[3],
+        color: "#f1f134ff",
+        level: "Medio seguro"
+      },
+      {
+        rate: rate >= ranges[4] && rate <= ranges[5],
+        color: "#fa7c06ff",
+        level: "Inseguro"
+      },
+      { rate: rate >= ranges[6], color: "#f73d1cff", level: "Muy inseguro" }
     ];
 
     const crimeRangeFound = crimeRanges.find((item) => item.rate == true);
     if (crimeRangeFound) {
-      return crimeRangeFound.color;
+      return crimeRangeFound;
     }
   };
 
@@ -99,6 +111,7 @@ export const ZoneCrimesProvider = ({ children }) => {
         if (
           nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
         ) {
+          
           const rate =
             nhCrime.quantityCrime == null
               ? null
@@ -108,7 +121,7 @@ export const ZoneCrimesProvider = ({ children }) => {
                 );
 
           const colorRange =
-            rate == null ? null : getCrimeRange(rate, categoryCrime);
+            rate == null ? null : getCrimeRange(rate, categoryCrime).color;
 
           nhCrimeCoordinates.push({
             name: nhCrime.name,
@@ -157,7 +170,6 @@ export const ZoneCrimesProvider = ({ children }) => {
   };
 
   const loadCrimesByYear = async (year, categoryCrime) => {
-    
     if (polygons.length > 0) {
       polygons.forEach((polygon) => {
         polygon.setMap(null);

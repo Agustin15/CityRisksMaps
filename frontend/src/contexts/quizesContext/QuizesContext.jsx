@@ -76,15 +76,15 @@ export const QuizesProvider = ({ children }) => {
   const getRangeSecureQuiz = (percentage) => {
     switch (true) {
       case percentage >= 80:
-        return "#ffffbfff";
+        return { color: "#ffffbfff", level: "Seguro" };
       case percentage >= 60 && percentage < 80:
-        return "#f1f134ff";
+        return { color: "#f1f134ff", level: "Medio seguro" };
       case percentage >= 40 && percentage < 60:
-        return "#f77963ff";
+        return { color: "#f77963ff", level: "Inseguro" };
       case percentage >= 20 && percentage < 40:
-        return "#f7491eff";
+        return { color: "#f7491eff", level: "Muy inseguro" };
       case percentage >= 0 && percentage < 20:
-        return "#ee2f29ff";
+        return { color: "#ee2f29ff", level: "Extramadamente inseguro" };
     }
   };
 
@@ -101,7 +101,7 @@ export const QuizesProvider = ({ children }) => {
         let rateColor =
           nhQuizFound.total == 0
             ? "#bbbbbbff"
-            : getRangeSecureQuiz(nhQuizFound.percentage);
+            : getRangeSecureQuiz(nhQuizFound.percentage).color;
 
         neighbordhoodsDataForPolygons.push({
           rateColor: rateColor,

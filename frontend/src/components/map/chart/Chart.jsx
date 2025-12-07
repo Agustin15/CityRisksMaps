@@ -14,7 +14,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
   const options = {
     title: {
       text: categoryCrime
-        ? `Denuncias de ${categoryCrime}s en ${nameNeighborhood}`
+        ? `Crecimiento de las denuncias de ${categoryCrime}s`
         : `Porcentajes de percepcion seguridad en ${nameNeighborhood}`,
       fontSize: 14,
       fontFamily: "arial",

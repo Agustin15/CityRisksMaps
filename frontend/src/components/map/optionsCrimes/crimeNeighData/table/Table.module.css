@@ -52,3 +52,19 @@ td {
     gap: 0.5rem;
     padding-left: 8%;
 }
+
+.moreDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 2px 2px 2px gray;
+    background-color: white;
+    border: 1px solid rgb(207, 207, 207);
+}
+.moreDetails h4 {
+    margin: 0;
+    margin-top: 0.5rem;
+    font-size: 15px;
+}

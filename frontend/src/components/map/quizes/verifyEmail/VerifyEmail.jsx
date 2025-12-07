@@ -27,7 +27,6 @@ export const VerifyEmail = () => {
               autoComplete="off"
               type="email"
               name="email"
-              placeholder="Ingrese su correo para verificar"
               value={emailEntered}
               onChange={(event) => handleEmailChanged(event.target.value)}
             ></input>
