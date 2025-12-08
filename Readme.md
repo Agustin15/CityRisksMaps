@@ -34,8 +34,13 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 ### Instalacion ⚙
 
 #### Frontend
-* cd frontend
-* npm install
+>> Navegar a frontend
+    
+    cd frontend
+>> Instalar dependencias
+   
+    npm install
+
 
 #### Dependencias
 
@@ -46,9 +51,12 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 * [sweetalert2](https://github.com/sweetalert2/sweetalert2-react-content)
  
 #### Backend
-
-* cd backend
-* npm install
+>> Navegar a backend
+    
+    cd backend
+>> Instalar dependencias
+   
+    npm install
 
 #### Dependencias
 
@@ -64,8 +72,6 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 * [nodemailer](https://nodemailer.com/)
 
 
-
- 
 
 
 
