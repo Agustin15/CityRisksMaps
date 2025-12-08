@@ -73,14 +73,19 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 
 
   ![](/frontend/src/assets/Captures/Capture1.PNG)
-  
+    
+
   ![](/frontend/src/assets/Captures/Capture2.PNG)
+
 
   ![](/frontend/src/assets/Captures/Capture3.PNG)
 
+
   ![](/frontend/src/assets/Captures/Capture4.PNG)
 
+
   ![](/frontend/src/assets/Captures/Capture5.PNG)
+  
 
   ![](/frontend/src/assets/Captures/Capture6.PNG)
 
