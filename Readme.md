@@ -50,6 +50,14 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 * [react-switch](https://github.com/markusenglund/react-switch)
 * [sweetalert2](https://github.com/sweetalert2/sweetalert2-react-content)
  
+ 
+### Variables de entorno
+
+    VITE_MAPS_API_KEY=<GOOGLE MAPS API KEY>
+    VITE_LOCALHOST_FRONTEND=<URL LOCALHOST FRONTEND>
+    VITE_LOCALHOST_BACKEND=<URL LOCALHOST BACKEND>
+    VITE_MAP_ID=<MAP ID OF GOOGLE MAPS API>
+
 #### Backend
 > Navegar a backend
     
@@ -72,6 +80,22 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 * [nodemailer](https://nodemailer.com/)
 
 
+### Variables de entorno
+
+     PORT=<PORT>
+     LOCALHOST_FRONTEND=<URL LOCALHOST FRONTEND>
+     DATABASE_LOCALHOST=<SERVER DATABASE>
+     DATABASE_USER=<USER DATABASE>
+     DATABASE_PASSWORD=<PASSWORD DATABASE>
+     DATABASE_NAME=<NAME DATABASE>
+     EMAIL_FROM=<TRANSMITTER EMAIL FOR NODEMAILER>
+     APP_PASSWORD=<PASSWORD APP EMAIL FOR NODEMAILER>
+     SECRET_KEY_TOKEN=<SECRET KEY FOR JSONWEBTOKEN>
+
+
+  ![](/frontend/src/assets/Captures/Capture6.PNG)
+
+
   ![](/frontend/src/assets/Captures/Capture1.PNG)
     
 
@@ -85,9 +109,9 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 
 
   ![](/frontend/src/assets/Captures/Capture5.PNG)
-  
 
-  ![](/frontend/src/assets/Captures/Capture6.PNG)
+
+
 
 
 
