@@ -20,7 +20,7 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 
 ### Clonar repositorio
 
-* git clone https://github.com/Agustin15/CityRisksMaps.git
+     git clone https://github.com/Agustin15/CityRisksMaps.git
 
 
 ### Requisitos
