@@ -30,7 +30,7 @@ export const Table = ({ crime }) => {
               <th>Barrio</th>
               <th>Cantidad</th>
               <th>
-                Poblacion
+                Poblacion{" "}
                 {neighborhoodsCrimeByYear &&
                   neighborhoodsCrimeByYear[0].yearPopulation}
               </th>

@@ -83,22 +83,22 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
       <ul>
         <li>
           <img src={iconComplaint}></img>
-          <label>Cantidad de denuncias:</label>
+          <label>Denuncias:</label>
           <span>{neighborhoodCrime.quantityCrime}</span>
         </li>
         <li>
           <img src={iconPopulation}></img>
-          <label>Cantidad de poblacion:</label>
+          <label>Poblacion:</label>
           <span>{neighborhoodCrime.quantityPopulation}</span>
         </li>
         <li>
           <img src={iconRate}></img>
-          <label>Tasa de de denuncias:</label>
+          <label>Tasa de denuncias:</label>
           <span>{rate}</span>
         </li>
         <li>
           <img src={iconSecurity}></img>
-          <label>Nivel de seguridad:</label>
+          <label>Tendencia a {categoryCrime.toLowerCase()}s:</label>
           <span>{crimeRange ? crimeRange.level : "Sin datos"}</span>
         </li>
       </ul>

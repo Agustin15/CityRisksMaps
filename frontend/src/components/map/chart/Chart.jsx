@@ -12,20 +12,31 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
   const [loading, setLoading] = useState(false);
 
   const options = {
+    backgroundColor: "",
     title: {
       text: categoryCrime
         ? `Crecimiento de las denuncias de ${categoryCrime}s`
         : `Porcentajes de percepcion seguridad en ${nameNeighborhood}`,
       fontSize: 14,
       fontFamily: "arial",
-      fontWeight: "bold"
+      fontWeight: "bold",
+      fontColor: "white"
     },
     height: 225,
     animationEnabled: true,
     axisX: {
+      title: "Años",
+      titleFontColor: "white",
+      titleFontSize: 15,
+      labelFontColor: "white",
+      lineColor: "white",
       interval: 1
     },
     axisY: {
+      lineColor: "white",
+      labelFontColor: "white",
+      tickColor: "white",
+      gridColor: "white",
       labelFormatter: function (e) {
         return categoryCrime ? e.value : e.value + "%";
       }
@@ -34,6 +45,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
       {
         markerColor: "#e04b4bff",
         type: "spline",
+        lineColor: "white",
         dataPoints:
           dataChart &&
           (categoryCrime
@@ -94,7 +106,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
 
   return (
     <div className={styles.containChart}>
-      {loading && <span>Cargando datos...</span>}
+      {loading && <span className={styles.loading}>Cargando datos...</span>}
       {!loading && dataChart && (
         <CanvasJSChart options={options}></CanvasJSChart>
       )}

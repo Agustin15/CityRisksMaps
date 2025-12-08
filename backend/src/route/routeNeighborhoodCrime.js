@@ -19,6 +19,7 @@ RoutesNeighborhoodCrime.get("/:optionGet", (req, res) => {
 
   if (!option) res.status(400).send("option no definido");
 
+  
   switch (option) {
     case "getNeighborhoodsCrimeByYear":
       return getNeighborhoodsCrimeByYear(req, res);

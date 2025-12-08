@@ -15,11 +15,14 @@ export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
         <>
           <p>
             Los datos mostrados a continuacion son estadisticas de denuncias
-            obtenidas de documentacion perteneciente a
-            <a href="https://www.gub.uy/"> GUB.UY</a>, de esta forma la tasa de
-            criminalidad esta basada en la cantidad de denuncias por cada numero
-            de habitantes en los barrios, por lo que puede haber discrepancias
-            con la verdadera realidad del riesgo en cada zona.
+            obtenidas de documentacion perteneciente al{" "}
+            <a href="https://www.gub.uy/ministerio-interior/">
+              Ministerio del interior
+            </a>
+            , de esta forma la tasa de criminalidad esta basada en la cantidad
+            de denuncias por cada numero de habitantes en los barrios, por lo
+            que puede haber discrepancias con la verdadera realidad del riesgo
+            en cada zona.
           </p>
 
           <References categoryCrime={categoryCrime} />

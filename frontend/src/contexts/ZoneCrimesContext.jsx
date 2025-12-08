@@ -70,19 +70,19 @@ export const ZoneCrimesProvider = ({ children }) => {
       {
         rate: rate >= ranges[0] && rate <= ranges[1],
         color: "#ffffbfff",
-        level: "Seguro"
+        level: "Baja"
       },
       {
         rate: rate >= ranges[2] && rate <= ranges[3],
         color: "#f1f134ff",
-        level: "Medio seguro"
+        level: "Media baja"
       },
       {
         rate: rate >= ranges[4] && rate <= ranges[5],
         color: "#fa7c06ff",
-        level: "Inseguro"
+        level: "Alta"
       },
-      { rate: rate >= ranges[6], color: "#f73d1cff", level: "Muy inseguro" }
+      { rate: rate >= ranges[6], color: "#f73d1cff", level: "Muy alta" }
     ];
 
     const crimeRangeFound = crimeRanges.find((item) => item.rate == true);
