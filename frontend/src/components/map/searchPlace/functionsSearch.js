@@ -10,7 +10,7 @@ export const searchByText = async (userLocation, text, moreDetailsPlace) => {
     includedType: "",
     useStrictTypeFiltering: true,
     locationBias: userLocation,
-    isOpenNow: true,
+    isOpenNow: false,
     language: "es",
     maxResultCount: 5,
     minRating: 4,

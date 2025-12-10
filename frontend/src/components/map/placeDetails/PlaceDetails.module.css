@@ -9,7 +9,7 @@
     height: 100vh;
     width: 26rem;
     background-color: white;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;

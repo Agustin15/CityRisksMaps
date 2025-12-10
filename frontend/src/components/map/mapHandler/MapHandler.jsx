@@ -5,6 +5,8 @@ export const MapHandler = ({ place, marker }) => {
   const map = useMap();
 
   useEffect(() => {
+    if (!marker) return;
+
     if (!place) {
       marker.position = null;
       return;

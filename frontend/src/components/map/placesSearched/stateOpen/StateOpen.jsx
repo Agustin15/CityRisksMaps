@@ -1,6 +1,16 @@
 import styles from "./StateOpen.module.css";
 
 export const StateOpen = ({ place }) => {
+  const formatHourAndMinutes = (nextCloseTime) => {
+    const hours = nextCloseTime.getHours();
+    const minutes = nextCloseTime.getMinutes();
+
+    return (
+      (hours < 10 ? "0" + hours : hours) +
+      ":" +
+      (minutes < 10 ? "0" + minutes : minutes)
+    );
+  };
   return (
     <div className={styles.stateOpen}>
       <span
@@ -13,6 +23,13 @@ export const StateOpen = ({ place }) => {
             ? "Abierto 24 horas"
             : "Abierto"
           : "Cerrado"}
+      </span>
+      <span>
+        {place.regularOpeningHours.nextCloseTime &&
+          "- Cierra a las " +
+            formatHourAndMinutes(
+              new Date(place.regularOpeningHours.nextCloseTime)
+            )}
       </span>
     </div>
   );

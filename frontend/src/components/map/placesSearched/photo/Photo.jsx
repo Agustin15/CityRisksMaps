@@ -18,8 +18,10 @@ export const Photo = ({ photo }) => {
   };
   return (
     <div className={styles.containPhoto}>
-      {loading && <span className={styles.loading}></span>}
-      {!loading && !mainPhoto && <img src={imageNotFound}></img>}
+      {loading && <span className={styles.loader}></span>}
+      {!loading && !mainPhoto && (
+        <img className={styles.imageNotFound} src={imageNotFound}></img>
+      )}
       {!loading && mainPhoto && <img src={mainPhoto}></img>}
     </div>
   );

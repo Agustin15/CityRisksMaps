@@ -20,7 +20,7 @@ export const PlacesSearched = ({ setSelectedPlace, places }) => {
                 <Rating place={place} />
                 <p>{place.shortFormattedAddress}</p>
 
-                <StateOpen place={place} />
+                {place.regularOpeningHours && <StateOpen place={place} />}
               </div>
               <PhotosProvider>
                 <Photo photo={place.photos[0]} />
