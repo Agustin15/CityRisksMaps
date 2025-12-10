@@ -5,7 +5,10 @@ export const MapHandler = ({ place, marker }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!map || !place || !marker) return;
+    if (!place) {
+      marker.position = null;
+      return;
+    }
 
     if (place.viewport) {
       map.setZoom(15);

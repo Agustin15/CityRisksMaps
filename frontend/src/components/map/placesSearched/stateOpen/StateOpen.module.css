@@ -1,0 +1,15 @@
+.stateOpen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 14px;
+}
+
+.close {
+    color: red;
+}
+
+.open {
+    color: rgb(40, 211, 63);
+}

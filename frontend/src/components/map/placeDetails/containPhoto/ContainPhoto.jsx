@@ -1,9 +1,10 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
-import { useEffect, useState } from "react";
+import styles from "./ContainPhoto.module.css";
 import imageNotFound from "../../../../assets/img/imageNotFound.png";
 import gallery from "../../../../assets/img/gallery.png";
+import { useEffect, useState } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
-import styles from "./ContainPhoto.module.css";
+
 
 export const ContainPhoto = ({ place }) => {
   const { getPhotoDetails, loading, setLoading, setShowPhotos } =

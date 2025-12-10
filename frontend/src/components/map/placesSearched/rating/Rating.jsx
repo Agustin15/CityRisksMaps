@@ -9,11 +9,9 @@ import threeHalfStars from "../../../../assets/img/threeHalfStars.png";
 import fourStars from "../../../../assets/img/fourStars.png";
 import fourHalfStars from "../../../../assets/img/fourHalfStars.png";
 import fiveStars from "../../../../assets/img/fiveStars.png";
-import iconWheelchair from "../../../../assets/img/wheelchair.png";
-import { BtnIndications } from "../../BtnIndications/BtnIndications";
 import styles from "./Rating.module.css";
 
-export const Rating = ({ setSelectedPlace, place }) => {
+export const Rating = ({ place }) => {
   const getStarsRating = (rating) => {
     const ratingStars = [
       { rating: { min: 0.0, max: 0.4 }, stars: ceroStars },
@@ -38,29 +36,10 @@ export const Rating = ({ setSelectedPlace, place }) => {
   };
 
   return (
-    <div className={styles.rating}>
-      <div className={styles.row}>
-        <span>{place.rating}</span>
-        <img className={styles.stars} src={getStarsRating(place.rating)}></img>
-        <span>({place.userRatingCount})</span>
-      </div>
-      <div className={styles.rowTwo}>
-        <div className={styles.data}>
-          {place.primaryTypeDisplayName && (
-            <span>{place.primaryTypeDisplayName.text}</span>
-          )}
-          {place.accessibilityOptions &&
-            place.accessibilityOptions.wheelchairAccessibleEntrance && (
-              <img
-                className={styles.wheelchair}
-                title="Entrada accesible para gente en silla de ruedas"
-                src={iconWheelchair}
-              ></img>
-            )}
-        </div>
-
-        <BtnIndications setSelectedPlace={setSelectedPlace} place={place} />
-      </div>
+    <div className={styles.rowRating}>
+      <span>{place.rating}</span>
+      <img src={getStarsRating(place.rating)}></img>
+      <span>({place.userRatingCount})</span>
     </div>
   );
 };

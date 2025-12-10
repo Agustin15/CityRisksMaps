@@ -29,6 +29,7 @@ import { FormAdd } from "./quizes/formAdd/FormAdd.jsx";
 import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizContext.jsx";
 import { ListUserQuizes } from "./quizes/listUserQuizes/ListUserQuizes.jsx";
 import { ListQuizesProvider } from "../../contexts/quizesContext/ListQuizesContext.jsx";
+import { PlacesSearched } from "./placesSearched/PlacesSearched.jsx";
 
 export const ContainMap = () => {
   const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
@@ -38,6 +39,7 @@ export const ContainMap = () => {
   const { showMenuRoutes } = useRoutes();
   const { newQuiz, showListQuizes } = useQuizes();
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [placesSearched, setPlacesSearched] = useState(null);
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -58,8 +60,7 @@ export const ContainMap = () => {
         }
         zoomControl={true}
         zoomControlOptions={{
-          position: ControlPosition.LEFT_BOTTOM,
-
+          position: ControlPosition.LEFT_BOTTOM
         }}
         gestureHandling="greedy"
         mapId={MAP_ID}
@@ -71,8 +72,19 @@ export const ContainMap = () => {
         <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
 
         <MapControl position={ControlPosition.TOP_LEFT}>
-          <SearchPlace onPlaceSelect={setSelectedPlace} />
+          <SearchPlace
+            selectedPlace={selectedPlace}
+            setSelectedPlace={setSelectedPlace}
+            placesSearched={placesSearched}
+            setPlacesSearched={setPlacesSearched}
+          />
           {selectedPlace && <PlaceDetails place={selectedPlace} />}
+          {placesSearched && (
+            <PlacesSearched
+              setSelectedPlace={setSelectedPlace}
+              places={placesSearched}
+            />
+          )}
           {showMenuRoutes && <MenuRoute />}
         </MapControl>
 

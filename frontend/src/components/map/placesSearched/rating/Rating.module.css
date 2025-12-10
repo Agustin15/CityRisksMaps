@@ -1,0 +1,12 @@
+.rowRating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    font-size: 13px;
+}
+
+.rowRating img {
+    width: auto;
+    height: 16px;
+}

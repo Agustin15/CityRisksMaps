@@ -118,8 +118,12 @@ export const MapProvider = ({ children }) => {
 
       const result = await response.json();
 
+      if (response.status != 200)
+        throw new Error("Sitio solicitado no encontrado");
+
       if (result) return result;
     } catch (error) {
+      alertSwalError("Ups,algo salio mal al buscar sitio", error);
       console.log(error);
     }
   };
@@ -132,16 +136,11 @@ export const MapProvider = ({ children }) => {
 
       const result = await response.json();
 
-      if (result.status == "OK" && result.address_descriptor.areas.length > 0)
+      if (result.status != "OK" && result.address_descriptor.areas.length > 0)
         setInfoWindow(result);
-      else
-        alertSwalError(
-          "Ups,no pudimos encontrar la ubicacion",
-          "Error inesperado en la geocodificacion"
-        );
-
-      return;
+      else throw new Error("Error inesperado en la geocodificacion");
     } catch (error) {
+      alertSwalError("Ups,no pudimos encontrar la ubicacion");
       console.log(error);
     }
   };

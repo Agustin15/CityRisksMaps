@@ -20,6 +20,8 @@ export const PhotosProvider = ({ children }) => {
         `https://places.googleapis.com/v1/${namePhoto}/media?key=${API_KEY}&maxHeightPx=${maxHeightPx}&maxWidthPx=${maxWidthPx}`
       );
 
+      if (!response.ok) throw new Error("Error al buscar foto");
+
       const result = response.url;
       return result;
     } catch (error) {
