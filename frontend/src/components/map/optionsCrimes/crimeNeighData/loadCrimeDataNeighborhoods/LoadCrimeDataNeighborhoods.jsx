@@ -1,5 +1,5 @@
 import styles from "./LoadCrimeDataNeighborhoods.module.css";
-import { useZoneCrimes } from "../../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Loading } from "../../../loading/Loading";
 import { References } from "../references/References";
 import { FilterYears } from "../../../filterYears/FilterYears";

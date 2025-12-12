@@ -2,7 +2,7 @@ import styles from "./CrimeNeighbordhoods.module.css";
 import iconKill from "../../../../assets/img/kill.png";
 import iconTheft from "../../../../assets/img/theft.png";
 import iconHoldup from "../../../../assets/img/holdup.png";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
 

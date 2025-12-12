@@ -12,7 +12,8 @@ import { useRoutes } from "../../contexts/RoutesContext";
 import { useQuizes } from "../../contexts/quizesContext/QuizesContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { usePhotosPlace } from "../../contexts/PhotosContext";
-import { useZoneCrimes } from "../../contexts/ZoneCrimesContext.jsx";
+import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
 import { MapHandler } from "./mapHandler/MapHandler";
 import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
@@ -29,7 +30,7 @@ import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizCon
 import { ListUserQuizes } from "./quizes/listUserQuizes/ListUserQuizes.jsx";
 import { ListQuizesProvider } from "../../contexts/quizesContext/ListQuizesContext.jsx";
 import { PlacesSearched } from "./placesSearched/PlacesSearched.jsx";
-import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
+
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();

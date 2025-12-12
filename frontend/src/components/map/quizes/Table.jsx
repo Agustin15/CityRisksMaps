@@ -1,6 +1,6 @@
 import styles from "./Table.module.css";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
-import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useMapControls } from "../../../contexts/MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../notData/NotData";

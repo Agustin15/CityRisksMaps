@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { createContext } from "react";
 import { useQuizes } from "./QuizesContext";
 import { useCookies } from "react-cookie";
-import { useZoneCrimes } from "../ZoneCrimesContext.jsx";
+import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext.jsx";
 
 import {
   alertSwalSuccess,

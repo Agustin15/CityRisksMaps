@@ -107,11 +107,12 @@ export class NeighborhoodDAL {
     }
   }
 
-  static async getNeighborhoodsWithoutQuizByYear(year) {
+  static async getNeighborhoodsWithoutQuizByYear(year,email) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input("year", sql.Int, year);
+      request.input("email", sql.VarChar(30), email);
 
       const result = await request.execute("NeighborhoodsWithoutQuizByYear");
 

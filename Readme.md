@@ -29,7 +29,7 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 * Vite(version>=7.0.0)
 * Node.js(version>=20)
 * SQL SERVER (version>=2019) 
-* Cuenta de Google Cloud Console
+* Cuenta de Google Cloud Console para conseguir Api key de google maps
 
 ### Instalacion ⚙
 

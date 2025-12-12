@@ -91,6 +91,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
     try {
       const response = await fetch(localhostBackend + endpoint + optionGET, {
         method: "GET",
+        credentials: "include",
         headers: { "Content-type": "application/json" }
       });
 

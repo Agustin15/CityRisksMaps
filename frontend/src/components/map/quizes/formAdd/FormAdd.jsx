@@ -50,7 +50,6 @@ export const FormAdd = () => {
     getNeighborhoodsNotUsed();
   }, []);
 
-  console.log(neighborhoodsNotUsed);
   return (
     <div className={styles.containForm}>
       <div className={styles.header}>

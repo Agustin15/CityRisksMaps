@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { useMapControls } from "../MapContext";
-import { useZoneCrimes } from "../ZoneCrimesContext";
+import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 

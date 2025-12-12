@@ -11,6 +11,8 @@ export const verifyAuthToken = (token) => {
 
     if (!tokenDecoded)
       throw new Error("Autenticacion fallida, token no valido");
+
+    return tokenDecoded;
   } catch (error) {
     if (error.message == "jwt expired")
       error.message = "Autenticacion fallida,token expirado";

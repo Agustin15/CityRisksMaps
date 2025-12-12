@@ -1,5 +1,5 @@
 import styles from "../Table.module.css";
-import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { ColorRate } from "../colorRate/ColorRate";
 import { Chart } from "../../../../chart/Chart";
 import { PolygonDraw } from "../polygonDraw/PolygonDraw";

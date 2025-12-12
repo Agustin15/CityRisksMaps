@@ -281,9 +281,10 @@ select * from Neighborhoods;
 END
 GO
 
-CREATE OR ALTER PROCEDURE NeighborhoodsWithoutQuizByYear @year INT AS
+CREATE OR ALTER PROCEDURE NeighborhoodsWithoutQuizByYear @year INT,@email VARCHAR(30) AS
 BEGIN
-select name from Neighborhoods where name NOT IN(select neighborhood from Quizes where YEAR(quizDate)=@year) ORDER BY name asc;
+select name from Neighborhoods where name NOT IN(select neighborhood from Quizes Q INNER JOIN Participants P ON Q.participant= 
+P.email where YEAR(quizDate)=@year) ORDER BY name asc;
 END
 GO
 

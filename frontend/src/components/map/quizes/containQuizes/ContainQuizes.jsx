@@ -1,7 +1,7 @@
 import styles from "./ContainQuizes.module.css";
 import iconQuizes from "../../../../assets/img/quizes.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Table } from "../Table";
 import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
 

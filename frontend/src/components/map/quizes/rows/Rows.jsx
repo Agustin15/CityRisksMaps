@@ -1,7 +1,7 @@
 import styles from "../Table.module.css";
 import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { PolygonDraw } from "../polygonDraw/PolygonDraw";
 
 export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {

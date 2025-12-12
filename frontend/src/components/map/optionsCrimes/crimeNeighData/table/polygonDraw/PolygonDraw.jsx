@@ -5,7 +5,7 @@ import iconSecurity from "../../../../../../assets/img/security.png";
 import iconPopulation from "../../../../../../assets/img/population.png";
 import { useEffect, useRef } from "react";
 import { useMapControls } from "../../../../../../contexts/MapContext";
-import { useZoneCrimes } from "../../../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();

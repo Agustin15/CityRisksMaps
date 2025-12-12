@@ -2,7 +2,7 @@ import styles from "./LoadDataQuizes.module.css";
 import iconAdd from "../../../../assets/img/add.png";
 import iconList from "../../../../assets/img/listQuizes.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { useZoneCrimes } from "../../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { Loading } from "../../loading/Loading";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { References } from "../references/References";

@@ -56,10 +56,11 @@ export class NeighborhoodService {
     }
   }
 
-  static async getNeighborhoodsWithoutQuizByYear(year) {
+  static async getNeighborhoodsWithoutQuizByYear(year, email) {
     try {
       const result = await NeighborhoodDAL.getNeighborhoodsWithoutQuizByYear(
-        year
+        year,
+        email
       );
       return result;
     } catch (error) {

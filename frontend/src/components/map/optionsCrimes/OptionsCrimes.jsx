@@ -6,7 +6,7 @@ import iconQuizes from "../../../assets/img/quizes.png";
 import myLocation from "../../../assets/img/myLocation.png";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useZoneCrimes } from "../../../contexts/ZoneCrimesContext";
+import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useMapControls } from "../../../contexts/MapContext";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 import { ContainQuizes } from "../quizes/containQuizes/ContainQuizes";
