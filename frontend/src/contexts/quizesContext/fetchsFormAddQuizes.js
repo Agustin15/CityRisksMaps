@@ -30,7 +30,7 @@ export const fetchGetNeighborhoodsNotUsed = async (
       setNeighborhoodsNotUsed(result);
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   } finally {
     setLoading(false);
   }
@@ -54,7 +54,7 @@ export const fetchGetAllTypeCrimes = async (
 
     if (result) setAllTypeCrimes(result);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   } finally {
     setLoadingCrimes(false);
   }
@@ -75,8 +75,11 @@ export const fetchSendQuiz = async (setLoading, valuesForm) => {
 
     return result;
   } catch (error) {
-    console.log(error);
-    alertSwalErrorQuiz("Ups, hubo un error al realizar la encuesta", error);
+    console.log(error.message);
+    alertSwalErrorQuiz(
+      "Ups, hubo un error al realizar la encuesta",
+      error.message
+    );
   } finally {
     setLoading(false);
   }

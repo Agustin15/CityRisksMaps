@@ -11,6 +11,7 @@ export const QuizesProvider = ({ children }) => {
   const [loadingQuizes, setLoadingQuizes] = useState(false);
   const [neighborhoodsQuizesByYear, setNeighborhoodsQuizesByYear] = useState();
   const [newQuiz, setNewQuiz] = useState(false);
+  const [errorGetQuiz, setErrorGetQuiz] = useState(false);
   const [showListQuizes, setShowListQuizes] = useState(false);
   const map = useMap();
 
@@ -23,6 +24,7 @@ export const QuizesProvider = ({ children }) => {
     try {
       const response = await fetch(url, {
         method: method,
+        credentials: "include",
         headers: {
           "Content-type": "application/json"
         }
@@ -33,7 +35,8 @@ export const QuizesProvider = ({ children }) => {
 
       return result;
     } catch (error) {
-      console.log(error);
+      setErrorGetQuiz(error.message);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -159,7 +162,9 @@ export const QuizesProvider = ({ children }) => {
         setNewQuiz,
         newQuiz,
         showListQuizes,
-        setShowListQuizes
+        setShowListQuizes,
+        errorGetQuiz,
+        setErrorGetQuiz
       }}
     >
       {children}

@@ -10,7 +10,8 @@ import { focusPolygon } from "../optionsCrimes/crimeNeighData/table/focusPolygon
 
 export const Table = () => {
   const map = useMap();
-  const { loadingQuizes, neighborhoodsQuizesByYear } = useQuizes();
+  const { loadingQuizes, neighborhoodsQuizesByYear, errorGetQuiz } =
+    useQuizes();
   const { neighbordhoodsCoordinates } = useMapControls();
   const { loadingYears, polygons } = useZoneCrimes();
 
@@ -45,7 +46,7 @@ export const Table = () => {
               !neighborhoodsQuizesByYear && (
                 <tr>
                   <td colSpan={4} rowSpan={4}>
-                    <NotData />
+                    <NotData error={errorGetQuiz} />
                   </td>
                 </tr>
               )}

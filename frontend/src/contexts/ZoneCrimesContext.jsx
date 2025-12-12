@@ -34,7 +34,7 @@ export const ZoneCrimesProvider = ({ children }) => {
       if (result) return result;
       else return null;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -111,7 +111,6 @@ export const ZoneCrimesProvider = ({ children }) => {
         if (
           nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
         ) {
-          
           const rate =
             nhCrime.quantityCrime == null
               ? null

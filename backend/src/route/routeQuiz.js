@@ -18,17 +18,23 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
     verifyAuthToken(req.cookies.authToken);
   } catch (error) {
     res.status(401).json({ messageError: error.message });
+    return;
   }
 
   if (!req.params) {
     res.status(400).send("Parametros no definidos");
+    return;
   } else if (!JSON.parse(req.params.optionGet)) {
     res.status(400).send("optionGet no definido");
+    return;
   }
 
   const { option } = JSON.parse(req.params.optionGet);
 
-  if (!option) res.status(400).send("option no definido");
+  if (!option) {
+    res.status(400).send("option no definido");
+    return;
+  }
 
   switch (option) {
     case "getQuizesYears":

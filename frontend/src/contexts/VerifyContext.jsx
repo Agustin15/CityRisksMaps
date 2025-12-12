@@ -50,8 +50,11 @@ export const VerifyProvider = ({ children }) => {
 
       setCodeAlreadySent(true);
     } catch (error) {
-      console.log(error);
-      alertSwalErrorQuiz("Ups, error al enviar codigo de verificacion", error);
+      console.log(error.message);
+      alertSwalErrorQuiz(
+        "Ups, error al enviar codigo de verificacion",
+        error.message
+      );
     } finally {
       setLoading(false);
     }
@@ -82,8 +85,8 @@ export const VerifyProvider = ({ children }) => {
 
       resultVerify = result;
     } catch (error) {
-      console.log(error);
-      return alertSwalErrorQuiz("Ups, error en la verificacion", error);
+      console.log(error.message);
+      return alertSwalErrorQuiz("Ups, error en la verificacion", error.message);
     } finally {
       setLoading(false);
       if (resultVerify)

@@ -30,8 +30,8 @@ export const ListQuizesProvider = ({ children }) => {
 
       return result;
     } catch (error) {
-      setErrorSearch(error);
-      console.log(error);
+      setErrorSearch(error.message);
+      console.log(error.message);
     } finally {
       setLoading(false);
     }
