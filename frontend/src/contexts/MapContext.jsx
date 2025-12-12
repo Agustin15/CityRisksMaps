@@ -6,8 +6,6 @@ import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 const MapContext = createContext();
 
 export const MapProvider = ({ children }) => {
-  const [infoWindow, setInfoWindow] = useState();
-  const [valueInput, setValueInput] = useState("");
   const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
@@ -96,67 +94,12 @@ export const MapProvider = ({ children }) => {
     maximumAge: 0
   };
 
-  const handleClickOnMap = async (event, marker, setSelectedPlace) => {
-    if (event.detail.placeId) {
-      setInfoWindow();
-      let placesDetails = await moreDetailsPlace(event.detail.placeId);
-      setValueInput(placesDetails.displayName.text);
-      setSelectedPlace(placesDetails);
-    } else {
-      setSelectedPlace();
-
-      marker.position = event.detail.latLng;
-      getReverseGeocodification(event.detail.latLng);
-    }
-  };
-
-  const moreDetailsPlace = async (placeId) => {
-    try {
-      const response = await fetch(
-        `https://places.googleapis.com/v1/places/${placeId}?fields=*&languageCode=es&key=${API_KEY}`
-      );
-
-      const result = await response.json();
-
-      if (response.status != 200)
-        throw new Error("Sitio solicitado no encontrado");
-
-      if (result) return result;
-    } catch (error) {
-      alertSwalError("Ups,algo salio mal al buscar sitio", error);
-      console.log(error);
-    }
-  };
-
-  const getReverseGeocodification = async (latLng) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.lat},${latLng.lng}&extra_computations=ADDRESS_DESCRIPTORS&extra_computations=BUILDING_AND_ENTRANCES&key=${API_KEY} `
-      );
-
-      const result = await response.json();
-
-      if (result.status != "OK" && result.address_descriptor.areas.length > 0)
-        setInfoWindow(result);
-      else throw new Error("Error inesperado en la geocodificacion");
-    } catch (error) {
-      alertSwalError("Ups,no pudimos encontrar la ubicacion");
-      console.log(error);
-    }
-  };
-
   return (
     <MapContext.Provider
       value={{
         handleMyLocation,
-        handleClickOnMap,
-        moreDetailsPlace,
-        infoWindow,
-        setInfoWindow,
         userLocation,
         loadingMyLocation,
-        valueInput,
-        setValueInput,
         neighbordhoodsCoordinates
       }}
     >

@@ -8,20 +8,6 @@ import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
 
 export const PlaceDetails = ({ place }) => {
-  const getDay = (weekday) => {
-    const days = [
-      "Lunes",
-      "Martes",
-      "Miercoles",
-      "Jueves",
-      "Viernes",
-      "Sabado",
-      "Domingo"
-    ];
-
-    return days.find((day, index) => index + 1 == weekday);
-  };
-
   return (
     <div className={styles.containDetails}>
       <div className={styles.header}>
@@ -54,9 +40,7 @@ export const PlaceDetails = ({ place }) => {
             <p>{place.formattedAddress}</p>
           </li>
         )}
-        {place.regularOpeningHours && (
-          <OpeningDays getDay={getDay} place={place} />
-        )}
+        {place.regularOpeningHours && <OpeningDays place={place} />}
 
         {place.nationalPhoneNumber && (
           <li>

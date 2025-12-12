@@ -4,7 +4,6 @@ import {
   ControlPosition,
   MapControl,
   useAdvancedMarkerRef,
-  InfoWindow
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
@@ -30,16 +29,21 @@ import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizCon
 import { ListUserQuizes } from "./quizes/listUserQuizes/ListUserQuizes.jsx";
 import { ListQuizesProvider } from "../../contexts/quizesContext/ListQuizesContext.jsx";
 import { PlacesSearched } from "./placesSearched/PlacesSearched.jsx";
+import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
 
 export const ContainMap = () => {
-  const { userLocation, handleClickOnMap, infoWindow, setInfoWindow } =
-    useMapControls();
+  const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
   const { showPhotos } = usePhotosPlace();
   const { showMenuRoutes } = useRoutes();
+  const {
+    selectedPlace,
+    placesSearched,
+    infoWindow,
+    setInfoWindow,
+    handleClickOnMap
+  } = useSearchPlace();
   const { newQuiz, showListQuizes } = useQuizes();
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [placesSearched, setPlacesSearched] = useState(null);
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -54,7 +58,7 @@ export const ContainMap = () => {
         streetViewControlOptions={{
           position: ControlPosition.LEFT_BOTTOM
         }}
-        onClick={(event) => handleClickOnMap(event, marker, setSelectedPlace)}
+        onClick={(event) => handleClickOnMap(event, marker)}
         onMousemove={(event) =>
           handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected)
         }
@@ -72,19 +76,9 @@ export const ContainMap = () => {
         <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
 
         <MapControl position={ControlPosition.TOP_LEFT}>
-          <SearchPlace
-            selectedPlace={selectedPlace}
-            setSelectedPlace={setSelectedPlace}
-            placesSearched={placesSearched}
-            setPlacesSearched={setPlacesSearched}
-          />
+          <SearchPlace />
           {selectedPlace && <PlaceDetails place={selectedPlace} />}
-          {placesSearched && (
-            <PlacesSearched
-              setSelectedPlace={setSelectedPlace}
-              places={placesSearched}
-            />
-          )}
+          {placesSearched && <PlacesSearched />}
           {showMenuRoutes && <MenuRoute />}
         </MapControl>
 
@@ -94,14 +88,14 @@ export const ContainMap = () => {
           <OptionsCrimes />
         </MapControl>
 
-        <InfoWindow
-          onCloseClick={() => setInfoWindow()}
-          position={infoWindow ? infoWindow.results[0].geometry.location : null}
-        >
+        <MapControl position={ControlPosition.BOTTOM_CENTER}>
           {infoWindow && (
-            <DetailsStreet place={selectedPlace} infoWindow={infoWindow} />
+            <DetailsStreet
+              infoWindow={infoWindow}
+              setInfoWindow={setInfoWindow}
+            />
           )}
-        </InfoWindow>
+        </MapControl>
 
         {polygonSelected && (
           <AdvancedMarker

@@ -4,62 +4,42 @@ import iconArrow from "../../../../assets/img/arrow.png";
 import { useState } from "react";
 import { Weekdays } from "./weekdays";
 
-export const OpeningDays = ({ getDay, place }) => {
+export const OpeningDays = ({ place }) => {
   const [showOpeningDays, setShowOpeningDays] = useState(false);
+  const formatHourAndMinutes = (nextTime) => {
+    const nextTimeDate = new Date(nextTime);
 
-  const nextOpeningPeriod = (openingHours) => {
-    const currentDate = new Date();
-    const listNextSevendays = [];
+    const hours = nextTimeDate.getHours();
+    const minutes = nextTimeDate.getMinutes();
 
-    currentDate.setHours(0);
-    currentDate.setMinutes(0);
-    currentDate.setSeconds(0);
-
-    let cont = 1;
-    while (cont <= 7) {
-      let dayMillseconds = currentDate.getTime() + 60 * 60 * 24 * 1000 * cont;
-
-      listNextSevendays.push(new Date(dayMillseconds));
-
-      cont++;
-    }
-
-    for (let day of listNextSevendays) {
-      const nextOpening = openingHours.periods.find((period) => {
-        if (period.open.day == day.getDay()) return period;
-      });
-
-      if (nextOpening) return nextOpening.open;
-    }
+    return (
+      (hours < 10 ? "0" + hours : hours) +
+      ":" +
+      (minutes < 10 ? "0" + minutes : minutes)
+    );
   };
 
-  const nextPeriod = (openingHours, isOpen) => {
-    const period = openingHours.periods.find((period) => {
-      if (isOpen && period.open.day == new Date().getDay()) return period;
-    });
+  const nextTime = (nextTime, option) => {
+    const days = [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miercoles",
+      "Jueves",
+      "Viernes",
+      "Sabado"
+    ];
 
-    if (isOpen) {
-      return (
-        "Cierra a las " +
-        (period.close.hour < 10 ? "0" + period.close.hour : period.close.hour) +
-        ":" +
-        (period.close.minute < 10
-          ? "0" + period.close.minute
-          : period.close.minute)
-      );
+    if (
+      new Date(nextTime).getDay() == new Date().getDay() &&
+      new Date(nextTime).getTime() - new Date().getTime() < 3600 * 24 * 1000
+    ) {
+      return `${option} a las ${formatHourAndMinutes(nextTime)}`;
     } else {
-      let nextOpening = nextOpeningPeriod(openingHours);
-
-      return (
-        "Abre a las " +
-        (nextOpening.hour < 10 ? "0" + nextOpening.hour : nextOpening.hour) +
-        ":" +
-        (nextOpening.minute < 10
-          ? "0" + nextOpening.minute
-          : nextOpening.minute) +
-        " del " +
-        getDay(nextOpening.day)
-      );
+      const weekday = new Date(nextTime).getDay();
+      return `${option} el ${days[weekday]} a las ${formatHourAndMinutes(
+        nextTime
+      )}`;
     }
   };
 
@@ -84,10 +64,9 @@ export const OpeningDays = ({ getDay, place }) => {
 
           {!showOpeningDays &&
             place.regularOpeningHours.periods[0].close &&
-            nextPeriod(
-              place.regularOpeningHours,
-              place.regularOpeningHours.openNow
-            )}
+            (place.regularOpeningHours.nextCloseTime
+              ? nextTime(place.regularOpeningHours.nextCloseTime, "Cierra")
+              : nextTime(place.regularOpeningHours.nextOpenTime, "Abre"))}
         </div>
         <img
           onClick={() =>

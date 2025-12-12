@@ -1,18 +1,22 @@
+import styles from "./PlacesSearched.module.css";
 import { PhotosProvider } from "../../../contexts/PhotosContext";
 import { Photo } from "./photo/Photo";
-import styles from "./PlacesSearched.module.css";
 import { Rating } from "./rating/Rating";
 import { StateOpen } from "./stateOpen/StateOpen";
+import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 
-export const PlacesSearched = ({ setSelectedPlace, places }) => {
+export const PlacesSearched = () => {
+  const { setSelectedPlace, placesSearched, setValueInput } = useSearchPlace();
+
   const handleClick = (place) => {
     setSelectedPlace(place);
+    setValueInput(place.displayName.text);
   };
   return (
     <div className={styles.containPlaces}>
       <h4>Resultados:</h4>
       <ul>
-        {places.map((place, index) => (
+        {placesSearched.map((place, index) => (
           <li onClick={() => handleClick(place)} key={index}>
             <div className={styles.row}>
               <div className={styles.details}>

@@ -1,22 +1,26 @@
 import "./SearchPlace.css";
 import iconClose from "../../../assets/img/close.png";
 import iconSearch from "../../../assets/img/search.png";
+import { useEffect, useState } from "react";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useEffect, useRef, useState } from "react";
 import { useMapControls } from "../../../contexts/MapContext";
-import { searchByText, placeAutocompleteChanged } from "./functionsSearch";
+import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 
-export const SearchPlace = ({
-  selectedPlace,
-  setSelectedPlace,
-  placesSearched,
-  setPlacesSearched
-}) => {
+export const SearchPlace = () => {
   const [placeAutocomplete, setPlaceAutocomplete] = useState(null);
-  const inputRef = useRef(null);
   const places = useMapsLibrary("places");
-  const { userLocation, moreDetailsPlace, valueInput, setValueInput } =
-    useMapControls();
+  const { userLocation } = useMapControls();
+  const {
+    setSelectedPlace,
+    placesSearched,
+    placeAutocompleteChanged,
+    valueInput,
+    inputRef,
+    handleChangeInput,
+    handleCleanInput,
+    searchByText,
+    loadingPlace
+  } = useSearchPlace();
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
@@ -29,60 +33,40 @@ export const SearchPlace = ({
   }, [places]);
 
   useEffect(() => {
+    if (!placeAutocomplete) return;
+    placeAutocompleteChanged(placeAutocomplete);
+  }, [setSelectedPlace, placeAutocomplete]);
+
+
+  useEffect(() => {
     inputRef.current.value = valueInput;
   }, [valueInput]);
 
-  useEffect(() => {
-    if (!placeAutocomplete) return;
-
-    placeAutocompleteChanged(
-      placeAutocomplete,
-      setSelectedPlace,
-      moreDetailsPlace,
-      setValueInput
-    );
-  }, [setSelectedPlace, placeAutocomplete]);
-
-  const handleClose = async () => {
-    if (selectedPlace) {
-      setSelectedPlace();
-      setPlacesSearched();
-    }
-    setValueInput("");
-  };
-
-  const handleChange = (event) => {
-    if (event.target.value.length == 0) {
-      setSelectedPlace();
-    }
-    setValueInput(event.target.value);
-  };
-
   const handleSearch = async () => {
     if (!placesSearched) {
-      const places = await searchByText(
-        userLocation,
-        inputRef.current.value,
-        moreDetailsPlace
-      );
-
-      if (places) setPlacesSearched(places);
+      searchByText(userLocation);
     }
   };
   return (
     <div className="autocompleteContainer">
       <input
         value={valueInput}
-        onChange={(event) => handleChange(event)}
+        onChange={(event) => handleChangeInput(event)}
         placeholder="Buscar ubicacion"
         ref={inputRef}
       />
-      <button
-        className={valueInput.length > 0 ? "showClose" : "hideClose"}
-        onClick={() => handleClose()}
-      >
-        <img src={iconClose}></img>
-      </button>
+
+      {loadingPlace == false ? (
+        <button
+          className={valueInput.length > 0 ? "showClose" : "hideClose"}
+          onClick={() => handleCleanInput()}
+        >
+          <img src={iconClose}></img>
+        </button>
+      ) : (
+        <span className="loader"></span>
+      )}
+
       <button
         onClick={handleSearch}
         className={valueInput.length > 0 ? "showSearch" : "hideSearch"}
