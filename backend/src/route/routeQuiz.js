@@ -9,18 +9,10 @@ import {
   getLimitQuizesByParticipantAndYear,
   deleteQuiz
 } from "../controller/quizController.js";
-import { verifyAuthToken } from "../controller/authentication.js";
 
 export const RoutesQuiz = express.Router();
 
 RoutesQuiz.get("/:optionGet", (req, res) => {
-  try {
-    verifyAuthToken(req.cookies.authToken);
-  } catch (error) {
-    res.status(401).json({ messageError: error.message });
-    return;
-  }
-
   if (!req.params) {
     res.status(400).send("Parametros no definidos");
     return;

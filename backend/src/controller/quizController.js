@@ -1,3 +1,4 @@
+import { verifyAuthToken } from "./authentication.js";
 import { DepartmentService } from "../service/departmentService.js";
 import { Neighborhood } from "../entity/neighborhood.js";
 import { Quiz } from "../entity/quiz.js";
@@ -13,6 +14,8 @@ import sql from "mssql";
 export const add = async (req, res) => {
   let transaction;
   try {
+    verifyAuthToken(req.cookies.authToken);
+
     const { email, neighborhoodSelected, perception, reasons } = req.body;
     let crimesMapping;
 
@@ -69,6 +72,7 @@ export const add = async (req, res) => {
 
 export const deleteQuiz = async (req, res) => {
   try {
+    verifyAuthToken(req.cookies.authToken);
     const { idQuiz } = req.params;
 
     if (!idQuiz) throw new Error("Debe indicar un encuesta a eliminar");
@@ -142,6 +146,7 @@ export const getSecurityPercentagesInNeighborhood = async (req, res) => {
 
 export const getYearsOfParticipantQuizes = async (req, res) => {
   try {
+    verifyAuthToken(req.cookies.authToken);
     const { participantEmail } = JSON.parse(req.params.optionGet);
 
     if (!participantEmail)
@@ -166,6 +171,8 @@ export const getYearsOfParticipantQuizes = async (req, res) => {
 
 export const getQuizesByParticipantAndYear = async (req, res) => {
   try {
+    verifyAuthToken(req.cookies.authToken);
+
     const { participantEmail, year } = JSON.parse(req.params.optionGet);
 
     if (!participantEmail)
@@ -193,6 +200,7 @@ export const getQuizesByParticipantAndYear = async (req, res) => {
 
 export const getLimitQuizesByParticipantAndYear = async (req, res) => {
   try {
+    verifyAuthToken(req.cookies.authToken);
     const { participantEmail, year, offset } = JSON.parse(req.params.optionGet);
 
     if (!participantEmail)
