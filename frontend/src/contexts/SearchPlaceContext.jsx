@@ -80,7 +80,6 @@ export const SearchPlaceProvider = ({ children }) => {
       if (response.status != 200)
         throw new Error("Sitio solicitado no encontrado");
 
-      console.log(result);
       if (result) return result;
     } catch (error) {
       alertSwalError("Ups,algo salio mal al buscar sitio", error);

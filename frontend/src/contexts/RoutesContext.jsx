@@ -17,7 +17,7 @@ export const RoutesProvider = ({ children }) => {
 
   return (
     <RoutesContext.Provider
-      value={{ showMenuRoutes, handleClickRoute, destiny }}
+      value={{ showMenuRoutes, setShowMenuRoutes, handleClickRoute, destiny }}
     >
       {children}
     </RoutesContext.Provider>

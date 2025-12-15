@@ -1,0 +1,41 @@
+.optionsAddress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-shadow: 2px 2px 2px gray;
+    margin-top: 2rem;
+    border-top: 1px solid rgb(238, 238, 238);
+}
+
+
+.optionsAddress li {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    font-size: 16px;
+    padding: 1rem;
+    padding-left: 2.3rem;
+}
+
+.optionsAddress li:hover {
+   background-color: rgb(247, 247, 247);
+   cursor: pointer;
+}
+
+.optionsAddress li .icon {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 99px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(177, 225, 247, 0.795);
+}
+
+.optionsAddress li img {
+    width: 21px;
+    height: 21px;
+}
