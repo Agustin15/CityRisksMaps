@@ -1,0 +1,79 @@
+export const getRangeSecureQuiz = (percentage) => {
+  switch (true) {
+    case percentage >= 80:
+      return { color: "#ffffbfff", level: "Seguro" };
+    case percentage >= 60 && percentage < 80:
+      return { color: "#f1f134ff", level: "Medio seguro" };
+    case percentage >= 40 && percentage < 60:
+      return { color: "#f77963ff", level: "Inseguro" };
+    case percentage >= 20 && percentage < 40:
+      return { color: "#f7491eff", level: "Muy inseguro" };
+    case percentage >= 0 && percentage < 20:
+      return { color: "#ee2f29ff", level: "Extramadamente inseguro" };
+  }
+};
+const createArrayForPolygons = (nhQuizes, neighbordhoodsCoordinates) => {
+  const neighbordhoodsDataForPolygons = [];
+
+  neighbordhoodsCoordinates.forEach((nhCoordinate) => {
+    const nhQuizFound = nhQuizes.find(
+      (nhQuiz) =>
+        nhQuiz.name.toLowerCase() == nhCoordinate.neighborhood.toLowerCase()
+    );
+
+    if (nhQuizFound) {
+      let rateColor =
+        nhQuizFound.total == 0
+          ? "#bbbbbbff"
+          : getRangeSecureQuiz(nhQuizFound.percentage).color;
+
+      neighbordhoodsDataForPolygons.push({
+        rateColor: rateColor,
+        coordinates: nhCoordinate.coordinates,
+        name: nhQuizFound.name,
+        total: nhQuizFound.total,
+        percentage: nhQuizFound.percentage,
+        type: "quiz"
+      });
+    }
+  });
+
+  return neighbordhoodsDataForPolygons;
+};
+
+export const createPolygonsNeighbordhood = (
+  nhQuizes,
+  neighbordhoodsCoordinates,
+  polygons,
+  setPolygons,
+  map
+) => {
+  if (polygons.length > 0)
+    polygons.forEach((polygon) => {
+      polygon.setMap(null);
+    });
+
+  const polygonsCreated = [];
+  const neighbordhoodsDataForPolygons = createArrayForPolygons(
+    nhQuizes,
+    neighbordhoodsCoordinates
+  );
+
+  neighbordhoodsDataForPolygons.forEach((nhData) => {
+    const polygon = new google.maps.Polygon({
+      paths: nhData.coordinates,
+      strokeColor: "#8d8d8dff",
+      strokeOpacity: 1,
+      strokeWeight: 1,
+      fillColor: nhData.rateColor,
+      fillOpacity: 0.4,
+      clickable: false,
+      data: nhData
+    });
+    polygon.setMap(map);
+
+    polygonsCreated.push(polygon);
+  });
+
+  setPolygons(polygonsCreated);
+};

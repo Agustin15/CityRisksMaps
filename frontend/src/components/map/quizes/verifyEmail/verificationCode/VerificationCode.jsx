@@ -2,7 +2,7 @@ import styles from "../../verifyEmail/VerifyEmail.module.css";
 import { useRef } from "react";
 import { useVerify } from "../../../../../contexts/VerifyContext.jsx";
 
-export const VerificationCode = () => {
+export const VerificationCode = ({ inputHover, setInputHover }) => {
   const { loading, handleVerifyCode, handleSendCode, setCodeAlreadySent } =
     useVerify();
   const refInputCode = useRef();
@@ -10,8 +10,15 @@ export const VerificationCode = () => {
   return (
     <div className={styles.enterCode}>
       <div className={styles.columnOne}>
-        <label>Ingresar codigo de verificacion:</label>
-        <input ref={refInputCode} type="text"></input>
+        <label className={inputHover ? styles.lblHover : ""}>
+          Ingresar codigo de verificacion:
+        </label>
+        <input
+          onMouseLeave={() => setInputHover(false)}
+          onMouseEnter={() => setInputHover(true)}
+          ref={refInputCode}
+          type="text"
+        ></input>
 
         <button
           className={styles.btnSendAgain}

@@ -32,20 +32,18 @@
     width: auto;
     padding: 1rem;
     height: 2rem;
-    border-radius: 4px;
-    background-color: rgb(21, 128, 170);
+    border-radius: 25px;
+    background-color: rgb(65, 127, 221);
     border: none;
     color: white;
     font-size: 15px;
-    margin-top: 1.5rem;
     margin-left: 1rem;
     cursor: pointer;
-    box-shadow: 2px 2px 2px rgb(94, 94, 94);
 }
 
 .rowOne button:hover,
 .enterCode button:hover {
-    background-color: rgb(22, 83, 107);
+    background-color: rgb(49, 104, 175);
     box-shadow: none;
 }
 
@@ -58,8 +56,16 @@
     position: relative;
 }
 .columnOne label {
-    width: 16rem;
-    
+    width: auto;
+    position: absolute;
+    margin-top: -0.6rem;
+    margin-left: -8rem;
+    background-color: white;
+    font-weight: 100;
+}
+
+.columnOne .lblHover {
+    color: rgb(49, 104, 175);
 }
 
 .columnOne p {
@@ -67,14 +73,14 @@
     width: auto;
     font-size: 14px;
     position: absolute;
-    margin-top: 4.4rem;
+    margin-top: 2.7rem;
     margin-left: 1rem;
     width: 16rem;
 }
 
 .columnOne input {
     width: 16rem;
-    height: 2.2rem;
+    height: 2.3rem;
     border: 1px solid gray;
     font-size: 16px;
     border-radius: 5px;
@@ -84,7 +90,7 @@
 }
 
 .columnOne input[type="email"]:hover {
-    border: 2px solid rgb(103, 175, 209);
+    border: 2px solid rgb(65, 127, 221);
 }
 
 .enterCode {
@@ -99,26 +105,43 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    width: 100%;
+}
+.enterCode .columnOne {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
 }
 
 .enterCode label {
-    width: 16rem;
+    width: auto;
+    margin-left: -2rem;
 }
 
 .enterCode input {
     width: 16rem;
 }
 
+.enterCode input:hover {
+    width: 16rem;
+}
+
 .enterCode button {
     margin-top: 0.5rem;
+    margin-left: 0;
+    width: 7rem;
+    font-size: 14px;
 }
 
 .enterCode .btnSendAgain {
-    box-shadow: none;
     border: none;
     background: none;
     color: rgb(44, 151, 194);
-    margin-top: -0.5rem;
+    margin-top: -1rem;
+    margin-left: 0;
+    width: auto;
 }
 .enterCode .btnSendAgain:hover {
     background: none;

@@ -3,14 +3,21 @@ import jwt from "jsonwebtoken";
 export const verifyAuthToken = (token) => {
   try {
     if (!process.env.SECRET_KEY_TOKEN)
-      throw new Error("Secrey key token no definida");
+      throw new Error("Secrey key token no definida", {
+        cause: { code: 401 }
+      });
 
-    if (!token) throw new Error("Autenticacion fallida, token no encontrado");
+    if (!token)
+      throw new Error("Autenticacion fallida, token no encontrado", {
+        cause: { code: 401 }
+      });
 
     const tokenDecoded = jwt.verify(token, process.env.SECRET_KEY_TOKEN);
 
     if (!tokenDecoded)
-      throw new Error("Autenticacion fallida, token no valido");
+      throw new Error("Autenticacion fallida, token no valido", {
+        cause: { code: 401 }
+      });
 
     return tokenDecoded;
   } catch (error) {

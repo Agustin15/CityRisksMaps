@@ -1,3 +1,7 @@
+import {
+  createPolygonsNeighbordhood,
+  getRangeSecureQuiz
+} from "./functionsCreatePolygons.js";
 import { createContext, useContext, useState } from "react";
 import { useMapControls } from "../MapContext";
 import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext";
@@ -64,7 +68,13 @@ export const QuizesProvider = ({ children }) => {
   const loadQuizesDataNeighborhoodsByYear = async (year) => {
     const quizes = await getQuizesNeighbordhoodByYear(year);
     setNeighborhoodsQuizesByYear(quizes);
-    createPolygonsNeighbordhood(quizes);
+    createPolygonsNeighbordhood(
+      quizes,
+      neighbordhoodsCoordinates,
+      polygons,
+      setPolygons,
+      map
+    );
   };
 
   const loadDataQuizes = async () => {
@@ -74,78 +84,6 @@ export const QuizesProvider = ({ children }) => {
       setYears(years);
       loadQuizesDataNeighborhoodsByYear(years[0].year);
     }
-  };
-
-  const getRangeSecureQuiz = (percentage) => {
-    switch (true) {
-      case percentage >= 80:
-        return { color: "#ffffbfff", level: "Seguro" };
-      case percentage >= 60 && percentage < 80:
-        return { color: "#f1f134ff", level: "Medio seguro" };
-      case percentage >= 40 && percentage < 60:
-        return { color: "#f77963ff", level: "Inseguro" };
-      case percentage >= 20 && percentage < 40:
-        return { color: "#f7491eff", level: "Muy inseguro" };
-      case percentage >= 0 && percentage < 20:
-        return { color: "#ee2f29ff", level: "Extramadamente inseguro" };
-    }
-  };
-
-  const createArrayForPolygons = (nhQuizes) => {
-    const neighbordhoodsDataForPolygons = [];
-
-    neighbordhoodsCoordinates.forEach((nhCoordinate) => {
-      const nhQuizFound = nhQuizes.find(
-        (nhQuiz) =>
-          nhQuiz.name.toLowerCase() == nhCoordinate.neighborhood.toLowerCase()
-      );
-
-      if (nhQuizFound) {
-        let rateColor =
-          nhQuizFound.total == 0
-            ? "#bbbbbbff"
-            : getRangeSecureQuiz(nhQuizFound.percentage).color;
-
-        neighbordhoodsDataForPolygons.push({
-          rateColor: rateColor,
-          coordinates: nhCoordinate.coordinates,
-          name: nhQuizFound.name,
-          total: nhQuizFound.total,
-          percentage: nhQuizFound.percentage,
-          type: "quiz"
-        });
-      }
-    });
-
-    return neighbordhoodsDataForPolygons;
-  };
-
-  const createPolygonsNeighbordhood = (nhQuizes) => {
-    if (polygons.length > 0)
-      polygons.forEach((polygon) => {
-        polygon.setMap(null);
-      });
-
-    const polygonsCreated = [];
-    const neighbordhoodsDataForPolygons = createArrayForPolygons(nhQuizes);
-
-    neighbordhoodsDataForPolygons.forEach((nhData) => {
-      const polygon = new google.maps.Polygon({
-        paths: nhData.coordinates,
-        strokeColor: "#8d8d8dff",
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: nhData.rateColor,
-        fillOpacity: 0.4,
-        clickable: false,
-        data: nhData
-      });
-      polygon.setMap(map);
-
-      polygonsCreated.push(polygon);
-    });
-
-    setPolygons(polygonsCreated);
   };
 
   return (
