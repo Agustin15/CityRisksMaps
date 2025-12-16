@@ -46,9 +46,11 @@ export const OptionsCrimes = () => {
   const handleClickOption = (crime) => {
     loadCrimeDataNeighborhoods(crime.category);
     setCrimeSelected(crime.category);
+    setShowQuizes();
   };
   const handleClickQuizes = () => {
     if (!showQuizes) {
+      setCrimeSelected();
       loadDataQuizes();
       setShowQuizes(true);
     }
@@ -56,38 +58,6 @@ export const OptionsCrimes = () => {
 
   return (
     <div className={styles.containOptionsCrimes}>
-      {crimes && (
-        <ul className={styles.menuOptionsCrimes}>
-          <div className={styles.contentMenu}>
-            <li onClick={handleClickQuizes}>
-              Percepcion
-              <img src={iconQuizes}></img>
-            </li>
-
-            {crimes.map((crime, index) => (
-              <li key={index} onClick={() => handleClickOption(crime)}>
-                {crime.category}
-                <img
-                  src={
-                    crime.category == "Hurto"
-                      ? iconTheft
-                      : crime.category == "Rapiña"
-                      ? iconHoldup
-                      : crime.category == "Asesinato"
-                      ? iconKill
-                      : ""
-                  }
-                ></img>
-              </li>
-            ))}
-          </div>
-          <li className={styles.myLocation} onClick={handleMyLocation}>
-            {loadingMyLocation ? "localizando..." : "Mi ubicacion"}
-            <img src={myLocation}></img>
-          </li>
-        </ul>
-      )}
-
       {crimeSelected && (
         <CrimeNeighbordhoods
           categoryCrime={crimeSelected}
@@ -95,6 +65,41 @@ export const OptionsCrimes = () => {
         />
       )}
       {showQuizes && <ContainQuizes />}
+
+      {crimes && (
+        <ul className={styles.menuOptionsCrimes}>
+          <li
+            className={showQuizes ? styles.selected : ""}
+            onClick={handleClickQuizes}
+          >
+            <img src={iconQuizes}></img>
+          </li>
+
+          {crimes.map((crime, index) => (
+            <li
+              className={crime.category == crimeSelected ? styles.selected : ""}
+              key={index}
+              onClick={() => handleClickOption(crime)}
+            >
+              <img
+                src={
+                  crime.category == "Hurto"
+                    ? iconTheft
+                    : crime.category == "Rapiña"
+                    ? iconHoldup
+                    : crime.category == "Asesinato"
+                    ? iconKill
+                    : ""
+                }
+              ></img>
+            </li>
+          ))}
+          <li className={styles.myLocation} onClick={handleMyLocation}>
+            <img src={myLocation}></img>
+            {loadingMyLocation ? "localizando" : ""}
+          </li>
+        </ul>
+      )}
     </div>
   );
 };

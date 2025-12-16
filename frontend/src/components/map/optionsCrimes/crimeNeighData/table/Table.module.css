@@ -59,6 +59,7 @@ td {
     justify-content: start;
     align-items: center;
     gap: 1rem;
+    width: 100%;
     box-shadow: 2px 2px 2px gray;
     padding-bottom: 0.5rem;
     background-color: white;
