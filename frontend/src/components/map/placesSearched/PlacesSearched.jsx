@@ -27,7 +27,7 @@ export const PlacesSearched = () => {
                 {place.regularOpeningHours && <StateOpen place={place} />}
               </div>
               <PhotosProvider>
-                <Photo photo={place.photos[0]} />
+                {place.photos && <Photo photo={place.photos[0]} />}
               </PhotosProvider>
             </div>
           </li>

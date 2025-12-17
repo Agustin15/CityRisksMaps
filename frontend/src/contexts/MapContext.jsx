@@ -1,4 +1,3 @@
-const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 import { createContext, useContext, useEffect, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";

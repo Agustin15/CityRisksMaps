@@ -1,6 +1,7 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import { createContext, useContext, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
+import { useMapControls } from "./MapContext.jsx";
 
 const SearchPlaceContext = createContext();
 
@@ -12,8 +13,11 @@ export const SearchPlaceProvider = ({ children }) => {
   const [valueInput, setValueInput] = useState("");
   const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
+  const { userLocation } = useMapControls();
 
-  const handleCleanInput = async () => {
+  const handleCleanInput = async (setSuggestions, suggestions) => {
+    if (suggestions) setSuggestions();
+
     if (selectedPlace) {
       setSelectedPlace();
       if (valueSearchedByText) {
@@ -27,19 +31,10 @@ export const SearchPlaceProvider = ({ children }) => {
     setValueInput("");
   };
 
-  const handleChangeInput = (event) => {
-    if (event.target.value.length == 0) {
-      setSelectedPlace();
-    }
-    setValueInput(event.target.value);
-  };
-
   const handleClickOnMap = async (event, marker) => {
     if (event.detail.placeId) {
       setInfoWindow();
-      let placeDetails = await moreDetailsPlace(event.detail.placeId);
-      setValueInput(placeDetails.displayName.text);
-      setSelectedPlace(placeDetails);
+      await moreDetailsPlace(event.detail.placeId, true);
     } else {
       setSelectedPlace();
 
@@ -48,27 +43,7 @@ export const SearchPlaceProvider = ({ children }) => {
     }
   };
 
-  const placeAutocompleteChanged = async (placeAutocomplete) => {
-    placeAutocomplete.addListener("place_changed", async () => {
-      let place_changed = placeAutocomplete.getPlace();
-
-      if (place_changed.place_id) {
-        let detailsPlace = await moreDetailsPlace(place_changed.place_id);
-        if (detailsPlace) {
-          setValueInput(detailsPlace.displayName.text);
-          setSelectedPlace(detailsPlace);
-        }
-      } else {
-        const results = await geocodingPlaceByAddress(inputRef.current.value);
-        if (results) {
-          let detailsPlace = await moreDetailsPlace(results[0].place_id);
-          if (detailsPlace) setSelectedPlace(detailsPlace);
-        }
-      }
-    });
-  };
-
-  const moreDetailsPlace = async (placeId) => {
+  const moreDetailsPlace = async (placeId, optionSetPlace) => {
     setLoadingPlace(true);
     try {
       const response = await fetch(
@@ -80,7 +55,11 @@ export const SearchPlaceProvider = ({ children }) => {
       if (response.status != 200)
         throw new Error("Sitio solicitado no encontrado");
 
-      if (result) return result;
+      if (result && optionSetPlace) {
+        setSelectedPlace(result);
+        setValueInput(result.displayName.text);
+      }
+      return result;
     } catch (error) {
       alertSwalError("Ups,algo salio mal al buscar sitio", error);
       console.log(error);
@@ -105,23 +84,37 @@ export const SearchPlaceProvider = ({ children }) => {
     }
   };
 
-  const geocodingPlaceByAddress = async (address) => {
+  const geocodingPlaceByAddress = async (address, getMontevideoJson) => {
     setLoadingPlace(true);
+
+    let bounds = new google.maps.LatLngBounds();
+    let coordinatesMontevideo = await getMontevideoJson();
+
+    if (coordinatesMontevideo) {
+      coordinatesMontevideo.forEach((coordinate) =>
+        bounds.extend({ lat: coordinate[1], lng: coordinate[0] })
+      );
+    }
+
     try {
       const geocoder = new google.maps.Geocoder();
 
       const result = await geocoder.geocode({
-        address: address
+        address: address,
+        bounds: bounds
       });
 
-      if (result) return result.results;
+      if (result.results) {
+        return result.results;
+      }
     } catch (error) {
       console.log(error);
     } finally {
       setLoadingPlace(false);
     }
   };
-  const searchByText = async (userLocation) => {
+
+  const searchByText = async () => {
     setValueSearchedByText(inputRef.current.value);
     const { Place } = await google.maps.importLibrary("places");
 
@@ -130,24 +123,31 @@ export const SearchPlaceProvider = ({ children }) => {
       fields: ["*"],
       includedType: "",
       useStrictTypeFiltering: true,
-      locationBias: userLocation,
+      locationBias: {
+        lat: userLocation ? userLocation.lat : -34.89,
+        lng: userLocation ? userLocation.lng : -56.16
+      },
       isOpenNow: false,
       language: "es",
-      maxResultCount: 5,
-      minRating: 4,
+      maxResultCount: 10,
+      minRating: 3,
       region: "UY"
     };
 
     let { places } = await Place.searchByText(request);
     let placesDetails = [];
 
-    if (places) {
+    if (places && places.length > 0) {
       for (const place of places) {
-        const placeDetail = await moreDetailsPlace(place.id);
+        const placeDetail = await moreDetailsPlace(place.id, false);
         if (!placeDetail) return;
         placesDetails.push(placeDetail);
       }
-    }
+    } else
+      alertSwalError(
+        "Ups,no pudimos encontrar la ubicacion",
+        "Sitio no encontrado"
+      );
 
     if (placesDetails.length > 0) setPlacesSearched(placesDetails);
   };
@@ -158,14 +158,12 @@ export const SearchPlaceProvider = ({ children }) => {
         valueInput,
         setValueInput,
         inputRef,
-        handleChangeInput,
         handleCleanInput,
         setInfoWindow,
         infoWindow,
         selectedPlace,
         setSelectedPlace,
         placesSearched,
-        placeAutocompleteChanged,
         moreDetailsPlace,
         handleClickOnMap,
         geocodingPlaceByAddress,
