@@ -13,6 +13,7 @@ const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 const ZoneCrimesContext = createContext();
 
 export const ZoneCrimesProvider = ({ children }) => {
+  const [crimeSelected, setCrimeSelected] = useState();
   const [loadingYears, setLoadingYears] = useState(false);
   const [loadingNeighborhoodsCrime, setLoadingNeighborhoodsCrime] =
     useState(false);
@@ -106,6 +107,8 @@ export const ZoneCrimesProvider = ({ children }) => {
   return (
     <ZoneCrimesContext.Provider
       value={{
+        crimeSelected,
+        setCrimeSelected,
         getYearsNeighborhoodsCrime,
         setLoadingYears,
         loadingYears,

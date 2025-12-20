@@ -1,0 +1,24 @@
+.marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 99%;
+    width: 1.8rem;
+    height: 1.8rem;
+    cursor: pointer;
+}
+
+.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 99%;
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.marker img {
+    width: 13px;
+    height: 13px;
+}

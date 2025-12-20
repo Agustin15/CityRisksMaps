@@ -37,7 +37,6 @@ export const SearchPlaceProvider = ({ children }) => {
       await moreDetailsPlace(event.detail.placeId, true);
     } else {
       setSelectedPlace();
-
       marker.position = event.detail.latLng;
       getReverseGeocodification(event.detail.latLng);
     }
@@ -59,6 +58,7 @@ export const SearchPlaceProvider = ({ children }) => {
         setSelectedPlace(result);
         setValueInput(result.displayName.text);
       }
+
       return result;
     } catch (error) {
       alertSwalError("Ups,algo salio mal al buscar sitio", error);

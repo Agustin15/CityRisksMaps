@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2.2rem;
+    gap: 1.4rem;
     padding: 0.5rem 0 0.5rem 0;
     margin-top: 0;
     width: 99%;
@@ -16,6 +16,14 @@
     cursor: pointer;
 }
 
+.transports li {
+    padding: 0.5rem;
+    border-radius: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .transports li:hover {
-    border-bottom: 2px solid rgb(78, 140, 223);
+    background: rgba(186, 233, 255, 0.76);
 }

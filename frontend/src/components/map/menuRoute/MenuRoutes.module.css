@@ -64,7 +64,7 @@
 }
 
 .menuRoute .close button {
-    width: 2.5rem;
+    width: 4rem;
     height: 1.4rem;
     background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
     color: white;
@@ -89,5 +89,34 @@
 }
 
 .menuRoute .column .row input:hover {
-    border: 2px solid rgb(11, 122, 150);
+    border: 2px solid rgb(53, 182, 214);
+}
+
+.menuRoute .column .btnEnabled,
+.menuRoute .column .btnDisabled {
+    width: 9rem;
+    height: 2.2rem;
+    border-radius: 56px;
+    background: rgb(58, 120, 212);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.menuRoute .column .btnDisabled {
+    background: rgb(182, 182, 182);
+    cursor: auto;
+}
+
+.menuRoute .column .btnEnabled:hover {
+    background: rgb(38, 92, 172);
+}
+
+.menuRoute .column button img {
+    width: 25px;
+    height: 25px;
 }

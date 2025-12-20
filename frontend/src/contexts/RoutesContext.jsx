@@ -4,20 +4,26 @@ const RoutesContext = createContext();
 
 export const RoutesProvider = ({ children }) => {
   const [showMenuRoutes, setShowMenuRoutes] = useState(false);
-  const [destiny, setDestiny] = useState();
+  const [destiny, setDestiny] = useState("");
+  const [origin, setOrigin] = useState("");
 
   const handleClickRoute = (place) => {
     setShowMenuRoutes(true);
 
-    setDestiny({
-      coordinates: place.location,
-      address: place.formattedAddress
-    });
+    setDestiny(place.formattedAddress);
   };
 
   return (
     <RoutesContext.Provider
-      value={{ showMenuRoutes, setShowMenuRoutes, handleClickRoute, destiny }}
+      value={{
+        showMenuRoutes,
+        setShowMenuRoutes,
+        handleClickRoute,
+        origin,
+        destiny,
+        setOrigin,
+        setDestiny
+      }}
     >
       {children}
     </RoutesContext.Provider>

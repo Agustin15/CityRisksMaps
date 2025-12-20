@@ -42,9 +42,9 @@ export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
           <img
             src={
               categoryCrime == "Hurto"
-                ? iconTheft
-                : categoryCrime == "Rapiña"
                 ? iconHoldup
+                : categoryCrime == "Rapiña"
+                ? iconTheft
                 : categoryCrime == "Asesinato"
                 ? iconKill
                 : ""

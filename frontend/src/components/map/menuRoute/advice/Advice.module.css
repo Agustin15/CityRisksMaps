@@ -1,0 +1,22 @@
+.advice {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    height: 2.3rem;
+    padding: 0.5rem;
+    width: 76%;
+    background: rgb(57, 131, 190);
+    color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px gray;
+}
+
+.advice p {
+    width: 99%;
+}
+
+.advice img {
+    width: 25px;
+    height: 25px;
+}

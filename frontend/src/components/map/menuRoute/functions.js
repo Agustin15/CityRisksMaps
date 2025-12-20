@@ -1,7 +1,6 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
-const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 
-export const getSuggestions = async (userLocation, setSuggestions, value) => {
+export const getSuggestions = async (userLocation, value, setSuggestions) => {
   try {
     const response = await fetch(
       "https://places.googleapis.com/v1/places:autocomplete",
@@ -29,23 +28,8 @@ export const getSuggestions = async (userLocation, setSuggestions, value) => {
     const result = await response.json();
 
     if (result.suggestions) setSuggestions(result.suggestions);
+    else setSuggestions();
   } catch (error) {
     console.log(error);
-  }
-};
-
-export const getMontevideoGeoJson = async () => {
-  try {
-    const response = await fetch(LOCALHOST_FRONTEND + "/montevideo.json");
-    const result = await response.json();
-
-    if (!response.ok)
-      throw new Error("Error al obtener las coordenas de Montevideo");
-
-    if (result) {
-      return result.features[0].geometry.coordinates.flat().flat();
-    }
-  } catch (error) {
-    throw error;
   }
 };

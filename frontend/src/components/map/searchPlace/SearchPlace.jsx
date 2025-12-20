@@ -6,6 +6,7 @@ import iconSearch from "../../../assets/img/search.png";
 import { useEffect, useState } from "react";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 import { useMapControls } from "../../../contexts/MapContext";
+import { useMap } from "@vis.gl/react-google-maps";
 
 export const SearchPlace = () => {
   const [suggestions, setSuggestions] = useState();
@@ -83,7 +84,7 @@ export const SearchPlace = () => {
             <li
               key={index}
               onClick={() =>
-                moreDetailsPlace(suggestion.placePrediction.placeId)
+                moreDetailsPlace(suggestion.placePrediction.placeId, true)
               }
             >
               <img src={iconAddress}></img>

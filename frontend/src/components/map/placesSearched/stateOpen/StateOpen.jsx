@@ -52,9 +52,10 @@ export const StateOpen = ({ place }) => {
           : "Cerrado"}
       </span>
       <span>
-        {place.regularOpeningHours.nextCloseTime
-          ? nextTime(place.regularOpeningHours.nextCloseTime, "- Cierra")
-          : nextTime(place.regularOpeningHours.nextOpenTime, "- Abre")}
+        {place.regularOpeningHours.nextCloseTime &&
+          nextTime(place.regularOpeningHours.nextCloseTime, "- Cierra")}
+        {place.regularOpeningHours.nextOpenTime &&
+          nextTime(place.regularOpeningHours.nextOpenTime, "- Abre")}
       </span>
     </div>
   );

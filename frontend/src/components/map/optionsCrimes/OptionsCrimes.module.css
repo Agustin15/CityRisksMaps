@@ -12,10 +12,11 @@
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    background-color: rgb(243, 243, 243);
+    background-color: #353741;
     gap: 1rem;
     color: white;
     padding: 0;
+    padding-top:0.5rem;
     width: 4.5rem;
     height: 100vh;
     list-style: none;
@@ -24,22 +25,25 @@
 
 .menuOptionsCrimes li {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 99%;
-    font-size: 15px;
+    font-size: 12px;
+    gap: 0.3rem;
     height: 3rem;
     cursor: pointer;
+    color: white;
 }
 
 .menuOptionsCrimes li:hover,
 .menuOptionsCrimes .selected {
-    border-left: 3px solid rgb(74, 173, 231);
+    border-left: 3px solid rgb(91, 244, 255);
 }
 
 .menuOptionsCrimes li img {
-    width: 27px;
-    height: 27px;
+    width: 22px;
+    height: 22px;
 }
 
 .menuOptionsCrimes .myLocation {
@@ -49,11 +53,11 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    color: gray;
+    color: rgb(255, 255, 255);
     font-size: 12px;
 }
 
 .menuOptionsCrimes .myLocation img {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
 }

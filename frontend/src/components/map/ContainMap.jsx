@@ -3,7 +3,7 @@ import {
   AdvancedMarker,
   ControlPosition,
   MapControl,
-  useAdvancedMarkerRef,
+  useAdvancedMarkerRef
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 
@@ -30,7 +30,7 @@ import { FormAddQuizProvider } from "../../contexts/quizesContext/FormAddQuizCon
 import { ListUserQuizes } from "./quizes/listUserQuizes/ListUserQuizes.jsx";
 import { ListQuizesProvider } from "../../contexts/quizesContext/ListQuizesContext.jsx";
 import { PlacesSearched } from "./placesSearched/PlacesSearched.jsx";
-
+import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
@@ -106,6 +106,7 @@ export const ContainMap = () => {
           </AdvancedMarker>
         )}
       </Map>
+      {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
 
       {showPhotos && (
         <Modal>

@@ -1,47 +1,33 @@
-const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import styles from "./MenuRoutes.module.css";
 import iconDestiny from "../../../assets/img/destinyAddress.png";
 import iconOrigin from "../../../assets/img/origin.png";
-import { OptionsAddress } from "./optionsAddress/OptionsAddress.jsx";
+import iconShow from "../../../assets/img/showRoutes.png";
 import { useRoutes } from "../../../contexts/RoutesContext";
-import { Transports } from "./transports/Transports";
 import { useMapControls } from "../../../contexts/MapContext.jsx";
+import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useState } from "react";
+import { OptionsAddress } from "./optionsAddress/OptionsAddress.jsx";
+import { Transports } from "./transports/Transports";
+import { Advice } from "./advice/Advice.jsx";
+import { getSuggestions } from "./functions.js";
+import { useQuizes } from "../../../contexts/quizesContext/QuizesContext.jsx";
 
 export const MenuRoute = () => {
-  const { destiny, setShowMenuRoutes } = useRoutes();
-  const { userLocation } = useMapControls();
   const [suggestions, setSuggestions] = useState();
+  const [lastInputChanged, setLastInputChanged] = useState();
+  const { destiny, origin, setOrigin, setDestiny, setShowMenuRoutes } =
+    useRoutes();
+  const { userLocation } = useMapControls();
+  const { crimeSelected } = useZoneCrimes();
+  const { showQuizes } = useQuizes();
 
-  const handleChange = async (value) => {
-    try {
-      const response = await fetch(
-        "https://places.googleapis.com/v1/places:autocomplete",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-            "X-Goog-Api-Key": API_KEY
-          },
-          body: JSON.stringify({
-            input: value,
-            regionCode: "UY",
-            locationBias: {
-              circle: {
-                center: {
-                  latitude: userLocation.lat,
-                  longitude: userLocation.lng
-                },
-                radius: 10000.0
-              }
-            }
-          })
-        }
-      );
-      const result = await response.json();
-      setSuggestions(result.suggestions);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleChange = async (value, input) => {
+    if (input == "origin") setOrigin(value);
+    else setDestiny(value);
+
+    setLastInputChanged(input);
+
+    getSuggestions(userLocation, value, setSuggestions);
   };
 
   return (
@@ -56,7 +42,8 @@ export const MenuRoute = () => {
           <div className={styles.row}>
             <img src={iconOrigin}></img>
             <input
-              onChange={(event) => handleChange(event.target.value)}
+              value={origin}
+              onChange={(event) => handleChange(event.target.value, "origin")}
               type="text"
             ></input>
           </div>
@@ -65,11 +52,32 @@ export const MenuRoute = () => {
           <label>Destino:</label>
           <div className={styles.row}>
             <img src={iconDestiny}></img>
-            <input type="text" value={destiny.address}></input>
+            <input
+              onChange={(event) => handleChange(event.target.value, "destiny")}
+              type="text"
+              value={destiny}
+            ></input>
           </div>
         </div>
+        <button
+          className={
+            destiny.length > 0 &&
+            origin.length > 0 &&
+            (crimeSelected == "Asesinato" || showQuizes)
+              ? styles.btnEnabled
+              : styles.btnDisabled
+          }
+        >
+          Mostrar rutas
+          <img src={iconShow}></img>
+        </button>
+
+        {(crimeSelected != "Asesinato" || !showQuizes) && <Advice />}
       </div>
-      <OptionsAddress suggestions={suggestions} />
+      <OptionsAddress
+        suggestions={suggestions}
+        lastInputChanged={lastInputChanged}
+      />
     </div>
   );
 };
