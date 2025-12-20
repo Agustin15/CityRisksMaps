@@ -9,7 +9,7 @@ import { useState } from "react";
 import { OptionsAddress } from "./optionsAddress/OptionsAddress.jsx";
 import { Transports } from "./transports/Transports";
 import { Advice } from "./advice/Advice.jsx";
-import { getSuggestions } from "./functions.js";
+import { getSuggestions, showRoutes } from "./functions.js";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext.jsx";
 
 export const MenuRoute = () => {
@@ -60,6 +60,7 @@ export const MenuRoute = () => {
           </div>
         </div>
         <button
+          onClick={() => showRoutes(origin, destiny, "DRIVE")}
           className={
             destiny.length > 0 &&
             origin.length > 0 &&
@@ -72,7 +73,7 @@ export const MenuRoute = () => {
           <img src={iconShow}></img>
         </button>
 
-        {(crimeSelected != "Asesinato" || !showQuizes) && <Advice />}
+        {crimeSelected != "Asesinato" && !showQuizes && <Advice />}
       </div>
       <OptionsAddress
         suggestions={suggestions}

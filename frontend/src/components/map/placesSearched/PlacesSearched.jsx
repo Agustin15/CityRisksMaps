@@ -21,7 +21,7 @@ export const PlacesSearched = () => {
             <div className={styles.row}>
               <div className={styles.details}>
                 <h4>{place.displayName.text}</h4>
-                <Rating place={place} />
+                {place.rating && <Rating place={place} />}
                 <p>{place.shortFormattedAddress}</p>
 
                 {place.regularOpeningHours && <StateOpen place={place} />}

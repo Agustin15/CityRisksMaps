@@ -3,7 +3,7 @@ import iconAddress from "../../../assets/img/address.png";
 import iconPhone from "../../../assets/img/phone.png";
 import iconWeb from "../../../assets/img/web.png";
 import { OpeningDays } from "./openingDays/OpeningDays";
-import { Rating } from "./rating/Rating";
+import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
 
@@ -15,7 +15,7 @@ export const PlaceDetails = ({ place }) => {
 
         <h3>{place.displayName.text}</h3>
         {place.rating || place.primaryTypeDisplayName ? (
-          <Rating place={place} />
+          <About place={place} />
         ) : (
           <div className={styles.row}>
             <span>{place.addressComponents[1].longText}</span>

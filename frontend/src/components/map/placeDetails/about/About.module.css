@@ -1,4 +1,4 @@
-.rating {
+.about {
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -8,33 +8,33 @@
     width: 98%;
 }
 
-.rating .stars {
+.about .stars {
     width: 81px;
     height: 18px;
 }
 
-.rating .row,
-.rating .rowTwo,
-.rating .rowTwo .data {
+.about .row,
+.about .rowTwo,
+.about .rowTwo .data {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
 }
 
-.rating .rowTwo {
+.about .rowTwo {
     display: flex;
     justify-content: start;
     align-items: center;
     width: 98%;
 }
 
-.rating .wheelchair {
+.about .wheelchair {
     width: 14px;
     height: 14px;
 }
 
-.rating .rowTwo .data {
+.about .rowTwo .data {
     justify-content: start;
     width: 85%;
     gap: 0.3rem;

@@ -11,9 +11,9 @@ import fourHalfStars from "../../../../assets/img/fourHalfStars.png";
 import fiveStars from "../../../../assets/img/fiveStars.png";
 import iconWheelchair from "../../../../assets/img/wheelchair.png";
 import { BtnIndications } from "../../BtnIndications/BtnIndications";
-import styles from "./Rating.module.css";
+import styles from "./About.module.css";
 
-export const Rating = ({ setSelectedPlace, place }) => {
+export const About = ({ setSelectedPlace, place }) => {
   const getStarsRating = (rating) => {
     const ratingStars = [
       { rating: { min: 0.0, max: 0.4 }, stars: ceroStars },
@@ -38,12 +38,17 @@ export const Rating = ({ setSelectedPlace, place }) => {
   };
 
   return (
-    <div className={styles.rating}>
-      <div className={styles.row}>
-        <span>{place.rating}</span>
-        <img className={styles.stars} src={getStarsRating(place.rating)}></img>
-        <span>({place.userRatingCount})</span>
-      </div>
+    <div className={styles.about}>
+      {place.rating && (
+        <div className={styles.row}>
+          <span>{place.rating}</span>
+          <img
+            className={styles.stars}
+            src={getStarsRating(place.rating)}
+          ></img>
+          <span>({place.userRatingCount})</span>
+        </div>
+      )}
       <div className={styles.rowTwo}>
         <div className={styles.data}>
           {place.primaryTypeDisplayName && (

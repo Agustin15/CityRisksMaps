@@ -33,3 +33,42 @@ export const getSuggestions = async (userLocation, value, setSuggestions) => {
     console.log(error);
   }
 };
+
+export const showRoutes = async (origin, destiny, travelMode) => {
+  try {
+    const response = await fetch(
+      "https://routes.googleapis.com/directions/v2:computeRoutes",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          "X-Goog-Api-Key": API_KEY,
+          "X-Goog-FieldMask":
+            "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline"
+        },
+        body: JSON.stringify({
+          origin: {
+            address: origin
+          },
+          destination: {
+            address: destiny
+          },
+          travelMode: travelMode,
+          computeAlternativeRoutes: true,
+          routeModifiers: {
+            avoidTolls: false,
+            avoidHighways: false,
+            avoidFerries: false
+          },
+          languageCode: "sr-Latn"
+        })
+      }
+    );
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.error.message);
+    console.log(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
