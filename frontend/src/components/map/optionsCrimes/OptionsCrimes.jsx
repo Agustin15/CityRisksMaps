@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
+import { useMap } from "@vis.gl/react-google-maps";
 import { ContainQuizes } from "../quizes/containQuizes/ContainQuizes";
 import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
 import { Menu } from "./menu/Menu";
@@ -11,6 +12,7 @@ const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
+  const map = useMap();
   const { crimeSelected, setCrimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
 
@@ -33,20 +35,28 @@ export const OptionsCrimes = () => {
   };
 
   useEffect(() => {
+    if (!map) return;
     getCrimes();
-  }, []);
+  }, [map]);
 
   return (
     <div className={styles.containOptionsCrimes}>
+      {crimes && <Menu crimes={crimes} />}
       {crimeSelected && (
         <CrimeNeighbordhoods
           categoryCrime={crimeSelected}
           setCrimeSelected={setCrimeSelected}
         />
       )}
-      {showQuizes && <ContainQuizes />}
 
-      {crimes && <Menu crimes={crimes} />}
+      {!crimeSelected && !showQuizes && (
+        <div className={styles.welcome}>
+          <h3>¡Bienvenido!</h3>
+          <p>Elija una opcion para visualizar los datos</p>
+        </div>
+      )}
+
+      {showQuizes && <ContainQuizes />}
     </div>
   );
 };

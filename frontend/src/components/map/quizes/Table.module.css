@@ -2,14 +2,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: 65%;
+    width: 97%;
+    height: 55%;
+    margin-top: 0.5rem;
+    background-color: #383d50;
+    box-shadow:
+        rgb(37, 37, 37) 2px 1px 2px 0px,
+        rgb(37, 37, 37) 2px 1px 3px 1px;
 }
 
 .scroll {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    scrollbar-width: none;
     padding-bottom: 3rem;
 }
 
@@ -36,11 +42,11 @@ td {
 }
 
 .trGray {
-    background-color: rgb(192, 225, 248);
+    background-color: #2f313f;
     cursor: pointer;
 }
 .trWhite {
-    background-color: rgb(255, 255, 255);
+    background-color: #444964;
     cursor: pointer;
 }
 
@@ -56,8 +62,8 @@ td {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
     border-top: 1px solid rgb(224, 224, 224);
+    background-color: #303447;
 }
 
 .table .moreDetails h4 {

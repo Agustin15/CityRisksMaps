@@ -5,12 +5,10 @@ import gallery from "../../../../assets/img/gallery.png";
 import { useEffect, useState } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
 
-
 export const ContainPhoto = ({ place }) => {
   const { getPhotoDetails, loading, setLoading, setShowPhotos } =
     usePhotosPlace();
   const [mainPhoto, setMainPhoto] = useState();
-  const [showBtn, setShowBtn] = useState(false);
 
   useEffect(() => {
     if (!place) return;
@@ -50,28 +48,22 @@ export const ContainPhoto = ({ place }) => {
   };
 
   return (
-    <div
-      onMouseLeave={() => place.photos && mainPhoto && setShowBtn(false)}
-      className={styles.containPhoto}
-    >
+    <div className={styles.containPhoto}>
       {loading && <span className={styles.loader}></span>}
       {!loading && (
         <img
-          onMouseEnter={() => place.photos && mainPhoto && setShowBtn(true)}
           className={mainPhoto ? styles.mainPhoto : styles.imageNotFound}
           src={mainPhoto ? mainPhoto : imageNotFound}
         ></img>
       )}
       {!loading && !mainPhoto && <span>Imagen no encontrada</span>}
 
-      {showBtn && (
-        <div className={styles.optionWatchPhotos}>
-          <button onClick={() => setShowPhotos(true)}>
-            Ver fotos
-            <img src={gallery}></img>
-          </button>
-        </div>
-      )}
+      <div className={styles.optionWatchPhotos}>
+        <button onClick={() => setShowPhotos(true)}>
+          Ver fotos
+          <img src={gallery}></img>
+        </button>
+      </div>
     </div>
   );
 };

@@ -9,6 +9,7 @@
 }
 .references h4 {
     margin: 0;
+    font-size: 13px;
 }
 
 .ulReferences {
@@ -19,7 +20,7 @@
     width: 99%;
     gap: 0.5rem;
     padding: 0;
-    margin:0;
+    margin: 0;
 }
 
 .ulReferences li {

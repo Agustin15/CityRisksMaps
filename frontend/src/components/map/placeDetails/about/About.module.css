@@ -1,11 +1,13 @@
 .about {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: start;
-    margin-left: 0.7rem;
     font-size: 13px;
     width: 98%;
+    box-shadow: 2px 2px 2px rgb(37, 37, 37);
+    background-color: #272b3a;
+    padding: 0.5rem;
 }
 
 .about .stars {
@@ -39,5 +41,3 @@
     width: 85%;
     gap: 0.3rem;
 }
-
-

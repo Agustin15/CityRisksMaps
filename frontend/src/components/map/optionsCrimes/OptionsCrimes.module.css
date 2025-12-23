@@ -1,31 +1,41 @@
 .containOptionsCrimes {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    position: absolute;
+    right: 0;
+    top: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: start;
-    justify-content: center;
+    justify-content: start;
+    gap: 0;
+    width: 35rem;
     height: 100vh;
+    border-left: none;
+    box-shadow: -2px 5px 2px rgb(27, 27, 27);
+    background-color: #3d4050;
 }
 
 .menuOptionsCrimes {
-    margin-top: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: start;
     align-items: start;
-    background-color: #353741;
-    gap: 1rem;
+    gap: 0.8rem;
+    width: 99.7%;
+    height: 3.3rem;
+    background-color: #3d4050;
     color: white;
     padding: 0;
-    padding-top:0.5rem;
-    width: 4.5rem;
-    height: 100vh;
+    padding-top: 0.5rem;
+    margin-top: 0;
+    box-shadow: 2px 2px 2px rgb(48, 48, 48);
     list-style: none;
-    border-left: 1px solid rgb(221, 221, 221);
 }
 
 .menuOptionsCrimes li {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 99%;
@@ -38,7 +48,7 @@
 
 .menuOptionsCrimes li:hover,
 .menuOptionsCrimes .selected {
-    border-left: 3px solid rgb(91, 244, 255);
+    border-bottom: 3px solid rgb(91, 244, 255);
 }
 
 .menuOptionsCrimes li img {
@@ -50,7 +60,6 @@
     height: 3rem;
     margin-bottom: 0.5rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     color: rgb(255, 255, 255);
@@ -60,4 +69,23 @@
 .menuOptionsCrimes .myLocation img {
     width: 28px;
     height: 28px;
+}
+
+.welcome {
+    width: 99%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.welcome h3,
+p {
+    padding: 0;
+    margin: 0;
 }

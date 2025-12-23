@@ -3,13 +3,18 @@
     flex-direction: column;
     align-items: center;
     width: 99%;
-    border-bottom: 1px solid rgb(212, 212, 212);
+    margin-top: 0.5rem;
+    background-color: #383d50;
+    box-shadow:
+        rgb(37, 37, 37) 2px 1px 2px 0px,
+        rgb(37, 37, 37) 2px 1px 3px 1px;
 }
 
 .containDetails p {
     width: 98%;
     margin: 0.7rem;
     margin-top: 0.5rem;
+    font-size: 13px;
 }
 
 .containDetails p a {
@@ -37,7 +42,8 @@
     padding-bottom: 0.5rem;
     padding-left: 1%;
     gap: 1rem;
-    border-bottom: 1px solid rgb(206, 206, 206);
+    width: 99%;
+    font-size: 15px;
 }
 
 .containDetails .containOptionsQuiz button {
@@ -53,7 +59,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 2px 2px 2px rgb(24, 24, 24);
 }
 
 .containDetails .containOptionsQuiz button:hover {

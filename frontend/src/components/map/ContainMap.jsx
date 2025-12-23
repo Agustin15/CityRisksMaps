@@ -51,7 +51,7 @@ export const ContainMap = () => {
   return (
     <>
       <Map
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "59vw", height: "60vh" }}
         disableDefaultUI
         defaultZoom={15}
         defaultCenter={{ lat: -34.8340562, lng: -56.3622838 }}
@@ -78,16 +78,9 @@ export const ContainMap = () => {
 
         <MapControl position={ControlPosition.TOP_LEFT}>
           <SearchPlace />
-          {selectedPlace && <PlaceDetails place={selectedPlace} />}
-          {placesSearched && <PlacesSearched />}
-          {showMenuRoutes && <MenuRoute />}
         </MapControl>
 
         <MapHandler place={selectedPlace} marker={marker} />
-
-        <MapControl position={ControlPosition.RIGHT_TOP}>
-          <OptionsCrimes />
-        </MapControl>
 
         <MapControl position={ControlPosition.BOTTOM_CENTER}>
           {infoWindow && (
@@ -105,8 +98,15 @@ export const ContainMap = () => {
             <InfoWindowNeighborhood polygonSelected={polygonSelected} />
           </AdvancedMarker>
         )}
+
+        {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
       </Map>
-      {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
+
+      <OptionsCrimes />
+
+      <PlaceDetails place={selectedPlace} />
+      {placesSearched && <PlacesSearched />}
+      {showMenuRoutes && <MenuRoute />}
 
       {showPhotos && (
         <Modal>
