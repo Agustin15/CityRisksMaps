@@ -1,0 +1,35 @@
+.geolocation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.geolocation li {
+    width: 6rem;
+    height: 2rem;
+    background: rgba(70, 70, 70, 0.911);
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin-right: 0.7rem;
+    box-shadow: 1px 1px 1px rgb(192, 192, 192);
+    cursor: pointer;
+}
+
+button img {
+    width: 28px;
+    height: 28px;
+}

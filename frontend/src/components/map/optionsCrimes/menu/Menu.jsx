@@ -3,19 +3,13 @@ import iconKill from "../../../../assets/img/killMenu.png";
 import iconTheft from "../../../../assets/img/theftMenu.png";
 import iconHoldup from "../../../../assets/img/holdupMenu.png";
 import iconQuizes from "../../../../assets/img/quizesMenu.png";
-import myLocation from "../../../../assets/img/myLocation.png";
-import { useMapControls } from "../../../../contexts/MapContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { useEffect } from "react";
-import { useMap } from "@vis.gl/react-google-maps";
 
 export const Menu = ({ crimes }) => {
   const { loadCrimeDataNeighborhoods, crimeSelected, setCrimeSelected } =
     useZoneCrimes();
-  const { handleMyLocation, loadingMyLocation } = useMapControls();
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
-  const map = useMap();
 
   const handleClickOption = (crime) => {
     loadCrimeDataNeighborhoods(crime.category);
@@ -61,10 +55,6 @@ export const Menu = ({ crimes }) => {
           {crime.category}
         </li>
       ))}
-      {/* <li className={styles.myLocation} onClick={handleMyLocation}>
-        <img src={myLocation}></img>
-        {loadingMyLocation ? "Localizando" : "Localizar"}
-      </li> */}
     </ul>
   );
 };
