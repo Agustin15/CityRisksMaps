@@ -25,7 +25,7 @@ import { Tools } from "./tools/Tools.jsx";
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
-
+  
   const {
     selectedPlace,
     placesSearched,

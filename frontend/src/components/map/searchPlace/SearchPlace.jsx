@@ -50,11 +50,16 @@ export const SearchPlace = () => {
   };
 
   return (
-    <>
+    <div
+      onMouseLeave={() => {
+        if (suggestions) setSuggestions();
+      }}
+    >
       <div className="autocompleteContainer">
         <input
           value={valueInput}
           onChange={(event) => handleChangeInput(event)}
+          className={suggestions ? "inputFocus" : ""}
           placeholder="Buscar ubicacion"
           ref={inputRef}
         />
@@ -92,6 +97,6 @@ export const SearchPlace = () => {
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 };

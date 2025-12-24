@@ -3,10 +3,10 @@
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .rowRating img {
     width: auto;
-    height: 16px;
+    height: 18px;
 }

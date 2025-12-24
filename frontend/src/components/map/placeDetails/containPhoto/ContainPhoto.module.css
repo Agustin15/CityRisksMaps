@@ -50,7 +50,7 @@
 .optionWatchPhotos {
     position: absolute;
     height: 93%;
-    width: 92%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -63,9 +63,10 @@
     justify-content: center;
     align-items: center;
     width: 6.5rem;
-    border-radius: 3px;
+    border-top-left-radius: 3px;
     gap: 0.5rem;
     height: 2.3rem;
+    box-shadow: none;
     background: rgb(0, 0, 0, 0.8);
     color: white;
 }

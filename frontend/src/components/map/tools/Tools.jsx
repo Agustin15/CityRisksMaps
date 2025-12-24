@@ -1,3 +1,5 @@
+import styles from "./Tools.module.css";
+import iconMap from "../../../assets/img/map.png";
 import { OptionsCrimes } from "../optionsCrimes/OptionsCrimes";
 import { PlaceDetails } from "../placeDetails/PlaceDetails.jsx";
 import { PlacesSearched } from "../placesSearched/PlacesSearched";
@@ -23,8 +25,16 @@ export const Tools = () => {
     <>
       <OptionsCrimes />
 
-      <PlaceDetails place={selectedPlace} />
+      {selectedPlace && <PlaceDetails place={selectedPlace} />}
+
       {placesSearched && <PlacesSearched />}
+
+      {!placesSearched && !selectedPlace && (
+        <div className={styles.placeNotSelected}>
+          <img src={iconMap}></img>
+          <h3>No se selecciono ningun lugar aun</h3>
+        </div>
+      )}
       {showMenuRoutes && <MenuRoute />}
 
       {showPhotos && (

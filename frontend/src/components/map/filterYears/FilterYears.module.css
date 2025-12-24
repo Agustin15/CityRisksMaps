@@ -36,7 +36,6 @@
 .years li .yearUnselected {
     background-color: rgb(255, 255, 255);
     color: #30a39d;
-    border: 1px solid rgb(209, 209, 209);
 }
 
 .years li .yearUnselected:hover {

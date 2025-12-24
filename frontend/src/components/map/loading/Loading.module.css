@@ -3,8 +3,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto;
-    width: 99%;
+    height: 34%;
+    width: 95%;
     font-size: 18px;
     font-weight: bold;
+    color: white;
 }

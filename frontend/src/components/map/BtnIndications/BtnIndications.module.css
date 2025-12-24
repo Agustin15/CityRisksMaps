@@ -11,6 +11,7 @@
     cursor: pointer;
     outline: none;
     border-radius:100px;
+    box-shadow: none;
 }
 
 .buttonStartRoute:hover {

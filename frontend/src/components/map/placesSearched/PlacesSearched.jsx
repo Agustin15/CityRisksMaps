@@ -6,7 +6,8 @@ import { StateOpen } from "./stateOpen/StateOpen";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 
 export const PlacesSearched = () => {
-  const { setSelectedPlace, placesSearched, setValueInput } = useSearchPlace();
+  const { setSelectedPlace, placesSearched, setValueInput, valueInput } =
+    useSearchPlace();
 
   const handleClick = (place) => {
     setSelectedPlace(place);
@@ -14,7 +15,7 @@ export const PlacesSearched = () => {
   };
   return (
     <div className={styles.containPlaces}>
-      <h4>Resultados:</h4>
+      <h4>Resultados de {valueInput}:</h4>
       <ul>
         {placesSearched.map((place, index) => (
           <li onClick={() => handleClick(place)} key={index}>

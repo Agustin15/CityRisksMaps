@@ -12,9 +12,11 @@ export const Menu = ({ crimes }) => {
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
 
   const handleClickOption = (crime) => {
-    loadCrimeDataNeighborhoods(crime.category);
-    setCrimeSelected(crime.category);
-    setShowQuizes();
+    if (crime.category != crimeSelected) {
+      loadCrimeDataNeighborhoods(crime.category);
+      setCrimeSelected(crime.category);
+      setShowQuizes();
+    }
   };
 
   const handleClickQuizes = () => {
