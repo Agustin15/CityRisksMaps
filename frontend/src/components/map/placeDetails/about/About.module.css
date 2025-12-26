@@ -5,9 +5,9 @@
     align-items: start;
     font-size: 13px;
     width: 98%;
-    box-shadow: 2px 2px 2px rgb(37, 37, 37);
-    background-color: #272b3a;
     padding: 0.5rem;
+    background-color: #1e233b;
+    box-shadow: 2px 2px 2px rgb(7, 7, 7);
 }
 
 .about .stars {

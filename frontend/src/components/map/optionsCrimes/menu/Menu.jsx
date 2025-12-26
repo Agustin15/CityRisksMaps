@@ -1,8 +1,8 @@
 import styles from "../OptionsCrimes.module.css";
-import iconKill from "../../../../assets/img/killMenu.png";
-import iconTheft from "../../../../assets/img/theftMenu.png";
-import iconHoldup from "../../../../assets/img/holdupMenu.png";
-import iconQuizes from "../../../../assets/img/quizesMenu.png";
+import iconKill from "../../../../assets/img/kill.png";
+import iconTheft from "../../../../assets/img/theft.png";
+import iconHoldup from "../../../../assets/img/holdup.png";
+import iconQuizes from "../../../../assets/img/quizes.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 

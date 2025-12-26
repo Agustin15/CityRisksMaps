@@ -7,7 +7,7 @@
     box-shadow:
         rgb(37, 37, 37) 2px 1px 2px 0px,
         rgb(37, 37, 37) 2px 1px 3px 1px;
-    background-color: #383d50;
+    background-color: #2e3453;
 }
 
 .scroll {
@@ -40,11 +40,11 @@ td {
 }
 
 .trGray {
-    background-color: #2f313f;
+    background-color: #3a457c;
     cursor: pointer;
 }
 .trWhite {
-    background-color: #444964;
+    background-color: #252e5a;
     cursor: pointer;
 }
 
@@ -64,7 +64,7 @@ td {
     align-items: center;
     width: 100%;
     box-shadow: 2px 2px 2px rgb(24, 24, 24);
-    background-color: #303447;
+    background-color: #1f243b;
     padding-bottom: 0.5rem;
     border-radius: 5px;
 }

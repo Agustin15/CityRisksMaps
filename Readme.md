@@ -93,9 +93,6 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
      SECRET_KEY_TOKEN=<SECRET KEY FOR JSONWEBTOKEN>
 
 
-  ![](/frontend/src/assets/Captures/Capture6.PNG)
-
-
   ![](/frontend/src/assets/Captures/Capture1.PNG)
     
 

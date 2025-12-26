@@ -5,7 +5,7 @@
     width: 97%;
     height: 55%;
     margin-top: 0.5rem;
-    background-color: #383d50;
+    background-color: #2e3453;
     box-shadow:
         rgb(37, 37, 37) 2px 1px 2px 0px,
         rgb(37, 37, 37) 2px 1px 3px 1px;
@@ -42,11 +42,11 @@ td {
 }
 
 .trGray {
-    background-color: #2f313f;
+    background-color: #3a457c;
     cursor: pointer;
 }
 .trWhite {
-    background-color: #444964;
+    background-color: #252e5a;
     cursor: pointer;
 }
 
@@ -63,7 +63,7 @@ td {
     flex-direction: column;
     align-items: center;
     border-top: 1px solid rgb(224, 224, 224);
-    background-color: #303447;
+    background-color: #1f243b;
 }
 
 .table .moreDetails h4 {

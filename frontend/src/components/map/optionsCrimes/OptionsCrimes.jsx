@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
-import { useMap } from "@vis.gl/react-google-maps";
 import { useMapControls } from "../../../contexts/MapContext";
 import { ContainQuizes } from "../quizes/containQuizes/ContainQuizes";
 import { CrimeNeighbordhoods } from "./crimeNeighData/CrimeNeighbordhoods";
@@ -30,8 +29,8 @@ export const OptionsCrimes = () => {
     const crimes = await getCrimes(setLoadingCrimes, setErrorQuery);
     if (crimes) {
       setCrimes(crimes);
-      setCrimeSelected(crimes[0]);
-      loadCrimeDataNeighborhoods(crimes[0]);
+      setCrimeSelected(crimes[0].category);
+      loadCrimeDataNeighborhoods(crimes[0].category);
     }
   };
 

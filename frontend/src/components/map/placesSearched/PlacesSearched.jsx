@@ -15,7 +15,7 @@ export const PlacesSearched = () => {
   };
   return (
     <div className={styles.containPlaces}>
-      <h4>Resultados de {valueInput}:</h4>
+      <h4>Resultados a la busqueda {valueInput}:</h4>
       <ul>
         {placesSearched.map((place, index) => (
           <li onClick={() => handleClick(place)} key={index}>

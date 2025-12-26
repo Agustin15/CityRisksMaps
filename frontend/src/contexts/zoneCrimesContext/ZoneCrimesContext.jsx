@@ -28,6 +28,7 @@ export const ZoneCrimesProvider = ({ children }) => {
 
   const fetchEndpoint = async (url, setLoading) => {
     setLoading(true);
+
     try {
       const response = await fetch(url, {
         method: "GET",
