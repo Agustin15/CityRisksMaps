@@ -1,3 +1,5 @@
+import { alertSwalError } from "../../sweetAlert/sweetAlert.js";
+
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
 export const getSuggestions = async (userLocation, value, setSuggestions) => {
@@ -27,48 +29,33 @@ export const getSuggestions = async (userLocation, value, setSuggestions) => {
     );
     const result = await response.json();
 
-    if (result.suggestions) setSuggestions(result.suggestions);
-    else setSuggestions();
+    if (result.suggestions) {
+      setSuggestions(
+        await detailsSuggestions(result.suggestions, setSuggestions)
+      );
+    } else setSuggestions();
   } catch (error) {
     console.log(error);
   }
 };
 
-export const showRoutes = async (origin, destiny, travelMode) => {
-  try {
-    const response = await fetch(
-      "https://routes.googleapis.com/directions/v2:computeRoutes",
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          "X-Goog-Api-Key": API_KEY,
-          "X-Goog-FieldMask":
-            "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline"
-        },
-        body: JSON.stringify({
-          origin: {
-            address: origin
-          },
-          destination: {
-            address: destiny
-          },
-          travelMode: travelMode,
-          computeAlternativeRoutes: true,
-          routeModifiers: {
-            avoidTolls: false,
-            avoidHighways: false,
-            avoidFerries: false
-          },
-          languageCode: "sr-Latn"
-        })
-      }
-    );
-    const result = await response.json();
+export const detailsSuggestions = async (suggestions) => {
+  return await Promise.all(
+    await suggestions.map(async (suggestion) => {
+      try {
+        const response = await fetch(
+          `https://places.googleapis.com/v1/places/${suggestion.placePrediction.placeId}?fields=displayName,location,formattedAddress&languageCode=es&key=${API_KEY}`
+        );
 
-    if (!response.ok) throw new Error(result.error.message);
-    console.log(result);
-  } catch (error) {
-    console.log(error.message);
-  }
+        const result = await response.json();
+
+        if (!response.ok) throw new Error("Sitio solicitado no encontrado");
+
+        return result;
+      } catch (error) {
+        return alertSwalError("Ups,algo salio mal al buscar sitio", error);
+      }
+    })
+  );
 };
+

@@ -4,13 +4,14 @@ import iconAddress from "../../../../assets/img/destinyAddress.png";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { useRoutes } from "../../../../contexts/RoutesContext";
 
-export const OptionsAddress = ({ suggestions, lastInputChanged }) => {
+export const OptionsAddress = ({ suggestions, setSuggestions }) => {
   const { userLocation } = useMapControls();
-  const { setOrigin, setDestiny } = useRoutes();
+  const { setOrigin, setOriginLocation } = useRoutes();
 
-  const handleClick = (address) => {
-    if (lastInputChanged == "origin") setOrigin(address);
-    else setDestiny(address);
+  const handleClick = (address, location) => {
+    setOrigin(address);
+    setOriginLocation(location);
+    setSuggestions();
   };
   return (
     <ul className={styles.optionsAddress}>
@@ -25,11 +26,20 @@ export const OptionsAddress = ({ suggestions, lastInputChanged }) => {
       {suggestions &&
         suggestions.map((suggestion, index) => (
           <li
-            onClick={() => handleClick(suggestion.placePrediction.text.text)}
+            onClick={() =>
+              handleClick(suggestion.formattedAddress, suggestion.location)
+            }
             key={index}
           >
             <img src={iconAddress}></img>
-            <p>{suggestion.placePrediction.text.text}</p>
+            <p>
+              <span className={styles.displayName}>
+                {suggestion.displayName.text},
+              </span>
+              <span className={styles.formattedAddress}>
+                {suggestion.formattedAddress}
+              </span>
+            </p>
           </li>
         ))}
     </ul>

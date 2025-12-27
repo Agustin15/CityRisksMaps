@@ -6,7 +6,8 @@
     padding: 0.5rem 0 0.5rem 0;
     margin-top: 0;
     width: 99%;
-    border-bottom: 1px solid rgb(238, 238, 238);
+    background-color: #2e3453;
+    box-shadow: 2px 2px 2px black;
     list-style: none;
 }
 
@@ -24,6 +25,7 @@
     align-items: center;
 }
 
-.transports li:hover {
-    background: rgba(186, 233, 255, 0.76);
+.transports li:hover,
+.transports .selected {
+    background: rgba(0, 0, 0, 0.384);
 }

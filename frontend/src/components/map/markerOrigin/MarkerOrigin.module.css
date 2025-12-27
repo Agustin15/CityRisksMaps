@@ -1,0 +1,16 @@
+.markerOrigin {
+    border-radius: 99%;
+    width:1.2rem;
+    height: 1.2rem;
+    background-color: rgb(87, 87, 87);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    border-radius: 99%;
+    width: 65%;
+    height: 65%;
+    background-color: rgb(255, 255, 255);
+}

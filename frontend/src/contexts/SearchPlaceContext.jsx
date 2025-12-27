@@ -46,7 +46,7 @@ export const SearchPlaceProvider = ({ children }) => {
     setLoadingPlace(true);
     try {
       const response = await fetch(
-        `https://places.googleapis.com/v1/places/${placeId}?fields=*&languageCode=es&key=${API_KEY}`
+        `https://places.googleapis.com/v1/places/${placeId}?fields=location,formattedAddress,shortFormattedAddress,rating,primaryTypeDisplayName,addressComponents,editorialSummary,regularOpeningHours,nationalPhoneNumber,userRatingCount,websiteUri,accessibilityOptions,photos,displayName,iconMaskBaseUri,iconBackgroundColor&languageCode=es&key=${API_KEY}`
       );
 
       const result = await response.json();
@@ -116,40 +116,53 @@ export const SearchPlaceProvider = ({ children }) => {
 
   const searchByText = async () => {
     setValueSearchedByText(inputRef.current.value);
-    const { Place } = await google.maps.importLibrary("places");
 
     const request = {
       textQuery: inputRef.current.value,
-      fields: ["*"],
       includedType: "",
-      useStrictTypeFiltering: true,
+      strictTypeFiltering: true,
+      rankPreference: "DISTANCE",
       locationBias: {
-        lat: userLocation ? userLocation.lat : -34.89,
-        lng: userLocation ? userLocation.lng : -56.16
+        circle: {
+          center: {
+            latitude: userLocation ? userLocation.lat : -34.89,
+            longitude: userLocation ? userLocation.lng : -56.16
+          },
+          radius: 5000.0
+        }
       },
-      isOpenNow: false,
-      language: "es",
-      maxResultCount: 10,
+      pageSize: 10,
+      openNow: false,
+      languageCode: "es",
       minRating: 3,
-      region: "UY"
+      regionCode: "UY"
     };
 
-    let { places } = await Place.searchByText(request);
-    let placesDetails = [];
-
-    if (places && places.length > 0) {
-      for (const place of places) {
-        const placeDetail = await moreDetailsPlace(place.id, false);
-        if (!placeDetail) return;
-        placesDetails.push(placeDetail);
-      }
-    } else
-      alertSwalError(
-        "Ups,no pudimos encontrar la ubicacion",
-        "Sitio no encontrado"
+    try {
+      const response = await fetch(
+        "https://places.googleapis.com/v1/places:searchText",
+        {
+          method: "POST",
+          body: JSON.stringify(request),
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": API_KEY,
+            "X-Goog-FieldMask":
+              "places.location,places.formattedAddress,places.shortFormattedAddress,places.rating,places.primaryTypeDisplayName,places.addressComponents,places.editorialSummary,places.regularOpeningHours,places.nationalPhoneNumber,places.userRatingCount,places.websiteUri,places.accessibilityOptions,places.photos,places.displayName,places.iconMaskBaseUri,places.iconBackgroundColor"
+          }
+        }
       );
 
-    if (placesDetails.length > 0) setPlacesSearched(placesDetails);
+      const result = await response.json();
+
+      if (response.status != 200)
+        throw new Error("Sitio solicitado no encontrado");
+
+      setPlacesSearched(result.places);
+    } catch (error) {
+      console.log(error.message);
+      alertSwalError("Ups,no pudimos encontrar el sitio", error);
+    }
   };
 
   return (

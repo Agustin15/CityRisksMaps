@@ -9,24 +9,21 @@ import { useState } from "react";
 import { OptionsAddress } from "./optionsAddress/OptionsAddress.jsx";
 import { Transports } from "./transports/Transports";
 import { Advice } from "./advice/Advice.jsx";
-import { getSuggestions, showRoutes } from "./functions.js";
+import { getSuggestions } from "./functions.js";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext.jsx";
+import { RoutesCalculated } from "./routesCalculated/RoutesCalculated.jsx";
 
 export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
-  const [lastInputChanged, setLastInputChanged] = useState();
-  const { destiny, origin, setOrigin, setDestiny, setShowMenuRoutes } =
+  const { destiny, origin, setOrigin, setShowMenuRoutes, showRoutes, routes } =
     useRoutes();
+
   const { userLocation } = useMapControls();
   const { crimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
 
-  const handleChange = async (value, input) => {
-    if (input == "origin") setOrigin(value);
-    else setDestiny(value);
-
-    setLastInputChanged(input);
-
+  const handleChange = async (value) => {
+    setOrigin(value);
     getSuggestions(userLocation, value, setSuggestions);
   };
 
@@ -36,14 +33,14 @@ export const MenuRoute = () => {
         <button onClick={() => setShowMenuRoutes(false)}>x</button>
       </div>
       <Transports></Transports>
-      <div className={styles.column}>
+      <div className={styles.rowOne}>
         <div className={styles.origin}>
           <label>Origen:</label>
           <div className={styles.row}>
             <img src={iconOrigin}></img>
             <input
               value={origin}
-              onChange={(event) => handleChange(event.target.value, "origin")}
+              onChange={(event) => handleChange(event.target.value)}
               type="text"
             ></input>
           </div>
@@ -52,15 +49,11 @@ export const MenuRoute = () => {
           <label>Destino:</label>
           <div className={styles.row}>
             <img src={iconDestiny}></img>
-            <input
-              onChange={(event) => handleChange(event.target.value, "destiny")}
-              type="text"
-              value={destiny}
-            ></input>
+            <input readOnly type="text" value={destiny}></input>
           </div>
         </div>
         <button
-          onClick={() => showRoutes(origin, destiny, "DRIVE")}
+          onClick={() => showRoutes("Drive")}
           className={
             destiny.length > 0 &&
             origin.length > 0 &&
@@ -77,8 +70,9 @@ export const MenuRoute = () => {
       </div>
       <OptionsAddress
         suggestions={suggestions}
-        lastInputChanged={lastInputChanged}
+        setSuggestions={setSuggestions}
       />
+      {routes && <RoutesCalculated routes={routes} />}
     </div>
   );
 };

@@ -21,11 +21,14 @@ import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/han
 import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
 import { Geolocation } from "./geolocation/Geolocation.jsx";
 import { Tools } from "./tools/Tools.jsx";
+import { useRoutes } from "../../contexts/RoutesContext.jsx";
+import { MarkerOrigin } from "./markerOrigin/MarkerOrigin.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
-  
+  const { originLocation, destinyLocation } = useRoutes();
+
   const {
     selectedPlace,
     placesSearched,
@@ -93,9 +96,20 @@ export const ContainMap = () => {
         )}
 
         {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
+
+        {originLocation && destinyLocation && (
+          <AdvancedMarker
+            position={{
+              lat: originLocation.latitude,
+              lng: originLocation.longitude
+            }}
+          >
+            <MarkerOrigin />
+          </AdvancedMarker>
+        )}
       </Map>
 
-      <Tools/>
+      <Tools />
     </>
   );
 };
