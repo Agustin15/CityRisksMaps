@@ -15,10 +15,10 @@ export const OptionsCrimes = () => {
   const [crimes, setCrimes] = useState();
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [errorQuery, setErrorQuery] = useState();
-  const { crimeSelected, setCrimeSelected, loadCrimeDataNeighborhoods } =
-    useZoneCrimes();
   const { showQuizes } = useQuizes();
   const { neighbordhoodsCoordinates } = useMapControls();
+  const { crimeSelected, setCrimeSelected, loadCrimeDataNeighborhoods } =
+    useZoneCrimes();
 
   useEffect(() => {
     if (!neighbordhoodsCoordinates) return;

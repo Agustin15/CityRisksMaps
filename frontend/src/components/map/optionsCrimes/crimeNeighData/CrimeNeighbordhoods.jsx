@@ -6,31 +6,9 @@ import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimes
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
 
-export const CrimeNeighbordhoods = ({ categoryCrime, setCrimeSelected }) => {
-  const {
-    polygons,
-    setPolygons,
-    setIndexChartActive,
-    setNeighborhoodsCrimeByYear,
-    setYears,
-    setYearSelected
-  } = useZoneCrimes();
-
-  const handleClose = () => {
-    if (polygons.length > 0) {
-      polygons.forEach((polygon) => {
-        polygon.setMap(null);
-      });
-      setPolygons([]);
-    }
-
-    setYearSelected();
-    setYears();
-    setNeighborhoodsCrimeByYear();
-    setCrimeSelected();
-    setIndexChartActive(null);
-  };
-
+export const CrimeNeighbordhoods = ({ categoryCrime }) => {
+  const { handleClose } = useZoneCrimes();
+  
   return (
     <div className={styles.containData}>
       <div className={styles.header}>

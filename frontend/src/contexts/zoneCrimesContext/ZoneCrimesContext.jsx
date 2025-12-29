@@ -105,6 +105,21 @@ export const ZoneCrimesProvider = ({ children }) => {
     }
   };
 
+  const handleClose = () => {
+    if (polygons.length > 0) {
+      polygons.forEach((polygon) => {
+        polygon.setMap(null);
+      });
+      setPolygons([]);
+    }
+
+    setYearSelected();
+    setYears();
+    setNeighborhoodsCrimeByYear();
+    setCrimeSelected();
+    setIndexChartActive(null);
+  };
+
   return (
     <ZoneCrimesContext.Provider
       value={{
@@ -129,7 +144,8 @@ export const ZoneCrimesProvider = ({ children }) => {
         polygons,
         setPolygons,
         setIndexChartActive,
-        indexChartActive
+        indexChartActive,
+        handleClose
       }}
     >
       {children}

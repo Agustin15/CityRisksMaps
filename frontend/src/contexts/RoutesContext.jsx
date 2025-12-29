@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
+import { useMap } from "@vis.gl/react-google-maps";
+const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
 const RoutesContext = createContext();
 
@@ -11,11 +13,35 @@ export const RoutesProvider = ({ children }) => {
   const [destinyLocation, setDestinyLocation] = useState();
   const [transportSelected, setTransportSelected] = useState();
   const [routes, setRoutes] = useState();
+  const [routeSelected, setRouteSelected] = useState();
+  const [polylines, setPolylines] = useState();
+  const map = useMap();
 
   const handleClickRoute = (place) => {
     setShowMenuRoutes(true);
     setDestiny(place.formattedAddress);
     setDestinyLocation(place.location);
+  };
+
+  const drawRoute = (routes) => {
+    const polylines = [];
+
+    routes.map((route) => {
+      const pathRoute = new google.maps.geometry.encoding.decodePath(
+        route.polyline.encodedPolyline
+      );
+
+      const polylineRoute = new google.maps.Polyline({
+        path: pathRoute,
+        strokeWeight: 7,
+        strokeColor: "#275bbdff"
+      });
+      polylineRoute.setMap(map);
+
+      polylines.push(polylineRoute);
+    });
+
+    setPolylines(polylines);
   };
 
   const showRoutes = async (travelMode) => {
@@ -29,7 +55,7 @@ export const RoutesProvider = ({ children }) => {
             "Content-type": "application/json",
             "X-Goog-Api-Key": API_KEY,
             "X-Goog-FieldMask":
-              "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline"
+              "routes.duration,routes.distanceMeters,routes.polyline,routes.polyline.encodedPolyline,routes.legs"
           },
           body: JSON.stringify({
             origin: {
@@ -45,20 +71,41 @@ export const RoutesProvider = ({ children }) => {
               avoidHighways: false,
               avoidFerries: false
             },
-            languageCode: "sr-Latn"
+            languageCode: "es-419"
           })
         }
       );
       const result = await response.json();
+
       if (!response.ok) throw new Error(result.error.message);
 
+      drawRoute(result.routes);
       setRoutes(result.routes);
+      setRouteSelected(0);
     } catch (error) {
+      console.log(error);
       alertSwalError(
         "Ups,rutas no encontradas",
         "Hubo un error al obtener las rutas"
       );
     }
+  };
+
+  const handleClose = async (setSuggestions) => {
+    if (polylines) {
+      polylines.map((polyline) => polyline.setMap(null));
+
+      setPolylines();
+    }
+    setSuggestions();
+    setOrigin("");
+    setDestiny("");
+    setOriginLocation();
+    setDestinyLocation();
+    setRoutes();
+    setTransportSelected();
+    setRouteSelected();
+    setShowMenuRoutes(false);
   };
 
   return (
@@ -79,7 +126,10 @@ export const RoutesProvider = ({ children }) => {
         transportSelected,
         routes,
         setRoutes,
-        showRoutes
+        showRoutes,
+        routeSelected,
+        setRouteSelected,
+        handleClose
       }}
     >
       {children}

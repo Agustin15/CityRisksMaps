@@ -7,12 +7,17 @@ import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 
 export const Menu = ({ crimes }) => {
-  const { loadCrimeDataNeighborhoods, crimeSelected, setCrimeSelected } =
-    useZoneCrimes();
+  const {
+    loadCrimeDataNeighborhoods,
+    crimeSelected,
+    setCrimeSelected,
+    handleClose
+  } = useZoneCrimes();
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
 
   const handleClickOption = (crime) => {
     if (crime.category != crimeSelected) {
+      handleClose();
       loadCrimeDataNeighborhoods(crime.category);
       setCrimeSelected(crime.category);
       setShowQuizes();
@@ -21,6 +26,7 @@ export const Menu = ({ crimes }) => {
 
   const handleClickQuizes = () => {
     if (!showQuizes) {
+      handleClose();
       setCrimeSelected();
       loadDataQuizes();
       setShowQuizes(true);

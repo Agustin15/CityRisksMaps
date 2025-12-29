@@ -5,18 +5,25 @@ import iconShow from "../../../assets/img/showRoutes.png";
 import { useRoutes } from "../../../contexts/RoutesContext";
 import { useMapControls } from "../../../contexts/MapContext.jsx";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useQuizes } from "../../../contexts/quizesContext/QuizesContext.jsx";
 import { useState } from "react";
 import { OptionsAddress } from "./optionsAddress/OptionsAddress.jsx";
-import { Transports } from "./transports/Transports";
 import { Advice } from "./advice/Advice.jsx";
 import { getSuggestions } from "./functions.js";
-import { useQuizes } from "../../../contexts/quizesContext/QuizesContext.jsx";
 import { RoutesCalculated } from "./routesCalculated/RoutesCalculated.jsx";
+import { Transports } from "./transports/Transports.jsx";
 
 export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
-  const { destiny, origin, setOrigin, setShowMenuRoutes, showRoutes, routes } =
-    useRoutes();
+  const {
+    destiny,
+    origin,
+    setOrigin,
+    handleClose,
+    showRoutes,
+    routes,
+    transportSelected
+  } = useRoutes();
 
   const { userLocation } = useMapControls();
   const { crimeSelected } = useZoneCrimes();
@@ -30,9 +37,9 @@ export const MenuRoute = () => {
   return (
     <div className={styles.menuRoute}>
       <div className={styles.close}>
-        <button onClick={() => setShowMenuRoutes(false)}>x</button>
+        <button onClick={() => handleClose(setSuggestions)}>x</button>
       </div>
-      <Transports></Transports>
+      <Transports />
       <div className={styles.rowOne}>
         <div className={styles.origin}>
           <label>Origen:</label>
@@ -72,7 +79,12 @@ export const MenuRoute = () => {
         suggestions={suggestions}
         setSuggestions={setSuggestions}
       />
-      {routes && <RoutesCalculated routes={routes} />}
+      {routes && (
+        <RoutesCalculated
+          routes={routes}
+          transportSelected={transportSelected}
+        />
+      )}
     </div>
   );
 };

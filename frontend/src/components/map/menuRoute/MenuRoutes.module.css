@@ -104,16 +104,20 @@
 }
 
 .close {
-    display: none;
+    display: flex;
     justify-content: end;
     align-items: center;
-    width: 100%;
+    width: 99%;
+    box-shadow: 2px 2px 2px black;
+    background-color: #2e3453;
 }
 
 .menuRoute .close button {
     width: 4rem;
     height: 1.4rem;
+    margin: 0;
     background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
+    box-shadow: none;
     color: white;
     border-left-color: 5px;
     display: flex;
