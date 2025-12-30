@@ -2,7 +2,7 @@ import "./App.css";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { ContainMap } from "./components/map/ContainMap";
 import { MapProvider } from "./contexts/MapContext";
-import { RoutesProvider } from "./contexts/RoutesContext";
+import { RoutesProvider } from "./contexts/routesContext/RoutesContext";
 import { PhotosProvider } from "./contexts/PhotosContext";
 import { ZoneCrimesProvider } from "./contexts/zoneCrimesContext/ZoneCrimesContext";
 import { QuizesProvider } from "./contexts/quizesContext/QuizesContext";
@@ -16,11 +16,11 @@ function App() {
         <PhotosProvider>
           <ZoneCrimesProvider>
             <SearchPlaceProvider>
-              <RoutesProvider>
-                <QuizesProvider>
+              <QuizesProvider>
+                <RoutesProvider>
                   <ContainMap />
-                </QuizesProvider>
-              </RoutesProvider>
+                </RoutesProvider>
+              </QuizesProvider>
             </SearchPlaceProvider>
           </ZoneCrimesProvider>
         </PhotosProvider>

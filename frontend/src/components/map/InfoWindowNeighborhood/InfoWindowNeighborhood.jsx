@@ -4,7 +4,14 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
   return (
     <div className={styles.infoWindowPolygon}>
       <div className={styles.row}>
-        <span>{polygonSelected.data.name}</span>
+        <span>
+          {polygonSelected.data.name}
+          {polygonSelected.data.type == "crime"
+            ? " (Tasa de " + polygonSelected.data.categoryCrime + "s: "
+            : " (Percepcion:"}
+          {polygonSelected.data.rateLevel + ")"}
+        </span>
+
         <div style={{ background: polygonSelected.data.rateColor }}></div>
       </div>
       {polygonSelected.data.type == "crime" && (

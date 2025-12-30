@@ -6,6 +6,7 @@ import iconSecure from "../../../../assets/img/security.png";
 import { useEffect, useRef } from "react";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
+import { drawShape } from "../../optionsCrimes/crimeNeighData/table/polygonDraw/functions.js";
 
 export const PolygonDraw = ({ quiz }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
@@ -32,41 +33,7 @@ export const PolygonDraw = ({ quiz }) => {
           ? "#bbbbbbff"
           : getRangeSecureQuiz(quiz.percentage).color;
 
-      ctx.beginPath();
-      ctx.fillStyle = rateColor;
-
-      ctx.moveTo(20, 20);
-
-      const lats = neighborhoodCoordinates.coordinates.map(
-        (nhCoord) => nhCoord.lat
-      );
-
-      const lngs = neighborhoodCoordinates.coordinates.map(
-        (nhCoord) => nhCoord.lng
-      );
-
-      const latMax = Math.max(...lats);
-      const latMin = Math.min(...lats);
-      const lngMax = Math.max(...lngs);
-      const lngMin = Math.min(...lngs);
-
-      //escala para que entre el polygono en canva
-
-      const scaleX = canvas.width / (lngMax - lngMin);
-      const scaleY = canvas.height / (latMax - latMin);
-
-      neighborhoodCoordinates.coordinates.forEach((coord, index) => {
-        //convertir lat y lng a x,y en pixels
-        const x = (coord.lng - lngMin) * scaleX;
-        const y = canvas.height - (coord.lat - latMin) * scaleY;
-
-        if (index == 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.closePath();
-
-      ctx.stroke();
-      ctx.fill();
+      drawShape(neighborhoodCoordinates, canvas, ctx, rateColor);
     }
   };
 

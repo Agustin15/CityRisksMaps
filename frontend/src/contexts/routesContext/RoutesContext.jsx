@@ -1,8 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
+import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useMap } from "@vis.gl/react-google-maps";
-const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
+import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext.jsx";
+import { createDataRoutes } from "./functions.js";
 
+const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const RoutesContext = createContext();
 
 export const RoutesProvider = ({ children }) => {
@@ -16,32 +18,12 @@ export const RoutesProvider = ({ children }) => {
   const [routeSelected, setRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
   const map = useMap();
+  const { polygons } = useZoneCrimes();
 
   const handleClickRoute = (place) => {
     setShowMenuRoutes(true);
     setDestiny(place.formattedAddress);
     setDestinyLocation(place.location);
-  };
-
-  const drawRoute = (routes) => {
-    const polylines = [];
-
-    routes.map((route) => {
-      const pathRoute = new google.maps.geometry.encoding.decodePath(
-        route.polyline.encodedPolyline
-      );
-
-      const polylineRoute = new google.maps.Polyline({
-        path: pathRoute,
-        strokeWeight: 7,
-        strokeColor: "#275bbdff"
-      });
-      polylineRoute.setMap(map);
-
-      polylines.push(polylineRoute);
-    });
-
-    setPolylines(polylines);
   };
 
   const showRoutes = async (travelMode) => {
@@ -79,9 +61,12 @@ export const RoutesProvider = ({ children }) => {
 
       if (!response.ok) throw new Error(result.error.message);
 
-      drawRoute(result.routes);
-      setRoutes(result.routes);
-      setRouteSelected(0);
+      const resultDataRoutes = createDataRoutes(result.routes, polygons, map);
+      if (resultDataRoutes) {
+        setRoutes(resultDataRoutes.routes);
+        setPolylines(resultDataRoutes.polylines);
+        setRouteSelected(0);
+      }
     } catch (error) {
       console.log(error);
       alertSwalError(

@@ -3,7 +3,7 @@ import iconCar from "../../../../assets/img/car.png";
 import iconWalk from "../../../../assets/img/walk.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import iconTrain from "../../../../assets/img/train.png";
-import { useRoutes } from "../../../../contexts/RoutesContext.jsx";
+import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { convertDuration, convertDistance } from "./functions.js";
 
 export const RoutesCalculated = ({ routes, transportSelected }) => {

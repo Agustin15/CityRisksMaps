@@ -3,7 +3,7 @@ import iconWalk from "../../../../assets/img/walk.png";
 import iconCar from "../../../../assets/img/car.png";
 import iconTrain from "../../../../assets/img/train.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
-import { useRoutes } from "../../../../contexts/RoutesContext";
+import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 
 export const Transports = () => {
   const { transportSelected, setTransportSelected } = useRoutes();

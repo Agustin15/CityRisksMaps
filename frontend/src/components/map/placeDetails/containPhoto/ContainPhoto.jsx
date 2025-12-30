@@ -58,12 +58,13 @@ export const ContainPhoto = ({ place }) => {
       )}
       {!loading && !mainPhoto && <span>Imagen no encontrada</span>}
 
-      <div className={styles.optionWatchPhotos}>
+    {  <div className={styles.optionWatchPhotos}>
         <button onClick={() => setShowPhotos(true)}>
           Ver fotos
           <img src={gallery}></img>
         </button>
       </div>
+      }
     </div>
   );
 };

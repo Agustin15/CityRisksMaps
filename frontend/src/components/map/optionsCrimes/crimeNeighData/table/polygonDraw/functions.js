@@ -1,6 +1,6 @@
 export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
   
-  const cardinalsPoints = createCardinalsPoints(
+  const cardinalsPoints = createCartesiansPoints(
     neighborhoodCoordinates,
     canvas
   );
@@ -32,7 +32,7 @@ export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
   ctx.fill();
 };
 
-const createCardinalsPoints = (neighborhoodCoordinates, canvas) => {
+const createCartesiansPoints = (neighborhoodCoordinates, canvas) => {
   //mercator proyection
   const cardinalsPoints = neighborhoodCoordinates.coordinates.map((coord) => {
     const lngRadianes = coord.lng * (Math.PI / 180);

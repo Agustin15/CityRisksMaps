@@ -52,21 +52,27 @@ export const createArrayForPolygons = (
       if (
         nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
       ) {
-        const rate =
-          nhCrime.quantityCrime == null
-            ? null
-            : defineCrimeRate(
-                nhCrime.quantityCrime,
-                nhCrime.quantityPopulation
-              );
+        let rate = null;
+        let colorRange = null;
+        let levelRange = null;
 
-        const colorRange =
-          rate == null ? null : getCrimeRange(rate, categoryCrime).color;
+        if (nhCrime.quantityCrime != null)
+          rate = defineCrimeRate(
+            nhCrime.quantityCrime,
+            nhCrime.quantityPopulation
+          );
+
+        if (rate != null) {
+          const range = getCrimeRange(rate, categoryCrime);
+          colorRange = range.color;
+          levelRange = range.level;
+        }
 
         nhCrimeCoordinates.push({
           name: nhCrime.name,
           quantityCrime: nhCrime.quantityCrime,
           rate: rate,
+          rateLevel: levelRange ? levelRange : "Sin datos",
           rateColor: colorRange ? colorRange : "#bbbbbbff",
           categoryCrime: categoryCrime,
           coordinates: nhCoordinate.coordinates,

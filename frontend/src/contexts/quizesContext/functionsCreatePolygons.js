@@ -22,17 +22,22 @@ const createArrayForPolygons = (nhQuizes, neighbordhoodsCoordinates) => {
     );
 
     if (nhQuizFound) {
-      let rateColor =
-        nhQuizFound.total == 0
-          ? "#bbbbbbff"
-          : getRangeSecureQuiz(nhQuizFound.percentage).color;
+      let rateColor = "#bbbbbbff";
+      let rateLevel = "Sin datos";
+
+      if (nhQuizFound.total != 0) {
+        const range = getRangeSecureQuiz(nhQuizFound.percentage);
+        rateColor = range.color;
+        rateLevel = range.level;
+      }
 
       neighbordhoodsDataForPolygons.push({
-        rateColor: rateColor,
         coordinates: nhCoordinate.coordinates,
         name: nhQuizFound.name,
         total: nhQuizFound.total,
         percentage: nhQuizFound.percentage,
+        rateColor: rateColor,
+        rateLevel: rateLevel,
         type: "quiz"
       });
     }

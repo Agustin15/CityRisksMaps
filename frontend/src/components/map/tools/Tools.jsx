@@ -11,7 +11,7 @@ import { FormAdd } from "../quizes/formAdd/FormAdd";
 import { ListQuizesProvider } from "../../../contexts/quizesContext/ListQuizesContext";
 import { ListUserQuizes } from "../quizes/listUserQuizes/ListUserQuizes";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
-import { useRoutes } from "../../../contexts/RoutesContext";
+import { useRoutes } from "../../../contexts/routesContext/RoutesContext.jsx";
 import { usePhotosPlace } from "../../../contexts/PhotosContext";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 
