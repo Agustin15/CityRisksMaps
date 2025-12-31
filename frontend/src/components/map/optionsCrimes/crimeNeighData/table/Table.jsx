@@ -5,10 +5,12 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../../../notData/NotData";
 import { Loading } from "../../../loading/Loading";
 import { Rows } from "./rows/Rows";
-import { focusPolygon } from "./focusPolygon.js";
+import { Tfoot } from "./tfoot/Tfoot.jsx";
+import { focusPolygon } from "./functions.js";
 
 export const Table = ({ crime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
+
   const {
     polygons,
     neighborhoodsCrimeByYear,
@@ -67,6 +69,10 @@ export const Table = ({ crime }) => {
                 />
               ))}
           </tbody>
+          <Tfoot
+            neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
+            crime={crime}
+          />
         </table>
       </div>
     </div>

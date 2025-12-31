@@ -5,6 +5,8 @@ import iconHoldup from "../../../../assets/img/holdup.png";
 import iconQuizes from "../../../../assets/img/quizes.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
+import { alertSwalWarning } from "../../../sweetAlert/sweetAlert.js";
 
 export const Menu = ({ crimes }) => {
   const {
@@ -14,22 +16,35 @@ export const Menu = ({ crimes }) => {
     handleClose
   } = useZoneCrimes();
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
+  const { routes } = useRoutes();
 
   const handleClickOption = (crime) => {
     if (crime.category != crimeSelected) {
-      handleClose();
-      loadCrimeDataNeighborhoods(crime.category);
-      setCrimeSelected(crime.category);
-      setShowQuizes();
+      if (routes) {
+        alertSwalWarning(
+          "Tiene que salir del modo navegacion para elegir otra opcion"
+        );
+      } else {
+        handleClose();
+        loadCrimeDataNeighborhoods(crime.category);
+        setCrimeSelected(crime.category);
+        setShowQuizes();
+      }
     }
   };
 
   const handleClickQuizes = () => {
     if (!showQuizes) {
-      handleClose();
-      setCrimeSelected();
-      loadDataQuizes();
-      setShowQuizes(true);
+      if (routes) {
+        alertSwalWarning(
+          "Tiene que salir del modo navegacion para elegir otra opcion"
+        );
+      } else {
+        handleClose();
+        setCrimeSelected();
+        loadDataQuizes();
+        setShowQuizes(true);
+      }
     }
   };
 

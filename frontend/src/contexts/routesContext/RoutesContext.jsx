@@ -14,9 +14,11 @@ export const RoutesProvider = ({ children }) => {
   const [originLocation, setOriginLocation] = useState();
   const [destinyLocation, setDestinyLocation] = useState();
   const [transportSelected, setTransportSelected] = useState();
+  const [loadingRoutes, setLoadingRoutes] = useState(false);
   const [routes, setRoutes] = useState();
   const [routeSelected, setRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
+  const [polylinesBackground, setPolylinesBackground] = useState();
   const map = useMap();
   const { polygons } = useZoneCrimes();
 
@@ -27,7 +29,12 @@ export const RoutesProvider = ({ children }) => {
   };
 
   const showRoutes = async (travelMode) => {
+    setRoutes();
+    cleanPolylines();
+
     setTransportSelected(travelMode);
+    setLoadingRoutes(true);
+
     try {
       const response = await fetch(
         "https://routes.googleapis.com/directions/v2:computeRoutes",
@@ -63,7 +70,9 @@ export const RoutesProvider = ({ children }) => {
 
       const resultDataRoutes = createDataRoutes(result.routes, polygons, map);
       if (resultDataRoutes) {
+        console.log(resultDataRoutes.routes);
         setRoutes(resultDataRoutes.routes);
+        setPolylinesBackground(resultDataRoutes.polylinesBackground);
         setPolylines(resultDataRoutes.polylines);
         setRouteSelected(0);
       }
@@ -73,15 +82,13 @@ export const RoutesProvider = ({ children }) => {
         "Ups,rutas no encontradas",
         "Hubo un error al obtener las rutas"
       );
+    } finally {
+      setLoadingRoutes(false);
     }
   };
 
   const handleClose = async (setSuggestions) => {
-    if (polylines) {
-      polylines.map((polyline) => polyline.setMap(null));
-
-      setPolylines();
-    }
+    cleanPolylines();
     setSuggestions();
     setOrigin("");
     setDestiny("");
@@ -91,6 +98,17 @@ export const RoutesProvider = ({ children }) => {
     setTransportSelected();
     setRouteSelected();
     setShowMenuRoutes(false);
+    setLoadingRoutes(false);
+  };
+
+  const cleanPolylines = () => {
+    if (polylines) {
+      polylines.map((polyline) => polyline.setMap(null));
+      polylinesBackground.map((polyline) => polyline.setMap(null));
+
+      setPolylines();
+      setPolylinesBackground();
+    }
   };
 
   return (
@@ -109,6 +127,7 @@ export const RoutesProvider = ({ children }) => {
         setDestinyLocation,
         setTransportSelected,
         transportSelected,
+        loadingRoutes,
         routes,
         setRoutes,
         showRoutes,

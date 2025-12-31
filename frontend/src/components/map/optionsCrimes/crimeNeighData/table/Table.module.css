@@ -73,3 +73,10 @@ td {
     margin-top: 0.5rem;
     font-size: 15px;
 }
+
+.table tfoot tr td {
+    font-size: 14px;
+    text-align: start;
+    font-weight: bold;
+    padding-left: 1.2rem;
+}

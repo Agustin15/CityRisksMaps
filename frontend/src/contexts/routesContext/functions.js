@@ -1,52 +1,138 @@
 export const createDataRoutes = (routes, polygons, map) => {
   const polylines = [];
+  const polylinesBackground = [];
+  const routesWithNewData = [];
 
-  routes.map((route) => {
+  routes.map((route, index) => {
     const pathRoute = new google.maps.geometry.encoding.decodePath(
       route.polyline.encodedPolyline
     );
 
-    verifyDangerousnessRoute(pathRoute, polygons);
+    const polygonsRoute = verifyPolygonsBelongToRoute(pathRoute, polygons);
+    const distanceRoutePolygons = verifyDistanceRouteInPolygons(
+      route,
+      polygonsRoute,
+      index
+    );
+
+    const routeRangesDanger = setDangerRangesToRoute(
+      route.distanceMeters,
+      distanceRoutePolygons
+    );
+
+    route["routeRangesDanger"] = routeRangesDanger;
+    routesWithNewData.push(route);
+
+    const polylineBackground = new google.maps.Polyline({
+      path: pathRoute,
+      strokeWeight: 10,
+      strokeOpacity: 1.0,
+      strokeColor: "#ffffffff"
+    });
+
     const polylineRoute = new google.maps.Polyline({
       path: pathRoute,
       strokeWeight: 7,
-      strokeColor: "#5682d4ff"
+      strokeOpacity: index == 0 ? 1.0 : 0.6,
+      strokeColor: "#3b70d3ff",
+      zIndex: index == 0 ? 2 : index == 1 ? 1 : index == 2 ? 0 : ""
     });
+    polylineBackground.setMap(map);
     polylineRoute.setMap(map);
 
+    polylinesBackground.push(polylineBackground);
     polylines.push(polylineRoute);
   });
 
-  return { routes: routes, polylines: polylines };
+  return {
+    routes: routesWithNewData,
+    polylines: polylines,
+    polylinesBackground: polylinesBackground
+  };
 };
 
-const verifyDangerousnessRoute = (routePath, polygons) => {
-  const polygonsOfRoutes = [];
+const verifyPolygonsBelongToRoute = (routePath, polygons) => {
+  let polygonsOfRoute = [];
 
-  routePath.forEach((coordinateLatLng) => {
+  routePath.map((coordinateLatLng) => {
     for (const polygon of polygons) {
       let routeInPolygon = google.maps.geometry.poly.containsLocation(
         coordinateLatLng,
         polygon
       );
 
-      if (routeInPolygon == true) polygonsOfRoutes.push(polygon);
+      if (
+        routeInPolygon == true &&
+        !polygonsOfRoute.find((poly) => poly.data.name == polygon.data.name)
+      ) {
+        polygonsOfRoute.push(polygon);
+      }
     }
   });
 
-  const ranges = ["Baja", "Media Baja", "Alta", "Muy Alta"];
+  return polygonsOfRoute;
+};
+
+const verifyDistanceRouteInPolygons = (route, polygonsRoutes) => {
+  const coordinatesRouteInPolygons = [];
+
+  for (const polygon of polygonsRoutes) {
+    let coordinatesRouteInPolygon = [];
+
+    route.legs[0].steps.forEach((step) => {
+      const coordinatesStep = new google.maps.geometry.encoding.decodePath(
+        step.polyline.encodedPolyline
+      );
+
+      coordinatesStep.forEach((latLng) => {
+        let belongToPolygon = google.maps.geometry.poly.containsLocation(
+          latLng,
+          polygon
+        );
+        if (belongToPolygon) coordinatesRouteInPolygon.push(latLng);
+      });
+    });
+    coordinatesRouteInPolygons.push({
+      polygon: polygon,
+      coordinatesRoute: coordinatesRouteInPolygon
+    });
+  }
+  return calculateDistanceBetweenCoords(coordinatesRouteInPolygons);
+};
+
+const calculateDistanceBetweenCoords = (coordinatesRouteInPolygons) => {
+  const distanceRoutePolygons = coordinatesRouteInPolygons.map(
+    (coordinatesRoutePolygon) => {
+      return {
+        polygon: coordinatesRoutePolygon.polygon,
+        distanceRoute: google.maps.geometry.spherical.computeLength(
+          coordinatesRoutePolygon.coordinatesRoute
+        )
+      };
+    }
+  );
+  return distanceRoutePolygons;
+};
+
+const setDangerRangesToRoute = (routeDistanceMeters, distanceRoutePolygons) => {
+  const ranges = ["Baja", "Media baja", "Alta", "Muy alta"];
 
   let routeRangesDanger = ranges.map((range) => {
-    const amount = polygonsOfRoutes.reduce((acc, polygon) => {
-      if (polygon.data.rateLevel == range) acc++;
-      return acc;
-    }, 0);
+    let amountDistance = 0;
+
+    distanceRoutePolygons.forEach((item) => {
+      if (item.polygon.data.rateLevel == range) {
+        amountDistance += item.distanceRoute;
+      }
+    });
 
     return {
       range: range,
-      percentage: amount > 0 ? (amount * 100) / polygonsOfRoutes.length : 0
+      percentage:
+        amountDistance > 0
+          ? ((amountDistance * 100) / routeDistanceMeters).toFixed(0)
+          : 0
     };
   });
-
-  console.log(routeRangesDanger);
+  return routeRangesDanger;
 };

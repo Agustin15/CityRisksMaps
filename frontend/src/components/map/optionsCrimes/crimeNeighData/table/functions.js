@@ -36,3 +36,26 @@ export const focusPolygon = (
     });
   }
 };
+
+export const amountCrime = (neighborhoodsCrimeByYear) => {
+  const amount = neighborhoodsCrimeByYear.reduce((acc, neighborhoodsCrime) => {
+    if (neighborhoodsCrime.quantityCrime != null) {
+      acc += neighborhoodsCrime.quantityCrime;
+    }
+    return acc;
+  }, 0);
+  return amount;
+};
+
+export const amountRateCrime = (neighborhoodsCrimeByYear, defineCrimeRate) => {
+  const amount = neighborhoodsCrimeByYear.reduce((acc, neighborhoodCrime) => {
+    if (neighborhoodCrime.quantityCrime != null) {
+      acc += defineCrimeRate(
+        neighborhoodCrime.quantityCrime,
+        neighborhoodCrime.quantityPopulation
+      );
+    }
+    return acc;
+  }, 0);
+  return amount;
+};

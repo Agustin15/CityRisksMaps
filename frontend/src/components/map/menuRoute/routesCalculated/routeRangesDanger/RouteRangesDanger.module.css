@@ -1,0 +1,41 @@
+.containRangesDanger {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 99%;
+    font-size: 15px;
+    opacity: 86%;
+}
+
+.rangesDanger {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    list-style: none;
+    gap: 0.5rem;
+}
+
+.rangesDanger li {
+    box-shadow: none;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rangesDanger li:hover {
+    border: none;
+    width: auto;
+}
+
+.reference {
+    width: 1.2rem;
+    height: 0.7rem;
+    border: 1px solid rgb(138, 138, 138);
+}
