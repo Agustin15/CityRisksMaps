@@ -1,0 +1,43 @@
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 99%;
+    border-top: 1px solid rgb(207, 207, 207);
+    box-shadow: none;
+    margin: 0;
+    margin-top: 0.5rem;
+    padding: 0;
+}
+
+.details li {
+    width: 99%;
+    box-shadow: none;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem;
+}
+
+.details li:hover {
+    border: none;
+    width: 99%;
+}
+
+.details p {
+    width: 87%;
+    padding: 0;
+}
+
+.detailsInstruction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detailsInstruction .duration {
+    color: rgb(40, 221, 40);
+}

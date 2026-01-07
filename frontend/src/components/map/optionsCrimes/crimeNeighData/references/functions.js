@@ -1,6 +1,6 @@
 export const getReferenceByCrime = (categoryCrime) => {
   switch (categoryCrime) {
-    case "Asesinato":
+    case "Homicidio":
       return [
         { range: "0-10", color: "#ffffbfff" },
         { range: "11-22", color: "#f1f134ff" },

@@ -16,7 +16,6 @@ import { useRoutes } from "../../contexts/routesContext/RoutesContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
 import { MapHandler } from "./mapHandler/MapHandler";
 import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
-import { DetailsStreet } from "./detailsStreet/DetailsStreet";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
@@ -32,8 +31,6 @@ export const ContainMap = () => {
   const {
     selectedPlace,
     placesSearched,
-    infoWindow,
-    setInfoWindow,
     handleClickOnMap
   } = useSearchPlace();
 
@@ -73,15 +70,6 @@ export const ContainMap = () => {
         </MapControl>
 
         <MapHandler place={selectedPlace} marker={marker} />
-
-        <MapControl position={ControlPosition.BOTTOM_CENTER}>
-          {infoWindow && (
-            <DetailsStreet
-              infoWindow={infoWindow}
-              setInfoWindow={setInfoWindow}
-            />
-          )}
-        </MapControl>
 
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
           <Geolocation />

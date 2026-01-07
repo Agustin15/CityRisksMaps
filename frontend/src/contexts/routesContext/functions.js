@@ -9,20 +9,21 @@ export const createDataRoutes = (routes, polygons, map) => {
     );
 
     const polygonsRoute = verifyPolygonsBelongToRoute(pathRoute, polygons);
-    const distanceRoutePolygons = verifyDistanceRouteInPolygons(
-      route,
-      polygonsRoute,
-      index
-    );
+    if (polygonsRoute.length > 0) {
+      const distanceRoutePolygons = verifyDistanceRouteInPolygons(
+        route,
+        polygonsRoute,
+        index
+      );
 
-    const routeRangesDanger = setDangerRangesToRoute(
-      route.distanceMeters,
-      distanceRoutePolygons
-    );
+      const routeRangesDanger = setDangerRangesToRoute(
+        route.distanceMeters,
+        distanceRoutePolygons
+      );
 
-    route["routeRangesDanger"] = routeRangesDanger;
-    routesWithNewData.push(route);
-
+      route["routeRangesDanger"] = routeRangesDanger;
+      routesWithNewData.push(route);
+    }
     const polylineBackground = new google.maps.Polyline({
       path: pathRoute,
       strokeWeight: 10,
@@ -35,7 +36,7 @@ export const createDataRoutes = (routes, polygons, map) => {
       strokeWeight: 7,
       strokeOpacity: index == 0 ? 1.0 : 0.6,
       strokeColor: "#3b70d3ff",
-      zIndex: index == 0 ? 2 : index == 1 ? 1 : index == 2 ? 0 : ""
+      zIndex: index == 0 ? 2 : 1
     });
     polylineBackground.setMap(map);
     polylineRoute.setMap(map);
@@ -51,7 +52,7 @@ export const createDataRoutes = (routes, polygons, map) => {
   };
 };
 
-const verifyPolygonsBelongToRoute = (routePath, polygons) => {
+export const verifyPolygonsBelongToRoute = (routePath, polygons) => {
   let polygonsOfRoute = [];
 
   routePath.map((coordinateLatLng) => {

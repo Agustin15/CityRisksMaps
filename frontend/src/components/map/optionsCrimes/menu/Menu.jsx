@@ -70,7 +70,7 @@ export const Menu = ({ crimes }) => {
                 ? iconTheft
                 : crime.category == "Rapiña"
                 ? iconHoldup
-                : crime.category == "Asesinato"
+                : crime.category == "Homicidio"
                 ? iconKill
                 : ""
             }

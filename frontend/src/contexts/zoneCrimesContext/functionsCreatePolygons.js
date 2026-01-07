@@ -30,7 +30,7 @@ export const defineCrimeRange = (rate, ranges) => {
 
 export const getCrimeRange = (rate, categoryCrime) => {
   switch (categoryCrime) {
-    case "Asesinato":
+    case "Homicidio":
       return defineCrimeRange(rate, [0, 10, 11, 22, 23, 30, 31]);
 
     case "Hurto":

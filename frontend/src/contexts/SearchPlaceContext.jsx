@@ -9,7 +9,6 @@ export const SearchPlaceProvider = ({ children }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [placesSearched, setPlacesSearched] = useState(null);
   const [valueSearchedByText, setValueSearchedByText] = useState();
-  const [infoWindow, setInfoWindow] = useState();
   const [valueInput, setValueInput] = useState("");
   const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
@@ -33,7 +32,6 @@ export const SearchPlaceProvider = ({ children }) => {
 
   const handleClickOnMap = async (event, marker) => {
     if (event.detail.placeId) {
-      setInfoWindow();
       await moreDetailsPlace(event.detail.placeId, true);
     } else {
       setSelectedPlace();
@@ -76,8 +74,9 @@ export const SearchPlaceProvider = ({ children }) => {
         location: latLng
       });
 
-      if (result) setInfoWindow(result);
-      else throw new Error("Error inesperado en la geocodificacion");
+      if (result) {
+        await moreDetailsPlace(result.results[0].place_id, true);
+      } else throw new Error("Error inesperado en la geocodificacion");
     } catch (error) {
       alertSwalError("Ups,no pudimos encontrar la ubicacion", error);
       console.log(error);
@@ -172,8 +171,6 @@ export const SearchPlaceProvider = ({ children }) => {
         setValueInput,
         inputRef,
         handleCleanInput,
-        setInfoWindow,
-        infoWindow,
         selectedPlace,
         setSelectedPlace,
         placesSearched,

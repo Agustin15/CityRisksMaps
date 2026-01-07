@@ -199,7 +199,7 @@ GO
 CREATE OR ALTER PROCEDURE CrimesTypeOptions AS
 BEGIN
 
-select * from Crimes where category ='Asesinato' or category ='Hurto' or category ='Rapiña';
+select * from Crimes where category ='Homicidio' or category ='Hurto' or category ='Rapiña';
 END
 GO
 
@@ -862,7 +862,7 @@ EXEC AddPopulation 'Villa Muñoz - Retiro',13095,2023
 
 
 
-EXEC AddCrime 'Asesinato','Por homicidio se entiende la muerte infligida a
+EXEC AddCrime 'Homicidio','Por homicidio se entiende la muerte infligida a
 una persona en forma intencional e ilegal, por otra u otras. Se excluyen, pues,
 las muertes causadas por negligencia, suicidio o accidente, así como los decesos que son fruto de actos de funcionarios policiales en 
 cumplimiento de la ley o de acciones realizadas por civiles en legítima defensa.'
@@ -888,68 +888,68 @@ consumo ilegal de drogas tóxicas, estupefacientes o sustancias psicotrópicas, o 
 
 
 
-EXEC AddNeighborhoodCrime 'Aguada','Asesinato',0,2024;
-EXEC AddNeighborhoodCrime 'Atahualpa','Asesinato',0,2024;
-EXEC AddNeighborhoodCrime 'Aires Puros','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Barrio Sur','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Asesinato',7,2024
-EXEC AddNeighborhoodCrime 'Belvedere','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Buceo','Asesinato',4,2024
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Asesinato',0,2024;
-EXEC AddNeighborhoodCrime 'Casavalle','Asesinato',22,2024
-EXEC AddNeighborhoodCrime 'Carrasco','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Asesinato',12,2024
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Asesinato',3,2024
-EXEC AddNeighborhoodCrime 'Centro','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Cerrito','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Asesinato',3,2024
-EXEC AddNeighborhoodCrime 'Conciliación','Asesinato',5,2024
-EXEC AddNeighborhoodCrime 'Cordón','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Asesinato',6,2024
-EXEC AddNeighborhoodCrime 'Ituzaingó','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Asesinato',8,2024
-EXEC AddNeighborhoodCrime 'La Blanqueada','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'La Comercial','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'La Figurita','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Larrañaga','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Las Canteras','Asesinato',4,2024
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Asesinato',36,2024
-EXEC AddNeighborhoodCrime 'Las Acacias','Asesinato',7,2024
-EXEC AddNeighborhoodCrime 'La Teja','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Asesinato',3,2024
-EXEC AddNeighborhoodCrime 'Malvín','Asesinato',2,2024
-EXEC AddNeighborhoodCrime 'Malvín Norte','Asesinato',7,2024
-EXEC AddNeighborhoodCrime 'Manga','Asesinato',2,2024
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Asesinato',6,2024
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Asesinato',2,2024
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Nuevo París','Asesinato',9,2024 
-EXEC AddNeighborhoodCrime 'Palermo','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Parque Rodó','Asesinato',0,2024
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Asesinato',1,2024
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Asesinato',2,2024
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Asesinato',7,2024
-EXEC AddNeighborhoodCrime 'Pocitos','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Asesinato',3,2024
-EXEC AddNeighborhoodCrime 'Punta Carretas','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Punta Gorda','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Asesinato',7,2024 
-EXEC AddNeighborhoodCrime 'Reducto','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Sayago','Asesinato',4,2024
-EXEC AddNeighborhoodCrime 'Tres Cruces','Asesinato',0,2024 
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Asesinato',4,2024
-EXEC AddNeighborhoodCrime 'Unión','Asesinato',4,2024 
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Asesinato',12,2024
-EXEC AddNeighborhoodCrime 'Villa Española','Asesinato',8,2024
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Asesinato',9,2024
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Asesinato',3,2024
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',7,2024
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',4,2024
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',22,2024
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',12,2024
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',3,2024
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',3,2024
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2024
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2024
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',8,2024
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2024
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',36,2024
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',7,2024
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',3,2024
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2024
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',7,2024
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',2,2024
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',6,2024
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2024
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',9,2024 
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',0,2024
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2024
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',2,2024
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2024
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',3,2024
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',7,2024 
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',4,2024
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',0,2024 
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',4,2024
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2024 
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',12,2024
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2024
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',9,2024
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',3,2024
 
 
 
@@ -1083,68 +1083,68 @@ EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2024
 GO
 
 
-EXEC AddNeighborhoodCrime 'Aguada','Asesinato',1,2023;
-EXEC AddNeighborhoodCrime 'Atahualpa','Asesinato',0,2023;
-EXEC AddNeighborhoodCrime 'Aires Puros','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Barrio Sur','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Belvedere','Asesinato',4,2023
-EXEC AddNeighborhoodCrime 'Buceo','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Asesinato',0,2023;
-EXEC AddNeighborhoodCrime 'Casavalle','Asesinato',13,2023
-EXEC AddNeighborhoodCrime 'Carrasco','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Asesinato',11,2023
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Asesinato',3,2023
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Centro','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Cerrito','Asesinato',7,2023
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Asesinato',3,2023
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Asesinato',5,2023
-EXEC AddNeighborhoodCrime 'Conciliación','Asesinato',5,2023
-EXEC AddNeighborhoodCrime 'Cordón','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Asesinato',6,2023
-EXEC AddNeighborhoodCrime 'Ituzaingó','Asesinato',3,2023
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'La Blanqueada','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'La Comercial','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'La Figurita','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Larrañaga','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Las Canteras','Asesinato',11,2023
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Asesinato',10,2023
-EXEC AddNeighborhoodCrime 'Las Acacias','Asesinato',10,2023
-EXEC AddNeighborhoodCrime 'La Teja','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Malvín','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Malvín Norte','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Manga','Asesinato',4,2023
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Asesinato',14,2023
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Nuevo París','Asesinato',7,2023
-EXEC AddNeighborhoodCrime 'Palermo','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Parque Rodó','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Asesinato',7,2023
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Asesinato',4,2023
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Asesinato',8,2023
-EXEC AddNeighborhoodCrime 'Pocitos','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Punta Carretas','Asesinato',2,2023
-EXEC AddNeighborhoodCrime 'Punta Gorda','Asesinato',0,2023
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Asesinato',5,2023 
-EXEC AddNeighborhoodCrime 'Reducto','Asesinato',2,2023 
-EXEC AddNeighborhoodCrime 'Sayago','Asesinato',1,2023
-EXEC AddNeighborhoodCrime 'Tres Cruces','Asesinato',1,2023 
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Asesinato',8,2023
-EXEC AddNeighborhoodCrime 'Unión','Asesinato',6,2023 
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Asesinato',9,2023
-EXEC AddNeighborhoodCrime 'Villa Española','Asesinato',7,2023
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Asesinato',8,2023
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Asesinato',0,2023
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',4,2023
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',13,2023
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',11,2023
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',3,2023
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',7,2023
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',3,2023
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',5,2023
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2023
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2023
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',3,2023
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',11,2023
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',10,2023
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',10,2023
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',4,2023
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',14,2023
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',7,2023
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',7,2023
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',4,2023
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',8,2023
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',2,2023
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2023
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',5,2023 
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',2,2023 
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',1,2023
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',1,2023 
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',8,2023
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',6,2023 
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',9,2023
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',7,2023
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',8,2023
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',0,2023
 
 GO
 
@@ -1278,68 +1278,68 @@ EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',437,2023
 EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2023
 
 
-EXEC AddNeighborhoodCrime 'Aguada','Asesinato',1,2022;
-EXEC AddNeighborhoodCrime 'Atahualpa','Asesinato',0,2022;
-EXEC AddNeighborhoodCrime 'Aires Puros','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Barrio Sur','Asesinato',1,2022
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Belvedere','Asesinato',6,2022
-EXEC AddNeighborhoodCrime 'Buceo','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Asesinato',0,2022;
-EXEC AddNeighborhoodCrime 'Casavalle','Asesinato',13,2022
-EXEC AddNeighborhoodCrime 'Carrasco','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Asesinato',11,2022
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Asesinato',1,2022
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Centro','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Cerrito','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Asesinato',1,2022
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Conciliación','Asesinato',5,2022
-EXEC AddNeighborhoodCrime 'Cordón','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Asesinato',6,2022
-EXEC AddNeighborhoodCrime 'Ituzaingó','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Asesinato',5,2022
-EXEC AddNeighborhoodCrime 'La Blanqueada','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'La Comercial','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'La Figurita','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Larrañaga','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Las Canteras','Asesinato',4,2022
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Asesinato',12,2022
-EXEC AddNeighborhoodCrime 'Las Acacias','Asesinato',10,2022
-EXEC AddNeighborhoodCrime 'La Teja','Asesinato',1,2022
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Malvín','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Malvín Norte','Asesinato',4,2022
-EXEC AddNeighborhoodCrime 'Manga','Asesinato',5,2022
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Asesinato',7,2022
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Asesinato',4,2022
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Nuevo París','Asesinato',5,2022
-EXEC AddNeighborhoodCrime 'Palermo','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Parque Rodó','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Asesinato',1,2022
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Asesinato',21,2022
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Asesinato',7,2022
-EXEC AddNeighborhoodCrime 'Pocitos','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Punta Carretas','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Punta Gorda','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Asesinato',4,2022 
-EXEC AddNeighborhoodCrime 'Reducto','Asesinato',0,2022
-EXEC AddNeighborhoodCrime 'Sayago','Asesinato',3,2022
-EXEC AddNeighborhoodCrime 'Tres Cruces','Asesinato',1,2022 
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Asesinato',11,2022
-EXEC AddNeighborhoodCrime 'Unión','Asesinato',4,2022
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Asesinato',2,2022
-EXEC AddNeighborhoodCrime 'Villa Española','Asesinato',8,2022
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Asesinato',15,2022
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Asesinato',2,2022
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2022
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',6,2022
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',13,2022
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',11,2022
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',1,2022
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',1,2022
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2022
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2022
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',5,2022
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2022
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',12,2022
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',10,2022
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2022
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',4,2022
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',5,2022
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',7,2022
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',4,2022
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',5,2022
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2022
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',21,2022
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2022
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',4,2022 
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2022
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',3,2022
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',1,2022 
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',11,2022
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2022
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',2,2022
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2022
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',15,2022
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',2,2022
 
 GO
 

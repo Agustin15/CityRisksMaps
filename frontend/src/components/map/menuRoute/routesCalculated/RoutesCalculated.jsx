@@ -3,14 +3,16 @@ import iconCar from "../../../../assets/img/car.png";
 import iconWalk from "../../../../assets/img/walk.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import iconTrain from "../../../../assets/img/train.png";
-import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { useState } from "react";
+import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { RouteRangesDanger } from "./routeRangesDanger/RouteRangesDanger.jsx";
-import { convertDuration, convertDistance } from "./functions.js";
+import { convertDuration, convertDistance, changeRoute } from "./functions.js";
+import { DetailsRoute } from "./detailsRoute/DetailsRoute.jsx";
 
 export const RoutesCalculated = ({ routes, transportSelected }) => {
-  const { routeSelected } = useRoutes();
-  const [showDetails, setShowDetails] = useState(false);
+  const { routeSelected, setRouteSelected, polylines, setPolylines } =
+    useRoutes();
+  const [showDetails, setShowDetails] = useState();
 
   const iconsTransports = [
     { transport: "Drive", icon: iconCar },
@@ -19,10 +21,18 @@ export const RoutesCalculated = ({ routes, transportSelected }) => {
     { transport: "Transit", icon: iconTrain }
   ];
 
+  const handleClick = (index) => {
+    if (routeSelected != index) {
+      setRouteSelected(index);
+      changeRoute(index, polylines, setPolylines);
+    }
+  };
+
   return (
     <ul className={styles.containRoutes}>
       {routes.map((route, index) => (
         <li
+          onClick={() => handleClick(index)}
           key={index}
           className={routeSelected == index ? styles.routeSelected : ""}
         >
@@ -40,7 +50,13 @@ export const RoutesCalculated = ({ routes, transportSelected }) => {
                   {route.legs[0].steps[0].navigationInstruction.instructions}
                 </p>
 
-                <RouteRangesDanger route={route} />
+                {route.routeRangesDanger && <RouteRangesDanger route={route} />}
+                <button
+                  onClick={() => setShowDetails(index)}
+                  className={styles.showDetails}
+                >
+                  Detalles
+                </button>
               </div>
             </div>
 
@@ -51,6 +67,7 @@ export const RoutesCalculated = ({ routes, transportSelected }) => {
               <span>{convertDistance(parseInt(route.distanceMeters))}</span>
             </div>
           </div>
+          {showDetails == index && <DetailsRoute steps={route.legs[0].steps} />}
         </li>
       ))}
     </ul>

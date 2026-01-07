@@ -10,12 +10,27 @@ import { EnterAdresses } from "./enterAddresses/EnterAdresses.jsx";
 
 export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
-  const { setOrigin, handleClose, routes, transportSelected } = useRoutes();
+  const {
+    setOrigin,
+    handleClose,
+    setRoutes,
+    routes,
+    setRouteSelected,
+    transportSelected,
+    cleanPolylines
+  } = useRoutes();
+
   const { userLocation } = useMapControls();
 
   const handleChange = async (value) => {
     setOrigin(value);
-    getSuggestions(userLocation, value, setSuggestions);
+    if (value.length == 0) {
+      setSuggestions();
+      cleanPolylines();
+      setRoutes();
+      setRouteSelected();
+      setOriginLocation();
+    } else getSuggestions(userLocation, value, setSuggestions);
   };
 
   return (

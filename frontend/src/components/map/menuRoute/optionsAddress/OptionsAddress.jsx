@@ -16,7 +16,14 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
   return (
     <ul className={styles.optionsAddress}>
       {userLocation && (
-        <li>
+        <li
+          onClick={() =>
+            handleClick("Mi ubicacion", {
+              latitude: userLocation.lat,
+              longitude: userLocation.lng
+            })
+          }
+        >
           <div className={styles.icon}>
             <img src={iconMyLocation}></img>
           </div>

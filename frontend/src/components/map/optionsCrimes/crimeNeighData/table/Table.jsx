@@ -69,10 +69,13 @@ export const Table = ({ crime }) => {
                 />
               ))}
           </tbody>
-          <Tfoot
-            neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
-            crime={crime}
-          />
+
+          {loadingNeighborhoodsCrime == false && neighborhoodsCrimeByYear && (
+            <Tfoot
+              neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
+              crime={crime}
+            />
+          )}
         </table>
       </div>
     </div>

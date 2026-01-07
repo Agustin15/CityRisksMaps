@@ -1,5 +1,5 @@
 import styles from "./References.module.css";
-import { getReferenceByCrime } from "./getReferences.js";
+import { getReferenceByCrime } from "./functions.js";
 
 export const References = ({ categoryCrime }) => {
   const referenceData = getReferenceByCrime(categoryCrime);

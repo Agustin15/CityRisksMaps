@@ -9,11 +9,22 @@ export const focusPolygon = (
   );
 
   polygons.forEach((polygon) => {
-    polygon.setOptions({
-      strokeColor: "#8d8d8dff",
-      strokeOpacity: 1,
-      strokeWeight: 1
-    });
+    if (
+      polygon.data.name == neighborhood &&
+      polygon.strokeColor != "#00bd10ff"
+    ) {
+      polygon.setOptions({
+        strokeColor: "#00bd10ff",
+        strokeOpacity: 1.0,
+        strokeWeight: 11
+      });
+    } else {
+      polygon.setOptions({
+        strokeColor: "#8d8d8dff",
+        strokeOpacity: 1.0,
+        strokeWeight: 1
+      });
+    }
   });
 
   let bounds = new google.maps.LatLngBounds();
@@ -23,18 +34,6 @@ export const focusPolygon = (
 
   map.setZoom(15);
   map.panTo(bounds.getCenter());
-
-  const polygonFound = polygons.find(
-    (polygon) => polygon.data.name == neighborhood
-  );
-
-  if (polygonFound) {
-    polygonFound.setOptions({
-      strokeColor: "#00bd10ff",
-      strokeOpacity: 1.0,
-      strokeWeight: 11
-    });
-  }
 };
 
 export const amountCrime = (neighborhoodsCrimeByYear) => {

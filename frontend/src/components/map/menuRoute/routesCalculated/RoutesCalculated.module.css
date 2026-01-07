@@ -65,9 +65,6 @@
     width: 99%;
 }
 
-.containRoutes li .spanDetails:hover {
-    text-decoration: underline;
-}
 
 .containRoutes li .columnTwo {
     display: flex;
@@ -79,4 +76,19 @@
 
 .containRoutes li .columnTwo .duration {
     color: rgb(40, 221, 40);
+}
+
+.containRoutes li .showDetails{
+    background: none;
+    width: auto;
+    height: auto;
+    box-shadow: none;
+    color: white;
+    opacity: 85%;
+    padding: 0;
+    font-size: 14px;
+}
+
+.containRoutes li .showDetails:hover{
+   text-decoration: underline;
 }

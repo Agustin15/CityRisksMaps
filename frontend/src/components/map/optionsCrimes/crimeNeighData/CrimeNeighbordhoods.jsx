@@ -23,7 +23,7 @@ export const CrimeNeighbordhoods = ({ categoryCrime }) => {
                 ? iconHoldup
                 : categoryCrime == "Rapiña"
                 ? iconTheft
-                : categoryCrime == "Asesinato"
+                : categoryCrime == "Homicidio"
                 ? iconKill
                 : ""
             }

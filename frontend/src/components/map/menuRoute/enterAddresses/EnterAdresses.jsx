@@ -38,7 +38,7 @@ export const EnterAdresses = ({ handleChange }) => {
           className={
             destiny.length > 0 &&
             origin.length > 0 &&
-            (crimeSelected == "Asesinato" || showQuizes)
+            (crimeSelected == "Homicidio" || showQuizes)
               ? styles.btnEnabled
               : styles.btnDisabled
           }
@@ -47,7 +47,7 @@ export const EnterAdresses = ({ handleChange }) => {
           <img src={iconShow}></img>
         </button>
       </div>
-      {crimeSelected != "Asesinato" && !showQuizes && <Advice />}
+      {crimeSelected != "Homicidio" && !showQuizes && <Advice />}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>
           Cargando rutas

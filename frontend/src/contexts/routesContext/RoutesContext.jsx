@@ -48,10 +48,10 @@ export const RoutesProvider = ({ children }) => {
           },
           body: JSON.stringify({
             origin: {
-              address: origin
+              location: { latLng: originLocation }
             },
             destination: {
-              address: destiny
+              location: { latLng: destinyLocation }
             },
             travelMode: travelMode,
             computeAlternativeRoutes: true,
@@ -70,7 +70,6 @@ export const RoutesProvider = ({ children }) => {
 
       const resultDataRoutes = createDataRoutes(result.routes, polygons, map);
       if (resultDataRoutes) {
-        console.log(resultDataRoutes.routes);
         setRoutes(resultDataRoutes.routes);
         setPolylinesBackground(resultDataRoutes.polylinesBackground);
         setPolylines(resultDataRoutes.polylines);
@@ -126,6 +125,9 @@ export const RoutesProvider = ({ children }) => {
         destinyLocation,
         setDestinyLocation,
         setTransportSelected,
+        polylines,
+        setPolylines,
+        cleanPolylines,
         transportSelected,
         loadingRoutes,
         routes,
