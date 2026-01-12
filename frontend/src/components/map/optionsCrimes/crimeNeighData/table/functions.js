@@ -36,7 +36,7 @@ export const focusPolygon = (
   map.panTo(bounds.getCenter());
 };
 
-export const amountCrime = (neighborhoodsCrimeByYear) => {
+export const calculateAmountCrime = (neighborhoodsCrimeByYear) => {
   const amount = neighborhoodsCrimeByYear.reduce((acc, neighborhoodsCrime) => {
     if (neighborhoodsCrime.quantityCrime != null) {
       acc += neighborhoodsCrime.quantityCrime;
@@ -46,15 +46,13 @@ export const amountCrime = (neighborhoodsCrimeByYear) => {
   return amount;
 };
 
-export const amountRateCrime = (neighborhoodsCrimeByYear, defineCrimeRate) => {
-  const amount = neighborhoodsCrimeByYear.reduce((acc, neighborhoodCrime) => {
-    if (neighborhoodCrime.quantityCrime != null) {
-      acc += defineCrimeRate(
-        neighborhoodCrime.quantityCrime,
-        neighborhoodCrime.quantityPopulation
-      );
-    }
-    return acc;
-  }, 0);
-  return amount;
+export const calculateAmountRateCrime = (neighborhoodsCrimeByYear) => {
+  const amountCrime = calculateAmountCrime(neighborhoodsCrimeByYear);
+
+  const amountPopulation = neighborhoodsCrimeByYear.reduce(
+    (acc, neighborhoodsCrime) => (acc += neighborhoodsCrime.quantityPopulation),
+    0
+  );
+
+  return ((amountCrime / amountPopulation) * 100000).toFixed(0);
 };

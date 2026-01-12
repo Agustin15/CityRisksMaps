@@ -40,6 +40,7 @@ export const PolygonDraw = ({ quiz }) => {
   return (
     <div className={styles.containPolygon}>
       <ul>
+        <div className={styles.glassEffect}></div>
         <li>
           <img src={iconQuizes}></img>
           <label>Cantidad de encuestas:</label>
@@ -62,6 +63,7 @@ export const PolygonDraw = ({ quiz }) => {
             {quiz.total == 0 ? "Sin encuestas" : quiz.percentage + "%"}
           </span>
         </li>
+        <div className={styles.glassEffectBottom}></div>
       </ul>
       <canvas className={styles.canvas} ref={refCanvasPolygon}></canvas>
     </div>

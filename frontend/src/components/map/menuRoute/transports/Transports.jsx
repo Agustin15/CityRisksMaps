@@ -6,17 +6,23 @@ import iconMotorBike from "../../../../assets/img/motorbike.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 
 export const Transports = () => {
-  const { transportSelected, setTransportSelected } = useRoutes();
+  const { transportSelected, setTransportSelected, showRoutes } = useRoutes();
+
+  const handleClick = (transport) => {
+    setTransportSelected(transport);
+    showRoutes(transport);
+  };
+
   return (
     <ul className={styles.transports}>
       <li
-        onClick={() => setTransportSelected("Drive")}
+        onClick={() => handleClick("Drive")}
         className={transportSelected == "Drive" ? styles.selected : ""}
       >
         <img src={iconCar}></img>
       </li>
       <li
-        onClick={() => setTransportSelected("Two-wheeled vehicle")}
+        onClick={() => handleClick("Two-wheeled vehicle")}
         className={
           transportSelected == "Two-wheeled vehicle" ? styles.selected : ""
         }
@@ -24,13 +30,13 @@ export const Transports = () => {
         <img src={iconMotorBike}></img>
       </li>
       <li
-        onClick={() => setTransportSelected("Transit")}
+        onClick={() => handleClick("Transit")}
         className={transportSelected == "Transit" ? styles.selected : ""}
       >
         <img src={iconTrain}></img>
       </li>
       <li
-        onClick={() => setTransportSelected("Walk")}
+        onClick={() => handleClick("Walk")}
         className={transportSelected == "Walk" ? styles.selected : ""}
       >
         <img src={iconWalk}></img>

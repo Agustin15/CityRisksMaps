@@ -3,7 +3,7 @@
     display: flex;
     align-items: start;
     justify-content: start;
-    gap: 1rem;
+    gap: 0.1rem;
     left: 0;
     top: 100;
     height: 38.5%;
@@ -22,11 +22,10 @@
     gap: 0.5rem;
     list-style: none;
     margin-top: 1rem;
-    padding: 1rem;
-    width: 49%;
-    height: 76%;
-    box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background-color: #2e3453;
+    padding:0 1rem 1rem 1rem;
+    width: 53%;
+    height: 81%;
+    background: none;
     overflow-x: hidden;
     scrollbar-width: none;
     scrollbar-color: rgb(151, 151, 151) rgb(243, 243, 243);
@@ -40,7 +39,7 @@
     padding: 0.5rem;
     width: 98%;
     box-shadow: 2px 2px 2px rgb(37, 37, 37);
-    background-color: #2e3453;
+    background: linear-gradient(#2e3453, #313e7a);
 }
 
 .containDetails .column .title {
@@ -48,7 +47,7 @@
     padding: 0.5rem;
     width: 98%;
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background-color: #1e233b;
+    background: linear-gradient(#2e3453, #313e7a);
     text-align: center;
 }
 
@@ -60,7 +59,7 @@
     align-items: start;
     width: 98%;
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background-color: #1e233b;
+    background: linear-gradient(#2e3453, #313e7a);
 }
 
 .containDetails .column .aboutIt span {
@@ -79,7 +78,7 @@
     list-style: none;
     width: 98%;
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background-color: #1e233b;
+    background: linear-gradient(#2e3453, #313e7a);
     margin: 0;
     padding: 0.5rem;
     gap: 1.5rem;
@@ -107,6 +106,7 @@
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 3px;
+    box-shadow: 2px 2px 2px rgb(2, 2, 2);
 }
 
 .containDetails .column .info li .boxIcon img {

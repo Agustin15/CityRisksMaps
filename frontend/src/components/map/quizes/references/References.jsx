@@ -2,9 +2,8 @@ import styles from "./References.module.css";
 
 export const References = () => {
   const references = [
-    { range: "0%-19%:", color: "#ee2f29ff" },
-    { range: "20%-39%", color: "#f7491eff" },
-    { range: "40%-59%", color: "#f77963ff" },
+    { range: "0%-39%", color: "#f73d1cff" },
+    { range: "40%-59%", color: " #fa7c06ff" },
     { range: "60%-79%", color: "#f1f134ff" },
     { range: "MAS DE 80% ", color: "#ffffbfff" }
   ];

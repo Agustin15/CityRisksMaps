@@ -14,6 +14,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    flex-wrap: wrap;
     width: 100%;
     list-style: none;
     gap: 0.5rem;
@@ -28,6 +29,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.4rem 0.4rem 0 0;
+    background: none;
 }
 
 .rangesDanger li:hover {

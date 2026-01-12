@@ -48,6 +48,7 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
   return (
     <div className={styles.containPolygon}>
       <ul>
+        <div className={styles.glassEffect}></div>
         <li>
           <img src={iconComplaint}></img>
           <label>Denuncias:</label>
@@ -68,7 +69,9 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
           <label>Tendencia a {categoryCrime.toLowerCase()}s:</label>
           <span>{crimeRange ? crimeRange.level : "Sin datos"}</span>
         </li>
+        <div className={styles.glassEffectBottom}></div>
       </ul>
+
       <canvas className={styles.canvas} ref={refCanvasPolygon}></canvas>
     </div>
   );

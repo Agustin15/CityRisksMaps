@@ -74,7 +74,7 @@ export const FormAddQuizProvider = ({ children }) => {
       },
       {
         name: "perception",
-        validation: value == 0 || value == 1,
+        validation: (value == 0 || value == 1) && typeof value == "number",
         msj: "Debe selccionar una percepcion"
       }
     ];

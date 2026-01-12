@@ -1,0 +1,34 @@
+.options {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 99%;
+    gap: 1rem;
+}
+
+.options button {
+    background: none;
+    width: auto;
+    height: auto;
+    border-radius: 25px;
+    box-shadow: none;
+    color: white;
+    background: none;
+    opacity: 85%;
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.options button img {
+    width: 33px;
+    height: 33px;
+    padding: 0;
+}
+.options button:hover {
+    text-decoration: underline;
+}

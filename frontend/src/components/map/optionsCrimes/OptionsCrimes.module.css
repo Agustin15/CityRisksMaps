@@ -13,7 +13,7 @@
     height: 100vh;
     border-left: none;
     box-shadow: -2px 5px 2px rgb(27, 27, 27);
-    background-color: #1f243b;
+    background: linear-gradient(#262c4b, #242d57);
 }
 
 .menuOptionsCrimes {
@@ -24,7 +24,7 @@
     gap: 0.8rem;
     width: 99.7%;
     height: 3.3rem;
-    background-color: #2e3453;
+    background: linear-gradient(#2e3453, #313e7a);
     color: white;
     padding: 0;
     padding-top: 0.5rem;

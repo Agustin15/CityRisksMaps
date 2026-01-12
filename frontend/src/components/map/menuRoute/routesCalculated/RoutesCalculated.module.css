@@ -18,7 +18,7 @@
     justify-content: start;
     align-items: start;
     box-shadow: 2px 2px 2px black;
-    background-color: #2e3453;
+    background: linear-gradient(#2e3453, #313e7a);
     cursor: pointer;
     padding: 0.4rem;
 }
@@ -52,7 +52,7 @@
 .containRoutes li .row p {
     padding: 0;
     margin: 0;
-    width: auto;
+    width: 94%;
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
@@ -65,7 +65,6 @@
     width: 99%;
 }
 
-
 .containRoutes li .columnTwo {
     display: flex;
     flex-direction: column;
@@ -76,19 +75,4 @@
 
 .containRoutes li .columnTwo .duration {
     color: rgb(40, 221, 40);
-}
-
-.containRoutes li .showDetails{
-    background: none;
-    width: auto;
-    height: auto;
-    box-shadow: none;
-    color: white;
-    opacity: 85%;
-    padding: 0;
-    font-size: 14px;
-}
-
-.containRoutes li .showDetails:hover{
-   text-decoration: underline;
 }

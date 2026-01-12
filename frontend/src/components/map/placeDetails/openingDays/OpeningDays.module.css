@@ -11,6 +11,7 @@
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 3px;
+    box-shadow: 2px 2px 2px rgb(2, 2, 2);
 }
 
 .detailOpeningHours .iconInfo {

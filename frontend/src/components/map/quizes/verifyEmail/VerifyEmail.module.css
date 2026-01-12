@@ -34,6 +34,7 @@
     height: 2rem;
     border-radius: 25px;
     background-color: rgb(65, 127, 221);
+    box-shadow: none;
     border: none;
     color: white;
     font-size: 15px;

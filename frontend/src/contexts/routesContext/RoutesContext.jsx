@@ -20,7 +20,7 @@ export const RoutesProvider = ({ children }) => {
   const [polylines, setPolylines] = useState();
   const [polylinesBackground, setPolylinesBackground] = useState();
   const map = useMap();
-  const { polygons } = useZoneCrimes();
+  const { polygons, crimeSelected } = useZoneCrimes();
 
   const handleClickRoute = (place) => {
     setShowMenuRoutes(true);
@@ -68,7 +68,14 @@ export const RoutesProvider = ({ children }) => {
 
       if (!response.ok) throw new Error(result.error.message);
 
-      const resultDataRoutes = createDataRoutes(result.routes, polygons, map);
+      let option = crimeSelected ? "homicides" : "quizes";
+
+      const resultDataRoutes = createDataRoutes(
+        result.routes,
+        polygons,
+        map,
+        option
+      );
       if (resultDataRoutes) {
         setRoutes(resultDataRoutes.routes);
         setPolylinesBackground(resultDataRoutes.polylinesBackground);

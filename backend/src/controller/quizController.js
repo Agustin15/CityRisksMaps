@@ -96,7 +96,6 @@ export const getQuizesYears = async (req, res) => {
 
     res.status(200).json(years);
   } catch (error) {
-    console.log("errr:" + error.message);
     res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });

@@ -3,16 +3,20 @@ import iconCar from "../../../../assets/img/car.png";
 import iconWalk from "../../../../assets/img/walk.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import iconTrain from "../../../../assets/img/train.png";
-import { useState } from "react";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { RouteRangesDanger } from "./routeRangesDanger/RouteRangesDanger.jsx";
 import { convertDuration, convertDistance, changeRoute } from "./functions.js";
 import { DetailsRoute } from "./detailsRoute/DetailsRoute.jsx";
+import { Options } from "./options/Options.jsx";
 
-export const RoutesCalculated = ({ routes, transportSelected }) => {
+export const RoutesCalculated = ({
+  routes,
+  transportSelected,
+  showDetails,
+  setShowDetails
+}) => {
   const { routeSelected, setRouteSelected, polylines, setPolylines } =
     useRoutes();
-  const [showDetails, setShowDetails] = useState();
 
   const iconsTransports = [
     { transport: "Drive", icon: iconCar },
@@ -26,6 +30,10 @@ export const RoutesCalculated = ({ routes, transportSelected }) => {
       setRouteSelected(index);
       changeRoute(index, polylines, setPolylines);
     }
+  };
+  const handleDetails = (index) => {
+    if (showDetails == index) setShowDetails();
+    else setShowDetails(index);
   };
 
   return (
@@ -51,12 +59,12 @@ export const RoutesCalculated = ({ routes, transportSelected }) => {
                 </p>
 
                 {route.routeRangesDanger && <RouteRangesDanger route={route} />}
-                <button
-                  onClick={() => setShowDetails(index)}
-                  className={styles.showDetails}
-                >
-                  Detalles
-                </button>
+
+                <Options
+                  index={index}
+                  showDetails={showDetails}
+                  handleDetails={handleDetails}
+                />
               </div>
             </div>
 

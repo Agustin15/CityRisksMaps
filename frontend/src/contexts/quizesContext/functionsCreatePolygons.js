@@ -5,13 +5,12 @@ export const getRangeSecureQuiz = (percentage) => {
     case percentage >= 60 && percentage < 80:
       return { color: "#f1f134ff", level: "Medio seguro" };
     case percentage >= 40 && percentage < 60:
-      return { color: "#f77963ff", level: "Inseguro" };
-    case percentage >= 20 && percentage < 40:
-      return { color: "#f7491eff", level: "Muy inseguro" };
-    case percentage >= 0 && percentage < 20:
-      return { color: "#ee2f29ff", level: "Extramadamente inseguro" };
+      return { color: " #fa7c06ff", level: "Inseguro" };
+    case percentage < 40:
+      return { color: "#f73d1cff", level: "Muy inseguro" };
   }
 };
+
 const createArrayForPolygons = (nhQuizes, neighbordhoodsCoordinates) => {
   const neighbordhoodsDataForPolygons = [];
 

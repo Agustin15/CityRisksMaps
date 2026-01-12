@@ -3,7 +3,7 @@ import iconNoData from "../../../assets/img/notData.png";
 import { useState } from "react";
 import { useEffect } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
-const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
+import { loadDataChart, setOptionsChart } from "./functions";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -11,112 +11,26 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
   const [dataChart, setDataChart] = useState();
   const [loading, setLoading] = useState(false);
 
-  const options = {
-    backgroundColor: "",
-    title: {
-      text: categoryCrime
-        ? `Crecimiento de las denuncias de ${categoryCrime}s`
-        : `Porcentajes de percepcion seguridad en ${nameNeighborhood}`,
-      fontSize: 14,
-      fontFamily: "arial",
-      fontWeight: "bold",
-      fontColor: "white"
-    },
-    height: 225,
-    animationEnabled: true,
-    axisX: {
-      title: "Años",
-      titleFontColor: "white",
-      titleFontSize: 15,
-      labelFontColor: "white",
-      lineColor: "white",
-      interval: 1
-    },
-    axisY: {
-      lineColor: "white",
-      labelFontColor: "white",
-      tickColor: "white",
-      gridColor: "white",
-      labelFormatter: function (e) {
-        return categoryCrime ? e.value : e.value + "%";
-      }
-    },
-    data: [
-      {
-        markerColor: "#e04b4bff",
-        type: "spline",
-        lineColor: "white",
-        dataPoints:
-          dataChart &&
-          (categoryCrime
-            ? dataChart.map((neighborhoodCrime) => {
-                return {
-                  x: neighborhoodCrime.year,
-                  y: neighborhoodCrime.quantity
-                };
-              })
-            : dataChart.map((quizSecurity) => {
-                return {
-                  x: quizSecurity.year,
-                  y: quizSecurity.securityPercentage,
-                  toolTipContent: `<span style="color:#178ed3ff;">${quizSecurity.year}</span>:
-                   ${quizSecurity.securityPercentage}%`
-                };
-              }))
-      }
-    ]
-  };
-
   useEffect(() => {
-    loadDataChart();
+    loadDataChart(categoryCrime, nameNeighborhood, setLoading, setDataChart);
   }, []);
-
-  const loadDataChart = async () => {
-    let optionGET = JSON.stringify(
-      categoryCrime
-        ? {
-            option: "getCategoryCrimeInNeighborhood",
-            neighborhood: nameNeighborhood,
-            categoryCrime: categoryCrime
-          }
-        : {
-            option: "getSecurityPercentagesInNeighborhood",
-            neighborhood: nameNeighborhood
-          }
-    );
-
-    let endpoint = categoryCrime ? "/neighborhoodCrime/" : "/quiz/";
-
-    setLoading(true);
-    try {
-      const response = await fetch(localhostBackend + endpoint + optionGET, {
-        method: "GET",
-        credentials: "include",
-        headers: { "Content-type": "application/json" }
-      });
-
-      const result = await response.json();
-
-      if (result.length > 0) setDataChart(result);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className={styles.containChart}>
+      <div className={styles.glassEffect}> </div>
       {loading && <span className={styles.loading}>Cargando datos...</span>}
       {!loading && dataChart && (
-        <CanvasJSChart options={options}></CanvasJSChart>
+        <CanvasJSChart
+          options={setOptionsChart(dataChart, categoryCrime, nameNeighborhood)}
+        ></CanvasJSChart>
       )}
       {!loading && !dataChart && (
         <div className={styles.noData}>
           <img src={iconNoData}></img>
-          <span> Sin registros para graficar</span>
+          <span>Sin registros para graficar</span>
         </div>
       )}
+      <div className={styles.glassEffectBottom}> </div>
     </div>
   );
 };

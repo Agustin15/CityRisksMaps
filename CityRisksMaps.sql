@@ -651,6 +651,15 @@ END
 
 GO
 
+CREATE OR ALTER PROCEDURE QuizesYears AS
+BEGIN 
+
+select distinct YEAR(quizDate) as year from Quizes ORDER BY Year(quizDate);
+
+END
+
+GO
+
 
 CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(30) AS
 BEGIN

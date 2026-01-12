@@ -30,6 +30,7 @@
 
 .customBtnConfirmSuccess {
     background: rgb(49, 196, 35);
+    width: 8rem;
 }
 
 .customBtnConfirm:hover {

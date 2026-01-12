@@ -12,6 +12,7 @@ export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
   const {
     setOrigin,
+    setOriginLocation,
     handleClose,
     setRoutes,
     routes,
@@ -20,6 +21,7 @@ export const MenuRoute = () => {
     cleanPolylines
   } = useRoutes();
 
+  const [showDetails, setShowDetails] = useState();
   const { userLocation } = useMapControls();
 
   const handleChange = async (value) => {
@@ -49,6 +51,8 @@ export const MenuRoute = () => {
         <RoutesCalculated
           routes={routes}
           transportSelected={transportSelected}
+          showDetails={showDetails}
+          setShowDetails={setShowDetails}
         />
       )}
     </div>

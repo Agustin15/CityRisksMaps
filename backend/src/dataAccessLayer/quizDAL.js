@@ -93,17 +93,11 @@ export class QuizDAL {
 
   static async getQuizesYears() {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare(
-        "select DISTINCT Year(quizDate) as year from Quizes ORDER BY Year(quizDate)"
-      );
+       const result = await request.execute("QuizesYears");
 
-      const result = await ps.execute();
-
-      await ps.unprepare();
-
-      return result.recordset;
+       return result.recordset;
     } catch (error) {
       throw error;
     }
