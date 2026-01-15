@@ -6,7 +6,7 @@ import iconSecure from "../../../../assets/img/security.png";
 import { useEffect, useRef } from "react";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { drawShape } from "../../optionsCrimes/crimeNeighData/table/polygonDraw/functions.js";
+import { drawShape } from "../../crimeNeighData/table/polygonDraw/functions.js";
 
 export const PolygonDraw = ({ quiz }) => {
   const { neighbordhoodsCoordinates } = useMapControls();

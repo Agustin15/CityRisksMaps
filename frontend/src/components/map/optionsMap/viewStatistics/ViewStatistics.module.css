@@ -1,0 +1,46 @@
+.viewStatistics {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 0;
+    width: 35rem;
+    height: 100vh;
+    border-left: none;
+    background: linear-gradient(#262c4b, #242d57);
+}
+
+.containOptionsCrimes {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin-top: 3.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 0;
+    width: 100%;
+    height: 95%;
+    border-left: none;
+}
+
+@media (max-width: 760px) {
+    .viewStatistics {
+        gap: 0;
+        width: 100%;
+        height: 92vh;
+        border-left: none;
+        background: none;
+    }
+
+    .containOptionsCrimes {
+        margin-top: 1rem;
+        height: 100%;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        background: linear-gradient(#262c4b, #242d57);
+    }
+}

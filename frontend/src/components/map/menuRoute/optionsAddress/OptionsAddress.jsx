@@ -6,7 +6,7 @@ import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 
 export const OptionsAddress = ({ suggestions, setSuggestions }) => {
   const { userLocation } = useMapControls();
-  const { setOrigin, setOriginLocation } = useRoutes();
+  const { setOrigin, setOriginLocation, routes } = useRoutes();
 
   const handleClick = (address, location) => {
     setOrigin(address);
@@ -15,7 +15,7 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
   };
   return (
     <ul className={styles.optionsAddress}>
-      {userLocation && (
+      {userLocation && !routes && (
         <li
           onClick={() =>
             handleClick("Mi ubicacion", {
@@ -24,9 +24,7 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
             })
           }
         >
-          <div className={styles.icon}>
-            <img src={iconMyLocation}></img>
-          </div>
+          <img src={iconMyLocation}></img>
           Mi ubicacion
         </li>
       )}

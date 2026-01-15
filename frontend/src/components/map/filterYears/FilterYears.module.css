@@ -36,8 +36,25 @@
 .years li .yearUnselected {
     background-color: rgb(255, 255, 255);
     color: #30a39d;
+    box-shadow: 2px 2px 2px rgb(49, 49, 49);
 }
 
 .years li .yearUnselected:hover {
     box-shadow: none;
+}
+
+@media (max-width: 760px) {
+    .years {
+        gap: 0.4rem;
+    }
+
+    .years li button {
+        text-align: center;
+        border-radius: 13px;
+        font-size: 11px;
+        height: 1.4rem;
+        width: 4rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
 }

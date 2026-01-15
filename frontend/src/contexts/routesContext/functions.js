@@ -23,8 +23,9 @@ export const createDataRoutes = (routes, polygons, map, option) => {
       );
 
       route["routeRangesDanger"] = routeRangesDanger;
-      routesWithNewData.push(route);
     }
+
+    routesWithNewData.push(route);
 
     const polylineBackground = new google.maps.Polyline({
       path: pathRoute,
@@ -110,7 +111,6 @@ export const setDangerRangesToRoute = (
   coordinatesRoutePolygons,
   option
 ) => {
-  console.log(option);
   const ranges =
     option == "quizes"
       ? [

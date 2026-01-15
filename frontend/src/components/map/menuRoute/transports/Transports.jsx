@@ -22,9 +22,9 @@ export const Transports = () => {
         <img src={iconCar}></img>
       </li>
       <li
-        onClick={() => handleClick("Two-wheeled vehicle")}
+        onClick={() => handleClick("Two_wheeler")}
         className={
-          transportSelected == "Two-wheeled vehicle" ? styles.selected : ""
+          transportSelected == "Two_wheeler" ? styles.selected : ""
         }
       >
         <img src={iconMotorBike}></img>

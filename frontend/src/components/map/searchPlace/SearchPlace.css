@@ -169,3 +169,9 @@
   background-color: rgb(233, 233, 233);
   cursor: pointer;
 }
+
+@media (max-width: 760px) {
+  .pac-container {
+    left: 0 !important;
+  }
+}

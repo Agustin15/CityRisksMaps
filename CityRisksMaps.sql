@@ -444,7 +444,13 @@ RETURN 1
 END
 GO
 
+CREATE OR ALTER  PROCEDURE YearsNeighborhoodsCrime @crime VARCHAR(20) AS 
 
+BEGIN 
+select DISTINCT year from Neighborhoods_Crimes where crime=@crime ORDER BY year desc
+END
+
+GO
 
 CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(20),@year INT AS
 BEGIN

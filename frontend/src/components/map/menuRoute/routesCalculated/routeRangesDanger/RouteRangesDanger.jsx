@@ -5,7 +5,6 @@ import { colorReference, calculateAverage } from "./functions";
 export const RouteRangesDanger = ({ route }) => {
   const { crimeSelected } = useZoneCrimes();
 
-  console.log(route.routeRangesDanger);
   return (
     <div className={styles.containRangesDanger}>
       <span>

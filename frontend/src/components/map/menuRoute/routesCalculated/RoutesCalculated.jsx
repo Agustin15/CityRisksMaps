@@ -5,9 +5,9 @@ import iconMotorBike from "../../../../assets/img/motorbike.png";
 import iconTrain from "../../../../assets/img/train.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { RouteRangesDanger } from "./routeRangesDanger/RouteRangesDanger.jsx";
-import { convertDuration, convertDistance, changeRoute } from "./functions.js";
 import { DetailsRoute } from "./detailsRoute/DetailsRoute.jsx";
 import { Options } from "./options/Options.jsx";
+import { convertDuration, convertDistance, changeRoute } from "./functions.js";
 
 export const RoutesCalculated = ({
   routes,
@@ -21,7 +21,7 @@ export const RoutesCalculated = ({
   const iconsTransports = [
     { transport: "Drive", icon: iconCar },
     { transport: "Walk", icon: iconWalk },
-    { transport: "Two-wheeled vehicle", icon: iconMotorBike },
+    { transport: "Two_wheeler", icon: iconMotorBike },
     { transport: "Transit", icon: iconTrain }
   ];
 

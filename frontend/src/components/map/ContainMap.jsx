@@ -13,6 +13,7 @@ import { useMapControls } from "../../contexts/MapContext";
 import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
 import { useRoutes } from "../../contexts/routesContext/RoutesContext.jsx";
+import { useNavigation } from "../../contexts/NavigationContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
 import { MapHandler } from "./mapHandler/MapHandler";
 import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
@@ -20,26 +21,24 @@ import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeigh
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
 import { Geolocation } from "./geolocation/Geolocation.jsx";
-import { Tools } from "./tools/Tools.jsx";
+import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { MarkerOrigin } from "./markerOrigin/MarkerOrigin.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
+  const { selectedPlace, placesSearched, handleClickOnMap } = useSearchPlace();
   const { originLocation, destinyLocation } = useRoutes();
-
-  const {
-    selectedPlace,
-    placesSearched,
-    handleClickOnMap
-  } = useSearchPlace();
+  const { routeNavigation } = useNavigation();
 
   const [polygonSelected, setPolygonSelected] = useState();
+
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
     <>
       <Map
+        renderingType="VECTOR"
         className={style.map}
         disableDefaultUI
         defaultZoom={15}
@@ -65,15 +64,23 @@ export const ContainMap = () => {
 
         <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
 
-        <MapControl position={ControlPosition.TOP_LEFT}>
+        <MapControl
+          position={
+            window.innerWidth > 760
+              ? ControlPosition.TOP_LEFT
+              : ControlPosition.TOP_CENTER
+          }
+        >
           <SearchPlace />
         </MapControl>
 
         <MapHandler place={selectedPlace} marker={marker} />
 
-        <MapControl position={ControlPosition.RIGHT_BOTTOM}>
-          <Geolocation />
-        </MapControl>
+        {!routeNavigation && (
+          <MapControl position={ControlPosition.RIGHT_BOTTOM}>
+            <Geolocation />
+          </MapControl>
+        )}
 
         {polygonSelected && (
           <AdvancedMarker
@@ -85,7 +92,7 @@ export const ContainMap = () => {
 
         {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
 
-        {originLocation && destinyLocation && (
+        {originLocation && destinyLocation && !userLocation && (
           <AdvancedMarker
             position={{
               lat: originLocation.latitude,
@@ -97,7 +104,7 @@ export const ContainMap = () => {
         )}
       </Map>
 
-      <Tools />
+      <OptionsMap />
     </>
   );
 };

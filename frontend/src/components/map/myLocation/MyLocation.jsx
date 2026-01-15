@@ -1,12 +1,25 @@
 import styles from "./MyLocation.module.css";
+import iconNavigation from "../../../assets/img/currentNavigation.png";
+import { useNavigation } from "../../../contexts/NavigationContext";
 
 export const MyLocation = () => {
-    
+  const { routeNavigation } = useNavigation();
+
   return (
-    <div className={styles.backgroundMyLocation}>
-      <div className={styles.myLocation}>
-        <div className={styles.content}></div>
-      </div>
+    <div
+      className={
+        !routeNavigation
+          ? styles.backgroundMyLocation
+          : styles.containMyNavigation
+      }
+    >
+      {!routeNavigation ? (
+        <div className={styles.myLocation}>
+          <div className={styles.content}></div>
+        </div>
+      ) : (
+        <img src={iconNavigation}></img>
+      )}
     </div>
   );
 };

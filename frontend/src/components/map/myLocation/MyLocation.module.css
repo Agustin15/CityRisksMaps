@@ -21,5 +21,14 @@
     border-radius: 100px;
     width: 75%;
     height: 75%;
-    background: linear-gradient(rgb(41, 137, 216),rgb(43, 124, 190));
+    background: linear-gradient(rgb(41, 137, 216), rgb(43, 124, 190));
+}
+.containMyNavigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containMyNavigation img {
+    width: 22px;
+    height: 22px;
 }

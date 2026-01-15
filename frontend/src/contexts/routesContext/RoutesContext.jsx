@@ -94,8 +94,9 @@ export const RoutesProvider = ({ children }) => {
   };
 
   const handleClose = async (setSuggestions) => {
+    if (setSuggestions) setSuggestions();
+
     cleanPolylines();
-    setSuggestions();
     setOrigin("");
     setDestiny("");
     setOriginLocation();
@@ -135,6 +136,8 @@ export const RoutesProvider = ({ children }) => {
         polylines,
         setPolylines,
         cleanPolylines,
+        polylinesBackground,
+        setPolylinesBackground,
         transportSelected,
         loadingRoutes,
         routes,

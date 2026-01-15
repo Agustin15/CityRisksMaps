@@ -1,11 +1,31 @@
-.loading {
+.containLoader{
     position: absolute;
     display: flex;
+    flex-direction: column-reverse;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
     height: 34%;
     width: 95%;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     color: white;
+}
+
+.loader {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 3px solid #3283c5;
+    border-bottom: none;
+    border-radius: 50%;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

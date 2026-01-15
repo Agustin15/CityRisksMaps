@@ -25,16 +25,6 @@
     cursor: pointer;
 }
 
-.optionsAddress li .icon {
-    width: 2.3rem;
-    height: 2.3rem;
-    border-radius: 99px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(177, 225, 247, 0.795);
-}
-
 .optionsAddress li img {
     width: 21px;
     height: 21px;

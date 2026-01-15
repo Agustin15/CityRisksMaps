@@ -7,6 +7,7 @@ import { PhotosProvider } from "./contexts/PhotosContext";
 import { ZoneCrimesProvider } from "./contexts/zoneCrimesContext/ZoneCrimesContext";
 import { QuizesProvider } from "./contexts/quizesContext/QuizesContext";
 import { SearchPlaceProvider } from "./contexts/SearchPlaceContext";
+import { NavigationProvider } from "./contexts/NavigationContext";
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
 function App() {
@@ -18,7 +19,9 @@ function App() {
             <SearchPlaceProvider>
               <QuizesProvider>
                 <RoutesProvider>
-                  <ContainMap />
+                  <NavigationProvider>
+                    <ContainMap />
+                  </NavigationProvider>
                 </RoutesProvider>
               </QuizesProvider>
             </SearchPlaceProvider>

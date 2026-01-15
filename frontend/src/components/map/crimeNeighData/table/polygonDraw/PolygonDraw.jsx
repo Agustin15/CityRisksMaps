@@ -1,11 +1,11 @@
 import styles from "./PolygonDraw.module.css";
-import iconRate from "../../../../../../assets/img/average.png";
-import iconComplaint from "../../../../../../assets/img/complaint.png";
-import iconSecurity from "../../../../../../assets/img/security.png";
-import iconPopulation from "../../../../../../assets/img/population.png";
+import iconRate from "../../../../../assets/img/average.png";
+import iconComplaint from "../../../../../assets/img/complaint.png";
+import iconSecurity from "../../../../../assets/img/security.png";
+import iconPopulation from "../../../../../assets/img/population.png";
 import { useEffect, useRef } from "react";
-import { useMapControls } from "../../../../../../contexts/MapContext";
-import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useMapControls } from "../../../../../contexts/MapContext";
+import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { drawShape } from "./functions.js";
 
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
@@ -48,7 +48,6 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
   return (
     <div className={styles.containPolygon}>
       <ul>
-        <div className={styles.glassEffect}></div>
         <li>
           <img src={iconComplaint}></img>
           <label>Denuncias:</label>
@@ -66,10 +65,9 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
         </li>
         <li>
           <img src={iconSecurity}></img>
-          <label>Tendencia a {categoryCrime.toLowerCase()}s:</label>
+          <label>Tendencia:</label>
           <span>{crimeRange ? crimeRange.level : "Sin datos"}</span>
         </li>
-        <div className={styles.glassEffectBottom}></div>
       </ul>
 
       <canvas className={styles.canvas} ref={refCanvasPolygon}></canvas>

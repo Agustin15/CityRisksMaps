@@ -12,7 +12,7 @@ export const SearchPlaceProvider = ({ children }) => {
   const [valueInput, setValueInput] = useState("");
   const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
-  const { userLocation } = useMapControls();
+  const { userLocation, boundsMontevideo } = useMapControls();
 
   const handleCleanInput = async (setSuggestions, suggestions) => {
     if (suggestions) setSuggestions();
@@ -83,24 +83,17 @@ export const SearchPlaceProvider = ({ children }) => {
     }
   };
 
-  const geocodingPlaceByAddress = async (address, getMontevideoJson) => {
+  const geocodingPlaceByAddress = async (address) => {
     setLoadingPlace(true);
 
-    let bounds = new google.maps.LatLngBounds();
-    let coordinatesMontevideo = await getMontevideoJson();
-
-    if (coordinatesMontevideo) {
-      coordinatesMontevideo.forEach((coordinate) =>
-        bounds.extend({ lat: coordinate[1], lng: coordinate[0] })
-      );
-    }
+    const boundsMdveo = boundsMontevideo();
 
     try {
       const geocoder = new google.maps.Geocoder();
 
       const result = await geocoder.geocode({
         address: address,
-        bounds: bounds
+        bounds: boundsMdveo
       });
 
       if (result.results) {

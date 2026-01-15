@@ -1,8 +1,13 @@
 import styles from "./Options.module.css";
 import iconDetailsRoute from "../../../../../assets/img/detailsRoute.png";
 import iconNavigator from "../../../../../assets/img/navigator.png";
+import { useMapControls } from "../../../../../contexts/MapContext";
+import { useNavigation } from "../../../../../contexts/NavigationContext";
 
 export const Options = ({ index, showDetails, handleDetails }) => {
+  const { userLocation } = useMapControls();
+  const { handleNavigation } = useNavigation();
+
   return (
     <div className={styles.options}>
       <button
@@ -12,10 +17,12 @@ export const Options = ({ index, showDetails, handleDetails }) => {
         {showDetails == index ? "Cerrar" : "Pasos"}
         <img src={iconDetailsRoute}></img>
       </button>
-      <button>
-        Navegar
-        <img src={iconNavigator}></img>
-      </button>
+      {userLocation && (
+        <button onClick={() => handleNavigation()}>
+          Navegar
+          <img src={iconNavigator}></img>
+        </button>
+      )}
     </div>
   );
 };

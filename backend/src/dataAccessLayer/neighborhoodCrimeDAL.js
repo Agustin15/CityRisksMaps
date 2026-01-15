@@ -132,17 +132,11 @@ export class NeighborhoodCrimeDAL {
 
   static async getYearsNeighborhoodsCrime(category) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      ps.input("crime", sql.VarChar(20));
+      request.input("crime", sql.VarChar(20), category);
 
-      await ps.prepare(
-        "select DISTINCT year from Neighborhoods_Crimes where crime=@crime ORDER BY year desc"
-      );
-
-      const result = await ps.execute({
-        crime: category
-      });
+      const result = await request.execute("YearsNeighborhoodsCrime");
 
       return result.recordset;
     } catch (error) {

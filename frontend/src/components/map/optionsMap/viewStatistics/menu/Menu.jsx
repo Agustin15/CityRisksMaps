@@ -1,12 +1,12 @@
-import styles from "../OptionsCrimes.module.css";
-import iconKill from "../../../../assets/img/kill.png";
-import iconTheft from "../../../../assets/img/theft.png";
-import iconHoldup from "../../../../assets/img/holdup.png";
-import iconQuizes from "../../../../assets/img/quizes.png";
-import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
-import { alertSwalWarning } from "../../../sweetAlert/sweetAlert.js";
+import styles from "./Menu.module.css";
+import iconKill from "../../../../../assets/img/kill.png";
+import iconTheft from "../../../../../assets/img/theft.png";
+import iconHoldup from "../../../../../assets/img/holdup.png";
+import iconQuizes from "../../../../../assets/img/quizes.png";
+import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext";
+import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
+import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
 
 export const Menu = ({ crimes }) => {
   const {

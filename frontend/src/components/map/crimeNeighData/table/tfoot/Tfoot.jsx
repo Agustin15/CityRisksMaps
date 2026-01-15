@@ -1,4 +1,4 @@
-import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import {
   calculateAmountCrime,
   calculateAmountRateCrime

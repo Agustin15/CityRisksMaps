@@ -1,9 +1,9 @@
 import styles from "./Table.module.css";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
-import { useMapControls } from "../../../../../contexts/MapContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useMapControls } from "../../../../contexts/MapContext";
 import { useMap } from "@vis.gl/react-google-maps";
-import { NotData } from "../../../notData/NotData";
-import { Loading } from "../../../loading/Loading";
+import { NotData } from "../../notData/NotData";
+import { Loading } from "../../loading/Loading";
 import { Rows } from "./rows/Rows";
 import { Tfoot } from "./tfoot/Tfoot.jsx";
 import { focusPolygon } from "./functions.js";

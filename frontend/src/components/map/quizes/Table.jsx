@@ -6,7 +6,7 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../notData/NotData";
 import { Loading } from "../loading/Loading";
 import { Rows } from "./rows/Rows";
-import { focusPolygon } from "../optionsCrimes/crimeNeighData/table/functions.js";
+import { focusPolygon } from "../crimeNeighData/table/functions.js";
 
 export const Table = () => {
   const map = useMap();

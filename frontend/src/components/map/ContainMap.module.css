@@ -3,3 +3,11 @@
     height: 60vh;
     border: 5px solid #2e355c;
 }
+
+@media (max-width: 760px) {
+    .map {
+        width: 100vw;
+        height: 92vh;
+        border: none;
+    }
+}
