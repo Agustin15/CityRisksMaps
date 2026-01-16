@@ -44,7 +44,7 @@
     height: 36px;
 }
 
-@media (max-width: 760px) {
+@media (width<=650px){
     .containData .header .close {
         display: flex;
         justify-content: end;

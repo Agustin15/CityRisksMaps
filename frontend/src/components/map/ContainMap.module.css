@@ -4,7 +4,7 @@
     border: 5px solid #2e355c;
 }
 
-@media (max-width: 760px) {
+@media (width<=650px) {
     .map {
         width: 100vw;
         height: 92vh;

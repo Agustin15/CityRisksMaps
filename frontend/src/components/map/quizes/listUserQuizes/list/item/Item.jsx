@@ -55,17 +55,24 @@ export const Item = ({ quiz, indexItem }) => {
           <div className={quiz.secure ? styles.secure : styles.insecure}></div>
           {quiz.secure ? "Seguro" : "Inseguro"}
         </span>
-        <span>
-          <b>Delitos usuales en el barrio:</b>
-          {quiz.crimesQuiz.length > 0
-            ? quiz.crimesQuiz.map((quizCrime, index) => (
-                <span key={index}>
+
+        <div className={styles.neighborhoodCrimes}>
+          <span>
+            <b>Delitos usuales en el barrio:</b>
+          </span>
+          {quiz.crimesQuiz.length > 0 ? (
+            <ul>
+              {quiz.crimesQuiz.map((quizCrime, index) => (
+                <li key={index}>
                   {quizCrime.crime}
                   {index < quiz.crimesQuiz.length - 1 ? " - " : ""}
-                </span>
-              ))
-            : "No se señalaron delitos"}
-        </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.noCrimes}>No se señalaron delitos</p>
+          )}
+        </div>
       </div>
       <button
         onClick={() => handleDelete(quiz.idQuiz, quiz.neighborhood)}

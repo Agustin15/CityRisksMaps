@@ -42,15 +42,15 @@
     height: 22px;
 }
 
-@media (max-width: 760px) {
+@media (width<=650px){
     .menuOptionsCrimes {
-        font-family: Arial, Helvetica, sans-serif;
-        position: absolute;
-        top: 100;
+        top: 92vh;
         right: 0;
         gap: 0.8rem;
         width: 100%;
-        padding: 0.2rem;
+        height: 3rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0.5rem;
     }
     .menuOptionsCrimes li {
         flex-direction: column;

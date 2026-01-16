@@ -11,7 +11,7 @@
 .customBtnConfirm,
 .customBtnCancel,
 .customBtnConfirmWarning,
-.customBtnConfirSuccess {
+.customBtnConfirmSuccess {
     width: 8rem;
     font-weight: bold;
     background: rgb(216, 34, 34);
@@ -42,4 +42,21 @@
 
 .customBtnConfirmSuccess:hover {
     background: rgb(37, 145, 27);
+}
+
+@media (width<=650px) {
+    .customMsj {
+        font-size: 17px;
+    }
+
+    .customTitle {
+        font-size: 18px;
+    }
+    .customBtnConfirm,
+    .customBtnCancel,
+    .customBtnConfirmWarning,
+    .customBtnConfirmSuccess {
+        font-size: 15px;
+        width: auto;
+    }
 }

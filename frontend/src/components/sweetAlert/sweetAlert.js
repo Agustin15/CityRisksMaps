@@ -11,7 +11,7 @@ export const alertSwalError = (title, error) => {
     imageUrl: iconGeolocation,
     imageWidth: 70,
     imageHeight: 70,
-    width: 460,
+    width: window.innerWidth <= 650 ? 420 : 460,
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirm
@@ -26,7 +26,7 @@ export const alertSwalErrorQuiz = (title, error) => {
     html: `
     <p class=${styles.customMsj}>${error}</p>
     `,
-    width: 460,
+    width: window.innerWidth <= 650 ? 420 : 460,
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirm
@@ -41,7 +41,7 @@ export const alertSwalWarning = (error) => {
     <p class=${styles.customMsj}>${error}</p>
     `,
     icon: "warning",
-    width: 420,
+    width: window.innerWidth <= 650 ? 420 : 460,
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirmWarning
@@ -56,7 +56,7 @@ export const alertSwalSuccess = (msj) => {
     <p class=${styles.customMsj}>${msj}</p>
     `,
     icon: "success",
-    width: 420,
+    width: window.innerWidth <= 650 ? 390 : 420,
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirmSuccess
@@ -74,7 +74,7 @@ export const alertSwalConfirmDeleteQuiz = async (msj) => {
     showCancelButton: true,
     confirmButtonText: "Si,eliminar",
     cancelButtonText: "No,cancelar",
-    width: 420,
+    width: window.innerWidth <= 650 ? 390 : 420,
     customClass: {
       title: styles.customTitle,
       confirmButton: styles.customBtnConfirmSuccess,

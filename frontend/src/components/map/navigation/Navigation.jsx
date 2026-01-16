@@ -4,11 +4,13 @@ export const Navigation = () => {
   return (
     <div className={styles.navigation}>
       <div className={styles.header}>
-        <div>
+        <div className={styles.title}>
           Navegacion
           <img src={iconNavigation}></img>
         </div>
-        <button>x</button>
+        <div className={styles.close}>
+          <button>x</button>
+        </div>
       </div>
     </div>
   );

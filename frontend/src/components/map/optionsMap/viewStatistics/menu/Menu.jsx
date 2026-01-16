@@ -8,7 +8,7 @@ import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCri
 import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
 import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
 
-export const Menu = ({ crimes }) => {
+export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
   const {
     loadCrimeDataNeighborhoods,
     crimeSelected,
@@ -25,6 +25,8 @@ export const Menu = ({ crimes }) => {
           "Tiene que salir del modo navegacion para elegir otra opcion"
         );
       } else {
+        if (!showViewStatistics) setShowViewStatistics(true);
+
         handleClose();
         loadCrimeDataNeighborhoods(crime.category);
         setCrimeSelected(crime.category);
@@ -40,6 +42,8 @@ export const Menu = ({ crimes }) => {
           "Tiene que salir del modo navegacion para elegir otra opcion"
         );
       } else {
+        if (!showViewStatistics) setShowViewStatistics(true);
+        
         handleClose();
         setCrimeSelected();
         loadDataQuizes();

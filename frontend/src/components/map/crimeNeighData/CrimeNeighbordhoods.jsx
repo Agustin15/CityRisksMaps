@@ -6,14 +6,24 @@ import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesCon
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
 
-export const CrimeNeighbordhoods = ({ categoryCrime }) => {
+export const CrimeNeighbordhoods = ({
+  categoryCrime,
+  setShowViewStatistics
+}) => {
   const { handleClose } = useZoneCrimes();
 
   return (
     <div className={styles.containData}>
       <div className={styles.header}>
         <div className={styles.close}>
-          <button onClick={handleClose}>x</button>
+          <button
+            onClick={() => {
+              setShowViewStatistics(false);
+              handleClose(setShowViewStatistics);
+            }}
+          >
+            x
+          </button>
         </div>
         <div className={styles.title}>
           <h3>{categoryCrime}s</h3>

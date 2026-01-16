@@ -22,7 +22,7 @@
     opacity: 76%;
 }
 
-@media (max-width: 760px) {
+@media (width<=650px) {
     .placeNotSelected {
         display: none;
     }

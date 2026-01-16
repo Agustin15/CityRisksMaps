@@ -170,7 +170,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 760px) {
+@media (width<=700px) {
   .pac-container {
     left: 0 !important;
   }

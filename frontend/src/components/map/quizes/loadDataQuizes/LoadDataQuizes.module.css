@@ -78,3 +78,16 @@
     width: 19px;
     height: 19px;
 }
+
+@media (width<=650px) {
+    .containDetails {
+        width: 98%;
+    }
+    .containDetails .containOptionsQuiz {
+        width: 100%;
+        padding-left: 2%;
+    }
+    .containDetails .containOptionsQuiz .btnAddQuiz {
+        width: 11rem;
+    }
+}

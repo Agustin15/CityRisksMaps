@@ -81,7 +81,7 @@ td {
     padding-left: 1.2rem;
 }
 
-@media (max-width: 760px) {
+@media (width<=650px) {
     .containTable {
         height: 52%;
         box-shadow: none;

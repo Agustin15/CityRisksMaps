@@ -159,3 +159,15 @@
 .send:hover {
     background-color: rgb(26, 158, 85);
 }
+
+@media (width<=650px) {
+    .containForm {
+        width: 95%;
+    }
+    .header {
+        font-size: 14px;
+    }
+    .header h3 {
+        margin-top: 2rem;
+    }
+}

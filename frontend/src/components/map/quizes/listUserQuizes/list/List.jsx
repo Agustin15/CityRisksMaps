@@ -40,13 +40,16 @@ export const List = () => {
 
         {loadingQuizes == false &&
           resultQuizes &&
-          resultQuizes.map((quiz, index) => <Item quiz={quiz} indexItem={index} />)}
+          resultQuizes.map((quiz, index) => (
+            <Item key={index} quiz={quiz} indexItem={index} />
+          ))}
       </ul>
 
       {pages && (
         <div className={styles.pagination}>
-          {Array.from({ length: pages }, (v, i) => i).map((page) => (
+          {Array.from({ length: pages }, (v, i) => i).map((page, indexBtn) => (
             <button
+              key={indexBtn}
               onClick={() => handleChangePage(page)}
               className={page == index ? styles.currentPage : ""}
             >

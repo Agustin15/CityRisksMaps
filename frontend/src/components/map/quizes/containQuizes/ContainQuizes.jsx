@@ -5,7 +5,10 @@ import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimes
 import { Table } from "../Table";
 import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
 
-export const ContainQuizes = () => {
+export const ContainQuizes = ({
+  showViewStatistics,
+  setShowViewStatistics
+}) => {
   const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();
   const {
     setYears,
@@ -34,7 +37,14 @@ export const ContainQuizes = () => {
     <div className={styles.containData}>
       <div className={styles.header}>
         <div className={styles.close}>
-          <button onClick={handleClose}>x</button>
+          <button
+            onClick={() => {
+              if (showViewStatistics) setShowViewStatistics(false);
+              handleClose();
+            }}
+          >
+            x
+          </button>
         </div>
 
         <div className={styles.title}>

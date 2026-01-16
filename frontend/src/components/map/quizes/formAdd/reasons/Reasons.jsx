@@ -23,7 +23,7 @@ export const Reasons = ({ handleChange }) => {
           msj={"No se encontraron registros de crimenes en el sistema"}
         />
       )}
-      
+
       {!loadingCrimes && allTypeCrimes && (
         <ul>
           {valuesForm.reasons &&
@@ -31,7 +31,7 @@ export const Reasons = ({ handleChange }) => {
               <li key={index}>
                 <Switch
                   height={20}
-                  width={48}
+                  width={window.innerWidth > 650 ? 48 : 44}
                   boxShadow="2px 2px 2px #666666ff"
                   uncheckedIcon={false}
                   onColor="#3dcfe2ff"

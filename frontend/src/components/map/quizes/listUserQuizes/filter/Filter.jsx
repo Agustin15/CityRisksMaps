@@ -35,8 +35,8 @@ export const Filter = () => {
           <label>Buscar por año:</label>
           <div className={styles.row}>
             <select ref={refSelectYear}>
-              {years.map((yearObject) => (
-                <option value={Object.values(yearObject)}>
+              {years.map((yearObject,index) => (
+                <option key={index} value={Object.values(yearObject)}>
                   {Object.values(yearObject)}
                 </option>
               ))}
