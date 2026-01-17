@@ -1,49 +1,16 @@
 import styles from "./ContainQuizes.module.css";
 import iconQuizes from "../../../../assets/img/quizes.png";
-import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import iconMinimize from "../../../../assets/img/minimize.png";
 import { Table } from "../Table";
 import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
 
-export const ContainQuizes = ({
-  showViewStatistics,
-  setShowViewStatistics
-}) => {
-  const { setShowQuizes, setNeighborhoodsQuizesByYear } = useQuizes();
-  const {
-    setYears,
-    setYearSelected,
-    setPolygons,
-    polygons,
-    setIndexChartActive
-  } = useZoneCrimes();
-
-  const handleClose = () => {
-    if (polygons.length > 0) {
-      polygons.forEach((polygon) => {
-        polygon.setMap(null);
-      });
-      setPolygons([]);
-    }
-
-    setIndexChartActive(null);
-    setNeighborhoodsQuizesByYear();
-    setYears();
-    setYearSelected();
-    setShowQuizes(false);
-  };
-
+export const ContainQuizes = ({ setShowViewStatistics }) => {
   return (
     <div className={styles.containData}>
       <div className={styles.header}>
         <div className={styles.close}>
-          <button
-            onClick={() => {
-              if (showViewStatistics) setShowViewStatistics(false);
-              handleClose();
-            }}
-          >
-            x
+          <button onClick={() => setShowViewStatistics(false)}>
+            <img src={iconMinimize}></img>
           </button>
         </div>
 

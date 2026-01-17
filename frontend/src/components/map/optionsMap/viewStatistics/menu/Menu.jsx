@@ -30,9 +30,9 @@ export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
         handleClose();
         loadCrimeDataNeighborhoods(crime.category);
         setCrimeSelected(crime.category);
-        setShowQuizes();
+        setShowQuizes(false);
       }
-    }
+    } else if (!showViewStatistics) setShowViewStatistics(true);
   };
 
   const handleClickQuizes = () => {
@@ -43,13 +43,13 @@ export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
         );
       } else {
         if (!showViewStatistics) setShowViewStatistics(true);
-        
+
         handleClose();
         setCrimeSelected();
         loadDataQuizes();
         setShowQuizes(true);
       }
-    }
+    } else if (!showViewStatistics) setShowViewStatistics(true);
   };
 
   return (

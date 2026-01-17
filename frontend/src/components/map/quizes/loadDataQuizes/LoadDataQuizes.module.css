@@ -91,3 +91,9 @@
         width: 11rem;
     }
 }
+
+@media (width>650px) and (width<=1000px) {
+    .containDetails {
+        width: 97%;
+    }
+}

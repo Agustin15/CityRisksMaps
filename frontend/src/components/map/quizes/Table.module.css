@@ -85,3 +85,21 @@ td {
         border-collapse: collapse;
     }
 }
+
+@media (width>650px) and (width<=1000px) {
+    .containTable {
+        height: 98%;
+        overflow-y: scroll;
+    }
+    .scroll {
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
+
+    .table {
+        width: 150%;
+        height: auto;
+        overflow-y: scroll;
+        border-collapse: collapse;
+    }
+}

@@ -66,9 +66,9 @@ export const ContainMap = () => {
 
         <MapControl
           position={
-            window.innerWidth > 760
-              ? ControlPosition.TOP_LEFT
-              : ControlPosition.TOP_CENTER
+            window.innerWidth <= 650
+              ? ControlPosition.TOP_CENTER
+              : ControlPosition.TOP_LEFT
           }
         >
           <SearchPlace />

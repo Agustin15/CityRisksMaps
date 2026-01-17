@@ -7,7 +7,15 @@
 @media (width<=650px) {
     .map {
         width: 100vw;
-        height: 92vh;
+        height: 93.3vh;
+        border: none;
+    }
+}
+
+@media (width>650px) and (width<=1000px) {
+    .map {
+        width: 93vw;
+        height: 100vh;
         border: none;
     }
 }

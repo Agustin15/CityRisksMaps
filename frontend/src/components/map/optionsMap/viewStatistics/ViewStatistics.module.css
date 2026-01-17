@@ -31,7 +31,7 @@
     .viewStatistics {
         gap: 0;
         width: 100%;
-        height: 92vh;
+        height: 93.5vh;
         border-left: none;
         background: none;
     }
@@ -42,5 +42,24 @@
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
         background: linear-gradient(#262c4b, #242d57);
+    }
+}
+
+@media (width>650px) and (width<=1000px) {
+    .viewStatistics {
+        right: 9%;
+        gap: 0;
+        width: 55vw;
+        height: 100vh;
+        border-left: none;
+        background: none;
+    }
+
+    .containOptionsCrimes {
+        margin-top: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(#262c4b, #242d57);
+        overflow-y: scroll;
     }
 }
