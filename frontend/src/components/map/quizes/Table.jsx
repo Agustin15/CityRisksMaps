@@ -21,48 +21,46 @@ export const Table = () => {
 
   return (
     <div className={styles.containTable}>
-      <div className={styles.scroll}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Barrio</th>
-              <th>Puntuacion seguridad</th>
-              <th>Puntuacion inseguridad</th>
-              <th>Encuestas</th>
-              <th>Porcentaje de seguridad</th>
-            </tr>
-          </thead>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Barrio</th>
+            <th>Puntuacion seguridad</th>
+            <th>Puntuacion inseguridad</th>
+            <th>Encuestas</th>
+            <th>Porcentaje de seguridad</th>
+          </tr>
+        </thead>
 
-          <tbody>
-            {loadingQuizes == true && (
+        <tbody>
+          {loadingQuizes == true && (
+            <tr>
+              <td colSpan={4} rowSpan={4}>
+                <Loading />
+              </td>
+            </tr>
+          )}
+          {loadingYears == false &&
+            loadingQuizes == false &&
+            !neighborhoodsQuizesByYear && (
               <tr>
                 <td colSpan={4} rowSpan={4}>
-                  <Loading />
+                  <NotData error={errorGetQuiz} />
                 </td>
               </tr>
             )}
-            {loadingYears == false &&
-              loadingQuizes == false &&
-              !neighborhoodsQuizesByYear && (
-                <tr>
-                  <td colSpan={4} rowSpan={4}>
-                    <NotData error={errorGetQuiz} />
-                  </td>
-                </tr>
-              )}
-            {loadingQuizes == false &&
-              neighborhoodsQuizesByYear &&
-              neighborhoodsQuizesByYear.map((quiz, index) => (
-                <Rows
-                  key={index}
-                  numberRow={index}
-                  quiz={quiz}
-                  handleClickNeighborhood={handleClickNeighborhood}
-                />
-              ))}
-          </tbody>
-        </table>
-      </div>
+          {loadingQuizes == false &&
+            neighborhoodsQuizesByYear &&
+            neighborhoodsQuizesByYear.map((quiz, index) => (
+              <Rows
+                key={index}
+                numberRow={index}
+                quiz={quiz}
+                handleClickNeighborhood={handleClickNeighborhood}
+              />
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 };

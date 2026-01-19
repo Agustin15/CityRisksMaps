@@ -1,7 +1,7 @@
 .menuOptionsCrimes {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
     z-index: 5;
     display: flex;
@@ -9,7 +9,7 @@
     justify-content: start;
     align-items: start;
     gap: 0.8rem;
-    width: 40.9%;
+    width: 41vw;
     height: 3.3rem;
     background: linear-gradient(#2e3453, #313e7a);
     color: white;
@@ -27,19 +27,40 @@
     width: 99%;
     font-size: 12px;
     gap: 0.3rem;
-    height: 99%;
+    height: 91%;
     cursor: pointer;
     color: white;
 }
 
-.menuOptionsCrimes li:hover,
-.menuOptionsCrimes .selected {
-    border-bottom: 3px solid rgb(91, 244, 255);
+.menuOptionsCrimes .holdup,
+.menuOptionsCrimes .theft,
+.menuOptionsCrimes .kill,
+.menuOptionsCrimes .quiz {
+    background-image: url("../../../../../assets/img/holdup.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
-.menuOptionsCrimes li img {
-    width: 22px;
-    height: 22px;
+.menuOptionsCrimes .theft {
+    background-image: url("../../../../../assets/img/theft.png");
+}
+
+.menuOptionsCrimes .kill {
+    background-image: url("../../../../../assets/img/kill.png");
+}
+
+.menuOptionsCrimes .quiz {
+    background-image: url("../../../../../assets/img/quizes.png");
+}
+
+.menuOptionsCrimes li:hover,
+.menuOptionsCrimes .selected {
+    border-bottom: 2px solid rgb(91, 244, 255);
+}
+
+.menuOptionsCrimes li div {
+    width: 26px;
+    height: 26px;
 }
 
 @media (width<=650px) {
@@ -55,25 +76,126 @@
     .menuOptionsCrimes li {
         flex-direction: column;
         font-size: 11px;
+        height: 99%;
     }
-    .menuOptionsCrimes li img {
+    .menuOptionsCrimes li div {
         width: 19px;
         height: 19px;
     }
+
+    .menuOptionsCrimes .holdup,
+    .menuOptionsCrimes .theft,
+    .menuOptionsCrimes .kill,
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/holdupMobile.png");
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+
+    .menuOptionsCrimes .theft {
+        background-image: url("../../../../../assets/img/theftMobile.png");
+    }
+
+    .menuOptionsCrimes .kill {
+        background-image: url("../../../../../assets/img/killMobile.png");
+    }
+
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/quizMobile.png");
+    }
 }
 
-@media (width>650px) and (width<=1000px) {
+@media (width>650px) and (width<1200px) {
     .menuOptionsCrimes {
-        right: 0;
-        gap: 0.8rem;
-        width: 9vw;
-        height: 100vh;
+        left: 0;
+        width: 8vw;
+        height: 98.4vh;
         padding: 0.2rem 0 0.2rem 0;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    .menuOptionsCrimes li:hover,
+    .menuOptionsCrimes .selected {
+        border-left: 3px solid rgb(91, 244, 255);
+        border-bottom: none;
+    }
+    .menuOptionsCrimes li {
+        flex-direction: column;
+        font-size: 9px;
+        height: 3rem;
+    }
+    .menuOptionsCrimes li div {
+        width: 19px;
+        height: 19px;
+    }
+
+    .menuOptionsCrimes .holdup,
+    .menuOptionsCrimes .theft,
+    .menuOptionsCrimes .kill,
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/holdupMobile.png");
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+
+    .menuOptionsCrimes .theft {
+        background-image: url("../../../../../assets/img/theftMobile.png");
+    }
+
+    .menuOptionsCrimes .kill {
+        background-image: url("../../../../../assets/img/killMobile.png");
+    }
+
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/quizMobile.png");
+        background-size: 95%;
+    }
+}
+
+@media (width>=1000px) and (width<1200px) {
+    .menuOptionsCrimes {
+        left: 0;
+        width: 8vw;
+        height: 99vh;
+        padding: 0.7rem 0 0.2rem 0;
         margin: 0;
         flex-direction: column;
     }
     .menuOptionsCrimes li {
         flex-direction: column;
-        font-size: 11px;
+        height: 4rem;
+        font-size: 13px;
+    }
+    .menuOptionsCrimes li:hover,
+    .menuOptionsCrimes .selected {
+        border-left: 3px solid rgb(91, 244, 255);
+        border-bottom: none;
+    }
+
+    .menuOptionsCrimes .holdup,
+    .menuOptionsCrimes .theft,
+    .menuOptionsCrimes .kill,
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/holdupMobile.png");
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+
+    .menuOptionsCrimes .theft {
+        background-image: url("../../../../../assets/img/theftMobile.png");
+    }
+
+    .menuOptionsCrimes .kill {
+        background-image: url("../../../../../assets/img/killMobile.png");
+    }
+
+    .menuOptionsCrimes .quiz {
+        background-image: url("../../../../../assets/img/quizMobile.png");
+        background-size: 85%;
+    }
+    .menuOptionsCrimes li div {
+        width: 31px;
+        height: 31px;
     }
 }

@@ -7,7 +7,7 @@
     align-items: start;
     justify-content: start;
     gap: 0;
-    width: 35rem;
+    width: 41vw;
     height: 100vh;
     border-left: none;
     background: linear-gradient(#262c4b, #242d57);
@@ -45,11 +45,11 @@
     }
 }
 
-@media (width>650px) and (width<=1000px) {
+@media (width>650px) and (width<1200px) {
     .viewStatistics {
-        right: 9%;
+        right: 7.5%;
         gap: 0;
-        width: 55vw;
+        width: 85%;
         height: 100vh;
         border-left: none;
         background: none;
@@ -57,9 +57,12 @@
 
     .containOptionsCrimes {
         margin-top: 0;
-        width: 100%;
         height: 100%;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         background: linear-gradient(#262c4b, #242d57);
         overflow-y: scroll;
     }
 }
+
+

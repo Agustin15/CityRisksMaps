@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 26rem;
+    height: 75%;
 }
 
 .containList ul {
@@ -81,3 +81,4 @@
 .containList .pagination .currentPage:hover {
     background-color: rgb(72, 144, 226);
 }
+

@@ -25,7 +25,7 @@ export const Table = ({ crime }) => {
 
   return (
     <div className={styles.containTable}>
-      <div className={styles.scroll}>
+    
         <table className={styles.table}>
           <thead>
             <tr>
@@ -77,7 +77,6 @@ export const Table = ({ crime }) => {
             />
           )}
         </table>
-      </div>
     </div>
   );
 };

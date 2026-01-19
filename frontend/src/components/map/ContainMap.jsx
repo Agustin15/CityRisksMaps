@@ -14,6 +14,7 @@ import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContex
 import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
 import { useRoutes } from "../../contexts/routesContext/RoutesContext.jsx";
 import { useNavigation } from "../../contexts/NavigationContext.jsx";
+import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { MyLocation } from "./myLocation/MyLocation";
 import { MapHandler } from "./mapHandler/MapHandler";
 import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
@@ -30,6 +31,7 @@ export const ContainMap = () => {
   const { selectedPlace, placesSearched, handleClickOnMap } = useSearchPlace();
   const { originLocation, destinyLocation } = useRoutes();
   const { routeNavigation } = useNavigation();
+  const { windowWidth } = useWindowResize();
 
   const [polygonSelected, setPolygonSelected] = useState();
 
@@ -66,7 +68,7 @@ export const ContainMap = () => {
 
         <MapControl
           position={
-            window.innerWidth <= 650
+            windowWidth <= 650
               ? ControlPosition.TOP_CENTER
               : ControlPosition.TOP_LEFT
           }

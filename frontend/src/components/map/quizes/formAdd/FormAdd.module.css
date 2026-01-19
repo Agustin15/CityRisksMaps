@@ -5,7 +5,7 @@
     gap: 1rem;
     width: 35%;
     height: auto;
-    padding-bottom: 4rem;
+    padding-bottom: 3rem;
     background: white;
     border-radius: 5px;
     font-family: Arial, Helvetica, sans-serif;
@@ -163,6 +163,18 @@
 @media (width<=650px) {
     .containForm {
         width: 95%;
+    }
+    .header {
+        font-size: 14px;
+    }
+    .header h3 {
+        margin-top: 2rem;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containForm {
+        width: 65%;
     }
     .header {
         font-size: 14px;

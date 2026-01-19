@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { CookiesProvider } from "react-cookie";
+import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";
 import "./index.css";
 import App from "./App.jsx";
 
@@ -8,7 +9,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <title>City risks map</title>
     <CookiesProvider>
-      <App />
+      <WindowResizeProvider>
+        <App />
+      </WindowResizeProvider>
     </CookiesProvider>
   </StrictMode>
 );

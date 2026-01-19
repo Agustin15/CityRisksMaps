@@ -4,7 +4,7 @@
     align-items: center;
     gap: 1rem;
     width: 46%;
-    height: auto;
+    height: 88vh;
     padding-bottom: 2rem;
     background: white;
     border-radius: 5px;
@@ -42,9 +42,22 @@
     cursor: pointer;
 }
 
-@media (width<=650px){
+@media (width<=650px) {
     .listUserQuizes {
         width: 95%;
+    }
+    .header {
+        font-size: 14px;
+    }
+    .header h3 {
+        margin-top: 2rem;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .listUserQuizes {
+        width: 91%;
+        overflow-y: scroll;
     }
     .header {
         font-size: 14px;

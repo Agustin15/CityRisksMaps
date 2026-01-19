@@ -12,10 +12,11 @@
     }
 }
 
-@media (width>650px) and (width<=1000px) {
+@media (width>650px) and (width<1200px) {
     .map {
-        width: 93vw;
+        width: 92vw;
         height: 100vh;
         border: none;
+        margin-left: 8vw;
     }
 }
