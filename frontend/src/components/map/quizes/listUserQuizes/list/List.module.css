@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 75%;
+    height: 65vh;
 }
 
 .containList ul {
@@ -82,3 +82,16 @@
     background-color: rgb(72, 144, 226);
 }
 
+@media (width<=650px) {
+    .containList {
+        width: 100%;
+        height: 65vh;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containList {
+        width: 100%;
+        height: 51vh;
+    }
+}

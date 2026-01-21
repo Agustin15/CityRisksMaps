@@ -7,8 +7,8 @@ export const WindowResizeProvider = ({ children }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (windowWidth != window.innerWidth) setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", (event) => {
+      setWindowWidth(event.target.innerWidth);
     });
   }, []);
 

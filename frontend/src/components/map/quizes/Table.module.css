@@ -4,6 +4,8 @@
     align-items: center;
     width: 98%;
     height: auto;
+    overflow-y: scroll;
+    scrollbar-width: none;
     margin-top: 0.5rem;
     background: linear-gradient(#2e3453, #313e7a);
     box-shadow:

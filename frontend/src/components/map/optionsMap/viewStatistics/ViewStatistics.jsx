@@ -16,7 +16,7 @@ export const ViewStatistics = () => {
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [errorQuery, setErrorQuery] = useState();
   const [showViewStatistics, setShowViewStatistics] = useState(true);
-  const { windowWidth} = useWindowResize();
+  const { windowWidth } = useWindowResize();
 
   const { crimeSelected, setCrimeSelected, loadCrimeDataNeighborhoods } =
     useZoneCrimes();
@@ -28,7 +28,7 @@ export const ViewStatistics = () => {
     loadData();
   }, [neighbordhoodsCoordinates]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
   }, [windowWidth]);
@@ -43,7 +43,7 @@ export const ViewStatistics = () => {
       }
     }
   };
- 
+
   return (
     <>
       {loadingCrimes == false && crimes && (
