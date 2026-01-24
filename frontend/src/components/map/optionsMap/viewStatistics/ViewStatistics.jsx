@@ -3,7 +3,7 @@ import { useMapControls } from "../../../../contexts/MapContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext.jsx";
 import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Menu } from "./menu/Menu.jsx";
 import { Loading } from "../../quizes/formAdd/loading/Loading.jsx";
 import { NotData } from "../../notData/NotData.jsx";
@@ -16,7 +16,7 @@ export const ViewStatistics = () => {
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [errorQuery, setErrorQuery] = useState();
   const [showViewStatistics, setShowViewStatistics] = useState(true);
-  const { windowWidth, windowHeight } = useWindowResize();
+  const { windowWidth } = useWindowResize();
 
   const { crimeSelected, setCrimeSelected, loadCrimeDataNeighborhoods } =
     useZoneCrimes();
@@ -29,9 +29,15 @@ export const ViewStatistics = () => {
   }, [neighbordhoodsCoordinates]);
 
   useEffect(() => {
+    resize();
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
-  }, [windowWidth, windowHeight]);
+  }, [windowWidth]);
+
+  useEffect(() => {
+    if (windowWidth >= 1200) return;
+    resize();
+  }, [crimeSelected, showQuizes]);
 
   const loadData = async () => {
     const crimes = await getCrimes(setLoadingCrimes, setErrorQuery);
@@ -43,8 +49,6 @@ export const ViewStatistics = () => {
       }
     }
   };
-
-  windowWidth && windowHeight && resize(windowWidth, windowHeight);
 
   return (
     <>

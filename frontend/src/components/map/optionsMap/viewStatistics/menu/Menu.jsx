@@ -3,33 +3,12 @@ import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
 import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
+import { Item } from "./item/Item.jsx";
 
 export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
-  const {
-    loadCrimeDataNeighborhoods,
-    crimeSelected,
-    setCrimeSelected,
-    handleClose
-  } = useZoneCrimes();
+  const { setCrimeSelected, handleClose } = useZoneCrimes();
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
   const { routes } = useRoutes();
-
-  const handleClickOption = (crime) => {
-    if (crime.category != crimeSelected) {
-      if (routes) {
-        alertSwalWarning(
-          "Tiene que salir del modo navegacion para elegir otra opcion"
-        );
-      } else {
-        if (!showViewStatistics) setShowViewStatistics(true);
-
-        handleClose();
-        loadCrimeDataNeighborhoods(crime.category);
-        setCrimeSelected(crime.category);
-        setShowQuizes(false);
-      }
-    } else if (!showViewStatistics) setShowViewStatistics(true);
-  };
 
   const handleClickQuizes = () => {
     if (!showQuizes) {
@@ -59,24 +38,12 @@ export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
       </li>
 
       {crimes.map((crime, index) => (
-        <li
-          className={crime.category == crimeSelected ? styles.selected : ""}
+        <Item
           key={index}
-          onClick={() => handleClickOption(crime)}
-        >
-          <div
-            className={
-              crime.category == "Hurto"
-                ? styles.holdup
-                : crime.category == "Rapiña"
-                  ? styles.theft
-                  : crime.category == "Homicidio"
-                    ? styles.kill
-                    : ""
-            }
-          ></div>
-          {crime.category}
-        </li>
+          crime={crime}
+          setShowViewStatistics={setShowViewStatistics}
+          showViewStatistics={showViewStatistics}
+        />
       ))}
     </ul>
   );

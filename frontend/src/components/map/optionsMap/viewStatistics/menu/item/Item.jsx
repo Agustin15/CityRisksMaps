@@ -1,0 +1,54 @@
+import styles from "../Menu.module.css";
+import { alertSwalWarning } from "../../../../../sweetAlert/sweetAlert.js";
+import { useRoutes } from "../../../../../../contexts/routesContext/RoutesContext.jsx";
+import { useQuizes } from "../../../../../../contexts/quizesContext/QuizesContext.jsx";
+import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+
+export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
+  const {
+    loadCrimeDataNeighborhoods,
+    crimeSelected,
+    setCrimeSelected,
+    handleClose
+  } = useZoneCrimes();
+
+  const { routes } = useRoutes();
+  const { setShowQuizes } = useQuizes();
+
+  const handleClickOption = (crime) => {
+    if (crime.category != crimeSelected) {
+      if (routes) {
+        alertSwalWarning(
+          "Tiene que salir del modo navegacion para elegir otra opcion"
+        );
+      } else {
+        if (!showViewStatistics) setShowViewStatistics(true);
+
+        handleClose();
+        loadCrimeDataNeighborhoods(crime.category);
+        setCrimeSelected(crime.category);
+        setShowQuizes(false);
+      }
+    } else if (!showViewStatistics) setShowViewStatistics(true);
+  };
+
+  return (
+    <li
+      className={crime.category == crimeSelected ? styles.selected : ""}
+      onClick={() => handleClickOption(crime)}
+    >
+      <div
+        className={
+          crime.category == "Hurto"
+            ? styles.holdup
+            : crime.category == "Rapiña"
+              ? styles.theft
+              : crime.category == "Homicidio"
+                ? styles.kill
+                : ""
+        }
+      ></div>
+      {crime.category}
+    </li>
+  );
+};

@@ -25,37 +25,42 @@ export const getCrimes = async (setLoadingCrimes, setErrorQuery) => {
   }
 };
 
-export const resize = (windowWidth, windowHeight) => {
-  removeEventListener("touchmove", resizeAction);
+export const resize = () => {
+  if (window.innerWidth >= 1200) return;
 
   const viewStatistics = document.getElementById("viewStatistics");
 
-  if (viewStatistics) {
-    viewStatistics.removeAttribute("style");
-    const containOptionsCrimes = viewStatistics.firstChild;
+  if (!viewStatistics) return;
 
-    if (containOptionsCrimes) {
-      containOptionsCrimes.addEventListener("touchmove", (event) =>
-        resizeAction(event, windowWidth, windowHeight, viewStatistics)
-      );
-    }
+  viewStatistics.removeAttribute("style");
+  const containOption = viewStatistics.firstChild;
+
+  if (containOption) {
+    resizeAction(viewStatistics, containOption);
   }
+
+  removeEventListener("touchmove", resizeAction);
+  return;
 };
 
-const resizeAction = (event, windowWidth, windowHeight, viewStatistics) => {
-  switch (true) {
-    case windowWidth <= 650:
-      const toucheYvh = (event.targetTouches[0].pageY * 100) / windowHeight;
+const resizeAction = (viewStatistics, containOption) => {
+  containOption.addEventListener("touchmove", (event) => {
+    switch (true) {
+      case window.innerWidth <= 650:
+        const toucheYvh =
+          (event.targetTouches[0].pageY * 100) / window.innerHeight;
 
-      if (toucheYvh >= 0 && toucheYvh < 86)
-        viewStatistics.style.transform = `TranslateY(${toucheYvh}vh)`;
-      break;
+        if (toucheYvh >= 0 && toucheYvh < 86)
+          viewStatistics.style.transform = `TranslateY(${toucheYvh}vh)`;
+        break;
 
-    case windowWidth > 650 && windowWidth < 1200:
-      const toucheYvw = (event.targetTouches[0].pageX * 100) / windowWidth;
+      case window.innerWidth > 650 && window.innerWidth < 1200:
+        const toucheYvw =
+          (event.targetTouches[0].pageX * 100) / window.innerWidth;
 
-      if (toucheYvw > 14 && toucheYvw < 92.3)
-        viewStatistics.style.right = `${100 - toucheYvw}vw`;
-      break;
-  }
+        if (toucheYvw > 14 && toucheYvw < 93)
+          viewStatistics.style.right = `${100 - toucheYvw}vw`;
+        break;
+    }
+  });
 };

@@ -5,17 +5,15 @@ const WindowResizeContext = createContext();
 
 export const WindowResizeProvider = ({ children }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
   useEffect(() => {
     window.addEventListener("resize", (event) => {
       setWindowWidth(event.target.innerWidth);
-      setWindowHeight(event.target.innerHeight);
     });
   }, []);
 
   return (
-    <WindowResizeContext.Provider value={{ windowWidth, windowHeight }}>
+    <WindowResizeContext.Provider value={{ windowWidth }}>
       {children}
     </WindowResizeContext.Provider>
   );
