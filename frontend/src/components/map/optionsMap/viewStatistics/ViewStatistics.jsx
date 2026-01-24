@@ -3,20 +3,20 @@ import { useMapControls } from "../../../../contexts/MapContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext.jsx";
 import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { Menu } from "./menu/Menu.jsx";
 import { Loading } from "../../quizes/formAdd/loading/Loading.jsx";
 import { NotData } from "../../notData/NotData.jsx";
 import { ContainQuizes } from "../../quizes/containQuizes/ContainQuizes.jsx";
 import { CrimeNeighbordhoods } from "../../crimeNeighData/CrimeNeighbordhoods.jsx";
-import { getCrimes } from "./functions.js";
+import { getCrimes, resize } from "./functions.js";
 
 export const ViewStatistics = () => {
   const [crimes, setCrimes] = useState();
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [errorQuery, setErrorQuery] = useState();
   const [showViewStatistics, setShowViewStatistics] = useState(true);
-  const { windowWidth } = useWindowResize();
+  const { windowWidth, windowHeight } = useWindowResize();
 
   const { crimeSelected, setCrimeSelected, loadCrimeDataNeighborhoods } =
     useZoneCrimes();
@@ -31,7 +31,7 @@ export const ViewStatistics = () => {
   useEffect(() => {
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
-  }, [windowWidth]);
+  }, [windowWidth, windowHeight]);
 
   const loadData = async () => {
     const crimes = await getCrimes(setLoadingCrimes, setErrorQuery);
@@ -44,6 +44,8 @@ export const ViewStatistics = () => {
     }
   };
 
+  windowWidth && windowHeight && resize(windowWidth, windowHeight);
+
   return (
     <>
       {loadingCrimes == false && crimes && (
@@ -54,9 +56,12 @@ export const ViewStatistics = () => {
         />
       )}
       {showViewStatistics && (
-        <div className={styles.viewStatistics}>
+        <div id="viewStatistics" className={styles.viewStatistics}>
           {crimeSelected && (
-            <div className={styles.containOptionsCrimes}>
+            <div
+              onClick={(event) => resize(event)}
+              className={styles.containOptionsCrimes}
+            >
               {loadingCrimes == true && <Loading />}
               {loadingCrimes == false && !crimes && (
                 <NotData error={errorQuery} />

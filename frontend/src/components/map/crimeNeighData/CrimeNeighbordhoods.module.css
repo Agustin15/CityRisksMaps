@@ -45,6 +45,7 @@
 }
 
 @media (width<=650px) {
+
     .containData .header .close {
         display: flex;
         justify-content: end;

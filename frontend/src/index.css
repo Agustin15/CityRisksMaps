@@ -3,4 +3,6 @@ body {
   display: flex;
   place-items: center;
   color: #213547;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
