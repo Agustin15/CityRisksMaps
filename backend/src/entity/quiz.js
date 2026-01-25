@@ -3,10 +3,10 @@ import { Participant } from "./participant.js";
 
 export class Quiz {
   #idQuiz;
-  #participant;
   #secure;
-  #neighborhood;
   #quizDate;
+  #participant;
+  #neighborhood;
 
   constructor(
     idQuiz = 0,

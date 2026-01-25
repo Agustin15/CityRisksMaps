@@ -523,14 +523,6 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
-BEGIN 
-
-select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
-END
-
-GO
-
 ------------------------------------------------------------------------------------------------------------------
 --VerificationsCodes PROCEDURES
 
@@ -666,7 +658,6 @@ END
 
 GO
 
-
 CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(30) AS
 BEGIN
 
@@ -682,6 +673,14 @@ BEGIN
 select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc;
 
 END
+GO
+
+CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
+BEGIN 
+
+select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
+END
+
 GO
 
 CREATE OR ALTER PROCEDURE QuizesLimitByParticipantAndYear @participant VARCHAR(30),@offset INT,@year INT AS
