@@ -129,16 +129,11 @@ export class PopulationDAL {
 
   static async getPopulationById(idPopulation) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("idPopulation", sql.Int);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare(
-        "select * from population where idPopulation=@idPopulation"
-      );
-      const result = await ps.execute({
-        idPopulation: idPopulation
-      });
-      await ps.unprepare();
+      request.input("@idPopulation", sql.Int, idPopulation);
+
+      const result = await request.execute("PopulationById");
 
       return result.recordset;
     } catch (error) {
@@ -148,19 +143,12 @@ export class PopulationDAL {
 
   static async getPopulationByNeighborhoodAndYear(name, year) {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
-      ps.input("neighborhood", sql.VarChar(30));
-      ps.input("year", sql.Int);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare(
-        "select * from population where neighborhood=@neighborhood and year=@year"
-      );
-      const result = await ps.execute({
-        neighborhood: name,
-        year: year
-      });
+      request.input("@neighborhood", sql.VarChar, name);
+      request.input("@year", sql.Int, year);
 
-      await ps.unprepare();
+      const result = await request.execute("PopulationByNeighborhoodAndYear");
 
       return result.recordset;
     } catch (error) {
@@ -170,11 +158,9 @@ export class PopulationDAL {
 
   static async getPopulations() {
     try {
-      const ps = new sql.PreparedStatement(connection.pool);
+      const request = new sql.Request(connection.pool);
 
-      await ps.prepare("select * from population");
-
-      await ps.unprepare();
+      const result = await request.execute("AllPopulations");
 
       return result.recordset;
     } catch (error) {

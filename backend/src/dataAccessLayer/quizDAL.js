@@ -1,6 +1,5 @@
 import { connection } from "../config/connection.js";
 import sql from "mssql";
-import { QuizCrimeDAL } from "./quizCrimeDAL.js";
 
 export class QuizDAL {
   static async add(quiz, transaction) {
@@ -44,27 +43,47 @@ export class QuizDAL {
     }
   }
 
-  static async update(quiz) {
+  static async addQuizCrime(idQuiz, category, transaction) {
     try {
-      const request = new sql.Request(connection.pool);
+      const request = new sql.Request(transaction);
 
-      request.input("idQuiz", sql.Int, quiz.idQuiz);
-      request.input("secure", sql.Bit, quiz.secure);
+      request.input("idQuiz", sql.Int, idQuiz);
+      request.input("crime", sql.VarChar, category);
 
-      const result = await request.execute("UpdateQuiz");
+      const result = await request.execute("AddQuizCrime");
 
-      if (result.returnValue == -1)
-        throw new Error("Encuesta no encontrada", {
-          cause: { code: 404 }
-        });
-      else if (result.returnValue == -2)
-        throw new Error("Error inesperado al actualizar encuesta", {
-          cause: { code: 502 }
-        });
+      switch (result.returnValue) {
+        case -1:
+          throw new Error(
+            "No hay registro de una encuesta con ID en el sistema",
+            {
+              cause: { code: 404 }
+            }
+          );
+        case -2:
+          throw new Error(
+            "No hay registro de un crimen de esta categoria en el sistema",
+            {
+              cause: { code: 404 }
+            }
+          );
+
+        case -3:
+          throw new Error(
+            "Ya hay registro de este crimen en esta encuesta en el sistema",
+            {
+              cause: { code: 409 }
+            }
+          );
+        case -4:
+          throw new Error("Error inesperado al agregar crimen de la encuesta", {
+            cause: { code: 502 }
+          });
+      }
 
       return result.returnValue;
     } catch (error) {
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -95,9 +114,9 @@ export class QuizDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-       const result = await request.execute("QuizesYears");
+      const result = await request.execute("QuizesYears");
 
-       return result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -168,7 +187,7 @@ export class QuizDAL {
 
       if (result.recordset.length > 0) {
         for (const quiz of result.recordset) {
-          const crimesQuiz = await QuizCrimeDAL.getQuizCrimesById(quiz.idQuiz);
+          const crimesQuiz = await this.getQuizCrimesById(quiz.idQuiz);
           quiz["crimesQuiz"] = crimesQuiz;
         }
       }
@@ -176,6 +195,19 @@ export class QuizDAL {
       return result.recordset;
     } catch (error) {
       throw error;
+    }
+  }
+
+  static async getQuizCrimesById(idQuiz) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idQuiz", sql.Int, idQuiz);
+      const result = await request.execute("CrimesQuiz");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

@@ -40,12 +40,14 @@ export const VerifyEmail = () => {
             {msjErrorEmail && <p>{msjErrorEmail}</p>}
           </div>
 
-          <button onClick={(event) => handleSendCode(event)}>
-            Enviar codigo
+          <button
+            onClick={(event) => handleSendCode(event)}
+            disabled={!codeAlreadySent && loading}
+          >
+            {!codeAlreadySent && loading ? "Enviando codigo..." : "Enviar"}
           </button>
         </div>
       )}
-      {!codeAlreadySent && loading && <p>Enviando codigo...</p>}
 
       {codeAlreadySent && (
         <VerificationCode

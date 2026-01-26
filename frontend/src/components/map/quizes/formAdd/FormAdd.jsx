@@ -16,6 +16,7 @@ export const FormAdd = () => {
     handleClose,
     handleSubmit,
     loadingNeigh,
+    loading,
     allTypeCrimes,
     getNeighborhoodsNotUsed,
     neighborhoodsNotUsed,
@@ -96,8 +97,8 @@ export const FormAdd = () => {
             <Reasons handleChange={handleChange} />
 
             {allTypeCrimes && neighborhoodsNotUsed && (
-              <button type="submit" className={styles.send}>
-                Enviar
+              <button type="submit" className={styles.send} disabled={loading}>
+                {loading ? "Enviando..." : "Enviar"}
               </button>
             )}
           </>

@@ -17,7 +17,6 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
 
   return (
     <div className={styles.containChart}>
-      <div className={styles.glassEffect}> </div>
       {loading && <span className={styles.loading}>Cargando datos...</span>}
       {!loading && dataChart && (
         <CanvasJSChart
@@ -30,7 +29,6 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
           <span>Sin registros para graficar</span>
         </div>
       )}
-      <div className={styles.glassEffectBottom}> </div>
     </div>
   );
 };

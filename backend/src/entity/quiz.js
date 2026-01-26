@@ -7,12 +7,14 @@ export class Quiz {
   #quizDate;
   #participant;
   #neighborhood;
+  #crimes;
 
   constructor(
     idQuiz = 0,
     participant = new Participant(),
     secure = 0,
     neighbordhood = new Neighborhood(),
+    crimes = [],
     quizDate = new Date()
   ) {
     this.idQuiz = idQuiz;
@@ -20,6 +22,7 @@ export class Quiz {
     this.secure = secure;
     this.neighborhood = neighbordhood;
     this.quizDate = quizDate;
+    this.crimes = crimes;
   }
 
   set idQuiz(value) {
@@ -79,5 +82,17 @@ export class Quiz {
 
   get quizDate() {
     return this.#quizDate;
+  }
+
+  set crimes(value) {
+    if (typeof value != "object")
+      throw new Error("Crimenes debe ser una lista", {
+        cause: { code: 400 }
+      });
+    this.#crimes = value;
+  }
+
+  get crimes() {
+    return this.#crimes;
   }
 }

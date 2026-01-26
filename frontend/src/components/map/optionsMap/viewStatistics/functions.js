@@ -25,10 +25,10 @@ export const getCrimes = async (setLoadingCrimes, setErrorQuery) => {
   }
 };
 
-export const resize = () => {
+export const resize = (viewStatisticsId) => {
   if (window.innerWidth >= 1200) return;
 
-  const viewStatistics = document.getElementById("viewStatistics");
+  const viewStatistics = document.getElementById(viewStatisticsId);
 
   if (!viewStatistics) return;
 

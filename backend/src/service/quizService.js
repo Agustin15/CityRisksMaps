@@ -8,20 +8,11 @@ export class QuizService {
 
       const idQuizAdded = await QuizDAL.add(quiz, transaction);
 
-      return idQuizAdded;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async update(quiz) {
-    try {
-      if (quiz == null)
-        throw new Error("Debe indicar una encuesta para editar");
-
-      const updated = await QuizDAL.update(quiz);
-
-      return updated;
+      if (idQuizAdded && quiz.crimes.length > 0) {
+        for (const crime of quiz.crimes) {
+          await QuizDAL.addQuizCrime(idQuizAdded, crime.category, transaction);
+        }
+      }
     } catch (error) {
       throw error;
     }
@@ -69,9 +60,8 @@ export class QuizService {
 
   static async getSecurityPercentagesInNeighborhood(neighborhood) {
     try {
-      const result = await QuizDAL.getSecurityPercentagesInNeighborhood(
-        neighborhood
-      );
+      const result =
+        await QuizDAL.getSecurityPercentagesInNeighborhood(neighborhood);
 
       if (result.length > 0) {
         result.forEach((quizData) => {

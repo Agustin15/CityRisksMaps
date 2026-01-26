@@ -362,7 +362,7 @@ BEGIN
 IF NOT EXISTS(select * from Population where @idPopulation=idPopulation )
 RETURN -1
 
-DELETE from Population where idPopulation=@idPopulation ;
+DELETE from Population where idPopulation=@idPopulation;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -372,6 +372,26 @@ RETURN 1
 END
 GO
 
+CREATE OR ALTER PROCEDURE PopulationById @idPopulation INT AS
+BEGIN
+
+select * from Population where @idPopulation=idPopulation;
+END
+GO
+
+CREATE OR ALTER PROCEDURE AllPopulations AS
+BEGIN
+
+select * from Population;
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE PopulationByNeighborhoodAndYear @neighborhood VARCHAR(30),@year INT AS
+BEGIN
+select * from population where neighborhood=@neighborhood and year=@year;
+END
+GO
 
 
 ------------------------------------------------------------------------------------------------------------------

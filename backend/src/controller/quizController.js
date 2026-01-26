@@ -5,7 +5,6 @@ import { Quiz } from "../entity/quiz.js";
 import { NeighborhoodService } from "../service/neighborhoodService.js";
 import { QuizService } from "../service/quizService.js";
 import { Department } from "../entity/department.js";
-import { QuizCrimeService } from "../service/quizCrimeService.js";
 import { CrimeService } from "../service/crimeService.js";
 import { Participant } from "../entity/participant.js";
 import { connection } from "../config/connection.js";
@@ -17,16 +16,15 @@ export const add = async (req, res) => {
     verifyAuthToken(req.cookies.authToken);
 
     const { email, neighborhoodSelected, perception, reasons } = req.body;
-    let crimesMapping;
+    let crimes = [];
 
     const participant = new Participant(email);
 
     if (reasons.length > 0) {
-      crimesMapping = await CrimeService.validAndMappingCrimes(reasons);
+      crimes = await CrimeService.validAndMappingCrimes(reasons);
     }
-    const neighbordhoodFound = await NeighborhoodService.getNeighborhoodByName(
-      neighborhoodSelected
-    );
+    const neighbordhoodFound =
+      await NeighborhoodService.getNeighborhoodByName(neighborhoodSelected);
 
     if (!neighbordhoodFound)
       throw new Error("No se encontro un barrio con este nombre");
@@ -47,23 +45,18 @@ export const add = async (req, res) => {
     quiz.participant = participant;
     quiz.secure = perception;
     quiz.neighborhood = neighborhood;
+    quiz.crimes = crimes;
 
     transaction = new sql.Transaction(connection.pool);
     await transaction.begin(4);
 
-    const idQuizAdded = await QuizService.add(quiz, transaction);
-
-    if (crimesMapping) {
-      quiz.idQuiz = idQuizAdded;
-      await QuizCrimeService.add(quiz, crimesMapping, transaction);
-    }
+    await QuizService.add(quiz, transaction);
 
     await transaction.commit();
 
     res.status(200).json(true);
   } catch (error) {
     if (transaction) await transaction.rollback();
-
     res
       .status(error.cause ? error.cause.code : 502)
       .json({ messageError: error.message });
@@ -151,9 +144,8 @@ export const getYearsOfParticipantQuizes = async (req, res) => {
     if (!participantEmail)
       throw new Error("Debe ingresar un correo para la busqueda");
 
-    const years = await QuizService.getYearsOfParticipantQuizes(
-      participantEmail
-    );
+    const years =
+      await QuizService.getYearsOfParticipantQuizes(participantEmail);
 
     if (years.length == 0)
       throw new Error(

@@ -1,8 +1,8 @@
 import styles from "../Table.module.css";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { ColorRate } from "../colorRate/ColorRate";
-import { Chart } from "../../../chart/Chart";
-import { PolygonDraw } from "../polygonDraw/PolygonDraw";
+import { Activity } from "react";
+import { DetailsRow } from "./DetailsRow";
 
 export const Rows = ({
   handleClickNeighborhood,
@@ -60,25 +60,9 @@ export const Rows = ({
               )}
         </td>
       </tr>
-      {indexChartActive == numberRow && (
-        <tr>
-          <td colSpan={4}>
-            {
-              <div className={styles.moreDetails}>
-                <h4>{neighborhoodCrime.name}</h4>
-                <PolygonDraw
-                  neighborhoodCrime={neighborhoodCrime}
-                  categoryCrime={crime}
-                />
-                <Chart
-                  categoryCrime={crime}
-                  nameNeighborhood={neighborhoodCrime.name}
-                />
-              </div>
-            }
-          </td>
-        </tr>
-      )}
+      <Activity mode={indexChartActive == numberRow ? "visible" : "hidden"}>
+        <DetailsRow neighborhoodCrime={neighborhoodCrime} crime={crime} />
+      </Activity>
     </>
   );
 };
