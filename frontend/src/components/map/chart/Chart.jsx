@@ -12,6 +12,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (dataChart) return;
     loadDataChart(categoryCrime, nameNeighborhood, setLoading, setDataChart);
   }, []);
 

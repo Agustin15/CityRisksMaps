@@ -1,13 +1,13 @@
 import styles from "./Reasons.module.css";
+import Switch from "react-switch";
 import { useEffect } from "react";
 import { useFormQuiz } from "../../../../../contexts/quizesContext/FormAddQuizContext";
 import { Loading } from "../loading/Loading";
 import { NotData } from "../notData/NotData";
-import Switch from "react-switch";
+import { handleChange } from "../functions.js";
 
-export const Reasons = ({ handleChange }) => {
-  const { getAllTypeCrimes, allTypeCrimes, loadingCrimes, valuesForm } =
-    useFormQuiz();
+export const Reasons = ({ valuesForm, setValuesForm }) => {
+  const { getAllTypeCrimes, allTypeCrimes, loadingCrimes } = useFormQuiz();
 
   useEffect(() => {
     if (allTypeCrimes) return;
@@ -36,7 +36,11 @@ export const Reasons = ({ handleChange }) => {
                   uncheckedIcon={false}
                   onColor="#3dcfe2ff"
                   onChange={() =>
-                    handleChange({ name: "reasons", value: crime.category })
+                    handleChange(
+                      { name: "reasons", value: crime.category },
+                      valuesForm,
+                      setValuesForm
+                    )
                   }
                   checked={valuesForm.reasons.find(
                     (reason) => reason == crime.category

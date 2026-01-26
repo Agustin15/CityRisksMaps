@@ -3,6 +3,7 @@ import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { PolygonDraw } from "../polygonDraw/PolygonDraw";
+import { Activity } from "react";
 
 export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
   const { indexChartActive, setIndexChartActive } = useZoneCrimes();
@@ -33,19 +34,21 @@ export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
 
         <td>{quiz.total == 0 ? "Sin encuestas" : quiz.percentage + "%"}</td>
       </tr>
-      {indexChartActive == numberRow && (
-        <tr>
-          <td colSpan={5}>
-            {
-              <div className={styles.moreDetails}>
-                <h4>{quiz.name}</h4>
-                <PolygonDraw quiz={quiz} />
-                <Chart categoryCrime={null} nameNeighborhood={quiz.name} />
-              </div>
-            }
-          </td>
-        </tr>
-      )}
+      <Activity mode={indexChartActive == numberRow ? "visible" : "hidden"}>
+        {
+          <tr>
+            <td colSpan={5}>
+              {
+                <div className={styles.moreDetails}>
+                  <h4>{quiz.name}</h4>
+                  <PolygonDraw quiz={quiz} />
+                  <Chart categoryCrime={null} nameNeighborhood={quiz.name} />
+                </div>
+              }
+            </td>
+          </tr>
+        }
+      </Activity>
     </>
   );
 };

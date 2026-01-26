@@ -3,7 +3,7 @@ import iconQuizes from "../../../../assets/img/quizes.png";
 import iconLike from "../../../../assets/img/like.png";
 import iconDislike from "../../../../assets/img/dislike.png";
 import iconSecure from "../../../../assets/img/security.png";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { drawShape } from "../../crimeNeighData/table/polygonDraw/functions.js";
@@ -11,9 +11,11 @@ import { drawShape } from "../../crimeNeighData/table/polygonDraw/functions.js";
 export const PolygonDraw = ({ quiz }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
   const { getRangeSecureQuiz } = useQuizes();
+  const [drawn, setDrawn] = useState(false);
   const refCanvasPolygon = useRef();
 
   useEffect(() => {
+    if (drawn) return;
     draw();
   }, []);
 
@@ -34,6 +36,7 @@ export const PolygonDraw = ({ quiz }) => {
           : getRangeSecureQuiz(quiz.percentage).color;
 
       drawShape(neighborhoodCoordinates, canvas, ctx, rateColor);
+      setDrawn(true);
     }
   };
 

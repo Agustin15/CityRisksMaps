@@ -25,10 +25,10 @@ export const CrimeNeighbordhoods = ({
               categoryCrime == "Hurto"
                 ? iconHoldup
                 : categoryCrime == "Rapiña"
-                ? iconTheft
-                : categoryCrime == "Homicidio"
-                ? iconKill
-                : ""
+                  ? iconTheft
+                  : categoryCrime == "Homicidio"
+                    ? iconKill
+                    : ""
             }
           ></img>
         </div>

@@ -99,6 +99,11 @@
     outline: none;
 }
 
+.containForm .column span {
+    width: 55%;
+    height: 2.4rem;
+}
+
 .perception,
 .columnPerception {
     display: flex;

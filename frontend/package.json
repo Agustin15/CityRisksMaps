@@ -16,7 +16,7 @@
     "react-cookie": "^8.0.1",
     "react-dom": "^19.1.1",
     "react-switch": "^7.1.0",
-    "styled-components": "^6.1.19",
+    "styled-components": "^6.3.8",
     "sweetalert2": "^11.25.0"
   },
   "devDependencies": {

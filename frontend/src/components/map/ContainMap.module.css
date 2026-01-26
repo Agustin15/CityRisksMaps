@@ -4,6 +4,10 @@
     border: 5px solid #2e355c;
 }
 
+.window {
+    background: red;
+}
+
 @media (width<=650px) {
     .map {
         width: 100vw;

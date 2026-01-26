@@ -86,6 +86,7 @@ export const ContainMap = () => {
 
         {polygonSelected && (
           <AdvancedMarker
+            clickable={true}
             position={polygonSelected ? polygonSelected.data.center : null}
           >
             <InfoWindowNeighborhood polygonSelected={polygonSelected} />

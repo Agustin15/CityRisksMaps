@@ -1,14 +1,46 @@
 import styles from "./Menu.module.css";
+import { useState, useEffect } from "react";
 import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
-import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
+import { useWindowResize } from "../../../../../contexts/WindowResizeContext.jsx";
 import { Item } from "./item/Item.jsx";
+import { LoadingMenu } from "./loadingMenu/LoadingMenu.jsx";
+import { NotDataMenu } from "./notDataMenu/NotDataMenu.jsx";
+import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
+import { getCrimes } from "../functions.js";
 
-export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
-  const { setCrimeSelected, handleClose } = useZoneCrimes();
+export const Menu = ({
+  neighbordhoodsCoordinates,
+  showViewStatistics,
+  setShowViewStatistics
+}) => {
+  const [crimes, setCrimes] = useState();
+  const [loadingMenu, setLoadingMenu] = useState(false);
+
+  const { windowWidth } = useWindowResize();
+  const { setCrimeSelected, handleClose, loadCrimeDataNeighborhoods } =
+    useZoneCrimes();
   const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
+
   const { routes } = useRoutes();
+  [];
+
+  useEffect(() => {
+    if (!neighbordhoodsCoordinates) return;
+    loadData();
+  }, [neighbordhoodsCoordinates]);
+
+  const loadData = async () => {
+    const crimes = await getCrimes(setLoadingMenu);
+    if (crimes) {
+      setCrimes(crimes);
+      if (windowWidth >= 1200) {
+        setCrimeSelected(crimes[0].category);
+        loadCrimeDataNeighborhoods(crimes[0].category);
+      }
+    }
+  };
 
   const handleClickQuizes = () => {
     if (!showQuizes) {
@@ -29,22 +61,28 @@ export const Menu = ({ crimes, showViewStatistics, setShowViewStatistics }) => {
 
   return (
     <ul className={styles.menuOptionsCrimes}>
-      <li
-        className={showQuizes ? styles.selected : ""}
-        onClick={handleClickQuizes}
-      >
-        <div className={styles.quiz}></div>
-        <span> Encuestas</span>
-      </li>
+      {loadingMenu == true && <LoadingMenu />}
+      {loadingMenu == false && !crimes && <NotDataMenu />}
+      {loadingMenu == false && crimes && (
+        <>
+          <li
+            className={showQuizes ? styles.selected : ""}
+            onClick={handleClickQuizes}
+          >
+            <div className={styles.quiz}></div>
+            <span> Encuestas</span>
+          </li>
 
-      {crimes.map((crime, index) => (
-        <Item
-          key={index}
-          crime={crime}
-          setShowViewStatistics={setShowViewStatistics}
-          showViewStatistics={showViewStatistics}
-        />
-      ))}
+          {crimes.map((crime, index) => (
+            <Item
+              key={index}
+              crime={crime}
+              setShowViewStatistics={setShowViewStatistics}
+              showViewStatistics={showViewStatistics}
+            />
+          ))}
+        </>
+      )}
     </ul>
   );
 };

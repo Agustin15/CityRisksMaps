@@ -13,7 +13,7 @@ import {
   fetchGetAllTypeCrimes,
   fetchGetNeighborhoodsNotUsed,
   fetchSendQuiz
-} from "./fetchsFormAddQuizes.js";
+} from "./functionsFormAdd.js";
 
 const FormAddQuizContext = createContext();
 
@@ -21,11 +21,9 @@ export const FormAddQuizProvider = ({ children }) => {
   const [cookies] = useCookies();
   const [loadingCrimes, setLoadingCrimes] = useState(false);
   const [loadingNeigh, setLoadingNeigh] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [allTypeCrimes, setAllTypeCrimes] = useState();
   const [neighborhoodsNotUsed, setNeighborhoodsNotUsed] = useState();
-
   const [valuesForm, setValuesForm] = useState({
     email: cookies && cookies.email ? cookies.email : "",
     neighborhoodSelected: "",
@@ -33,8 +31,13 @@ export const FormAddQuizProvider = ({ children }) => {
     reasons: []
   });
 
-  const { setNewQuiz, loadQuizesDataNeighborhoodsByYear, loadDataQuizes } =
-    useQuizes();
+  const {
+    newQuiz,
+    setNewQuiz,
+    loadQuizesDataNeighborhoodsByYear,
+    loadDataQuizes
+  } = useQuizes();
+
   const { yearSelected } = useZoneCrimes();
 
   const getAllTypeCrimes = () =>
@@ -103,7 +106,8 @@ export const FormAddQuizProvider = ({ children }) => {
 
       cleanForm();
       alertSwalSuccess("¡Encuesta realizada exitosamente!");
-      return getNeighborhoodsNotUsed();
+
+      if (newQuiz == true) return getNeighborhoodsNotUsed();
     }
   };
 

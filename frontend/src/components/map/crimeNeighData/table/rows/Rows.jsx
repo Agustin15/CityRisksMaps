@@ -19,6 +19,7 @@ export const Rows = ({
     } else {
       setIndexChartActive(numberRow);
     }
+
     handleClickNeighborhood(neighborhoodCrime.name);
   };
 

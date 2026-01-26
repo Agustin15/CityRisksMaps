@@ -1,8 +1,18 @@
 import styles from "./InfoWindowNeighborhood.module.css";
+import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
+import { useRef } from "react";
 
 export const InfoWindowNeighborhood = ({ polygonSelected }) => {
+  const { setNewQuiz, newQuiz } = useQuizes();
+  const window = useRef();
+
+  const handleNewQuiz = () => {
+    if (!newQuiz) setNewQuiz(polygonSelected.data.name);
+  };
+
+
   return (
-    <div className={styles.infoWindowPolygon}>
+    <div ref={window} className={styles.infoWindowPolygon}>
       <div className={styles.row}>
         <span>
           {polygonSelected.data.name}
@@ -38,6 +48,10 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
             ? "Sin encuestas"
             : polygonSelected.data.percentage + "%"}
         </p>
+      )}
+
+      {polygonSelected.data.type == "quiz" && (
+        <button onClick={handleNewQuiz}>Agregar encuesta</button>
       )}
     </div>
   );

@@ -1,17 +1,18 @@
 import styles from "./FormAdd.module.css";
+import { useFormQuiz } from "../../../../contexts/quizesContext/FormAddQuizContext";
+import { useCookies } from "react-cookie";
+import { useEffect } from "react";
+import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { Reasons } from "./reasons/Reasons";
 import { Perception } from "./perception/Perception";
+import { Neighborhood } from "./neighborhood/Neighborhood";
 import { VerifyEmail } from "../verifyEmail/VerifyEmail";
 import { VerifyProvider } from "../../../../contexts/VerifyContext";
 import { NotData } from "./notData/NotData";
 import { Loading } from "./loading/Loading";
-import { useFormQuiz } from "../../../../contexts/quizesContext/FormAddQuizContext";
-import { useCookies } from "react-cookie";
-import { useEffect } from "react";
 
 export const FormAdd = () => {
   const [cookies] = useCookies();
-
   const {
     handleClose,
     handleSubmit,
@@ -23,31 +24,10 @@ export const FormAdd = () => {
     setValuesForm,
     valuesForm
   } = useFormQuiz();
-
-  const handleChange = (event) => {
-    let { name, value } = event;
-
-    if (name == "reasons") {
-      if (valuesForm.reasons.find((reason) => reason == value)) {
-        setValuesForm({
-          ...valuesForm,
-          [name]: valuesForm.reasons.filter((reason) => reason != value)
-        });
-      } else {
-        setValuesForm({
-          ...valuesForm,
-          [name]: [...valuesForm.reasons, value]
-        });
-      }
-    } else {
-      if (name == "perception") value = value == "secure" ? 1 : 0;
-
-      setValuesForm({ ...valuesForm, [name]: value });
-    }
-  };
+  const { newQuiz } = useQuizes();
 
   useEffect(() => {
-    if (neighborhoodsNotUsed) return;
+    if (neighborhoodsNotUsed || newQuiz != true) return;
     getNeighborhoodsNotUsed();
   }, []);
 
@@ -61,42 +41,37 @@ export const FormAdd = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {!cookies.email ? (
+        {!cookies.email && (
           <VerifyProvider>
             <VerifyEmail />
           </VerifyProvider>
-        ) : (
-          <label>Correo: {cookies.email}</label>
         )}
 
         {cookies.email && (
           <>
+            <label>Correo: {cookies.email}</label>
+
             {loadingNeigh && <Loading />}
-            {!loadingNeigh && !neighborhoodsNotUsed && (
-              <NotData msj={"No hay registros de barrios en el sistema"} />
-            )}
 
-            {neighborhoodsNotUsed && loadingNeigh == false && (
-              <div className={styles.column}>
-                <label>Barrio:</label>
-                <select
-                  onChange={(event) => handleChange(event.target)}
-                  name="neighborhoodSelected"
-                >
-                  {neighborhoodsNotUsed.map((neighborhood, index) => (
-                    <option key={index} value={neighborhood.name}>
-                      {neighborhood.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+            {loadingNeigh == false &&
+              !neighborhoodsNotUsed &&
+              newQuiz == true && (
+                <NotData msj={"No hay registros de barrios en el sistema"} />
+              )}
 
-            <Perception handleChange={handleChange} />
+            {loadingNeigh == false &&
+              (neighborhoodsNotUsed || newQuiz != true) && (
+                <Neighborhood
+                  valuesForm={valuesForm}
+                  setValuesForm={setValuesForm}
+                />
+              )}
 
-            <Reasons handleChange={handleChange} />
+            <Perception valuesForm={valuesForm} setValuesForm={setValuesForm} />
 
-            {allTypeCrimes && neighborhoodsNotUsed && (
+            <Reasons valuesForm={valuesForm} setValuesForm={setValuesForm} />
+
+            {allTypeCrimes && (neighborhoodsNotUsed || newQuiz != true) && (
               <button type="submit" className={styles.send} disabled={loading}>
                 {loading ? "Enviando..." : "Enviar"}
               </button>

@@ -36,3 +36,22 @@
     margin: 0;
     font-weight: bold;
 }
+
+.infoWindowPolygon button {
+    width: 8rem;
+    height: 1.5rem;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    font-family: 14px;
+    margin: auto;
+    margin-top: 0.5rem;
+    text-decoration: underline;
+}
+
+.infoWindowPolygon button:hover {
+    color: rgb(0, 132, 255);
+}
+

@@ -19,6 +19,7 @@
     border-bottom: none;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 @keyframes rotation {

@@ -3,7 +3,7 @@ import iconRate from "../../../../../assets/img/average.png";
 import iconComplaint from "../../../../../assets/img/complaint.png";
 import iconSecurity from "../../../../../assets/img/security.png";
 import iconPopulation from "../../../../../assets/img/population.png";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMapControls } from "../../../../../contexts/MapContext";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { drawShape } from "./functions.js";
@@ -11,9 +11,11 @@ import { drawShape } from "./functions.js";
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
   const { getCrimeRange } = useZoneCrimes();
+  const [drawn, setDrawn] = useState(false);
   const refCanvasPolygon = useRef();
 
   useEffect(() => {
+    if (drawn) return;
     draw();
   }, []);
 
@@ -42,6 +44,7 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
       const rateColor = crimeRange ? crimeRange.color : "#bbbbbbff";
 
       drawShape(neighborhoodCoordinates, canvas, ctx, rateColor);
+      setDrawn(true);
     }
   };
 
