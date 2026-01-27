@@ -1,12 +1,11 @@
 export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
-  
-  const cardinalsPoints = createCartesiansPoints(
+  const cartesiansPoints = createCartesiansPoints(
     neighborhoodCoordinates,
     canvas
   );
 
-  const axisX = cardinalsPoints.map((cardinalsPoint) => cardinalsPoint.x);
-  const axisY = cardinalsPoints.map((cardinalsPoint) => cardinalsPoint.y);
+  const axisX = cartesiansPoints.map((cartesianPoint) => cartesianPoint.x);
+  const axisY = cartesiansPoints.map((cartesianPoint) => cartesianPoint.y);
 
   const Xmax = Math.max(...axisX);
   const Xmin = Math.min(...axisX);
@@ -20,9 +19,9 @@ export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
   ctx.fillStyle = rateColor;
   ctx.moveTo(0, 0);
 
-  cardinalsPoints.forEach((cardinalsPoint) => {
-    const pixelX = (cardinalsPoint.x - Xmin) * scaleX;
-    const pixelY = (Ymax - cardinalsPoint.y) * scaleY;
+  cartesiansPoints.forEach((cartesianPoint) => {
+    const pixelX = (cartesianPoint.x - Xmin) * scaleX;
+    const pixelY = (Ymax - cartesianPoint.y) * scaleY;
 
     ctx.lineTo(pixelX, pixelY);
   });
@@ -33,7 +32,7 @@ export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
 };
 
 const createCartesiansPoints = (neighborhoodCoordinates, canvas) => {
-  //mercator proyection
+  //mercator web proyection
   const cardinalsPoints = neighborhoodCoordinates.coordinates.map((coord) => {
     const lngRadianes = coord.lng * (Math.PI / 180);
     const latRadianes = coord.lat * (Math.PI / 180);

@@ -448,6 +448,8 @@ RETURN 1
 END
 GO
 
+UpdateNeighborhoodCrime 'Parque Rodó','Rapiña',null,2024;
+
 CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@neighborhood VARCHAR(30),@year INT AS
 BEGIN
 
@@ -1004,8 +1006,8 @@ EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Hurto',null,2024
 EXEC AddNeighborhoodCrime 'Centro','Hurto',2493,2024
 EXEC AddNeighborhoodCrime 'Cerrito','Hurto',611,2024
 EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1022,2024
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',null,2024
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',1299,2024
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1299,2024
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',null,2024
 EXEC AddNeighborhoodCrime 'Conciliación','Hurto',null,2024
 EXEC AddNeighborhoodCrime 'Cordón','Hurto',2943,2024
 EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',818,2024
@@ -1094,7 +1096,7 @@ EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Rapiña',192,2024
 EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',317,2024
 EXEC AddNeighborhoodCrime 'Palermo','Rapiña',null,2024 
 EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Rapiña',207,2024
-EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',643,2024
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',null,2024
 EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',446,2024
 EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',null,2024
 EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Rapiña',491,2024
