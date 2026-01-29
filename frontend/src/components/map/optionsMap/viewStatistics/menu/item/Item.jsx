@@ -40,9 +40,9 @@ export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
       <div
         className={
           crime.category == "Hurto"
-            ? styles.holdup
+            ? styles.theft
             : crime.category == "Rapiña"
-              ? styles.theft
+              ? styles.holdup
               : crime.category == "Homicidio"
                 ? styles.kill
                 : ""

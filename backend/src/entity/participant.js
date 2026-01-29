@@ -25,6 +25,11 @@ export class Participant {
       throw new Error("Formato de correo invalido", {
         cause: { code: 400 }
       });
+    else if (value.trim().length > 50)
+      throw new Error("El correo no debe tener mas de 50 caracteres", {
+        cause: { code: 400 }
+      });
+
     this.#email = value;
   }
 

@@ -23,9 +23,9 @@ export const CrimeNeighbordhoods = ({
           <img
             src={
               categoryCrime == "Hurto"
-                ? iconHoldup
+                ? iconTheft
                 : categoryCrime == "Rapiña"
-                  ? iconTheft
+                  ? iconHoldup
                   : categoryCrime == "Homicidio"
                     ? iconKill
                     : ""

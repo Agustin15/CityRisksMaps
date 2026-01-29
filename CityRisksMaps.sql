@@ -2,6 +2,21 @@ CREATE DATABASE CityRiskMap;
 
 USE CityRiskMap;
 
+CREATE TABLE Rols(
+idRol INT IDENTITY(1,1) Primary key,
+name VARCHAR(10) UNIQUE
+);
+
+CREATE TABLE Users(
+idUser INT Primary key ,
+email VARCHAR(50) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
+name VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+created DATETIME NOT NULL DEFAULT GETDATE(),
+lastModified DATETIME NOT NULL DEFAULT GETDATE(),
+rol INT NOT NULL FOREIGN KEY REFERENCES Rols(idRol) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE TABLE Departments(
 idDepartment INT IDENTITY(1,1) Primary key, 
 name VARCHAR(30) NOT NULL UNIQUE,
@@ -37,22 +52,22 @@ Primary key(neighborhood,crime,year)
 
 
 CREATE TABLE Participants(
-email VARCHAR(30) PRIMARY KEY CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
+email VARCHAR(50) PRIMARY KEY CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
 created DATETIME NOT NULL DEFAULT GETDATE(),
-lastIncome DATETIME DEFAULT GETDATE(),
+lastIncome DATETIME NOT NULL DEFAULT GETDATE(),
 );
 
 
 CREATE TABLE Verifications_Codes(
 code VARCHAR(60) PRIMARY KEY,
-participant VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
+participant VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
 expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
 );
 
 
 CREATE TABLE Quizes(
 idQuiz INT IDENTITY(1,1) PRIMARY KEY,
-participant VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
+participant VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
 neighborhood VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES  Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
 secure bit NOT NULL,
 quizDate DATE NOT NULL CHECK(quizDate<=GETDATE())
@@ -62,8 +77,224 @@ quizDate DATE NOT NULL CHECK(quizDate<=GETDATE())
 CREATE TABLE Quizes_Crimes(
 quiz INT FOREIGN KEY REFERENCES Quizes(idQuiz) ON UPDATE CASCADE ON DELETE CASCADE,
 crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
-Primary key(quiz,crime),
+Primary key(quiz,crime)
 );
+
+CREATE TABLE AuditTablesLogs(
+idAudit INT IDENTITY(1,1) PRIMARY KEY,
+statementAction VARCHAR(6) NOT NULL CHECK(statementAction IN ('INSERT','DELETE','UPDATE')),
+tableAction VARCHAR(30) NOT NULL, 
+newValues NVARCHAR(MAX) NULL,
+oldValues NVARCHAR(MAX) NULL,
+datetimeAction DATETIME NOT NULL DEFAULT GETDATE(),
+userAudit INT NOT NULL FOREIGN KEY REFERENCES Users(idUser) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+GO
+
+--------------------------------------------------------------------------------------------------------------
+
+--Rols PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddRol @name VARCHAR(10) AS
+BEGIN
+
+IF EXISTS (select * from Rols where name=@name)
+RETURN -1
+
+INSERT INTO Rols VALUES(@name);
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE UpdateRol @idRol INT,@name VARCHAR(10) AS
+BEGIN
+
+IF NOT EXISTS (select * from Rols where idRol=@idRol)
+RETURN -1
+
+IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
+RETURN -2
+
+UPDATE Rols set name=@name where idRol=@idRol;
+
+IF(@@ERROR<>0)
+RETURN -3
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE DeleteRol @idRol INT AS
+BEGIN
+
+IF NOT EXISTS (select * from Rols where idRol=@idRol)
+RETURN -1
+
+DELETE FROM Rols where idRol=@idRol
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE AllRols AS
+BEGIN
+
+SELECT * FROM Rols;
+
+END
+GO
+
+--------------------------------------------------------------------------------------------------------------
+--Users PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(50),@name VARCHAR(30),@lastname VARCHAR(30),
+@rol INT AS
+
+BEGIN
+
+IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
+RETURN -1
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -2
+
+IF EXISTS (select * from Users where email=@email)
+RETURN -3
+
+INSERT INTO Users(email,name,lastname,rol) VALUES(@email,@name,@lastname,@rol);
+
+IF(@@ERROR<>0)
+RETURN -4
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(30),@name VARCHAR(30),@lastname VARCHAR(30),
+@rol INT AS
+
+BEGIN
+
+IF PATINDEX('%@[a-zA-Z]%.com%%',@email)=0
+RETURN -1
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -2
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -3
+
+IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
+RETURN -4
+
+UPDATE Users set email=@email,name=@name,lastname=@lastname,@rol=rol where idUser=@idUser;
+
+IF(@@ERROR<>0)
+RETURN -5
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteUser @idUser INT AS
+
+BEGIN
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -1
+
+DELETE FROM Users where idUser=@idUser;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE AllUsers AS
+
+BEGIN
+SELECT * FROM Users;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE UserById @idUser INT AS
+
+BEGIN
+SELECT * FROM Users where idUser=@idUser;
+END
+
+GO
+
+--------------------------------------------------------------------------------------------------------------
+--AuditTablesLogs PROCEDURES
+
+CREATE OR ALTER PROCEDURE AddAudit @statementAction VARCHAR(6),@tableAction VARCHAR(30),@newValues NVARCHAR(MAX),
+@oldValues NVARCHAR(MAX),@userAudit INT AS
+
+BEGIN
+
+INSERT INTO AuditTablesLogs(statementAction,tableAction,newValues,oldValues,userAudit) 
+VALUES(@statementAction,@tableAction,@newValues,@oldValues,@userAudit);
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteAuditTableLog @idAudit INT AS
+
+BEGIN
+
+IF NOT EXISTS (SELECT * FROM AuditTablesLogs where idAudit=@idAudit)
+RETURN -1
+
+DELETE FROM AuditTablesLogs where idAudit=@idAudit;
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AllAuditsTablesLogs AS
+
+BEGIN
+SELECT * FROM AuditTablesLogs;
+END
+
+GO
+
+
+CREATE OR ALTER PROCEDURE AuditTablesLogsByUser @idUser INT AS
+
+BEGIN
+SELECT * FROM AuditTablesLogs where userAudit=@idUser;
+END
 
 GO
 
@@ -85,8 +316,6 @@ RETURN 1
 
 END
 GO
-
-
 
 CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
 BEGIN
@@ -448,7 +677,6 @@ RETURN 1
 END
 GO
 
-UpdateNeighborhoodCrime 'Parque Rodó','Rapiña',null,2024;
 
 CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@neighborhood VARCHAR(30),@year INT AS
 BEGIN
@@ -505,7 +733,7 @@ GO
 --Participants PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddParticipant @email VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE AddParticipant @email VARCHAR(50) AS
 
 BEGIN
 
@@ -524,7 +752,7 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE DeleteParticipant @email VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE DeleteParticipant @email VARCHAR(50) AS
 BEGIN 
 
 IF NOT EXISTS(select * from Participants where email=@email)
@@ -538,7 +766,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE ParticipantByEmail @email VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE ParticipantByEmail @email VARCHAR(50) AS
 BEGIN 
 select * from Participants where email=@email
 END
@@ -549,7 +777,7 @@ GO
 --VerificationsCodes PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(30),@expiration DATETIME AS
+CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(50),@expiration DATETIME AS
 
 BEGIN
 
@@ -572,7 +800,7 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByEmail @email VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByEmail @email VARCHAR(50) AS
 BEGIN 
 
 select TOP 1 *  from Verifications_Codes where participant=@email ORDER BY expiration DESC
@@ -584,7 +812,7 @@ GO
 --Quizes PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddQuiz @participant VARCHAR(30),@neighborhood VARCHAR(30),@secure BIT AS
+CREATE OR ALTER PROCEDURE AddQuiz @participant VARCHAR(50),@neighborhood VARCHAR(30),@secure BIT AS
 BEGIN
 
 
@@ -680,7 +908,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(50) AS
 BEGIN
 
 
@@ -689,7 +917,7 @@ select DISTINCT YEAR(quizDate) as 'year' from Quizes where participant=@particip
 END
 GO
 
-CREATE OR ALTER PROCEDURE QuizesByParticipantAndYear @participant VARCHAR(30),@year INT AS
+CREATE OR ALTER PROCEDURE QuizesByParticipantAndYear @participant VARCHAR(50),@year INT AS
 BEGIN
 
 select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc;
@@ -697,7 +925,7 @@ select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORD
 END
 GO
 
-CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(30),@neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(50),@neighborhood VARCHAR(30) AS
 BEGIN 
 
 select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
@@ -705,7 +933,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuizesLimitByParticipantAndYear @participant VARCHAR(30),@offset INT,@year INT AS
+CREATE OR ALTER PROCEDURE QuizesLimitByParticipantAndYear @participant VARCHAR(50),@offset INT,@year INT AS
 BEGIN
 
 select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc OFFSET @offset ROWS
@@ -765,7 +993,7 @@ END
 GO
 
 ------------------------------------------------------------------------------------------------------------------
---EXEC  DeleteParticipant  'agus20m05@gmail.com'
+
 EXEC AddDepartment 'Montevideo';
 
 EXEC AddNeighborhood 'Aguada',1;
