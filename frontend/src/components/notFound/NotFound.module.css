@@ -1,0 +1,54 @@
+.notFoundPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    font-family: Arial, Helvetica, sans-serif;
+    gap: 1rem;
+    overflow-x: hidden;
+}
+
+.msj {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 75%;
+}
+
+.msj img {
+    width: 19rem;
+    height: 19rem;
+}
+.msj h3 {
+    margin-top: -2.5rem;
+    font-size: 19px;
+}
+.msj p {
+    font-size: 18px;
+    color: rgb(77, 77, 77);
+    margin-top: -1rem;
+    text-align: center;
+}
+
+.notFoundPage svg {
+    width: 100%;
+}
+
+@media (width<=1000px) {
+    .msj {
+        height: 89%;
+    }
+    .msj img {
+        width: 17rem;
+        height: 17rem;
+    }
+
+    .notFoundPage svg {
+        width: 222%;
+    }
+}
