@@ -14,21 +14,31 @@
 .header {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     width: 100%;
+    height: 2.2rem;
     position: relative;
+    background: linear-gradient(rgb(48, 171, 219), rgb(38, 123, 156));
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.header h3 {
+    font-size: 17px;
+    margin: 0;
 }
 
 .optionClose {
     width: 100%;
+    height: 2.2rem;
     display: flex;
     justify-content: end;
-    align-items: center;
+    align-items: start;
     position: absolute;
 }
 
 .optionClose button {
-    width: 4rem;
+    width: 3rem;
     height: 1.4rem;
     background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
     color: white;
@@ -155,14 +165,14 @@
     padding: 0.6rem 4rem 0.6rem 4rem;
     cursor: pointer;
     border-radius: 25px;
-    background-color: rgb(27, 202, 106);
+    background: linear-gradient(rgb(48, 171, 219), rgb(52, 148, 185));
     color: white;
     font-weight: bold;
     border: none;
 }
 
 .send:hover {
-    background-color: rgb(26, 158, 85);
+    background: linear-gradient(rgb(48, 171, 219), rgb(37, 113, 143));
 }
 
 @media (width<=650px) {
@@ -172,9 +182,6 @@
     .header {
         font-size: 14px;
     }
-    .header h3 {
-        margin-top: 2rem;
-    }
 }
 
 @media (width>650px) and (width<1200px) {
@@ -183,8 +190,5 @@
     }
     .header {
         font-size: 14px;
-    }
-    .header h3 {
-        margin-top: 2rem;
     }
 }

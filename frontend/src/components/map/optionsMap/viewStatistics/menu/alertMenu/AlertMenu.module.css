@@ -1,0 +1,156 @@
+.containLoader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+    background: rgba(10, 10, 10, 0.418);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.containLoader .box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-color: white;
+    height: auto;
+    width: 26rem;
+    padding-bottom: 1rem;
+    border-radius: 8px;
+    border-bottom-left-radius: 9px;
+    border-bottom-right-radius: 9px;
+    color: black;
+    box-shadow: 1px 1px 1px rgb(48, 48, 48);
+}
+
+.containLoader .header {
+    width: 100%;
+    height: 2.5rem;
+    background: linear-gradient(rgb(238, 45, 45), rgb(187, 38, 38));
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    font-weight: bold;
+}
+
+.containLoader .msj {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    height: 44%;
+}
+
+.containLoader .msj p {
+    font-size: 17px;
+    color: rgb(82, 82, 82);
+    padding: 0;
+    font-weight: bold;
+}
+
+.containLoader .msj .msjLoading {
+    margin-top: 0;
+}
+.containLoader .msj .msjNotData {
+    margin-top: -1rem;
+}
+.containLoader .msj img {
+    width: 92px;
+    height: 92px;
+    opacity: 59%;
+}
+
+.containLoader button {
+    margin: 0;
+    margin-top: 1rem;
+    width: 6rem;
+    height: 2.2rem;
+    color: white;
+    background-color: rgb(231, 36, 36);
+    box-shadow: none;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.containLoader button:hover {
+    background-color: rgb(207, 30, 30);
+}
+
+.containLoader .loader {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+    border: 3px solid rgb(207, 207, 207);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containLoader .loaderColor {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 4px solid rgb(58, 194, 212);
+    border-bottom: 4px solid gray;
+    border-left: 4px solid gray;
+    animation-name: rotate;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (width<=650px) {
+    .containLoader {
+        font-size: 16px;
+    }
+    .containLoader .box {
+        height: auto;
+        width: 85%;
+    }
+    .containLoader .msj p {
+        font-size: 16px;
+    }
+    .containLoader button {
+        font-size: 15px;
+        height: 2.2rem;
+        color: white;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containLoader {
+        font-size: 16px;
+    }
+    .containLoader .box {
+        height: auto;
+        width: 45%;
+    }
+    .containLoader .msj p {
+        font-size: 17px;
+    }
+    .containLoader button {
+        font-size: 15px;
+        height: 2.2rem;
+        color: white;
+    }
+}

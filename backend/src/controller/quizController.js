@@ -217,3 +217,26 @@ export const getLimitQuizesByParticipantAndYear = async (req, res) => {
       .json({ messageError: error.message });
   }
 };
+
+export const getCrimesOfNeighborhoodQuizes = async (req, res) => {
+  try {
+    const { neighborhood, year } = JSON.parse(req.params.optionGet);
+
+    if (!neighborhood || neighborhood.length == 0)
+      throw new Error("Debe indicar un barrio para la busqueda");
+
+    if (!year) throw new Error("Debe indicar un año para la busqueda");
+
+    const crimesQuizesNeighborhood =
+      await QuizService.getCrimesOfNeighborhoodQuizes(neighborhood, year);
+
+    if (crimesQuizesNeighborhood.length == 0)
+      throw new Error("No se indicaron crimenes para este barrio");
+
+    res.status(200).json(crimesQuizesNeighborhood);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};

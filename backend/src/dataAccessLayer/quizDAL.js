@@ -210,4 +210,19 @@ export class QuizDAL {
       throw new Error(error);
     }
   }
+
+  static async getCrimesOfNeighborhoodQuizes(neighborhood, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("neighborhood", sql.VarChar(30), neighborhood);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("CrimesOfNeighborhoodQuizes");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

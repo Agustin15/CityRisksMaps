@@ -61,6 +61,13 @@ export const OptionsMap = () => {
           </ListQuizesProvider>
         </Modal>
       )}
+      {showListQuizes && (
+        <Modal>
+          <ListQuizesProvider>
+            <ListUserQuizes />
+          </ListQuizesProvider>
+        </Modal>
+      )}
     </>
   );
 };

@@ -7,7 +7,8 @@ import {
   add,
   getQuizesByParticipantAndYear,
   getLimitQuizesByParticipantAndYear,
-  deleteQuiz
+  deleteQuiz,
+  getCrimesOfNeighborhoodQuizes
 } from "../controller/quizController.js";
 
 export const RoutesQuiz = express.Router();
@@ -49,6 +50,9 @@ RoutesQuiz.get("/:optionGet", (req, res) => {
 
     case "getLimitQuizesByParticipantAndYear":
       return getLimitQuizesByParticipantAndYear(req, res);
+
+    case "getCrimesOfNeighborhoodQuizes":
+      return getCrimesOfNeighborhoodQuizes(req, res);
   }
 });
 

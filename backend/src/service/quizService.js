@@ -114,4 +114,17 @@ export class QuizService {
       throw error;
     }
   }
+
+  static async getCrimesOfNeighborhoodQuizes(neighbordhood, year) {
+    try {
+      const result = await QuizDAL.getCrimesOfNeighborhoodQuizes(
+        neighbordhood,
+        year
+      );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

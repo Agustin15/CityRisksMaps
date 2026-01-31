@@ -5,8 +5,7 @@ import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCri
 import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext.jsx";
 import { Item } from "./item/Item.jsx";
-import { LoadingMenu } from "./loadingMenu/LoadingMenu.jsx";
-import { NotDataMenu } from "./notDataMenu/NotDataMenu.jsx";
+import { AlertMenu } from "./AlertMenu/alertMenu.jsx";
 import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
 import { getCrimes } from "../functions.js";
 
@@ -17,6 +16,7 @@ export const Menu = ({
 }) => {
   const [crimes, setCrimes] = useState();
   const [loadingMenu, setLoadingMenu] = useState(false);
+  const [closeAlert, setCloseAlert] = useState(true);
 
   const { windowWidth } = useWindowResize();
   const { setCrimeSelected, handleClose, loadCrimeDataNeighborhoods } =
@@ -60,29 +60,45 @@ export const Menu = ({
   };
 
   return (
-    <ul className={styles.menuOptionsCrimes}>
-      {loadingMenu == true && <LoadingMenu />}
-      {loadingMenu == false && !crimes && <NotDataMenu />}
-      {loadingMenu == false && crimes && (
-        <>
-          <li
-            className={showQuizes ? styles.selected : ""}
-            onClick={handleClickQuizes}
-          >
-            <div className={styles.quiz}></div>
-            <span> Encuestas</span>
-          </li>
-
-          {crimes.map((crime, index) => (
-            <Item
-              key={index}
-              crime={crime}
-              setShowViewStatistics={setShowViewStatistics}
-              showViewStatistics={showViewStatistics}
-            />
-          ))}
-        </>
+    <>
+      {loadingMenu == true && (
+        <AlertMenu
+          title={"Espere un momento"}
+          msj={"Cargando opciones"}
+          doneOption={null}
+        />
       )}
-    </ul>
+      {loadingMenu == false && !crimes && closeAlert && (
+        <AlertMenu
+          title={"Ups,algo salio mal"}
+          msj={"No se pudieron cargar las opciones"}
+          doneOption={true}
+          setCloseAlert={setCloseAlert}
+        />
+      )}
+
+      <ul className={styles.menuOptionsCrimes}>
+        {loadingMenu == false && crimes && (
+          <>
+            <li
+              className={showQuizes ? styles.selected : ""}
+              onClick={handleClickQuizes}
+            >
+              <div className={styles.quiz}></div>
+              <span> Encuestas</span>
+            </li>
+
+            {crimes.map((crime, index) => (
+              <Item
+                key={index}
+                crime={crime}
+                setShowViewStatistics={setShowViewStatistics}
+                showViewStatistics={showViewStatistics}
+              />
+            ))}
+          </>
+        )}
+      </ul>
+    </>
   );
 };
