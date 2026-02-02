@@ -1,7 +1,13 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 
-export const getSuggestions = async (userLocation, setSuggestions, value) => {
+export const getSuggestions = async (
+  userLocation,
+  setSuggestions,
+  setLoadingPlace,
+  value
+) => {
+  setLoadingPlace(true);
   try {
     const response = await fetch(
       "https://places.googleapis.com/v1/places:autocomplete",
@@ -28,9 +34,13 @@ export const getSuggestions = async (userLocation, setSuggestions, value) => {
     );
     const result = await response.json();
 
-    if (result.suggestions) setSuggestions(result.suggestions);
+    if (result.suggestions) {
+      setSuggestions(result.suggestions);
+    }
   } catch (error) {
     console.log(error);
+  } finally {
+    setLoadingPlace(false);
   }
 };
 

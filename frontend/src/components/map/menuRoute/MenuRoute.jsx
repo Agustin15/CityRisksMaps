@@ -10,9 +10,11 @@ import { EnterAdresses } from "./enterAddresses/EnterAdresses.jsx";
 
 export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
+  const [loading, setLoading] = useState(false);
   const {
     setOrigin,
     setOriginLocation,
+    origin,
     handleClose,
     setRoutes,
     routes,
@@ -32,7 +34,11 @@ export const MenuRoute = () => {
       setRoutes();
       setRouteSelected();
       setOriginLocation();
-    } else getSuggestions(userLocation, value, setSuggestions);
+    }
+  };
+
+  const handleSearchSuggestions = async () => {
+    getSuggestions(userLocation, origin, setSuggestions, setLoading);
   };
 
   return (
@@ -41,7 +47,11 @@ export const MenuRoute = () => {
         <button onClick={() => handleClose(setSuggestions)}>x</button>
       </div>
       <Transports />
-      <EnterAdresses handleChange={handleChange} />
+      <EnterAdresses
+        handleChange={handleChange}
+        handleSearchSuggestions={handleSearchSuggestions}
+        loading={loading}
+      />
       <OptionsAddress
         suggestions={suggestions}
         setSuggestions={setSuggestions}

@@ -52,6 +52,66 @@
     border: 1px solid rgb(182, 182, 182);
     outline: none;
 }
+.rowOne .origin input {
+    padding-right: 2.5rem;
+    width: 94%;
+}
+
+.containInput {
+    width: 99%;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containInput {
+    width: 99%;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rowOne .row .containInput .search {
+    width: 1rem;
+    height: auto;
+    position: absolute;
+    top: 0.6rem;
+    right: 0.1rem;
+    cursor: pointer;
+    box-shadow: none;
+    background: none;
+}
+
+.rowOne .row .containInput .search .loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #fff;
+    border-bottom-color: #278cc7;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    top: 0;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.rowOne .row .containInput .search img {
+    width: 19px;
+    height: 19px;
+}
 
 .rowOne .btnEnabled,
 .rowOne .btnDisabled {

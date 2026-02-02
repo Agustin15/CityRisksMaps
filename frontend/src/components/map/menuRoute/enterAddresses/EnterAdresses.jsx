@@ -2,12 +2,17 @@ import styles from "./EnterAdresses.module.css";
 import iconDestiny from "../../../../assets/img/destinyAddress.png";
 import iconOrigin from "../../../../assets/img/origin.png";
 import iconShow from "../../../../assets/img/showRoutes.png";
+import iconSearch from "../../../../assets/img/search.png";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { Advice } from "../advice/Advice.jsx";
 
-export const EnterAdresses = ({ handleChange }) => {
+export const EnterAdresses = ({
+  handleChange,
+  handleSearchSuggestions,
+  loading
+}) => {
   const { destiny, origin, showRoutes, loadingRoutes } = useRoutes();
   const { crimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
@@ -19,13 +24,28 @@ export const EnterAdresses = ({ handleChange }) => {
           <label>Origen:</label>
           <div className={styles.row}>
             <img src={iconOrigin}></img>
-            <input
-              value={origin}
-              onChange={(event) => handleChange(event.target.value)}
-              type="text"
-            ></input>
+            <div className={styles.containInput}>
+              <input
+                value={origin}
+                onChange={(event) => handleChange(event.target.value)}
+                type="text"
+              ></input>
+              {origin && origin.length > 0 && (
+                <button className={styles.search} disabled={loading}>
+                  {!loading ? (
+                    <img
+                      onClick={() => handleSearchSuggestions()}
+                      src={iconSearch}
+                    ></img>
+                  ) : (
+                    <span className={styles.loader}></span>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
+
         <div className={styles.destiny}>
           <label>Destino:</label>
           <div className={styles.row}>

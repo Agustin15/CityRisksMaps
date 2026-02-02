@@ -23,33 +23,37 @@ export const getCrimes = async (setLoadingMenu) => {
   }
 };
 
-export const resize = (viewStatisticsId) => {
+export const resize = (elementId) => {
   if (window.innerWidth >= 1200) return;
 
-  const viewStatistics = document.getElementById(viewStatisticsId);
+  const elementToResize = document.getElementById(elementId);
 
-  if (!viewStatistics) return;
+  if (!elementToResize) return;
 
-  viewStatistics.removeAttribute("style");
-  const containOption = viewStatistics.firstChild;
+  elementToResize.removeAttribute("style");
+  if (elementId == "viewStatistics") {
+    const containOption = elementToResize.firstChild;
 
-  if (containOption) {
-    resizeAction(viewStatistics, containOption);
-  }
+    if (containOption) {
+      resizeAction(elementToResize, containOption);
+    }
+  } else resizeAction(elementToResize);
 
   removeEventListener("touchmove", resizeAction);
   return;
 };
 
-const resizeAction = (viewStatistics, containOption) => {
-  containOption.addEventListener("touchmove", (event) => {
+const resizeAction = (elementToResize, containOption) => {
+  const elementToInteract = containOption ? containOption : elementToResize;
+
+  elementToInteract.addEventListener("touchmove", (event) => {
     switch (true) {
       case window.innerWidth <= 650:
         const toucheYvh =
           (event.targetTouches[0].pageY * 100) / window.innerHeight;
 
-        if (toucheYvh >= 0 && toucheYvh < 86)
-          viewStatistics.style.transform = `TranslateY(${toucheYvh}vh)`;
+        if (toucheYvh >= 0 && toucheYvh < (containOption ? 86 : 74))
+          elementToResize.style.transform = `TranslateY(${toucheYvh}vh)`;
         break;
 
       case window.innerWidth > 650 && window.innerWidth < 1200:
@@ -57,7 +61,7 @@ const resizeAction = (viewStatistics, containOption) => {
           (event.targetTouches[0].pageX * 100) / window.innerWidth;
 
         if (toucheYvw > 14 && toucheYvw < 93)
-          viewStatistics.style.right = `${100 - toucheYvw}vw`;
+          elementToResize.style.right = `${100 - toucheYvw}vw`;
         break;
     }
   });

@@ -15,6 +15,10 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.containDetails .close {
+    display: none;
+}
+
 .containDetails .column {
     display: flex;
     flex-direction: column;
@@ -24,7 +28,7 @@
     margin-top: 1rem;
     padding: 0 1rem 1rem 1rem;
     width: 53%;
-    height: 81%;
+    height: 31.5vh;
     background: none;
     overflow-x: hidden;
     scrollbar-width: none;
@@ -77,10 +81,11 @@
     align-items: start;
     list-style: none;
     width: 98%;
+    height: auto;
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
     background: linear-gradient(#2e3453, #313e7a);
     margin: 0;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 1rem 0.5rem;
     gap: 1.5rem;
 }
 
@@ -102,16 +107,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 3px;
-    box-shadow: 2px 2px 2px rgb(2, 2, 2);
 }
 
 .containDetails .column .info li .boxIcon img {
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
 }
 
 .containDetails .column .info li a {
@@ -122,4 +122,43 @@
 .containDetails .column .info li a:hover {
     text-decoration: underline;
     color: rgb(61, 136, 185);
+}
+
+@media (width<=650px) {
+    .containDetails {
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 0.1rem;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        left: 0;
+        top: 11vh;
+        height: 82vh;
+        width: 100%;
+        background: linear-gradient(#2e3453, #313e7a);
+        color: white;
+        z-index: 5;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+   
+    .containDetails .column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 92%;
+        height: 48vh;
+    }
+
+    .containDetails .column .aboutIt,
+    .containDetails .column .row,
+    .containDetails .column .title,
+    .containDetails .column .info {
+        box-shadow: none;
+        background: linear-gradient(#2e3453, #242d58);
+        font-size: 16px;
+    }
+    .containDetails .column .info li p {
+        width: 82%;
+    }
 }

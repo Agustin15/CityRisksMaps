@@ -4,14 +4,18 @@ import { Photo } from "./photo/Photo";
 import { Rating } from "./rating/Rating";
 import { StateOpen } from "./stateOpen/StateOpen";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
+import { useMap } from "@vis.gl/react-google-maps";
 
 export const PlacesSearched = () => {
   const { setSelectedPlace, placesSearched, setValueInput, valueInput } =
     useSearchPlace();
+  const map = useMap();
 
   const handleClick = (place) => {
     setSelectedPlace(place);
     setValueInput(place.displayName.text);
+    map.setZoom(15);
+    map.panTo({ lat: place.location.latitude, lng: place.location.longitude });
   };
   return (
     <div className={styles.containPlaces}>

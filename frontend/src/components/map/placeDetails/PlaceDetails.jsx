@@ -6,10 +6,23 @@ import { OpeningDays } from "./openingDays/OpeningDays";
 import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
+import { resize } from "../optionsMap/viewStatistics/functions.js";
+import { useEffect } from "react";
+import { useId } from "react";
+import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
+import { useSearchPlace } from "../../../contexts/SearchPlaceContext.jsx";
 
 export const PlaceDetails = ({ place }) => {
+  const { selectedPlace } = useSearchPlace();
+  const { windowWidth } = useWindowResize();
+  const detailsId = useId();
+
+  useEffect(() => {
+    resize(detailsId);
+  }, [windowWidth, selectedPlace]);
+
   return (
-    <div className={styles.containDetails}>
+    <div id={detailsId} className={styles.containDetails}>
       <ContainPhoto place={place} />
 
       <div className={styles.column}>
@@ -34,7 +47,7 @@ export const PlaceDetails = ({ place }) => {
         <ul className={styles.info}>
           {place.formattedAddress && (
             <li>
-              <div className={styles.boxIcon} style={{ background: "red" }}>
+              <div className={styles.boxIcon}>
                 <img src={iconAddress}></img>
               </div>
               <p>{place.formattedAddress}</p>
@@ -44,10 +57,7 @@ export const PlaceDetails = ({ place }) => {
 
           {place.nationalPhoneNumber && (
             <li>
-              <div
-                className={styles.boxIcon}
-                style={{ background: "#1fcaa5ff" }}
-              >
+              <div className={styles.boxIcon}>
                 <img src={iconPhone}></img>
               </div>
               {place.nationalPhoneNumber}
@@ -55,10 +65,7 @@ export const PlaceDetails = ({ place }) => {
           )}
           {place.websiteUri && (
             <li>
-              <div
-                className={styles.boxIcon}
-                style={{ background: "#278e9bff" }}
-              >
+              <div className={styles.boxIcon}>
                 <img src={iconWeb}></img>
               </div>
               <a href={place.websiteUri}>

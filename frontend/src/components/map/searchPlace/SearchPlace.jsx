@@ -21,7 +21,8 @@ export const SearchPlace = () => {
     inputRef,
     handleCleanInput,
     searchByText,
-    loadingPlace
+    loadingPlace,
+    setLoadingPlace
   } = useSearchPlace();
 
   useEffect(() => {
@@ -33,10 +34,18 @@ export const SearchPlace = () => {
       inputRef.current.value,
       getMontevideoGeoJson
     );
+
     if (results) {
       place = moreDetailsPlace(results[0].place_id, true);
     } else if (!placesSearched) {
-      searchByText();
+      const places = await searchByText();
+      if (!places)
+        getSuggestions(
+          userLocation,
+          setSuggestions,
+          setLoadingPlace,
+          inputRef.current.value
+        );
     }
   };
 
@@ -44,7 +53,7 @@ export const SearchPlace = () => {
     if (event.target.value.length == 0) {
       setSelectedPlace();
       setSuggestions();
-    } else getSuggestions(userLocation, setSuggestions, inputRef.current.value);
+    }
 
     setValueInput(event.target.value);
   };
@@ -82,6 +91,7 @@ export const SearchPlace = () => {
           <img src={iconSearch}></img>
         </button>
       </div>
+
       {suggestions && (
         <ul className="suggestions">
           {suggestions.map((suggestion, index) => (

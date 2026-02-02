@@ -2,7 +2,13 @@ import { alertSwalError } from "../../sweetAlert/sweetAlert.js";
 
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
-export const getSuggestions = async (userLocation, value, setSuggestions) => {
+export const getSuggestions = async (
+  userLocation,
+  value,
+  setSuggestions,
+  setLoading
+) => {
+  setLoading(true);
   try {
     const response = await fetch(
       "https://places.googleapis.com/v1/places:autocomplete",
@@ -36,6 +42,8 @@ export const getSuggestions = async (userLocation, value, setSuggestions) => {
     } else setSuggestions();
   } catch (error) {
     console.log(error);
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -58,4 +66,3 @@ export const detailsSuggestions = async (suggestions) => {
     })
   );
 };
-

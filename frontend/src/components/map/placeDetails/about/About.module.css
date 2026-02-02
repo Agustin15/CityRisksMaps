@@ -41,3 +41,11 @@
     width: 85%;
     gap: 0.3rem;
 }
+
+@media (width<=650px) {
+    .about {
+        background: none;
+        box-shadow: none;
+        background: linear-gradient(#2e3453, #242d58);
+    }
+}

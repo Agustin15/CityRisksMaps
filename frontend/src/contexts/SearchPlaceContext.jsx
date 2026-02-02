@@ -2,6 +2,7 @@ const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import { createContext, useContext, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useMapControls } from "./MapContext.jsx";
+import { useMap } from "@vis.gl/react-google-maps";
 
 const SearchPlaceContext = createContext();
 
@@ -13,6 +14,7 @@ export const SearchPlaceProvider = ({ children }) => {
   const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
   const { userLocation, boundsMontevideo } = useMapControls();
+  const map = useMap();
 
   const handleCleanInput = async (setSuggestions, suggestions) => {
     if (suggestions) setSuggestions();
@@ -55,6 +57,12 @@ export const SearchPlaceProvider = ({ children }) => {
       if (result && optionSetPlace) {
         setSelectedPlace(result);
         setValueInput(result.displayName.text);
+
+        map.setZoom(15);
+        map.panTo({
+          lat: result.location.latitude,
+          lng: result.location.longitude
+        });
       }
 
       return result;
@@ -108,6 +116,7 @@ export const SearchPlaceProvider = ({ children }) => {
 
   const searchByText = async () => {
     setValueSearchedByText(inputRef.current.value);
+    setLoadingPlace(true);
 
     const request = {
       textQuery: inputRef.current.value,
@@ -149,11 +158,21 @@ export const SearchPlaceProvider = ({ children }) => {
 
       if (response.status != 200)
         throw new Error("Sitio solicitado no encontrado");
+      else if (result.places) {
+        setPlacesSearched(result.places);
+        map.setZoom(15);
+        map.panTo({
+          lat: result.places[0].location.latitude,
+          lng: result.places[0].location.longitude
+        });
+      }
 
-      setPlacesSearched(result.places);
+      return result.places;
     } catch (error) {
       console.log(error.message);
       alertSwalError("Ups,no pudimos encontrar el sitio", error);
+    } finally {
+      setLoadingPlace(false);
     }
   };
 
@@ -171,7 +190,8 @@ export const SearchPlaceProvider = ({ children }) => {
         handleClickOnMap,
         geocodingPlaceByAddress,
         searchByText,
-        loadingPlace
+        loadingPlace,
+        setLoadingPlace
       }}
     >
       {children}

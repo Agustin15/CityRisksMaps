@@ -10,8 +10,6 @@
 .detailOpeningHours .boxIcon {
     width: 2.2rem;
     height: 2.2rem;
-    border-radius: 3px;
-    box-shadow: 2px 2px 2px rgb(2, 2, 2);
 }
 
 .detailOpeningHours .iconInfo {
@@ -36,20 +34,18 @@
 }
 
 .detailOpeningHours .state .boxIcon {
-    width: 2.2rem;
-    height: 2.2rem;
-    background-color: rgb(22, 62, 173);
-    border-radius: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .detailOpeningHours .close {
     color: red;
+    font-weight: bold;
 }
 
 .detailOpeningHours .open {
     color: rgb(40, 211, 63);
+    font-weight: bold;
 }
 
 .detailOpeningHours .optionMenuDays,
@@ -86,4 +82,9 @@
 
 .listOpeningDays .today {
     font-weight: bold;
+}
+@media (width<=650px) {
+    .row {
+        font-size: 16px;
+    }
 }

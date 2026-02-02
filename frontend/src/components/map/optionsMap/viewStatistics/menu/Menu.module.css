@@ -65,10 +65,11 @@
 
 @media (width<=650px) {
     .menuOptionsCrimes {
+        z-index: 8;
         top: 93.1vh;
         right: 0;
         gap: 0.8rem;
-        width: 100%;
+        width: 100vw;
         height: 6vh;
         padding: 0.2rem 0 0.2rem 0;
         margin: 0;
@@ -114,6 +115,7 @@
 
 @media (width>650px) and (width<1200px) {
     .menuOptionsCrimes {
+        z-index: 8;
         left: 0;
         width: 8vw;
         height: 98.4vh;
@@ -163,6 +165,7 @@
 
 @media (width>=1000px) and (width<1200px) {
     .menuOptionsCrimes {
+        z-index: 8;
         left: 0;
         width: 8vw;
         height: 99vh;
