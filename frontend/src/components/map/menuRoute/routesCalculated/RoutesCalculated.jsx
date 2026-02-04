@@ -7,7 +7,9 @@ import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { RouteRangesDanger } from "./routeRangesDanger/RouteRangesDanger.jsx";
 import { DetailsRoute } from "./detailsRoute/DetailsRoute.jsx";
 import { Options } from "./options/Options.jsx";
-import { convertDuration, convertDistance, changeRoute } from "./functions.js";
+import { changeRoute } from "./functions.js";
+import { Duration } from "./duration/Duration.jsx";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 
 export const RoutesCalculated = ({
   routes,
@@ -17,6 +19,7 @@ export const RoutesCalculated = ({
 }) => {
   const { routeSelected, setRouteSelected, polylines, setPolylines } =
     useRoutes();
+  const { windowWidth } = useWindowResize();
 
   const iconsTransports = [
     { transport: "Drive", icon: iconCar },
@@ -46,13 +49,18 @@ export const RoutesCalculated = ({
         >
           <div className={styles.mainRow}>
             <div className={styles.row}>
-              <img
-                src={
-                  iconsTransports.find(
-                    (transport) => transport.transport == transportSelected
-                  ).icon
-                }
-              ></img>
+              <div className={styles.typeTransport}>
+                <img
+                  src={
+                    iconsTransports.find(
+                      (transport) => transport.transport == transportSelected
+                    ).icon
+                  }
+                ></img>
+
+                {windowWidth < 1000 && <Duration route={route} />}
+              </div>
+
               <div className={styles.columnOne}>
                 <p>
                   {route.legs[0].steps[0].navigationInstruction.instructions}
@@ -68,12 +76,7 @@ export const RoutesCalculated = ({
               </div>
             </div>
 
-            <div className={styles.columnTwo}>
-              <span className={styles.duration}>
-                {convertDuration(parseInt(route.duration))}
-              </span>
-              <span>{convertDistance(parseInt(route.distanceMeters))}</span>
-            </div>
+            {windowWidth >= 1000 && <Duration route={route} />}
           </div>
           {showDetails == index && <DetailsRoute steps={route.legs[0].steps} />}
         </li>

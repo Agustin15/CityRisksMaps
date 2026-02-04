@@ -7,7 +7,7 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background-color: #2e3453;
+    background: linear-gradient(#1b2450, #243064);
     font-weight: bold;
     position: relative;
     margin-left: 0.5rem;
@@ -81,7 +81,8 @@
         height: 35%;
         margin-left: 0;
         margin-top: 1.5rem;
-        background: linear-gradient(#2e3453, #242d58);
+        background: #1e274e;
         box-shadow: none;
+        border-radius: 5px;
     }
 }

@@ -1,9 +1,10 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const getCrimes = async (setLoadingMenu) => {
+export const getCrimes = async (loadingMenu, setLoadingMenu) => {
   let optionGET = JSON.stringify({ option: "getCrimes" });
 
-  setLoadingMenu(true);
+  if (!loadingMenu) setLoadingMenu(true);
+
   try {
     const response = await fetch(localhostBackend + "/crimes/" + optionGET, {
       method: "GET",
@@ -23,7 +24,7 @@ export const getCrimes = async (setLoadingMenu) => {
   }
 };
 
-export const resize = (elementId) => {
+export const resize = (elementId, option) => {
   if (window.innerWidth >= 1200) return;
 
   const elementToResize = document.getElementById(elementId);
@@ -31,33 +32,30 @@ export const resize = (elementId) => {
   if (!elementToResize) return;
 
   elementToResize.removeAttribute("style");
-  if (elementId == "viewStatistics") {
-    const containOption = elementToResize.firstChild;
 
-    if (containOption) {
-      resizeAction(elementToResize, containOption);
-    }
-  } else resizeAction(elementToResize);
+  const containOption = elementToResize.firstChild;
+
+  if (containOption) resizeAction(elementToResize, containOption, option);
 
   removeEventListener("touchmove", resizeAction);
   return;
 };
 
-const resizeAction = (elementToResize, containOption) => {
-  const elementToInteract = containOption ? containOption : elementToResize;
-
-  elementToInteract.addEventListener("touchmove", (event) => {
+const resizeAction = (elementToResize, containOption, option) => {
+  containOption.addEventListener("touchmove", (event) => {
     switch (true) {
       case window.innerWidth <= 650:
-        const toucheYvh =
+        let toucheYvh =
           (event.targetTouches[0].pageY * 100) / window.innerHeight;
 
-        if (toucheYvh >= 0 && toucheYvh < (containOption ? 86 : 74))
+        if (option == "viewPlaces") toucheYvh -= 11;
+
+        if (toucheYvh >= 0 && toucheYvh < (option != "viewPlaces" ? 86 : 79))
           elementToResize.style.transform = `TranslateY(${toucheYvh}vh)`;
         break;
 
       case window.innerWidth > 650 && window.innerWidth < 1200:
-        const toucheYvw =
+        let toucheYvw =
           (event.targetTouches[0].pageX * 100) / window.innerWidth;
 
         if (toucheYvw > 14 && toucheYvw < 93)

@@ -1,8 +1,8 @@
 .containRoutes {
-    width: 98%;
+    width: 99%;
     padding: 0;
     padding-bottom: 1rem;
-    margin: 0;
+    margin: 0.5rem 0 0 0;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -18,7 +18,7 @@
     justify-content: start;
     align-items: start;
     box-shadow: 2px 2px 2px black;
-    background: linear-gradient(#2e3453, #313e7a);
+    background: linear-gradient(#1b2450, #243064);
     cursor: pointer;
     padding: 0.4rem;
 }
@@ -35,6 +35,12 @@
     width: 97.5%;
 }
 
+.containRoutes li .row .typeTransport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .containRoutes li img {
     width: 25px;
     padding: 1rem;
@@ -49,7 +55,7 @@
     width: 81%;
 }
 
-.containRoutes li .row p {
+.containRoutes li .columnOne p {
     padding: 0;
     margin: 0;
     width: 94%;
@@ -65,14 +71,61 @@
     width: 99%;
 }
 
-.containRoutes li .columnTwo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    margin-right: 1rem;
-}
+@media (width<=650px) {
+    .containRoutes {
+        margin: 1rem 0 0 0;
+        border-top: 1px solid rgb(12, 28, 82);
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
 
-.containRoutes li .columnTwo .duration {
-    color: rgb(40, 221, 40);
+    .containRoutes li {
+        width: 98%;
+        box-shadow: none;
+        border-bottom: 1px solid rgb(12, 28, 82);
+        background: none;
+    }
+    .containRoutes li .mainRow {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .containRoutes li:hover,
+    .containRoutes .routeSelected {
+        width: 97%;
+    }
+
+    .containRoutes li .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .containRoutes li .row .typeTransport {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .containRoutes li .columnOne {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .containRoutes li img {
+        width: 32px;
+        padding: 0.4rem;
+        height: 32px;
+    }
 }

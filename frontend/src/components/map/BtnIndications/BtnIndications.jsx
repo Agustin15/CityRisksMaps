@@ -5,11 +5,14 @@ import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 
 export const BtnIndications = () => {
   const { handleClickRoute } = useRoutes();
-  const { selectedPlace } = useSearchPlace();
+  const { selectedPlace, placesSearched, setPlacesSearched } = useSearchPlace();
 
   return (
     <button
-      onClick={() => handleClickRoute(selectedPlace)}
+      onClick={() => {
+        if (placesSearched) setPlacesSearched();
+        handleClickRoute(selectedPlace);
+      }}
       className={styles.buttonStartRoute}
     >
       <img src={iconDestiny}></img>

@@ -6,7 +6,7 @@
     width: 95%;
     padding: 1rem;
     margin-top: -0.5rem;
-    background: linear-gradient(#2e3453, #313e7a);
+    background: linear-gradient(#1b2450, #243064);
     box-shadow: 2px 2px 2px black;
     height: auto;
 }
@@ -55,15 +55,6 @@
 .rowOne .origin input {
     padding-right: 2.5rem;
     width: 94%;
-}
-
-.containInput {
-    width: 99%;
-    height: auto;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .containInput {
@@ -177,5 +168,47 @@
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media (width<=650px) {
+    .columnShowRoutes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 95%;
+        height: auto;
+        padding: 1rem;
+        margin-top: -0.9rem;
+        background: none;
+        background-color: #28335e;
+        box-shadow: none;
+    }
+
+    .rowOne {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .rowOne .origin,
+    .rowOne .destiny {
+        width: 93%;
+        gap: 0.5rem;
+    }
+
+    .rowOne .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .rowOne .btnEnabled,
+    .rowOne .btnDisabled {
+        margin-top: 1rem;
     }
 }

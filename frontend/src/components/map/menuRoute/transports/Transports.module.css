@@ -6,7 +6,7 @@
     padding: 0.5rem 0 0.5rem 0;
     margin-top: 0;
     width: 99%;
-    background: linear-gradient(#2e3453, #313e7a);
+    background: linear-gradient(#1b2450, #243064);
     box-shadow: 2px 2px 2px black;
     list-style: none;
 }
@@ -28,4 +28,13 @@
 .transports li:hover,
 .transports .selected {
     background: rgba(0, 0, 0, 0.384);
+}
+
+@media (width<=650px) {
+    .transports {
+        background: none;
+        box-shadow: none;
+        background-color: #28335e;
+        border-bottom: 1px solid rgb(17, 25, 58);
+    }
 }

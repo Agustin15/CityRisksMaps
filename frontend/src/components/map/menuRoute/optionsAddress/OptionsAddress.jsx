@@ -28,25 +28,24 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
           Mi ubicacion
         </li>
       )}
-      {suggestions &&
-        suggestions.map((suggestion, index) => (
-          <li
-            onClick={() =>
-              handleClick(suggestion.formattedAddress, suggestion.location)
-            }
-            key={index}
-          >
-            <img src={iconAddress}></img>
-            <p>
-              <span className={styles.displayName}>
-                {suggestion.displayName.text},
-              </span>
-              <span className={styles.formattedAddress}>
-                {suggestion.formattedAddress}
-              </span>
-            </p>
-          </li>
-        ))}
+      {suggestions.map((suggestion, index) => (
+        <li
+          onClick={() =>
+            handleClick(suggestion.formattedAddress, suggestion.location)
+          }
+          key={index}
+        >
+          <img src={iconAddress}></img>
+          <p>
+            <span className={styles.displayName}>
+              {suggestion.displayName.text},
+            </span>
+            <span className={styles.formattedAddress}>
+              {suggestion.formattedAddress}
+            </span>
+          </p>
+        </li>
+      ))}
     </ul>
   );
 };

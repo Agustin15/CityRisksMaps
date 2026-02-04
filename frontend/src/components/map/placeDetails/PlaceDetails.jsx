@@ -6,23 +6,10 @@ import { OpeningDays } from "./openingDays/OpeningDays";
 import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
-import { resize } from "../optionsMap/viewStatistics/functions.js";
-import { useEffect } from "react";
-import { useId } from "react";
-import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext.jsx";
 
 export const PlaceDetails = ({ place }) => {
-  const { selectedPlace } = useSearchPlace();
-  const { windowWidth } = useWindowResize();
-  const detailsId = useId();
-
-  useEffect(() => {
-    resize(detailsId);
-  }, [windowWidth, selectedPlace]);
-
   return (
-    <div id={detailsId} className={styles.containDetails}>
+    <div className={styles.containDetails}>
       <ContainPhoto place={place} />
 
       <div className={styles.column}>

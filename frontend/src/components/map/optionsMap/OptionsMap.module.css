@@ -1,4 +1,4 @@
-.placeNotSelected {
+.viewPlaces {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -11,9 +11,19 @@
     width: 59%;
     background: linear-gradient(#2e3453, #313e7a);
     box-shadow: 1px 1px 1px rgb(37, 37, 37);
-    color: white;
-    z-index: 5;
+    z-index: 2;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.placeNotSelected {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 100%;
+    width: 100%;
+    color: white;
 }
 
 .placeNotSelected img {
@@ -25,5 +35,19 @@
 @media (width<1200px) {
     .placeNotSelected {
         display: none;
+    }
+    .viewPlaces {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        left: 0;
+        top:11vh;
+        background: none;
+        box-shadow: none;
+        height: 82.5vh;
+        width: 99.5vw;
     }
 }

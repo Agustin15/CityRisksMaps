@@ -3,17 +3,18 @@ import iconDestiny from "../../../../assets/img/destinyAddress.png";
 import iconOrigin from "../../../../assets/img/origin.png";
 import iconShow from "../../../../assets/img/showRoutes.png";
 import iconSearch from "../../../../assets/img/search.png";
+import { Advice } from "../advice/Advice.jsx";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
-import { Advice } from "../advice/Advice.jsx";
 
 export const EnterAdresses = ({
   handleChange,
   handleSearchSuggestions,
   loading
 }) => {
-  const { destiny, origin, showRoutes, loadingRoutes } = useRoutes();
+  const { destiny, origin, originLocation, showRoutes, loadingRoutes } =
+    useRoutes();
   const { crimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
 
@@ -54,10 +55,11 @@ export const EnterAdresses = ({
           </div>
         </div>
         <button
+          disabled={loadingRoutes}
           onClick={() => showRoutes("Drive")}
           className={
             destiny.length > 0 &&
-            origin.length > 0 &&
+            originLocation &&
             (crimeSelected == "Homicidio" || showQuizes)
               ? styles.btnEnabled
               : styles.btnDisabled
@@ -67,6 +69,7 @@ export const EnterAdresses = ({
           <img src={iconShow}></img>
         </button>
       </div>
+
       {crimeSelected != "Homicidio" && !showQuizes && <Advice />}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>

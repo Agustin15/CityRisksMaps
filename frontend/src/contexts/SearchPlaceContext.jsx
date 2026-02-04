@@ -185,6 +185,7 @@ export const SearchPlaceProvider = ({ children }) => {
         handleCleanInput,
         selectedPlace,
         setSelectedPlace,
+        setPlacesSearched,
         placesSearched,
         moreDetailsPlace,
         handleClickOnMap,

@@ -5,16 +5,16 @@ const PhotosContext = createContext();
 
 export const PhotosProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(true);
   const [showPhotos, setShowPhotos] = useState(false);
 
   const getPhotoDetails = async (
     namePhoto,
     maxHeightPx,
     maxWidthPx,
-    setOptionLoading
+    option
   ) => {
-    setOptionLoading(true);
+    if (option == "mainPicture") setLoading(true);
     try {
       const response = await fetch(
         `https://places.googleapis.com/v1/${namePhoto}/media?key=${API_KEY}&maxHeightPx=${maxHeightPx}&maxWidthPx=${maxWidthPx}`
@@ -27,7 +27,24 @@ export const PhotosProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      setOptionLoading(false);
+      if (option == "mainPicture") setLoading(false);
+    }
+  };
+
+  const getStreetViewStaticImage = async (width, height, lat, lng) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/streetview?size=${width}x${height}&location=${lat},${lng}&heading=151.7&pitch=-0.76&key=${API_KEY}`
+      );
+
+      const result = response.url;
+
+      if (result) return result;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,6 +52,7 @@ export const PhotosProvider = ({ children }) => {
     <PhotosContext.Provider
       value={{
         getPhotoDetails,
+        getStreetViewStaticImage,
         loading,
         setLoading,
         loadingMore,

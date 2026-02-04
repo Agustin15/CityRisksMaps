@@ -32,7 +32,6 @@
     overflow: hidden;
     text-wrap: nowrap;
     text-overflow: ellipsis;
-
 }
 
 .detailsInstruction {
@@ -44,4 +43,17 @@
 
 .detailsInstruction .duration {
     color: rgb(40, 221, 40);
+}
+@media (width<=650px) {
+    .details {
+        border-top: 1px solid rgb(18, 20, 87);
+    }
+
+    .details p {
+        width: 87%;
+        padding: 0;
+        overflow: auto;
+        text-wrap: wrap;
+        text-overflow:clip;
+    }
 }

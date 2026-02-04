@@ -5,11 +5,17 @@ import { Rating } from "./rating/Rating";
 import { StateOpen } from "./stateOpen/StateOpen";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 import { useMap } from "@vis.gl/react-google-maps";
+import { useEffect, useId } from "react";
+import { useWindowResize } from "../../../contexts/WindowResizeContext";
+import { resize } from "../optionsMap/viewStatistics/functions.js";
 
 export const PlacesSearched = () => {
   const { setSelectedPlace, placesSearched, setValueInput, valueInput } =
     useSearchPlace();
+  const { windowWidth } = useWindowResize();
+
   const map = useMap();
+  const placesId = useId();
 
   const handleClick = (place) => {
     setSelectedPlace(place);
@@ -17,8 +23,13 @@ export const PlacesSearched = () => {
     map.setZoom(15);
     map.panTo({ lat: place.location.latitude, lng: place.location.longitude });
   };
+
+  useEffect(() => {
+    resize(placesId);
+  }, [windowWidth, placesSearched]);
+
   return (
-    <div className={styles.containPlaces}>
+    <div id={placesId} className={styles.containPlaces}>
       <h4>Resultados a la busqueda {valueInput}:</h4>
       <ul>
         {placesSearched.map((place, index) => (

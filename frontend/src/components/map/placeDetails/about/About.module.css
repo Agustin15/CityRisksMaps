@@ -6,7 +6,7 @@
     font-size: 13px;
     width: 98%;
     padding: 0.5rem;
-    background: linear-gradient(#2e3453, #313e7a);
+    background: linear-gradient(#1b2450, #243064);
     box-shadow: 2px 2px 2px rgb(7, 7, 7);
 }
 
@@ -46,6 +46,8 @@
     .about {
         background: none;
         box-shadow: none;
-        background: linear-gradient(#2e3453, #242d58);
+        background: none;
+        background: #17214d;
+        border-radius: 5px;
     }
 }

@@ -15,7 +15,7 @@ export const Menu = ({
   setShowViewStatistics
 }) => {
   const [crimes, setCrimes] = useState();
-  const [loadingMenu, setLoadingMenu] = useState(false);
+  const [loadingMenu, setLoadingMenu] = useState(true);
   const [closeAlert, setCloseAlert] = useState(true);
 
   const { windowWidth } = useWindowResize();
@@ -32,7 +32,7 @@ export const Menu = ({
   }, [neighbordhoodsCoordinates]);
 
   const loadData = async () => {
-    const crimes = await getCrimes(setLoadingMenu);
+    const crimes = await getCrimes(loadingMenu, setLoadingMenu);
     if (crimes) {
       setCrimes(crimes);
       if (windowWidth >= 1200) {

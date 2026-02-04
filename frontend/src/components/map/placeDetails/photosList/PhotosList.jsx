@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import styles from "./PhotosList.module.css";
 import next from "../../../../assets/img/next.png";
 import prev from "../../../../assets/img/prev.png";
 import noData from "../../../../assets/img/imageNotFound.png";
+import { useEffect, useState } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
-import styles from "./PhotosList.module.css";
 
 export const PhotosList = ({ place }) => {
   const { getPhotoDetails, setShowPhotos, setLoadingMore, loadingMore } =
@@ -16,21 +16,25 @@ export const PhotosList = ({ place }) => {
   }, []);
 
   const createPhotosList = async () => {
-    setPhotosDetails(
-      await Promise.all(
-        place.photos.map(async (photo) => {
-          let url = await getPhotoDetails(photo.name, 340, 865, setLoadingMore);
+    setLoadingMore(true);
 
-          return {
-            url: url,
-            author:
-              photo.authorAttributions.length > 0
-                ? photo.authorAttributions[0]
-                : null
-          };
-        })
-      )
+    const photosList = await Promise.all(
+      place.photos.map(async (photo) => {
+        let url = await getPhotoDetails(photo.name, 340, 865);
+
+        return {
+          url: url,
+          author:
+            photo.authorAttributions.length > 0
+              ? photo.authorAttributions[0]
+              : null
+        };
+      })
     );
+
+    if (photosList) setPhotosDetails(photosList);
+
+    setLoadingMore(false);
   };
 
   return (
