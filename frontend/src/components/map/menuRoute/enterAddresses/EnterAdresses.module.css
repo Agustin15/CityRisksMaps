@@ -11,7 +11,7 @@
     height: auto;
 }
 
-.rowOne {
+.enterAdresses {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,8 +20,7 @@
     height: auto;
 }
 
-.rowOne .origin,
-.rowOne .destiny {
+.destination {
     display: flex;
     justify-content: start;
     align-items: start;
@@ -30,7 +29,7 @@
     gap: 0.5rem;
 }
 
-.rowOne .row {
+.enterAdresses .row {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,12 +37,12 @@
     width: 99%;
 }
 
-.rowOne label {
+.enterAdresses label {
     margin: 0.5rem 0 0 2.2rem;
     color: white;
 }
 
-.rowOne .row input {
+.enterAdresses input {
     width: 99%;
     height: 2.4rem;
     border-radius: 5px;
@@ -52,60 +51,9 @@
     border: 1px solid rgb(182, 182, 182);
     outline: none;
 }
-.rowOne .origin input {
-    padding-right: 2.5rem;
-    width: 94%;
-}
 
-.containInput {
-    width: 99%;
-    height: auto;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.rowOne .row .containInput .search {
-    width: 1rem;
-    height: auto;
-    position: absolute;
-    top: 0.6rem;
-    right: 0.1rem;
-    cursor: pointer;
-    box-shadow: none;
-    background: none;
-}
-
-.rowOne .row .containInput .search .loader {
-    width: 22px;
-    height: 22px;
-    border: 3px solid #fff;
-    border-bottom-color: #278cc7;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    position: absolute;
-    top: 0;
-}
-
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.rowOne .row .containInput .search img {
-    width: 19px;
-    height: 19px;
-}
-
-.rowOne .btnEnabled,
-.rowOne .btnDisabled {
+.enterAdresses .btnEnabled,
+.enterAdresses .btnDisabled {
     margin-top: 2.2rem;
     width: 9rem;
     height: 2.2rem;
@@ -121,29 +69,25 @@
     gap: 0.5rem;
 }
 
-.rowOne .btnDisabled {
+.enterAdresses .btnDisabled {
     background: rgb(182, 182, 182);
     cursor: auto;
 }
 
-.rowOne .btnEnabled:hover {
+.enterAdresses.btnEnabled:hover {
     background: rgb(38, 92, 172);
 }
 
-.rowOne button img {
+.enterAdresses button img {
     width: 25px;
     height: 25px;
 }
 
-.rowOne img {
+.enterAdresses img {
     width: 23px;
     height: 23px;
 }
 
-.rowOne .origin img {
-    width: 26px;
-    height: 26px;
-}
 .containLoaderRoutes {
     display: flex;
     flex-direction: column-reverse;
@@ -182,24 +126,22 @@
         padding: 1rem;
         margin-top: -0.9rem;
         background: none;
-        background-color: #28335e;
         box-shadow: none;
     }
 
-    .rowOne {
+    .enterAdresses {
         flex-direction: column;
         justify-content: center;
         align-items: center;
         width: 100%;
     }
 
-    .rowOne .origin,
-    .rowOne .destiny {
-        width: 93%;
+    .destination {
+        width: 99%;
         gap: 0.5rem;
     }
 
-    .rowOne .row {
+    .enterAdresses .row {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -207,8 +149,60 @@
         width: 99%;
     }
 
-    .rowOne .btnEnabled,
-    .rowOne .btnDisabled {
+    .enterAdresses .btnEnabled,
+    .enterAdresses .btnDisabled {
         margin-top: 1rem;
+    }
+}
+
+@media (width>650px) and (width<1000px) {
+    .columnShowRoutes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 95%;
+        height: auto;
+        padding: 1rem;
+        margin-top: -0.9rem;
+        background: none;
+        box-shadow: none;
+    }
+
+    .enterAdresses {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .destination {
+        width: 75%;
+        gap: 0.5rem;
+        margin-right: 4vw;
+    }
+
+    .enterAdresses.row input {
+        height: 2.6rem;
+    }
+    .enterAdresses .btnEnabled,
+    .enterAdresses .btnDisabled {
+        margin-top: 1rem;
+    }
+}
+
+@media (width>=1000px) and (width<1200px) {
+    .columnShowRoutes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 95%;
+        height: auto;
+        padding: 1rem;
+        margin-top: -0.9rem;
+        background: none;
+        box-shadow: none;
     }
 }

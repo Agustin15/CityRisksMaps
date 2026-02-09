@@ -1,64 +1,42 @@
 import styles from "./EnterAdresses.module.css";
-import iconDestiny from "../../../../assets/img/destinyAddress.png";
-import iconOrigin from "../../../../assets/img/origin.png";
+import iconDestination from "../../../../assets/img/destinationAddress.png";
 import iconShow from "../../../../assets/img/showRoutes.png";
-import iconSearch from "../../../../assets/img/search.png";
 import { Advice } from "../advice/Advice.jsx";
 import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
+import { Origin } from "./origin/Origin.jsx";
 
 export const EnterAdresses = ({
   handleChange,
   handleSearchSuggestions,
   loading
 }) => {
-  const { destiny, origin, originLocation, showRoutes, loadingRoutes } =
-    useRoutes();
+  const { destination, originLocation, showRoutes, loadingRoutes } = useRoutes();
   const { crimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
 
   return (
     <div className={styles.columnShowRoutes}>
-      <div className={styles.rowOne}>
-        <div className={styles.origin}>
-          <label>Origen:</label>
-          <div className={styles.row}>
-            <img src={iconOrigin}></img>
-            <div className={styles.containInput}>
-              <input
-                value={origin}
-                onChange={(event) => handleChange(event.target.value)}
-                type="text"
-              ></input>
-              {origin && origin.length > 0 && (
-                <button className={styles.search} disabled={loading}>
-                  {!loading ? (
-                    <img
-                      onClick={() => handleSearchSuggestions()}
-                      src={iconSearch}
-                    ></img>
-                  ) : (
-                    <span className={styles.loader}></span>
-                  )}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+      <div className={styles.enterAdresses}>
+        <Origin
+          handleChange={handleChange}
+          handleSearchSuggestions={handleSearchSuggestions}
+          loading={loading}
+        />
 
-        <div className={styles.destiny}>
+        <div className={styles.destination}>
           <label>Destino:</label>
           <div className={styles.row}>
-            <img src={iconDestiny}></img>
-            <input readOnly type="text" value={destiny}></input>
+            <img src={iconDestination}></img>
+            <input readOnly type="text" value={destination}></input>
           </div>
         </div>
         <button
           disabled={loadingRoutes}
           onClick={() => showRoutes("Drive")}
           className={
-            destiny.length > 0 &&
+            destination.length > 0 &&
             originLocation &&
             (crimeSelected == "Homicidio" || showQuizes)
               ? styles.btnEnabled

@@ -129,3 +129,37 @@
         height: 32px;
     }
 }
+
+@media (width>650px) and (width<1000px) {
+    .containRoutes {
+        margin: 1rem 0 0 0;
+        border-top: 1px solid rgb(12, 28, 82);
+    }
+    .containRoutes li {
+        background: none;
+        box-shadow: none;
+        border-bottom: 1px solid rgb(12, 28, 82);
+    }
+
+    .containRoutes li .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+}
+
+@media (width>=1000px) and (width<1200px) {
+    .containRoutes {
+        gap: 0.3rem;
+        border-top: 1px solid rgb(12, 28, 82);
+    }
+
+    .containRoutes li {
+        box-shadow: none;
+        background: none;
+        border-bottom: 1px solid rgb(12, 28, 82);
+    }
+}

@@ -8,17 +8,14 @@ export const createDataRoutes = (routes, polygons, map, option) => {
       route.polyline.encodedPolyline
     );
 
-    const polygonsRoute = verifyPolygonsBelongToRoute(pathRoute, polygons);
-    if (polygonsRoute.length > 0) {
-      const coordinatesRoutePolygons = verifyCoordinatesRouteInPolygons(
-        route,
-        polygonsRoute,
-        index
-      );
-
+    const coordinatesRouteInPolygons = verifyCoordinatesRouteInPolygons(
+      pathRoute,
+      polygons
+    );
+    if (coordinatesRouteInPolygons.length > 0) {
       const routeRangesDanger = setDangerRangesToRoute(
         pathRoute.length,
-        coordinatesRoutePolygons,
+        coordinatesRouteInPolygons,
         option
       );
 
@@ -54,53 +51,25 @@ export const createDataRoutes = (routes, polygons, map, option) => {
   };
 };
 
-export const verifyPolygonsBelongToRoute = (routePath, polygons) => {
-  let polygonsOfRoute = [];
+export const verifyCoordinatesRouteInPolygons = (routePath, polygons) => {
+  const coordinatesRouteInPolygons = [];
 
-  routePath.map((coordinateLatLng) => {
-    for (const polygon of polygons) {
-      let routeInPolygon = google.maps.geometry.poly.containsLocation(
+  for (const polygon of polygons) {
+    const coordinatesBelong = routePath.filter((coordinateLatLng) => {
+      let coordinateInPolygon = google.maps.geometry.poly.containsLocation(
         coordinateLatLng,
         polygon
       );
 
-      if (
-        routeInPolygon == true &&
-        !polygonsOfRoute.find((poly) => poly.data.name == polygon.data.name)
-      ) {
-        polygonsOfRoute.push(polygon);
-      }
+      if (coordinateInPolygon == true) return coordinateLatLng;
+    });
+
+    if (coordinatesBelong.length > 0) {
+      coordinatesRouteInPolygons.push({
+        polygon: polygon,
+        coordinates: coordinatesBelong
+      });
     }
-  });
-
-  return polygonsOfRoute;
-};
-
-const verifyCoordinatesRouteInPolygons = (route, polygonsRoutes) => {
-  const coordinatesRouteInPolygons = [];
-
-  const pathLegs = google.maps.geometry.encoding.decodePath(
-    route.legs[0].polyline.encodedPolyline
-  );
-
-  for (const polygon of polygonsRoutes) {
-    let coordinates = [];
-
-    pathLegs.forEach((latLng) => {
-      let belongToPolygon = google.maps.geometry.poly.containsLocation(
-        latLng,
-        polygon
-      );
-
-      if (belongToPolygon) {
-        coordinates.push(latLng);
-      }
-    });
-
-    coordinatesRouteInPolygons.push({
-      polygon: polygon,
-      coordinates: coordinates
-    });
   }
 
   return coordinatesRouteInPolygons;

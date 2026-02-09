@@ -18,3 +18,10 @@
     width: 25px;
     height: 25px;
 }
+
+@media (width<=650px) {
+    .advice {
+        font-size: 15px;
+        margin-top: 1rem;
+    }
+}

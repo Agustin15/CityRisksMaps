@@ -1,21 +1,21 @@
-import { getMontevideoGeoJson, getSuggestions } from "./functions.js";
 import "./SearchPlace.css";
 import iconClose from "../../../assets/img/close.png";
-import iconAddress from "../../../assets/img/destinyAddress.png";
 import iconSearch from "../../../assets/img/search.png";
 import { useEffect, useState } from "react";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 import { useMapControls } from "../../../contexts/MapContext";
+import { useRoutes } from "../../../contexts/routesContext/RoutesContext.jsx";
+import { Suggestions } from "./suggestions/Suggestions.jsx";
+import { getSuggestions } from "./functions.js";
 
 export const SearchPlace = () => {
   const [suggestions, setSuggestions] = useState();
   const { userLocation } = useMapControls();
+  const { handleClose, showRoutes } = useRoutes();
 
   const {
     moreDetailsPlace,
-    geocodingPlaceByAddress,
     setSelectedPlace,
-    placesSearched,
     valueInput,
     setValueInput,
     inputRef,
@@ -27,25 +27,18 @@ export const SearchPlace = () => {
 
   useEffect(() => {
     inputRef.current.value = valueInput;
+    if (valueInput.length == 0 && showRoutes) handleClose(setSuggestions);
   }, [valueInput]);
 
   const handleSearch = async () => {
-    const results = await geocodingPlaceByAddress(
-      inputRef.current.value,
-      getMontevideoGeoJson
-    );
-
-    if (results) {
-      place = moreDetailsPlace(results[0].place_id, true);
-    } else if (!placesSearched) {
-      const places = await searchByText();
-      if (!places)
-        getSuggestions(
-          userLocation,
-          setSuggestions,
-          setLoadingPlace,
-          inputRef.current.value
-        );
+    const places = await searchByText();
+    if (!places) {
+      getSuggestions(
+        userLocation,
+        setSuggestions,
+        setLoadingPlace,
+        inputRef.current.value
+      );
     }
   };
 
@@ -76,7 +69,7 @@ export const SearchPlace = () => {
         {loadingPlace == false ? (
           <button
             className={valueInput.length > 0 ? "showClose" : "hideClose"}
-            onClick={() => handleCleanInput(setSuggestions, suggestions)}
+            onClick={() => handleCleanInput(setSuggestions)}
           >
             <img src={iconClose}></img>
           </button>
@@ -93,19 +86,10 @@ export const SearchPlace = () => {
       </div>
 
       {suggestions && (
-        <ul className="suggestions">
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              onClick={() =>
-                moreDetailsPlace(suggestion.placePrediction.placeId, true)
-              }
-            >
-              <img src={iconAddress}></img>
-              <p>{suggestion.placePrediction.text.text}</p>
-            </li>
-          ))}
-        </ul>
+        <Suggestions
+          suggestions={suggestions}
+          moreDetailsPlace={moreDetailsPlace}
+        />
       )}
     </div>
   );

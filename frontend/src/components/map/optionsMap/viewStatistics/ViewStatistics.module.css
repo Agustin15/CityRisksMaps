@@ -32,17 +32,18 @@
         gap: 0;
         width: 100%;
         height: 93.5vh;
+        margin-top: 11vh;
         border-left: none;
         background: none;
-        transform: translateY(0);
     }
 
     .containOptionsCrimes {
-        margin-top: 1rem;
+        margin-top: 0;
         height: 100%;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
         background: linear-gradient(#262c4b, #242d57);
+        overflow-y: scroll;
     }
 }
 

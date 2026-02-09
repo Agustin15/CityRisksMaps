@@ -4,9 +4,10 @@ const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const PhotosContext = createContext();
 
 export const PhotosProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
   const [showPhotos, setShowPhotos] = useState(false);
+  const [mainPhoto, setMainPhoto] = useState();
 
   const getPhotoDetails = async (
     namePhoto,
@@ -58,7 +59,9 @@ export const PhotosProvider = ({ children }) => {
         loadingMore,
         setLoadingMore,
         setShowPhotos,
-        showPhotos
+        showPhotos,
+        mainPhoto,
+        setMainPhoto
       }}
     >
       {children}

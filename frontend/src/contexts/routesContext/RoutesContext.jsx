@@ -9,23 +9,24 @@ const RoutesContext = createContext();
 
 export const RoutesProvider = ({ children }) => {
   const [showMenuRoutes, setShowMenuRoutes] = useState(false);
-  const [destiny, setDestiny] = useState("");
+  const [destination, setDestination] = useState("");
   const [origin, setOrigin] = useState("");
   const [originLocation, setOriginLocation] = useState();
-  const [destinyLocation, setDestinyLocation] = useState();
+  const [destinationLocation, setDestinationLocation] = useState();
   const [transportSelected, setTransportSelected] = useState();
   const [loadingRoutes, setLoadingRoutes] = useState(false);
   const [routes, setRoutes] = useState();
   const [routeSelected, setRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
   const [polylinesBackground, setPolylinesBackground] = useState();
+
   const map = useMap();
   const { polygons, crimeSelected } = useZoneCrimes();
 
   const handleClickRoute = (place) => {
     setShowMenuRoutes(true);
-    setDestiny(place.formattedAddress);
-    setDestinyLocation(place.location);
+    setDestination(place.formattedAddress);
+    setDestinationLocation(place.location);
   };
 
   const showRoutes = async (travelMode) => {
@@ -51,7 +52,7 @@ export const RoutesProvider = ({ children }) => {
               location: { latLng: originLocation }
             },
             destination: {
-              location: { latLng: destinyLocation }
+              location: { latLng: destinationLocation }
             },
             travelMode: travelMode,
             computeAlternativeRoutes: true,
@@ -98,9 +99,9 @@ export const RoutesProvider = ({ children }) => {
 
     cleanPolylines();
     setOrigin("");
-    setDestiny("");
+    setDestination("");
     setOriginLocation();
-    setDestinyLocation();
+    setDestinationLocation();
     setRoutes();
     setTransportSelected();
     setRouteSelected();
@@ -125,13 +126,13 @@ export const RoutesProvider = ({ children }) => {
         setShowMenuRoutes,
         handleClickRoute,
         origin,
-        destiny,
+        destination,
         setOrigin,
-        setDestiny,
+        setDestination,
         setOriginLocation,
         originLocation,
-        destinyLocation,
-        setDestinyLocation,
+        destinationLocation,
+        setDestinationLocation,
         setTransportSelected,
         polylines,
         setPolylines,

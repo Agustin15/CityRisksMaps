@@ -132,7 +132,7 @@
     .containPlaces ul li .details {
         width: 92%;
         gap: 0.5rem;
-        padding: 0.5rem;
+        padding: 0.5rem 0.5rem 0.8rem 0.5rem;
         background: #17214d;
         box-shadow: none;
         border-radius: 5px;
@@ -149,4 +149,71 @@
         width: 99%;
         margin: 0;
     }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containPlaces {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(#262c49, #2f3b75);
+        border-top-right-radius: 5px;
+        border-top-left-radius: 0;
+    }
+
+    .containPlaces h4 {
+        font-size: 16px;
+        width: 95%;
+        margin: 1rem 0 0 0;
+        padding: 0 0 0.5rem 0.8rem;
+        border-bottom: 1px solid rgb(20, 28, 63);
+    }
+
+    .containPlaces ul {
+        flex-direction: column;
+        justify-content: start;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top: 0.2rem;
+        gap: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        scrollbar-width: none;
+    }
+
+    .containPlaces ul li {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        box-shadow: none;
+        padding: 0.5rem;
+        margin: 0 ;
+        background: none;
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid rgb(20, 28, 63);
+    }
+
+    .containPlaces ul li .row {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: start;
+        width: 99%;
+        height: auto;
+        gap: 0.2rem;
+    }
+
+    .containPlaces ul li .details {
+        width: 95%;
+        height: auto;
+        gap: 0.5rem;
+        padding: 0.5rem 0.5rem 0.8rem 0.5rem;
+        background: #17214d;
+        box-shadow: none;
+        border-radius: 5px;
+    }
+   
 }

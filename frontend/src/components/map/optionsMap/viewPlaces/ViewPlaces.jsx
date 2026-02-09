@@ -1,4 +1,4 @@
-import styles from "../OptionsMap.module.css";
+import styles from "./viewPlaces.module.css";
 import iconMap from "../../../../assets/img/map.png";
 import { Activity, useEffect, useId } from "react";
 import { useNavigation } from "../../../../contexts/NavigationContext";
@@ -19,15 +19,14 @@ export const ViewPlaces = () => {
   const viewPlacesId = useId();
 
   useEffect(() => {
-    resize(viewPlacesId, "viewPlaces");
+    if (windowWidth >= 1200) return;
+    resize(viewPlacesId);
   }, [windowWidth, selectedPlace, showMenuRoutes, placesSearched]);
 
   return (
     <div id={viewPlacesId} className={styles.viewPlaces}>
-      {selectedPlace && (
-        <Activity mode={showMenuRoutes == true ? "hidden" : "display"}>
-          <PlaceDetails place={selectedPlace} />
-        </Activity>
+      {selectedPlace && showMenuRoutes == false && (
+        <PlaceDetails place={selectedPlace} />
       )}
 
       {placesSearched && (
@@ -44,7 +43,6 @@ export const ViewPlaces = () => {
       )}
 
       {showMenuRoutes && <MenuRoute />}
-      {routeNavigation && <Navigation />}
     </div>
   );
 };

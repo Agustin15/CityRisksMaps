@@ -1,8 +1,7 @@
-const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import styles from "./ContainPhoto.module.css";
 import imageNotFound from "../../../../assets/img/imageNotFound.png";
 import gallery from "../../../../assets/img/gallery.png";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
 
 export const ContainPhoto = ({ place }) => {
@@ -10,60 +9,54 @@ export const ContainPhoto = ({ place }) => {
     getPhotoDetails,
     getStreetViewStaticImage,
     loading,
+    setMainPhoto,
+    mainPhoto,
     setShowPhotos
   } = usePhotosPlace();
-  const [mainPhoto, setMainPhoto] = useState();
 
   useEffect(() => {
-    if (!place) return;
+    if (!place || mainPhoto) return;
 
-    if (place.photos) {
-      getMainPhoto();
+    getMainPhoto(place.photos ? place.photos[0] : null);
+  }, []);
+
+  const getMainPhoto = async (photo) => {
+    let url;
+    if (photo) {
+      url = await getPhotoDetails(photo.name, 400, 400, "mainPicture");
     } else {
-      streetViewStaticImage(
-        340,
-        240,
+      url = await getStreetViewStaticImage(
+        400,
+        400,
         place.location.latitude,
         place.location.longitude
       );
     }
-  }, [place]);
 
-  const getMainPhoto = async () => {
-    const photo = await getPhotoDetails(
-      place.photos[0].name,
-      240,
-      340,
-      "mainPicture"
-    );
-    if (photo) setMainPhoto(photo);
-  };
-
-  const streetViewStaticImage = async (width, height, lat, lng) => {
-    const photo = await getStreetViewStaticImage(width, height, lat, lng);
-    if (photo) setMainPhoto(photo);
+    if (url) setMainPhoto(url);
   };
 
   return (
     <div className={styles.containPhoto}>
       {loading && <span className={styles.loader}></span>}
-      
+
       {!loading && (
         <img
           className={mainPhoto ? styles.mainPhoto : styles.imageNotFound}
           src={mainPhoto ? mainPhoto : imageNotFound}
         ></img>
       )}
+
       {!loading && !mainPhoto && <span>Imagen no encontrada</span>}
 
-      {
+      {place.photos && (
         <div className={styles.optionWatchPhotos}>
           <button onClick={() => setShowPhotos(true)}>
             Ver fotos
             <img src={gallery}></img>
           </button>
         </div>
-      }
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import styles from "./MenuRoutes.module.css";
+import iconNotRoutes from "../../../assets/img/detailsRoute.png";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext.jsx";
 import { useMapControls } from "../../../contexts/MapContext.jsx";
 import { useState } from "react";
@@ -21,6 +22,7 @@ export const MenuRoute = () => {
     handleClose,
     setRoutes,
     routes,
+    loadingRoutes,
     setRouteSelected,
     transportSelected,
     cleanPolylines
@@ -54,12 +56,10 @@ export const MenuRoute = () => {
         loading={loading}
       />
 
-      {suggestions && (
-        <OptionsAddress
-          suggestions={suggestions}
-          setSuggestions={setSuggestions}
-        />
-      )}
+      <OptionsAddress
+        suggestions={suggestions}
+        setSuggestions={setSuggestions}
+      />
 
       {routes && (
         <RoutesCalculated
@@ -68,6 +68,13 @@ export const MenuRoute = () => {
           showDetails={showDetails}
           setShowDetails={setShowDetails}
         />
+      )}
+
+      {!loadingRoutes && !origin && (
+        <div className={styles.notRoutes}>
+          <span>Seleccione un origen para mostrarle las rutas</span>
+          <img src={iconNotRoutes}></img>
+        </div>
       )}
     </div>
   );

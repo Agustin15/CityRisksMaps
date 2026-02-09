@@ -24,12 +24,13 @@ import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
 import { Geolocation } from "./geolocation/Geolocation.jsx";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { MarkerOrigin } from "./markerOrigin/MarkerOrigin.jsx";
+import { Navigation } from "./navigation/Navigation.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
   const { selectedPlace, placesSearched, handleClickOnMap } = useSearchPlace();
-  const { originLocation, destinyLocation } = useRoutes();
+  const { originLocation, destinationLocation } = useRoutes();
   const { routeNavigation } = useNavigation();
   const { windowWidth } = useWindowResize();
 
@@ -41,10 +42,12 @@ export const ContainMap = () => {
     <>
       <Map
         renderingType="VECTOR"
-        className={style.map}
+        className={!routeNavigation ? style.map : style.mapNavigation}
         disableDefaultUI
         defaultZoom={15}
-        defaultCenter={{ lat: -34.8340562, lng: -56.3622838 }}
+        defaultCenter={
+          userLocation ? userLocation : { lat: -34.8340562, lng: -56.3622838 }
+        }
         streetViewControl={true}
         streetViewControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
@@ -73,7 +76,7 @@ export const ContainMap = () => {
               : ControlPosition.TOP_LEFT
           }
         >
-          <SearchPlace />
+          {!routeNavigation && <SearchPlace />}
         </MapControl>
 
         <MapHandler place={selectedPlace} marker={marker} />
@@ -95,7 +98,7 @@ export const ContainMap = () => {
 
         {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
 
-        {originLocation && destinyLocation && !userLocation && (
+        {originLocation && destinationLocation && !userLocation && (
           <AdvancedMarker
             position={{
               lat: originLocation.latitude,
@@ -104,6 +107,12 @@ export const ContainMap = () => {
           >
             <MarkerOrigin />
           </AdvancedMarker>
+        )}
+
+        {routeNavigation && (
+          <MapControl position={ControlPosition.LEFT_BOTTOM}>
+            <Navigation />
+          </MapControl>
         )}
       </Map>
 

@@ -1,6 +1,6 @@
 import styles from "./OptionsAddress.module.css";
 import iconMyLocation from "../../../../assets/img/useMyLocation.png";
-import iconAddress from "../../../../assets/img/destinyAddress.png";
+import iconAddress from "../../../../assets/img/destinationAddress.png";
 import { useMapControls } from "../../../../contexts/MapContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 
@@ -28,24 +28,25 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
           Mi ubicacion
         </li>
       )}
-      {suggestions.map((suggestion, index) => (
-        <li
-          onClick={() =>
-            handleClick(suggestion.formattedAddress, suggestion.location)
-          }
-          key={index}
-        >
-          <img src={iconAddress}></img>
-          <p>
-            <span className={styles.displayName}>
-              {suggestion.displayName.text},
-            </span>
-            <span className={styles.formattedAddress}>
-              {suggestion.formattedAddress}
-            </span>
-          </p>
-        </li>
-      ))}
+      {suggestions &&
+        suggestions.map((suggestion, index) => (
+          <li
+            onClick={() =>
+              handleClick(suggestion.formattedAddress, suggestion.location)
+            }
+            key={index}
+          >
+            <img src={iconAddress}></img>
+            <p>
+              <span className={styles.displayName}>
+                {suggestion.displayName.text},
+              </span>
+              <span className={styles.formattedAddress}>
+                {suggestion.formattedAddress}
+              </span>
+            </p>
+          </li>
+        ))}
     </ul>
   );
 };

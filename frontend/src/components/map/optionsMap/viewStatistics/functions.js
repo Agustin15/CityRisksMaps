@@ -24,7 +24,7 @@ export const getCrimes = async (loadingMenu, setLoadingMenu) => {
   }
 };
 
-export const resize = (elementId, option) => {
+export const resize = (elementId) => {
   if (window.innerWidth >= 1200) return;
 
   const elementToResize = document.getElementById(elementId);
@@ -35,32 +35,53 @@ export const resize = (elementId, option) => {
 
   const containOption = elementToResize.firstChild;
 
-  if (containOption) resizeAction(elementToResize, containOption, option);
+  if (elementToResize.getAnimations().length > 0) {
+    elementToResize.getAnimations().map((animation) => animation.cancel());
+  }
 
-  removeEventListener("touchmove", resizeAction);
-  return;
+  if (containOption) resizeAction(elementToResize, containOption);
+
+  removeEventListener("touchstart", resizeAction);
+  removeEventListener("touchend", resizeAction);
 };
 
-const resizeAction = (elementToResize, containOption, option) => {
-  containOption.addEventListener("touchmove", (event) => {
-    switch (true) {
-      case window.innerWidth <= 650:
-        let toucheYvh =
-          (event.targetTouches[0].pageY * 100) / window.innerHeight;
+const resizeAction = async (elementToResize, containOption) => {
+  let clientYstart, clientYend, clientXstart, clientXend, animation;
 
-        if (option == "viewPlaces") toucheYvh -= 11;
+  containOption.addEventListener("touchstart", async (event) => {
+    clientYstart = event.targetTouches[0].clientY;
+    clientXstart = event.targetTouches[0].clientX;
+  });
 
-        if (toucheYvh >= 0 && toucheYvh < (option != "viewPlaces" ? 86 : 79))
-          elementToResize.style.transform = `TranslateY(${toucheYvh}vh)`;
-        break;
+  containOption.addEventListener("touchend", async (event) => {
+    clientYend = event.changedTouches[0].clientY;
+    clientXend = event.changedTouches[0].clientX;
 
-      case window.innerWidth > 650 && window.innerWidth < 1200:
-        let toucheYvw =
-          (event.targetTouches[0].pageX * 100) / window.innerWidth;
+    if (clientYend && clientYstart) {
+      const animationTiming = {
+        duration: 700,
+        fill: "forwards"
+      };
 
-        if (toucheYvw > 14 && toucheYvw < 93)
-          elementToResize.style.right = `${100 - toucheYvw}vw`;
-        break;
+      switch (true) {
+        case window.innerWidth <= 650:
+          if (clientYstart < clientYend) {
+            animation = [{ transform: "TranslateY(79vh)" }];
+          } else {
+            animation = [{ transform: "TranslateY(0vh)" }];
+          }
+          elementToResize.animate(animation, animationTiming);
+          break;
+
+        case window.innerWidth > 650 && window.innerWidth < 1200:
+          if (clientXstart > clientXend) {
+            animation = [{ transform: "TranslateX(-81vw)" }];
+          } else {
+            animation = [{ transform: "TranslateX(0vw)" }];
+          }
+          elementToResize.animate(animation, animationTiming);
+          break;
+      }
     }
   });
 };

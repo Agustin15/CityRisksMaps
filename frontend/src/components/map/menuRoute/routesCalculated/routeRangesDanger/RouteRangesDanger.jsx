@@ -14,8 +14,8 @@ export const RouteRangesDanger = ({ route }) => {
       </span>
 
       <ul className={styles.rangesDanger}>
-        {route.routeRangesDanger.map((rangeDanger) => (
-          <li>
+        {route.routeRangesDanger.map((rangeDanger,index) => (
+          <li key={index}>
             <div
               style={{
                 background: colorReference(rangeDanger.range, crimeSelected)

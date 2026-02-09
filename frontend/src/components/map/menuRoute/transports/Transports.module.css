@@ -30,11 +30,12 @@
     background: rgba(0, 0, 0, 0.384);
 }
 
-@media (width<=650px) {
+@media (width<=1200px) {
     .transports {
         background: none;
         box-shadow: none;
-        background-color: #28335e;
-        border-bottom: 1px solid rgb(17, 25, 58);
+        background: linear-gradient(#1b2450, #243064);
+        border-bottom: 1px solid rgb(25, 37, 85);
     }
 }
+

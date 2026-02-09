@@ -1,5 +1,5 @@
 import styles from "./BtnIndications.module.css";
-import iconDestiny from "../../../assets/img/destiny.png";
+import iconDestination from "../../../assets/img/destination.png";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 
@@ -15,7 +15,7 @@ export const BtnIndications = () => {
       }}
       className={styles.buttonStartRoute}
     >
-      <img src={iconDestiny}></img>
+      <img src={iconDestination}></img>
     </button>
   );
 };

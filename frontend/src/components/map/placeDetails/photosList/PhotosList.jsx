@@ -1,9 +1,9 @@
 import styles from "./PhotosList.module.css";
-import next from "../../../../assets/img/next.png";
-import prev from "../../../../assets/img/prev.png";
 import noData from "../../../../assets/img/imageNotFound.png";
 import { useEffect, useState } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
+import { Options } from "./options/Options";
+import { PhotosDetails } from "./photosDetails/PhotosDetails";
 
 export const PhotosList = ({ place }) => {
   const { getPhotoDetails, setShowPhotos, setLoadingMore, loadingMore } =
@@ -42,55 +42,29 @@ export const PhotosList = ({ place }) => {
       <div className={styles.containClose}>
         <button onClick={() => setShowPhotos(false)}>X</button>
       </div>
-      <ul className={styles.list}>
-        {loadingMore && (
-          <div className={styles.containLoading}>
-            <span className={styles.loader}></span>
-          </div>
-        )}
 
-        {!loadingMore && photosDetails.length == 0 && (
-          <div className={styles.noData}>
-            <img src={noData}></img>
-            <span>Error inesperado al cargar las imagenes</span>
-          </div>
-        )}
+      {loadingMore && (
+        <div className={styles.containLoading}>
+          <span className={styles.loader}></span>
+        </div>
+      )}
 
-        {!loadingMore && photosDetails.length > 0 && (
-          <li>
-            <div className={styles.containImage}>
-              <img
-                src={photosDetails.length > 0 && photosDetails[index].url}
-              ></img>
-            </div>
-            {photosDetails[index].author && (
-              <div className={styles.author}>
-                <b>Autor:</b>
-                <img src={photosDetails[index].author.photoUri}></img>
-                <a href={photosDetails[index].author.uri}>
-                  {photosDetails[index].author.displayName}
-                </a>
-              </div>
-            )}
-          </li>
-        )}
-      </ul>
+      {!loadingMore && photosDetails.length == 0 && (
+        <div className={styles.noData}>
+          <img src={noData}></img>
+          <span>Error inesperado al cargar las imagenes</span>
+        </div>
+      )}
 
-      <div className={styles.options}>
-        <button onClick={() => index > 0 && setIndex(index - 1)}>
-          <img src={prev}></img>
-        </button>
-        <span>
-          {index + 1}/{photosDetails.length}
-        </span>
-        <button
-          onClick={() =>
-            index + 1 < photosDetails.length && setIndex(index + 1)
-          }
-        >
-          <img src={next}></img>
-        </button>
-      </div>
+      {!loadingMore && photosDetails.length > 0 && (
+        <PhotosDetails photosDetails={photosDetails} index={index} />
+      )}
+
+      <Options
+        setIndex={setIndex}
+        index={index}
+        photosDetails={photosDetails}
+      />
     </div>
   );
 };

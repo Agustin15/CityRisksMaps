@@ -4,12 +4,15 @@
     border: 5px solid #2e355c;
 }
 
-.window {
-    background: red;
+.mapNavigation {
+    width: 58.3vw;
+    height: 98.6vh;
+    border: 5px solid #2e355c;
 }
 
 @media (width<=650px) {
-    .map {
+    .map,
+    .mapNavigation {
         width: 100vw;
         height: 93.3vh;
         border: none;
@@ -17,7 +20,8 @@
 }
 
 @media (width>650px) and (width<1200px) {
-    .map {
+    .map,
+    .mapNavigation {
         width: 92vw;
         height: 100vh;
         border: none;

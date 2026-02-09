@@ -3,6 +3,7 @@ import { createContext, useContext, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useMapControls } from "./MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
+import { usePhotosPlace } from "./PhotosContext.jsx";
 
 const SearchPlaceContext = createContext();
 
@@ -13,23 +14,23 @@ export const SearchPlaceProvider = ({ children }) => {
   const [valueInput, setValueInput] = useState("");
   const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
-  const { userLocation, boundsMontevideo } = useMapControls();
+
+  const { userLocation } = useMapControls();
+  const { setMainPhoto } = usePhotosPlace();
   const map = useMap();
 
-  const handleCleanInput = async (setSuggestions, suggestions) => {
-    if (suggestions) setSuggestions();
-
+  const handleCleanInput = async (setSuggestions) => {
+    setSuggestions();
     if (selectedPlace) {
+      setMainPhoto();
       setSelectedPlace();
-      if (valueSearchedByText) {
-        setValueInput(valueSearchedByText);
-        return;
-      }
-    }
-    if (placesSearched && !selectedPlace) {
+      if (placesSearched) setValueInput(valueSearchedByText);
+      else setValueInput("");
+    } else if (placesSearched) {
       setPlacesSearched();
+      setValueSearchedByText();
+      setValueInput("");
     }
-    setValueInput("");
   };
 
   const handleClickOnMap = async (event, marker) => {
@@ -91,31 +92,7 @@ export const SearchPlaceProvider = ({ children }) => {
     }
   };
 
-  const geocodingPlaceByAddress = async (address) => {
-    setLoadingPlace(true);
-
-    const boundsMdveo = boundsMontevideo();
-
-    try {
-      const geocoder = new google.maps.Geocoder();
-
-      const result = await geocoder.geocode({
-        address: address,
-        bounds: boundsMdveo
-      });
-
-      if (result.results) {
-        return result.results;
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoadingPlace(false);
-    }
-  };
-
   const searchByText = async () => {
-    setValueSearchedByText(inputRef.current.value);
     setLoadingPlace(true);
 
     const request = {
@@ -159,7 +136,12 @@ export const SearchPlaceProvider = ({ children }) => {
       if (response.status != 200)
         throw new Error("Sitio solicitado no encontrado");
       else if (result.places) {
-        setPlacesSearched(result.places);
+        if (result.places.length == 1) setSelectedPlace(result.places[0]);
+        else {
+          setPlacesSearched(result.places);
+          setValueSearchedByText(inputRef.current.value);
+        }
+
         map.setZoom(15);
         map.panTo({
           lat: result.places[0].location.latitude,
@@ -189,7 +171,6 @@ export const SearchPlaceProvider = ({ children }) => {
         placesSearched,
         moreDetailsPlace,
         handleClickOnMap,
-        geocodingPlaceByAddress,
         searchByText,
         loadingPlace,
         setLoadingPlace

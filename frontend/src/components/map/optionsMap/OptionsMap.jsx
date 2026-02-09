@@ -10,19 +10,22 @@ import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
 import { usePhotosPlace } from "../../../contexts/PhotosContext";
 import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
+import { useNavigation } from "../../../contexts/NavigationContext.jsx";
 
 export const OptionsMap = () => {
   const { newQuiz, showListQuizes } = useQuizes();
   const { showPhotos } = usePhotosPlace();
   const { selectedPlace, placesSearched } = useSearchPlace();
   const { windowWidth } = useWindowResize();
+  const { routeNavigation } = useNavigation();
 
   return (
     <>
       <ViewStatistics />
-      {(selectedPlace || placesSearched || windowWidth >= 1200) && (
-        <ViewPlaces />
-      )}
+
+      {((windowWidth >= 1200 && !routeNavigation) ||
+        (selectedPlace && !routeNavigation) ||
+        placesSearched) && <ViewPlaces />}
 
       {showPhotos && (
         <Modal>

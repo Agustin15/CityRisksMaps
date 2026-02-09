@@ -1,55 +1,50 @@
 .navigation {
     display: flex;
     flex-direction: column;
+    justify-content: start;
     align-items: center;
-    position: absolute;
-    z-index: 7;
-    top: 100;
-    left: 0;
-    height: 38.4%;
-    width: 58.8%;
-    background-color: #1f243b;
+    margin-left: 3vh;
 }
 
-.navigation .header {
+.navigation .indications {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.navigation .header .title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 17px;
-}
-
-.navigation .header .title img {
-    width: 33px;
-    height: 33px;
-}
-.navigation .header .close {
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    height: auto;
+    gap: 1rem;
     width: 99%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
 }
 
-.menuRoute .close button {
-    width: 4rem;
-    height: 1.4rem;
-    margin: 0;
-    background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
-    box-shadow: none;
+.navigation .indications .step {
+    width: 22rem;
+    height: auto;
     color: white;
-    border-left-color: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom-left-radius: 3px;
-    border: none;
     font-size: 18px;
-    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: rgb(21, 148, 21);
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.navigation .indications .detailsStep {
+    width: 97%;
+    height: auto;
+    color: white;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-color: rgb(25, 26, 63);
+    padding: 1rem;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    gap: 1rem;
+}
+.navigation .indications .detailsStep h4 {
+    padding: 0;
+    margin: 0;
 }

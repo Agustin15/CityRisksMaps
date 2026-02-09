@@ -1,21 +1,39 @@
 import styles from "./Photo.module.css";
 import imageNotFound from "../../../../assets/img/imageNotFound.png";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
 
-export const Photo = ({ photo }) => {
-  const { getPhotoDetails } = usePhotosPlace();
-  const [mainPhoto, setMainPhoto] = useState();
-  const [loading, setLoading] = useState(false);
+export const Photo = ({ place }) => {
+  const {
+    getPhotoDetails,
+    getStreetViewStaticImage,
+    mainPhoto,
+    setMainPhoto,
+    loading
+  } = usePhotosPlace();
 
   useEffect(() => {
-    getMainPhoto();
+    if (mainPhoto) return;
+    getMainPhoto(place.photos ? place.photos[0] : null);
   }, []);
 
-  const getMainPhoto = async () => {
-    const url = await getPhotoDetails(photo.name, 400, 400, setLoading);
+  const getMainPhoto = async (photo) => {
+    let url;
+
+    if (photo) {
+      url = await getPhotoDetails(photo.name, 400, 400, "mainPicture");
+    } else {
+      url = await getStreetViewStaticImage(
+        400,
+        400,
+        place.location.latitude,
+        place.location.longitude
+      );
+    }
+
     if (url) setMainPhoto(url);
   };
+
   return (
     <div className={styles.containPhoto}>
       {loading && <span className={styles.loader}></span>}

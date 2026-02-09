@@ -1,0 +1,92 @@
+.origin {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    width: 45%;
+    gap: 0.5rem;
+}
+
+.row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 99%;
+}
+
+.containInput {
+    width: 99%;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containInput input {
+    padding-right: 2.5rem;
+    width: 99%;
+}
+.containInput img {
+    width: 26px;
+    height: 26px;
+}
+.containInput .search {
+    width: 1rem;
+    height: auto;
+    position: absolute;
+    top: 0.6rem;
+    right: 0.1rem;
+    cursor: pointer;
+    box-shadow: none;
+    background: none;
+}
+
+.containInput .search .loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #fff;
+    border-bottom-color: #278cc7;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: absolute;
+    top: 0;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.containInput .search img {
+    width: 19px;
+    height: 19px;
+}
+
+@media (width<=650px) {
+    .origin {
+        width: 99%;
+        gap: 0.5rem;
+    }
+    .row {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+}
+
+@media (width>650px) and (width<1000px) {
+    .origin {
+        width: 75%;
+        gap: 0.5rem;
+        margin-right: 4vw;
+    }
+}

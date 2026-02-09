@@ -22,9 +22,9 @@
 }
 
 .loader {
-    width: 23px;
-    height: 23px;
-    border: 5px solid #fff;
+    width: 28px;
+    height: 28px;
+    border: 2px solid #fff;
     border-bottom-color: #278cc7;
     border-radius: 50%;
     display: inline-block;
@@ -45,6 +45,22 @@
     .containPhoto {
         width: 92%;
         height: 24vh;
+        box-shadow: none;
+        border-radius: 5px;
+        background: #17214d;
+    }
+
+    .containPhoto img {
+        width: 100%;
+        height: 99%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containPhoto {
+        margin-left: 0;
+        width: 95%;
+        height: 53vh;
         box-shadow: none;
         border-radius: 5px;
         background: #17214d;

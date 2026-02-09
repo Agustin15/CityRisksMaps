@@ -16,7 +16,8 @@ export const NavigationProvider = ({ children }) => {
     polylines,
     setPolylines,
     polylinesBackground,
-    setPolylinesBackground
+    setPolylinesBackground,
+    setShowMenuRoutes
   } = useRoutes();
 
   const handleNavigation = () => {
@@ -24,6 +25,7 @@ export const NavigationProvider = ({ children }) => {
       if (index != routeSelected) polyline.setMap(null);
       else return polyline;
     });
+
     polylinesBackground.map((polyline) => polyline.setMap(null));
 
     setPolylines(polylinesUpdated);
@@ -37,7 +39,7 @@ export const NavigationProvider = ({ children }) => {
       zoomControl: false,
       streetViewControl: false,
       center: userLocation,
-      zoom:20
+      zoom: 20
     });
 
     const startLocation = route.legs[0].steps[0].startLocation.latLng;
@@ -50,6 +52,7 @@ export const NavigationProvider = ({ children }) => {
 
     map.setTilt(80);
     map.setHeading(heading);
+    setShowMenuRoutes(false);
   };
 
   return (

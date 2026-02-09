@@ -10,7 +10,7 @@
     color: rgb(40, 221, 40);
 }
 
-@media (width<=650px) {
+@media (width<1000px) {
     .columnTwo {
         display: flex;
         flex-direction: row;

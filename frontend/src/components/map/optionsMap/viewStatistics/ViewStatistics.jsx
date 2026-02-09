@@ -18,14 +18,14 @@ export const ViewStatistics = () => {
   const { showQuizes } = useQuizes();
 
   useEffect(() => {
-    resize(viewStatisticsId, "viewStatistics");
+    resize(viewStatisticsId);
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
   }, [windowWidth]);
 
   useEffect(() => {
     if (windowWidth >= 1200) return;
-    resize(viewStatisticsId, "viewStatistics");
+    resize(viewStatisticsId);
   }, [crimeSelected, showQuizes]);
 
   return (

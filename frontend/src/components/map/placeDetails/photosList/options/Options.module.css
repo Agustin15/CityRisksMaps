@@ -1,0 +1,44 @@
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    width: 99%;
+}
+
+.options img {
+    width: 39px;
+    height: 39px;
+}
+
+.options span {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.options button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+.options button:hover {
+    transform: scale(1.1);
+}
+
+@media (width<=650px) {
+    .options {
+        width: 99%;
+        margin-top: 1rem;
+    }
+
+    .options button:hover {
+        transform: scale(1.1);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .options {
+        margin-top: 0;
+    }
+}

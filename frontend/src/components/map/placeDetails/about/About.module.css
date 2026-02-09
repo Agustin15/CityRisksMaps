@@ -44,10 +44,15 @@
 
 @media (width<=650px) {
     .about {
-        background: none;
         box-shadow: none;
-        background: none;
         background: #17214d;
         border-radius: 5px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .about {
+        background: #17214d;
+        box-shadow: none;
     }
 }
