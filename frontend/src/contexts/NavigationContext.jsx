@@ -55,9 +55,25 @@ export const NavigationProvider = ({ children }) => {
     setShowMenuRoutes(false);
   };
 
+  const handleCloseNavigation = () => {
+    setRouteNavigation();
+    map.setOptions({
+      disableDefaultUI: true,
+      zoomControl: true,
+      streetViewControl: true,
+      center: userLocation,
+      zoom: 15
+    });
+  };
+
   return (
     <NavigationContext.Provider
-      value={{ routeNavigation, setRouteNavigation, handleNavigation }}
+      value={{
+        routeNavigation,
+        setRouteNavigation,
+        handleNavigation,
+        handleCloseNavigation
+      }}
     >
       {children}
     </NavigationContext.Provider>

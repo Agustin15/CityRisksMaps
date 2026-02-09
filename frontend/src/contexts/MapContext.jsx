@@ -46,10 +46,18 @@ export const MapProvider = ({ children }) => {
   const success = (pos) => {
     const crd = pos.coords;
 
-    setUserLocation({
-      lat: crd.latitude,
-      lng: crd.longitude
-    });
+    if (!userLocation) {
+      setUserLocation({
+        lat: crd.latitude,
+        lng: crd.longitude
+      });
+    } else {
+      setUserLocation({
+        ...userLocation,
+        lat: crd.latitude,
+        lng: crd.longitude
+      });
+    }
 
     map.setZoom(15);
     map.panTo({ lat: crd.latitude, lng: crd.longitude });

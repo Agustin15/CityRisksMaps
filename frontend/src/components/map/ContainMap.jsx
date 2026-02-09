@@ -1,41 +1,26 @@
 import {
   Map,
-  AdvancedMarker,
   ControlPosition,
-  MapControl,
   useAdvancedMarkerRef
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMapControls } from "../../contexts/MapContext";
 import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
-import { useRoutes } from "../../contexts/routesContext/RoutesContext.jsx";
 import { useNavigation } from "../../contexts/NavigationContext.jsx";
-import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
-import { MyLocation } from "./myLocation/MyLocation";
-import { MapHandler } from "./mapHandler/MapHandler";
-import { SearchPlace } from "./searchPlace/SearchPlace.jsx";
-import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
-import { MarkersPlaces } from "./markersPlaces/MarkersPlaces.jsx";
-import { Geolocation } from "./geolocation/Geolocation.jsx";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
-import { MarkerOrigin } from "./markerOrigin/MarkerOrigin.jsx";
-import { Navigation } from "./navigation/Navigation.jsx";
+import { ContentMap } from "./ContentMap.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
-  const { selectedPlace, placesSearched, handleClickOnMap } = useSearchPlace();
-  const { originLocation, destinationLocation } = useRoutes();
+  const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation } = useNavigation();
-  const { windowWidth } = useWindowResize();
-
   const [polygonSelected, setPolygonSelected] = useState();
-
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   return (
@@ -63,57 +48,11 @@ export const ContainMap = () => {
         gestureHandling="greedy"
         mapId={MAP_ID}
       >
-        <AdvancedMarker position={userLocation ? userLocation : null}>
-          <MyLocation />
-        </AdvancedMarker>
-
-        <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
-
-        <MapControl
-          position={
-            windowWidth <= 650
-              ? ControlPosition.TOP_CENTER
-              : ControlPosition.TOP_LEFT
-          }
-        >
-          {!routeNavigation && <SearchPlace />}
-        </MapControl>
-
-        <MapHandler place={selectedPlace} marker={marker} />
-
-        {!routeNavigation && (
-          <MapControl position={ControlPosition.RIGHT_BOTTOM}>
-            <Geolocation />
-          </MapControl>
-        )}
-
-        {polygonSelected && (
-          <AdvancedMarker
-            clickable={true}
-            position={polygonSelected ? polygonSelected.data.center : null}
-          >
-            <InfoWindowNeighborhood polygonSelected={polygonSelected} />
-          </AdvancedMarker>
-        )}
-
-        {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
-
-        {originLocation && destinationLocation && !userLocation && (
-          <AdvancedMarker
-            position={{
-              lat: originLocation.latitude,
-              lng: originLocation.longitude
-            }}
-          >
-            <MarkerOrigin />
-          </AdvancedMarker>
-        )}
-
-        {routeNavigation && (
-          <MapControl position={ControlPosition.LEFT_BOTTOM}>
-            <Navigation />
-          </MapControl>
-        )}
+        <ContentMap
+          polygonSelected={polygonSelected}
+          markerRef={markerRef}
+          marker={marker}
+        />
       </Map>
 
       <OptionsMap />

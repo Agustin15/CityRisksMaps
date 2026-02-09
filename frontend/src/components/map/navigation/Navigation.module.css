@@ -1,50 +1,83 @@
-.navigation {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    margin-left: 3vh;
-}
-
-.navigation .indications {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    height: auto;
-    gap: 1rem;
-    width: 99%;
-}
-
-.navigation .indications .step {
-    width: 22rem;
-    height: auto;
-    color: white;
-    font-size: 18px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    background-color: rgb(21, 148, 21);
-    padding: 1rem;
-    border-radius: 5px;
-}
-
-.navigation .indications .detailsStep {
-    width: 97%;
-    height: auto;
+.indication {
+    width: 26rem;
+    height: 4rem;
     color: white;
     font-size: 16px;
     display: flex;
-    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    margin: 2vw 1vw 0 0;
+    background-color: rgb(21, 145, 21);
+    border-radius: 8px;
+}
+
+.indication .maneuver {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(22, 136, 22);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-right: 1px solid green;
+}
+
+.indication .maneuver img {
+    width: 42px;
+    height: 42px;
+}
+.indication p {
+    padding: 0;
+    margin: 0;
+}
+
+.detailsIndication {
+    width: 42vw;
+    height: 16vh;
+    color: white;
+    font-size: 16px;
+    display: flex;
     justify-content: start;
     align-items: center;
     background-color: rgb(25, 26, 63);
-    padding: 1rem;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    gap: 1rem;
+    margin-bottom: 1.5vh;
+    border-radius: 5px;
+    position: relative;
 }
-.navigation .indications .detailsStep h4 {
+
+.detailsIndication button {
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: none;
+    border-top-right-radius: 3px;
+    width: 2.8rem;
+    height: 1.3rem;
+    color: white;
+    background-color: rgb(202, 29, 29);
+}
+
+.detailsIndication button:hover {
+    background-color: rgb(189, 20, 20);
+}
+
+.detailsIndication .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    width: 66%;
+}
+
+.detailsIndication h4 {
     padding: 0;
     margin: 0;
 }
