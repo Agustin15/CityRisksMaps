@@ -31,4 +31,5 @@
 .containMyNavigation img {
     width: 22px;
     height: 22px;
+    transform: rotate(300deg);
 }

@@ -1,13 +1,12 @@
 import styles from "./Duration.module.css";
-import { convertDuration, convertDistance } from "../functions.js";
 
-export const Duration = ({route}) => {
+export const Duration = ({ route }) => {
   return (
     <div className={styles.columnTwo}>
       <span className={styles.duration}>
-        {convertDuration(parseInt(route.duration))}
+        {route.legs[0].localizedValues.staticDuration.text}
       </span>
-      <span>{convertDistance(parseInt(route.distanceMeters))}</span>
+      {route.legs[0].localizedValues.distance.text}
     </div>
   );
 };

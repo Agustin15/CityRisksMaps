@@ -1,12 +1,13 @@
 import {
   Map,
   ControlPosition,
-  useAdvancedMarkerRef
+  useAdvancedMarkerRef,
+  useMap
 } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMapControls } from "../../contexts/MapContext";
 import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useSearchPlace } from "../../contexts/SearchPlaceContext.jsx";
@@ -37,7 +38,10 @@ export const ContainMap = () => {
         streetViewControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
         }}
-        onClick={(event) => handleClickOnMap(event, marker)}
+        onClick={(event) => {
+          if (routeNavigation) return;
+          handleClickOnMap(event, marker);
+        }}
         onMousemove={(event) =>
           handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected)
         }

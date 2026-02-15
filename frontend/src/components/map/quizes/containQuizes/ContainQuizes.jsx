@@ -3,10 +3,12 @@ import iconQuizes from "../../../../assets/img/quizes.png";
 import iconMinimize from "../../../../assets/img/minimize.png";
 import { Table } from "../Table";
 import { LoadDataQuizes } from "../loadDataQuizes/LoadDataQuizes";
+import { resize } from "../../optionsMap/viewStatistics/functions.js";
 
 export const ContainQuizes = ({ setShowViewStatistics }) => {
   return (
     <div className={styles.containData}>
+      <div onClick={(event) => resize(event)} className={styles.deploy}></div>
       <div className={styles.header}>
         <div className={styles.close}>
           <button onClick={() => setShowViewStatistics(false)}>

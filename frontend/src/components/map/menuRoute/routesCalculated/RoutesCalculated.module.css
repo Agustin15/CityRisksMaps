@@ -71,18 +71,19 @@
     width: 99%;
 }
 
-@media (width<=650px) {
+@media (width<1000px) {
     .containRoutes {
         margin: 1rem 0 0 0;
-        border-top: 1px solid rgb(12, 28, 82);
+        border-top: 1px solid rgb(190, 190, 190);
         overflow-y: scroll;
         overflow-x: hidden;
+        color: black;
     }
 
     .containRoutes li {
         width: 98%;
         box-shadow: none;
-        border-bottom: 1px solid rgb(12, 28, 82);
+        border-bottom: 1px solid rgb(196, 196, 196);
         background: none;
     }
     .containRoutes li .mainRow {
@@ -112,7 +113,10 @@
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
-        width: 99%;
+        width: 106%;
+        background: rgb(241, 241, 241);
+        border-top: 1px solid rgb(219, 219, 219);
+        border-bottom: 1px solid rgb(219, 219, 219);
     }
 
     .containRoutes li .columnOne {
@@ -130,36 +134,29 @@
     }
 }
 
-@media (width>650px) and (width<1000px) {
+@media (width>=1000px) and (width<1200px) {
     .containRoutes {
         margin: 1rem 0 0 0;
-        border-top: 1px solid rgb(12, 28, 82);
+        border-top: 1px solid rgb(168, 168, 168);
+        color: black;
     }
     .containRoutes li {
-        background: none;
+        background: white;
         box-shadow: none;
-        border-bottom: 1px solid rgb(12, 28, 82);
+        border-bottom: 1px solid rgb(185, 185, 185);
     }
 
     .containRoutes li .row {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: start;
         align-items: center;
         gap: 0.5rem;
         width: 99%;
     }
-}
-
-@media (width>=1000px) and (width<1200px) {
-    .containRoutes {
-        gap: 0.3rem;
-        border-top: 1px solid rgb(12, 28, 82);
-    }
-
-    .containRoutes li {
-        box-shadow: none;
-        background: none;
-        border-bottom: 1px solid rgb(12, 28, 82);
+    .containRoutes li .row .typeTransport {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

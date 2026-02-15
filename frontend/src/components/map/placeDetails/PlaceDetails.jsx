@@ -6,10 +6,13 @@ import { OpeningDays } from "./openingDays/OpeningDays";
 import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
+import { resize } from "../optionsMap/viewStatistics/functions.js";
 
 export const PlaceDetails = ({ place }) => {
   return (
     <div className={styles.containDetails}>
+      <div onClick={(event) => resize(event)} className={styles.deploy}></div>
+
       <ContainPhoto place={place} />
 
       <div className={styles.column}>

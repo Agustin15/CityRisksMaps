@@ -118,22 +118,42 @@
     color: rgb(61, 136, 185);
 }
 
+.deploy {
+    display: none;
+}
+
 @media (width<=650px) {
     .containDetails {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-top-left-radius: 27px;
+        border-top-right-radius: 27px;
+        background: white;
+        color: black;
     }
 
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 1vh;
+        left: 44vw;
+        z-index: 5;
+        margin: auto;
+        width: 3rem;
+        height: 0.3rem;
+        border-radius: 25px;
+        background: rgb(151, 151, 151);
+        opacity: 59%;
+    }
     .containDetails .column {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 92%;
         height: 99%;
+        padding-bottom: 3rem;
     }
 
     .containDetails .column .aboutIt,
@@ -142,8 +162,8 @@
     .containDetails .column .info {
         box-shadow: none;
         background: none;
-        background: #17214d;
-        font-size: 16px;
+        background: rgb(241, 241, 241);
+        font-size: 15px;
         border-radius: 5px;
     }
 
@@ -153,6 +173,10 @@
     .containDetails .column .info li p {
         width: 82%;
     }
+    .containDetails .column .info li a {
+        color: rgb(41, 107, 151);
+        text-decoration: none;
+    }
 }
 @media (width>650px) and (width<1200px) {
     .containDetails {
@@ -161,9 +185,23 @@
         align-items: center;
         justify-content: start;
         overflow-y: scroll;
-        border-top-right-radius: 5px;
+        border-top-right-radius: 27px;
+        background: white;
+        color: black;
     }
-    
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 38vh;
+        right: 0.8vw;
+        z-index: 5;
+        width: 0.4rem;
+        height: 3rem;
+        border-radius: 25px;
+        background: rgb(151, 151, 151);
+        opacity: 59%;
+    }
+
     .containDetails .column {
         width: 94%;
         height: auto;
@@ -176,12 +214,16 @@
     .containDetails .column .info {
         box-shadow: none;
         background: none;
-        background: #17214d;
-        font-size: 17px;
+        background: rgb(241, 241, 241);
+        font-size: 16px;
         border-radius: 5px;
     }
 
     .containDetails .column .info {
         height: auto;
+    }
+    .containDetails .column .info li a {
+        color: rgb(41, 107, 151);
+        text-decoration: none;
     }
 }

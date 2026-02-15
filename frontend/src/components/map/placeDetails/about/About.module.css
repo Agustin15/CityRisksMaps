@@ -45,14 +45,14 @@
 @media (width<=650px) {
     .about {
         box-shadow: none;
-        background: #17214d;
+        background: rgb(241, 241, 241);
         border-radius: 5px;
     }
 }
 
 @media (width>650px) and (width<1200px) {
     .about {
-        background: #17214d;
+        background: rgb(241, 241, 241);
         box-shadow: none;
     }
 }

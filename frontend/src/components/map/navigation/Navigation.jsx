@@ -1,20 +1,13 @@
 import styles from "./Navigation.module.css";
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { useNavigation } from "../../../contexts/NavigationContext";
-import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
-import { useMapControls } from "../../../contexts/MapContext.jsx";
 import { useEffect, useState } from "react";
 import { ZoneInfo } from "./zoneInfo/ZoneInfo.jsx";
-import {
-  convertDuration,
-  convertDistance
-} from "../menuRoute/routesCalculated/functions.js";
-import { getImageManeuver, verifyUserLocationInPolygon } from "./functions.js";
+import { getImageManeuver } from "./functions.js";
+import { HandleUserLocation } from "./HandleUserLocation.jsx";
+import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
 
 export const Navigation = () => {
-  const { routeNavigation, handleCloseNavigation } = useNavigation();
-  const { userLocation } = useMapControls();
-  const { polygons } = useZoneCrimes();
   const [warning, setWarning] = useState({
     rateLevel: "",
     rateColor: "",
@@ -22,27 +15,27 @@ export const Navigation = () => {
     neighborhood: ""
   });
 
-  useEffect(() => {
-    verifyUserLocationInPolygon(userLocation, polygons, setWarning, warning);
-  }, [userLocation]);
+  const { windowWidth } = useWindowResize();
+  const { handleCloseNavigation, currentStep } = useNavigation();
 
   return (
     <div>
-      <MapControl position={ControlPosition.TOP_RIGHT}>
+      <HandleUserLocation warning={warning} setWarning={setWarning} />
+
+      <MapControl
+        position={
+          windowWidth > 650
+            ? ControlPosition.TOP_RIGHT
+            : ControlPosition.TOP_CENTER
+        }
+      >
         <div className={styles.indication}>
           <div className={styles.maneuver}>
             <img
-              src={getImageManeuver(
-                routeNavigation.legs[0].steps[0].navigationInstruction.maneuver
-              )}
+              src={getImageManeuver(currentStep.navigationInstruction.maneuver)}
             ></img>
           </div>
-          <p>
-            {
-              routeNavigation.legs[0].steps[0].navigationInstruction
-                .instructions
-            }
-          </p>
+          <p>{currentStep.navigationInstruction.instructions}</p>
         </div>
       </MapControl>
 
@@ -51,16 +44,8 @@ export const Navigation = () => {
         <button onClick={handleCloseNavigation}>X</button>
 
         <div className={styles.column}>
-          <h4>
-            {convertDuration(
-              parseInt(routeNavigation.legs[0].steps[0].staticDuration)
-            )}
-          </h4>
-          <span>
-            {convertDistance(
-              parseInt(routeNavigation.legs[0].steps[0].distanceMeters)
-            )}
-          </span>
+          <h4>{currentStep.localizedValues.staticDuration.text}</h4>
+          <span>{currentStep.localizedValues.distance.text}</span>
         </div>
       </div>
     </div>

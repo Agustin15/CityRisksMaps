@@ -16,6 +16,7 @@
     gap: 0.4rem;
     color: white;
     padding: 1.2rem;
+    border-radius: 5px;
     box-shadow: 2px 2px 2px rgb(20, 20, 20);
     background: linear-gradient(#2c3d8a, #5a6fcf);
 }
@@ -40,6 +41,7 @@
 }
 
 .canvas {
+    border-radius: 5px;
     width: 22%;
     height: 7.5rem;
     box-shadow: 2px 2px 2px rgb(20, 20, 20);

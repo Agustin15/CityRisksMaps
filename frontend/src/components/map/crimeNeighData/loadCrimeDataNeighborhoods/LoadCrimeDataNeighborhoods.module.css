@@ -40,3 +40,12 @@
 .containDetails .containReferences span {
     margin-top: 0;
 }
+@media (width<1200px) {
+    .containDetails {
+        color: black;
+        border-top: 1px solid rgb(224, 224, 224);
+        border-bottom: 1px solid rgb(224, 224, 224);
+        box-shadow: none;
+        background: rgb(241, 241, 241);
+    }
+}

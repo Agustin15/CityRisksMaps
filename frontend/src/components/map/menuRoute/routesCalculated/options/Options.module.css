@@ -32,8 +32,12 @@
 .options button:hover {
     text-decoration: underline;
 }
-@media (width<1000px) {
+@media (width<1200px) {
     .options {
         margin-top: 0.5rem;
+    }
+    .options button {
+        margin-top: 0.5rem;
+        color: rgb(10, 10, 10);
     }
 }

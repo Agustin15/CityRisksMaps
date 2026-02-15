@@ -8,7 +8,7 @@ export const ZoneInfo = ({ warning }) => {
           points="50,5 95,75 5,75"
           fill={warning.rateColor}
           stroke="#000"
-          stroke-width="5"
+          strokeWidth={5}
         ></polygon>
 
         <rect x="47" y="23" width="6" height="35" fill="#000"></rect>
@@ -18,7 +18,7 @@ export const ZoneInfo = ({ warning }) => {
       {warning.type.length > 0 && (
         <p>
           {warning.type == "crime"
-            ? "Indice de homicidios " + warning.neighborhood + ":"
+            ? "Tasa de homicidios " + warning.neighborhood + ":"
             : "Percepcion de seguridad" + warning.neighborhood + ":"}
         </p>
       )}

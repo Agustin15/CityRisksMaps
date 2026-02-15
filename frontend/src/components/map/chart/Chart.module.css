@@ -1,8 +1,9 @@
 .containChart {
-    width: 95%;
+    width: 96%;
     height: auto;
     background: linear-gradient(#2c3d8a, #5a6fcf);
     box-shadow: 2px 2px 2px rgb(19, 19, 19);
+    border-radius: 5px;
     padding: 0.3rem;
     font-size: 14px;
     position: relative;

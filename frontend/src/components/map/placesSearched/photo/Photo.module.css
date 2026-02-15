@@ -47,7 +47,7 @@
         height: 24vh;
         box-shadow: none;
         border-radius: 5px;
-        background: #17214d;
+        background: rgb(241, 241, 241);
     }
 
     .containPhoto img {
@@ -63,7 +63,7 @@
         height: 53vh;
         box-shadow: none;
         border-radius: 5px;
-        background: #17214d;
+        background: rgb(241, 241, 241);
     }
 
     .containPhoto img {

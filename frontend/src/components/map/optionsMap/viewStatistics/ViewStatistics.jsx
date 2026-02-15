@@ -10,7 +10,9 @@ import { CrimeNeighbordhoods } from "../../crimeNeighData/CrimeNeighbordhoods.js
 import { resize } from "./functions.js";
 
 export const ViewStatistics = () => {
-  const [showViewStatistics, setShowViewStatistics] = useState(true);
+  const [showViewStatistics, setShowViewStatistics] = useState(
+    window.innerWidth < 1200 ? false : true
+  );
   const viewStatisticsId = useId();
   const { windowWidth } = useWindowResize();
   const { crimeSelected } = useZoneCrimes();
@@ -18,15 +20,15 @@ export const ViewStatistics = () => {
   const { showQuizes } = useQuizes();
 
   useEffect(() => {
-    resize(viewStatisticsId);
+    if (document.getElementById(viewStatisticsId)) {
+      document
+        .getElementById(viewStatisticsId)
+        .getAnimations()
+        .map((animation) => animation.cancel());
+    }
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
   }, [windowWidth]);
-
-  useEffect(() => {
-    if (windowWidth >= 1200) return;
-    resize(viewStatisticsId);
-  }, [crimeSelected, showQuizes]);
 
   return (
     <>
@@ -39,10 +41,11 @@ export const ViewStatistics = () => {
       <Activity mode={showViewStatistics == true ? "visible" : "hidden"}>
         <div id={viewStatisticsId} className={styles.viewStatistics}>
           {crimeSelected && (
-            <div
-              onClick={(event) => resize(event)}
-              className={styles.containOptionsCrimes}
-            >
+            <div className={styles.containOptionsCrimes}>
+              <div
+                onClick={(event) => resize(event)}
+                className={styles.deploy}
+              ></div>
               <CrimeNeighbordhoods
                 categoryCrime={crimeSelected}
                 setShowViewStatistics={setShowViewStatistics}

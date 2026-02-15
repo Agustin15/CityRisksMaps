@@ -66,14 +66,14 @@
 @media (width<=650px) {
     .menuOptionsCrimes {
         z-index: 8;
-        top: 93.1vh;
+        top: 86vh;
         right: 0;
         gap: 0.8rem;
         width: 100vw;
         height: 6vh;
         padding: 0.2rem 0 0.2rem 0;
         margin: 0;
-        background: linear-gradient(#313e7a, #2b3870);
+        background: linear-gradient(#3e54b3, #1d2e7c);
     }
     .menuOptionsCrimes li {
         flex-direction: column;
@@ -85,10 +85,10 @@
         width: 22px;
         height: 22px;
     }
+
     .menuOptionsCrimes li:hover,
     .menuOptionsCrimes .selected {
-        border-bottom: none;
-        opacity: 100%;
+        border-bottom: 0;
     }
 
     .menuOptionsCrimes .holdup,
@@ -119,11 +119,11 @@
         z-index: 8;
         left: 0;
         width: 8vw;
-        height: 100vh;
+        height: 84vh;
         padding: 0.2rem 0 0.2rem 0;
         margin: 0;
         flex-direction: column;
-        background: linear-gradient(#313e7a, #2b3870);
+        background: linear-gradient(#3e54b3, #1d2e7c);
     }
 
     .menuOptionsCrimes li:hover,

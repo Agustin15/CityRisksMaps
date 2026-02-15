@@ -27,11 +27,15 @@
     border-left: none;
 }
 
+.deploy {
+    display: none;
+}
+
 @media (width<=650px) {
     .viewStatistics {
         gap: 0;
-        width: 100%;
-        height: 93.5vh;
+        width: 100vw;
+        height: 76vh;
         margin-top: 11vh;
         border-left: none;
         background: none;
@@ -40,10 +44,25 @@
     .containOptionsCrimes {
         margin-top: 0;
         height: 100%;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-        background: linear-gradient(#262c4b, #242d57);
         overflow-y: scroll;
+        border-top-left-radius: 23px;
+        border-top-right-radius: 23px;
+        background: white;
+        position: relative;
+    }
+
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 0.5vh;
+        left: 44vw;
+        z-index: 5;
+        margin: auto;
+        width: 3rem;
+        height: 0.3rem;
+        border-radius: 25px;
+        background: rgb(136, 136, 136);
+        opacity: 59%;
     }
 }
 
@@ -52,9 +71,8 @@
         right: 7.5%;
         gap: 0;
         width: 85%;
-        height: 100vh;
+        height: 85vh;
         border-left: none;
-        background: none;
     }
 
     .containOptionsCrimes {
@@ -62,7 +80,20 @@
         height: 100%;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
-        background: linear-gradient(#262c4b, #242d57);
+        color: gray;
+        background: white;
         overflow-y: scroll;
+    }
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 38vh;
+        right: 1.5vw;
+        z-index: 5;
+        width: 0.4rem;
+        height: 3rem;
+        border-radius: 25px;
+        background: rgb(136, 136, 136);
+        opacity: 59%;
     }
 }

@@ -70,6 +70,21 @@ td {
 @media (width<=650px) {
     .containTable {
         overflow-y: scroll;
+        background: white;
+        box-shadow: none;
+        padding-bottom: 0.5rem;
+    }
+    .table th {
+        padding-bottom: 0.7rem;
+        padding-top: 0.3rem;
+    }
+    .trGray {
+        background-color: #eeeeee;
+        cursor: pointer;
+    }
+    .trWhite {
+        background-color: #ffffff;
+        cursor: pointer;
     }
 
     .table {
@@ -78,17 +93,43 @@ td {
         border-collapse: collapse;
         margin-left: 111vw;
     }
+
+    .table .moreDetails {
+        width: 100%;
+        box-shadow: none;
+        background-color: #ffffff;
+        border-top: 1px solid rgb(197, 197, 197);
+        border-bottom: 1px solid rgb(170, 170, 170);
+    }
 }
 
 @media (width>650px) and (width<1200px) {
     .containTable {
-        overflow-y: scroll;
+        overflow-y: visible;
+        background: white;
+        box-shadow: none;
     }
 
+    .trGray {
+        background-color: #eeeeee;
+        cursor: pointer;
+    }
+    .trWhite {
+        background-color: #ffffff;
+        cursor: pointer;
+    }
     .table {
         width: 100%;
         height: auto;
         overflow-y: scroll;
         border-collapse: collapse;
+    }
+
+    .table .moreDetails {
+        width: 99%;
+        box-shadow: none;
+        background-color: #ffffff;
+        border-top: 1px solid rgb(170, 170, 170);
+        border-bottom: 1px solid rgb(170, 170, 170);
     }
 }

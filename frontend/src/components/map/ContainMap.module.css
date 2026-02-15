@@ -14,7 +14,7 @@
     .map,
     .mapNavigation {
         width: 100vw;
-        height: 93.3vh;
+        height: 86vh;
         border: none;
     }
 }
@@ -23,7 +23,7 @@
     .map,
     .mapNavigation {
         width: 92vw;
-        height: 100vh;
+        height: 85vh;
         border: none;
         margin-left: 8vw;
     }

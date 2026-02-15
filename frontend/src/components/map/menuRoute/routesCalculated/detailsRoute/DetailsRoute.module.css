@@ -21,6 +21,13 @@
     padding: 0.5rem;
 }
 
+.details .itemDetailWhite {
+    background: #243064;
+}
+.details .itemDetailGray {
+    background: rgb(26, 37, 87);
+}
+
 .details li:hover {
     border: none;
     width: 99%;
@@ -44,16 +51,22 @@
 .detailsInstruction .duration {
     color: rgb(40, 221, 40);
 }
-@media (width<1000px) {
+@media (width<1200px) {
     .details {
-        border-top: 1px solid rgb(18, 20, 87);
+        border-top: 1px solid rgb(184, 184, 184);
     }
 
+    .details .itemDetailWhite {
+        background: white;
+    }
+    .details .itemDetailGray {
+        background: rgb(241, 241, 241);
+    }
     .details p {
         width: 87%;
         padding: 0;
         overflow: auto;
         text-wrap: wrap;
-        text-overflow:clip;
+        text-overflow: clip;
     }
 }

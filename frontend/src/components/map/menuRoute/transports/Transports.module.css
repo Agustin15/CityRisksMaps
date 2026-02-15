@@ -34,8 +34,12 @@
     .transports {
         background: none;
         box-shadow: none;
-        background: linear-gradient(#1b2450, #243064);
-        border-bottom: 1px solid rgb(25, 37, 85);
+        background: rgb(241, 241, 241);
+        border-bottom: 0;
+        margin-top: 0.5rem;
+    }
+    .transports li:hover,
+    .transports .selected {
+        background: rgba(141, 141, 141, 0.384);
     }
 }
-

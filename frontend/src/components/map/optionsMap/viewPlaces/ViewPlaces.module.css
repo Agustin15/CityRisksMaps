@@ -44,8 +44,9 @@
         top: 11vh;
         background: none;
         box-shadow: none;
-        height: 82.5vh;
-        width: 99.5vw;
+        height: 81vh;
+        width: 100vw;
+        overflow-y: hidden;
     }
     .placeNotSelected {
         display: none;
@@ -60,7 +61,7 @@
         top: 0;
         background: none;
         box-shadow: none;
-        height: 100vh;
+        height: 85.7vh;
         width: 84vw;
     }
     .placeNotSelected {

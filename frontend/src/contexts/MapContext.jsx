@@ -51,7 +51,10 @@ export const MapProvider = ({ children }) => {
         lat: crd.latitude,
         lng: crd.longitude
       });
-    } else {
+    } else if (
+      crd.latitude != userLocation.lat ||
+      crd.longitude != userLocation.lng
+    ) {
       setUserLocation({
         ...userLocation,
         lat: crd.latitude,

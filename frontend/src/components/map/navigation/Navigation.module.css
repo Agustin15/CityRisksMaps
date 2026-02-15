@@ -35,7 +35,7 @@
 
 .detailsIndication {
     width: 42vw;
-    height: 16vh;
+    height: auto;
     color: white;
     font-size: 16px;
     display: flex;
@@ -59,6 +59,7 @@
     text-align: center;
     box-shadow: none;
     border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
     width: 2.8rem;
     height: 1.3rem;
     color: white;
@@ -74,10 +75,60 @@
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
-    width: 66%;
+    width: 55%;
 }
 
 .detailsIndication h4 {
     padding: 0;
     margin: 0;
+}
+
+@media (width<=650px) {
+    .indication {
+        width: 96vw;
+        border-radius: 8px;
+        font-size: 15px;
+        margin: 0.7vh 0 0 0;
+    }
+
+    .indication .maneuver img {
+        width: 39px;
+        height: 39px;
+    }
+
+    .detailsIndication {
+        width: 97vw;
+        height: auto;
+        padding: 0;
+        font-size: 15px;
+        margin-bottom: 3vh;
+    }
+
+    .detailsIndication .column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        width: 42%;
+    }
+    .detailsIndication button {
+        font-size: 13px;
+        width: 2.8rem;
+        height: 1.1rem;
+        color: white;
+        background-color: rgb(202, 29, 29);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .detailsIndication {
+        width: 82vw;
+        height: auto;
+        padding: 0;
+        font-size: 15px;
+        margin-bottom: 3vh;
+    }
+    .detailsIndication .column {
+        width: 42%;
+    }
 }

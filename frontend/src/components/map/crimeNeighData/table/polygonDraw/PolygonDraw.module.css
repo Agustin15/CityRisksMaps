@@ -17,6 +17,7 @@
     color: white;
     padding: 1rem;
     box-shadow: 2px 2px 2px rgb(20, 20, 20);
+    border-radius: 5px;
     background: linear-gradient(#2c3d8a, #5a6fcf);
 }
 
@@ -41,6 +42,7 @@
 
 .canvas {
     width: 8rem;
+    border-radius: 5px;
     height: 8rem;
     padding: 0.4rem;
     box-shadow: 2px 2px 2px rgb(20, 20, 20);

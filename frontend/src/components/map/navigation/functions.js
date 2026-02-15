@@ -38,3 +38,64 @@ export const getImageManeuver = (maneuver) => {
       return iconDepart;
   }
 };
+
+const getCoordOfStepMostClosestToUser = (pathStep, userLocation) => {
+  let indexLatLng = 0;
+  let latLngMostClosest = pathStep[0];
+  let prevDistanceMostClosest =
+    google.maps.geometry.spherical.computeDistanceBetween(
+      userLocation,
+      pathStep[0]
+    );
+
+  pathStep.forEach((latLng, index) => {
+    if (index == 0) return;
+
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(
+      userLocation,
+      latLng
+    );
+    if (distance < prevDistanceMostClosest) {
+      prevDistanceMostClosest = distance;
+      latLngMostClosest = latLng;
+      indexLatLng = index;
+    }
+  });
+
+  return { latLngMostClosest: latLngMostClosest, indexLatLng: indexLatLng };
+};
+
+export const verifyUserDistanceToPolyline = (step, userLocation, transport) => {
+  let tolerance;
+
+  const pathStep = google.maps.geometry.encoding.decodePath(
+    step.polyline.encodedPolyline
+  );
+
+  let detailsOfLatLngMostClosest = getCoordOfStepMostClosestToUser(
+    pathStep,
+    userLocation
+  );
+
+  const distanceBetweenCoordAndUser =
+    google.maps.geometry.spherical.computeDistanceBetween(
+      userLocation,
+      detailsOfLatLngMostClosest.latLngMostClosest
+    );
+
+  if (
+    transport == "Drive" ||
+    transport == "Transit" ||
+    transport == "Two_wheeler"
+  ) {
+    tolerance = 30;
+  } else {
+    tolerance = 15;
+  }
+
+  if (distanceBetweenCoordAndUser >= tolerance) {
+    return null;
+  } else {
+    return detailsOfLatLngMostClosest.indexLatLng;
+  }
+};

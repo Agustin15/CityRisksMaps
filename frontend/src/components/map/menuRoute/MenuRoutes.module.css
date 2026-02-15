@@ -39,24 +39,49 @@
 .notRoutes {
     display: none;
 }
+.deploy {
+    display: none;
+}
 
 @media (width<=650px) {
     .menuRoute {
-        height: 82vh;
+        height: 100%;
         width: 100%;
-        background: none;
-        background-color: #283466;
+        background: white;
+        color: black;
         overflow-y: scroll;
         overflow-x: hidden;
         scrollbar-width: thin;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-top-left-radius: 27px;
+        border-top-right-radius: 27px;
+        padding-bottom: 2rem;
+    }
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 0.5vh;
+        left: 44vw;
+        z-index: 5;
+        margin: auto;
+        width: 3rem;
+        height: 0.3rem;
+        border-radius: 25px;
+        background: rgb(145, 145, 145);
+        opacity: 59%;
     }
 
     .close {
-        width: 99%;
+        width: 87%;
         box-shadow: none;
-        background: #192152;
+        background: #ffffff;
+    }
+
+    .menuRoute .close button {
+        width: 3.6rem;
+        height: 1.2rem;
+        margin: 0;
+        border-radius: 5px;
+        background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
     }
 
     .notRoutes {
@@ -64,10 +89,10 @@
         flex-direction: column-reverse;
         justify-content: center;
         align-items: center;
-        color: rgb(197, 197, 197);
+        color: black;
         gap: 0.5rem;
         height: 5rem;
-        margin-top: 9vh;
+        margin-top: 5vh;
         font-size: 17px;
         width: 100%;
     }
@@ -78,7 +103,7 @@
     .notRoutes img {
         width: 58px;
         height: 58px;
-        opacity: 66%;
+        opacity: 86%;
     }
 }
 
@@ -86,15 +111,33 @@
     .menuRoute {
         height: 100%;
         width: 100%;
-        background: none;
-        background-color: #283466;
-        border-top-right-radius: 5px;
+        background: white;
+        color: black;
+        border-top-right-radius: 27px;
     }
 
     .close {
-        width: 99%;
+        width: 89%;
         box-shadow: none;
-        background: #192152;
+        background: #ffffff;
+    }
+     .close button {
+        width: 2.7rem;
+        height: 1.2rem;
+        margin: 0;
+        background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
+    }
+    .deploy {
+        display: flex;
+        position: absolute;
+        top: 38vh;
+        right: 0.8vw;
+        z-index: 5;
+        width: 0.4rem;
+        height: 3rem;
+        border-radius: 25px;
+        background: rgb(177, 177, 177);
+        opacity: 59%;
     }
 
     .notRoutes {

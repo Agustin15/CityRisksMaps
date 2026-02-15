@@ -36,3 +36,9 @@
     height: 0.9rem;
     border-radius: 1px;
 }
+
+@media (width<=650px) {
+    .references {
+        color: black;
+    }
+}

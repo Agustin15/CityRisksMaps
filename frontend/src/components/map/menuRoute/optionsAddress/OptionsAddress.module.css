@@ -20,6 +20,11 @@
     color: white;
 }
 
+.optionsAddress .rowGray,
+.optionsAddress .rowWhite {
+    background: none;
+}
+
 .optionsAddress li:hover {
     background-color: rgb(45, 54, 102);
     cursor: pointer;
@@ -56,11 +61,30 @@
         justify-content: start;
         align-items: start;
         width: 99%;
-        height: 99%;
+        height: auto;
         padding: 0;
-        border-top: 1px solid rgb(17, 25, 58);
+        border-top: 1px solid rgb(207, 207, 207);
         box-shadow: none;
         margin-top: 0;
         background: none;
+    }
+
+    .optionsAddress li,
+    .optionsAddress li .displayName {
+        color: rgb(29, 29, 29);
+    }
+
+    .optionsAddress li .formattedAddress {
+        opacity: 89%;
+    }
+    .optionsAddress .rowWhite {
+        background: white;
+    }
+    .optionsAddress .rowGray {
+        background: rgb(241, 241, 241);
+    }
+    .optionsAddress li:hover {
+        background: rgb(228, 228, 228);
+        cursor: pointer;
     }
 }

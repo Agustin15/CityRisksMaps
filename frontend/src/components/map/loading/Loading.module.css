@@ -1,4 +1,4 @@
-.containLoader{
+.containLoader {
     position: absolute;
     display: flex;
     flex-direction: column-reverse;
@@ -28,5 +28,21 @@
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media (width<1200px) {
+    .containLoader {
+        position: absolute;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        height: 34%;
+        width: 95%;
+        font-size: 15px;
+        font-weight: bold;
+        color: rgb(65, 102, 202);
     }
 }

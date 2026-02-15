@@ -123,7 +123,7 @@
         gap: 1rem;
         width: 95%;
         height: auto;
-        padding: 1rem;
+        padding: 0 0 0.5rem 0;
         margin-top: -0.9rem;
         background: none;
         box-shadow: none;
@@ -131,9 +131,18 @@
 
     .enterAdresses {
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         width: 100%;
+        color: black;
+    }
+    .enterAdresses label {
+        margin: 0.5rem 0 0 2.2rem;
+        color: rgb(2, 2, 2);
+    }
+
+    .enterAdresses input {
+        background: rgb(241, 241, 241);
     }
 
     .destination {
@@ -175,6 +184,18 @@
         justify-content: center;
         align-items: center;
         width: 100%;
+        box-shadow: none;
+    }
+
+    .enterAdresses input {
+        background: rgb(241, 241, 241);
+    }
+    .enterAdresses label {
+        margin: 0.5rem 0 0 2.2rem;
+        color: rgb(2, 2, 2);
+    }
+    .enterAdresses.row input {
+        height: 2.6rem;
     }
 
     .destination {
@@ -183,9 +204,6 @@
         margin-right: 4vw;
     }
 
-    .enterAdresses.row input {
-        height: 2.6rem;
-    }
     .enterAdresses .btnEnabled,
     .enterAdresses .btnDisabled {
         margin-top: 1rem;
@@ -204,5 +222,13 @@
         margin-top: -0.9rem;
         background: none;
         box-shadow: none;
+    }
+
+    .enterAdresses label {
+        margin: 0.5rem 0 0 2.2rem;
+        color: rgb(2, 2, 2);
+    }
+    .enterAdresses input {
+        background: rgb(241, 241, 241);
     }
 }

@@ -31,6 +31,7 @@ export const OptionsAddress = ({ suggestions, setSuggestions }) => {
       {suggestions &&
         suggestions.map((suggestion, index) => (
           <li
+            className={index % 2 == 0 ? styles.rowGray : styles.rowWhite}
             onClick={() =>
               handleClick(suggestion.formattedAddress, suggestion.location)
             }

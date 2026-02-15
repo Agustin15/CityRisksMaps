@@ -45,12 +45,15 @@
 }
 
 @media (width<=650px) {
+    .containData {
+        height: 100%;
+    }
 
     .containData .header .close {
         display: flex;
         justify-content: end;
         align-items: center;
-        width: 100%;
+        width: 95%;
         position: absolute;
     }
 
@@ -58,14 +61,14 @@
         width: 3rem;
         height: 1.3rem;
         margin-top: 0.6rem;
-        background: linear-gradient(rgb(48, 145, 175), rgb(34, 116, 131));
+        background: linear-gradient(rgb(218, 59, 59), rgb(170, 47, 47));
         box-shadow: none;
         color: white;
         border-left-color: 3px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom-left-radius: 3px;
+        border-radius: 3px;
         border: none;
         font-size: 17px;
         cursor: pointer;
@@ -75,8 +78,11 @@
         height: 15px;
     }
     .containData .title {
+        color: black;
+        box-shadow: none;
         margin-top: 2.3rem;
         font-size: 13px;
+        background: rgb(243, 243, 243);
     }
     .containData .title img {
         width: 27px;
@@ -86,14 +92,15 @@
 
 @media (width>650px) and (width<1200px) {
     .containData {
-        height: 99vh;
+        height: auto;
+        overflow-y: visible;
     }
 
     .containData .header .close {
         display: flex;
         justify-content: end;
         align-items: center;
-        width: 100%;
+        width: 95%;
         position: absolute;
     }
 
@@ -101,10 +108,9 @@
         width: 3rem;
         height: 1.3rem;
         margin-top: 0.6rem;
-        background: linear-gradient(rgb(48, 145, 175), rgb(34, 116, 131));
+        background: linear-gradient(rgb(218, 59, 59), rgb(170, 47, 47));
         box-shadow: none;
         color: white;
-        border-left-color: 3px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -121,6 +127,9 @@
         width: 98%;
         margin-top: 2.3rem;
         font-size: 15px;
+        color: black;
+        background: rgb(243, 243, 243);
+        box-shadow: none;
     }
     .containData .title img {
         width: 29px;
