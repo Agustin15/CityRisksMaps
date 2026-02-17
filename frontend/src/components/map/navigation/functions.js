@@ -66,7 +66,7 @@ const getCoordOfStepMostClosestToUser = (pathStep, userLocation) => {
 };
 
 export const verifyUserDistanceToPolyline = (step, userLocation, transport) => {
-  let tolerance;
+  let toleranceMeters;
 
   const pathStep = google.maps.geometry.encoding.decodePath(
     step.polyline.encodedPolyline
@@ -88,14 +88,39 @@ export const verifyUserDistanceToPolyline = (step, userLocation, transport) => {
     transport == "Transit" ||
     transport == "Two_wheeler"
   ) {
-    tolerance = 30;
+    toleranceMeters = 30;
   } else {
-    tolerance = 15;
+    toleranceMeters = 15;
   }
 
-  if (distanceBetweenCoordAndUser >= tolerance) {
+  if (distanceBetweenCoordAndUser >= toleranceMeters) {
     return null;
   } else {
     return detailsOfLatLngMostClosest.indexLatLng;
   }
+};
+
+export const activateNavigationVoice = (currentStep) => {
+  const synth = window.speechSynthesis;
+
+  const utterance = new SpeechSynthesisUtterance(
+    currentStep.navigationInstruction.instructions
+  );
+
+  utterance.voice = synth.getVoices()[10];
+  utterance.lang = "es-MX";
+  utterance.volume = 0.5;
+
+  synth.speak(utterance);
+};
+
+export const handleOptionVoice = (
+  activeNavigationVoice,
+  setActiveNavigationVoice,
+  currentStep
+) => {
+  if (!activeNavigationVoice) {
+    setActiveNavigationVoice(true);
+    activateNavigationVoice(currentStep);
+  } else setActiveNavigationVoice(false);
 };

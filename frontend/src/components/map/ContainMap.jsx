@@ -15,12 +15,14 @@ import { useNavigation } from "../../contexts/NavigationContext.jsx";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
+import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
   const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation } = useNavigation();
+  const { windowWidth } = useWindowResize();
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
 
@@ -42,9 +44,10 @@ export const ContainMap = () => {
           if (routeNavigation) return;
           handleClickOnMap(event, marker);
         }}
-        onMousemove={(event) =>
-          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected)
-        }
+        onMousemove={(event) => {
+          if (windowWidth < 1200) return;
+          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected);
+        }}
         zoomControl={true}
         zoomControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM

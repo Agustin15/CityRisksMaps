@@ -13,6 +13,8 @@ export const NavigationProvider = ({ children }) => {
   const [polylineNavigation, setPolylineNavigation] = useState();
   const [currentStep, setCurrentStep] = useState();
   const [indexStep, setIndexStep] = useState(0);
+  const [destinationArrived, setDestinationArrived] = useState(false);
+  const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
 
   const { userLocation } = useMapControls();
   const {
@@ -75,6 +77,8 @@ export const NavigationProvider = ({ children }) => {
     polylineNavigation.setMap(null);
     setPolylineNavigation();
     setRouteNavigation();
+
+    if (destinationArrived == true) setDestinationArrived(false);
 
     map.setOptions({
       disableDefaultUI: true,
@@ -145,34 +149,19 @@ export const NavigationProvider = ({ children }) => {
         if (index >= indexLatLng) return latLng;
       });
 
-    let polylineNavigationCopy = { ...polylineNavigation };
-    polylineNavigationCopy.setOptions({ path: newPolylinePath });
+    polylineNavigation.setOptions({ path: newPolylinePath });
 
-    setPolylineNavigation(polylineNavigationCopy);
+    setPolylineNavigation(polylineNavigation);
 
-    calculateNextStep();
+    calculateUserStep();
   };
 
-  const calculateNextStep = () => {
-    let startLocation = currentStep.startLocation.latLng;
-    let endLocation = currentStep.endLocation.latLng;
+  const calculateUserStep = () => {
+    let userStepFound = getUserStep();
 
-    const distanceToEndStep =
-      google.maps.geometry.spherical.computeDistanceBetween(userLocation, {
-        lat: endLocation.latitude,
-        lng: endLocation.longitude
-      });
-
-    if (
-      ((transportSelected == "Drive" ||
-        transportSelected == "Transit" ||
-        transportSelected == "Two_wheeler") &&
-        distanceToEndStep < 10) ||
-      (transportSelected == "Walk" && distanceToEndStep <= 1)
-    ) {
-      const newIndexStep = indexStep + 1;
-      setCurrentStep(routeNavigation.legs[0].steps[newIndexStep]);
-      setIndexStep(newIndexStep);
+    if (userStepFound.stepFound && userStepFound.indexStepFound != indexStep) {
+      let startLocation = userStepFound.stepFound.startLocation.latLng;
+      let endLocation = userStepFound.stepFound.endLocation.latLng;
 
       const heading = google.maps.geometry.spherical.computeHeading(
         {
@@ -185,8 +174,61 @@ export const NavigationProvider = ({ children }) => {
         }
       );
 
+      if (
+        routeNavigation.legs[0].steps.length ==
+        userStepFound.indexStepFound + 1
+      ) {
+        if (
+          google.maps.geometry.spherical.computeDistanceBetween(
+            userLocation,
+            endLocation
+          ) < (transportSelected == "Walk" ? 15 : 10)
+        )
+          setDestinationArrived(true);
+        else if (destinationArrived == true) setDestinationArrived(false);
+      }
+
       map.setHeading(heading);
-    } else return;
+    }
+  };
+
+  const getUserStep = () => {
+    let toleranceGrades, indexCurrentStepFound;
+
+    const stepCurrentFound = routeNavigation.legs[0].steps.find(
+      (step, index) => {
+        const polylineStep = new google.maps.Polyline({
+          path: google.maps.geometry.encoding.decodePath(
+            step.polyline.encodedPolyline
+          )
+        });
+
+        ///1 grado longitud equivale 111319 metros
+        if (
+          transportSelected == "Drive" ||
+          transportSelected == "Transit" ||
+          transportSelected == "Two_wheeler"
+        )
+          toleranceGrades = 30 / 111319;
+        else toleranceGrades = 15 / 111319;
+
+        const userInStep = google.maps.geometry.poly.isLocationOnEdge(
+          userLocation,
+          polylineStep,
+          toleranceGrades
+        );
+
+        if (userInStep == true) {
+          indexCurrentStepFound = index;
+          return step;
+        }
+      }
+    );
+
+    return {
+      stepFound: stepCurrentFound,
+      indexStepFound: indexCurrentStepFound
+    };
   };
 
   return (
@@ -199,6 +241,9 @@ export const NavigationProvider = ({ children }) => {
         recalculateRoute,
         redrawPolylineWhenUserMove,
         handleNavigation,
+        activeNavigationVoice,
+        setActiveNavigationVoice,
+        destinationArrived,
         handleCloseNavigation
       }}
     >

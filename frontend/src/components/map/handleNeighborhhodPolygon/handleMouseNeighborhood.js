@@ -3,7 +3,6 @@ export const handleMouseNeighborhoohdPolygon = (
   polygons,
   setPolygonSelected
 ) => {
-  
   let polygonFound = null;
   if (polygons) {
     for (const polygon of polygons) {

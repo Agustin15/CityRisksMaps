@@ -71,7 +71,7 @@
     width: 99%;
 }
 
-@media (width<1000px) {
+@media (width<=650px) {
     .containRoutes {
         margin: 1rem 0 0 0;
         border-top: 1px solid rgb(190, 190, 190);
@@ -79,12 +79,18 @@
         overflow-x: hidden;
         color: black;
     }
+    .containRoutes {
+        margin: 1rem 0 0 0;
+        border-top: 1px solid rgb(190, 190, 190);
+        overflow-y: visible;
+        color: black;
+    }
 
     .containRoutes li {
         width: 98%;
         box-shadow: none;
         border-bottom: 1px solid rgb(196, 196, 196);
-        background: none;
+        background: rgb(226, 226, 226);
     }
     .containRoutes li .mainRow {
         display: flex;
@@ -96,7 +102,9 @@
 
     .containRoutes li:hover,
     .containRoutes .routeSelected {
-        width: 97%;
+        width: 100%;
+        border-left: 0;
+        background-color: white;
     }
 
     .containRoutes li .row {
@@ -113,7 +121,69 @@
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
-        width: 106%;
+        width: 104%;
+        background: rgb(241, 241, 241);
+        border-top: 1px solid rgb(219, 219, 219);
+        border-bottom: 1px solid rgb(219, 219, 219);
+    }
+
+    .containRoutes li .columnOne {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .containRoutes li img {
+        width: 32px;
+        padding: 0.4rem;
+        height: 32px;
+    }
+}
+
+@media (width>650px) and (width<1000px) {
+    .containRoutes {
+        margin: 1rem 0 0 0;
+        border-top: 1px solid rgb(190, 190, 190);
+        overflow-y: visible;
+        color: black;
+    }
+    .containRoutes li {
+        width: 98%;
+        box-shadow: none;
+        border-bottom: 1px solid rgb(196, 196, 196);
+        background: none;
+    }
+    .containRoutes li .mainRow {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .containRoutes li:hover,
+    .containRoutes .routeSelected {
+        width: 100%;
+        border-left: 0;
+        background-color: white;
+    }
+    .containRoutes li .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+
+    .containRoutes li .row .typeTransport {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 104%;
         background: rgb(241, 241, 241);
         border-top: 1px solid rgb(219, 219, 219);
         border-bottom: 1px solid rgb(219, 219, 219);
@@ -144,6 +214,13 @@
         background: white;
         box-shadow: none;
         border-bottom: 1px solid rgb(185, 185, 185);
+    }
+
+    .containRoutes li:hover,
+    .containRoutes .routeSelected {
+        width: 100%;
+        border-left: 0;
+        background-color: white;
     }
 
     .containRoutes li .row {

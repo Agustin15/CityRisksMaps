@@ -7,6 +7,7 @@ const MapContext = createContext();
 export const MapProvider = ({ children }) => {
   const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
+  const [idWatchPosition, setIdWatchPosition] = useState();
   const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
 
@@ -36,11 +37,16 @@ export const MapProvider = ({ children }) => {
   const handleMyLocation = async () => {
     setLoadingMyLocation(true);
 
-    if (!userLocation) {
-      navigator.geolocation.watchPosition(success, error, options);
-    } else {
-      navigator.geolocation.getCurrentPosition(success, error, options);
+    if (idWatchPosition) {
+      navigator.geolocation.clearWatch(idWatchPosition);
     }
+
+    const idWatch = navigator.geolocation.watchPosition(
+      success,
+      error,
+      options
+    );
+    setIdWatchPosition(idWatch);
   };
 
   const success = (pos) => {
