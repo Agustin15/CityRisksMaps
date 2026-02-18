@@ -15,7 +15,7 @@ export const verifyUserLocationInPolygon = (
 
   if (!polygonFound) {
     setWarning({ rateLevel: "", rateColor: "", type: "", neighborhood: "" });
-  } else if (warning.rateLevel != polygonFound.data.rateLevel) {
+  } else if (warning.neighborhood != polygonFound.data.name) {
     setWarning({
       ...warning,
       rateLevel: polygonFound.data.rateLevel,
@@ -100,14 +100,12 @@ export const verifyUserDistanceToPolyline = (step, userLocation, transport) => {
   }
 };
 
-export const activateNavigationVoice = (currentStep) => {
+export const activateNavigationVoice = (text) => {
   const synth = window.speechSynthesis;
 
-  const utterance = new SpeechSynthesisUtterance(
-    currentStep.navigationInstruction.instructions
-  );
+  const utterance = new SpeechSynthesisUtterance(text);
 
-  utterance.voice = synth.getVoices()[10];
+  utterance.voice = synth.getVoices()[4];
   utterance.lang = "es-MX";
   utterance.volume = 0.5;
 
@@ -121,6 +119,6 @@ export const handleOptionVoice = (
 ) => {
   if (!activeNavigationVoice) {
     setActiveNavigationVoice(true);
-    activateNavigationVoice(currentStep);
+    activateNavigationVoice(currentStep.navigationInstruction.instructions);
   } else setActiveNavigationVoice(false);
 };

@@ -10,7 +10,6 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
     if (!newQuiz) setNewQuiz(polygonSelected.data.name);
   };
 
-
   return (
     <div ref={window} className={styles.infoWindowPolygon}>
       <div className={styles.row}>
@@ -24,6 +23,11 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
 
         <div style={{ background: polygonSelected.data.rateColor }}></div>
       </div>
+
+      <p>
+        Poblacion:{polygonSelected.data.population.toLocaleString()} habitantes
+      </p>
+
       {polygonSelected.data.type == "crime" && (
         <>
           <p>
@@ -41,6 +45,7 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
           </p>
         </>
       )}
+
       {polygonSelected.data.type == "quiz" && (
         <p>
           Percepcion de seguridad:

@@ -27,7 +27,7 @@ export const RouteRangesDanger = ({ route }) => {
         ))}
         <li>
           <span>
-            (Promedio de seguridad:{calculateAverage(route.routeRangesDanger)}%)
+            (Promedio:{calculateAverage(route.routeRangesDanger)}%)
           </span>
         </li>
       </ul>

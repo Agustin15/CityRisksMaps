@@ -46,9 +46,10 @@ export const createArrayForPolygons = (
   categoryCrime,
   neighbordhoodsCoordinates
 ) => {
-  const nhCrimeCoordinates = [];
+  const neighborhoodsCrimeCoordinates = [];
+
   for (let nhCrime of neighbordhoodsCrime) {
-    neighbordhoodsCoordinates.map((nhCoordinate) => {
+    neighbordhoodsCoordinates.forEach((nhCoordinate) => {
       if (
         nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
       ) {
@@ -68,8 +69,9 @@ export const createArrayForPolygons = (
           levelRange = range.level;
         }
 
-        nhCrimeCoordinates.push({
+        neighborhoodsCrimeCoordinates.push({
           name: nhCrime.name,
+          population: nhCrime.quantityPopulation,
           quantityCrime: nhCrime.quantityCrime,
           rate: rate,
           rateLevel: levelRange ? levelRange : "Sin datos",
@@ -81,7 +83,8 @@ export const createArrayForPolygons = (
       }
     });
   }
-  return nhCrimeCoordinates;
+
+  return neighborhoodsCrimeCoordinates;
 };
 
 export const createPolygonsNeighbordhood = async (
@@ -94,25 +97,24 @@ export const createPolygonsNeighbordhood = async (
   const polygons = [];
   map.setZoom(12);
 
-  const nhCrimeCoordinates = createArrayForPolygons(
+  const neighborhoodsCrimeCoordinates = createArrayForPolygons(
     neighbordhoodsCrime,
     categoryCrime,
     neighbordhoodsCoordinates
   );
 
-  nhCrimeCoordinates.forEach((nhCrimeCoordinate) => {
+  neighborhoodsCrimeCoordinates.forEach((neighborhoodCrimeCoordinates) => {
     const polygon = new google.maps.Polygon({
-      paths: nhCrimeCoordinate.coordinates,
+      paths: neighborhoodCrimeCoordinates.coordinates,
       strokeColor: "#8d8d8dff",
       strokeOpacity: 1,
       strokeWeight: 1,
-      fillColor: nhCrimeCoordinate.rateColor,
+      fillColor: neighborhoodCrimeCoordinates.rateColor,
       fillOpacity: 0.4,
       clickable: false,
-      data: nhCrimeCoordinate
+      data: neighborhoodCrimeCoordinates
     });
     polygon.setMap(map);
-
     polygons.push(polygon);
   });
 

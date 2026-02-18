@@ -10,7 +10,7 @@ import {
 
 export const HandleUserLocation = ({ warning, setWarning }) => {
   const [lastCheck, setLastCheck] = useState(
-    new Date().setSeconds(new Date().getSeconds() - 5)
+    new Date().setSeconds(new Date().getSeconds() - 16)
   );
 
   const { transportSelected } = useRoutes();

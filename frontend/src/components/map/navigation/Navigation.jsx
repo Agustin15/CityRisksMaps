@@ -1,17 +1,11 @@
 import styles from "./Navigation.module.css";
-import iconDisableVoice from "../../../assets/img/disableVoice.png";
-import iconEnableVoice from "../../../assets/img/enableVoice.png";
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { useNavigation } from "../../../contexts/NavigationContext";
-import { useEffect, useState } from "react";
-import { ZoneInfo } from "./zoneInfo/ZoneInfo.jsx";
-import {
-  handleOptionVoice,
-  activateNavigationVoice,
-  getImageManeuver
-} from "./functions.js";
-import { HandleUserLocation } from "./HandleUserLocation.jsx";
 import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
+import { useEffect, useState } from "react";
+import { HandleUserLocation } from "./HandleUserLocation.jsx";
+import { activateNavigationVoice, getImageManeuver } from "./functions.js";
+import { DetailsIndication } from "./detailsIndication/DetailsIndication.jsx";
 
 export const Navigation = () => {
   const [warning, setWarning] = useState({
@@ -20,23 +14,27 @@ export const Navigation = () => {
     type: "",
     neighborhood: ""
   });
-
   const { windowWidth } = useWindowResize();
-  const {
-    handleCloseNavigation,
-    destinationArrived,
-    currentStep,
-    activeNavigationVoice,
-    setActiveNavigationVoice
-  } = useNavigation();
+  const { destinationArrived, currentStep, activeNavigationVoice } =
+    useNavigation();
 
   useEffect(() => {
     if (!currentStep || !activeNavigationVoice) return;
-    let msj = currentStep.navigationInstruction.instructions;
-    if (destinationArrived == true) msj = "¡Ha llegado a su destino!";
+    let text = currentStep.navigationInstruction.instructions;
+    if (destinationArrived == true) text = "¡Ha llegado a su destino!";
 
-    activateNavigationVoice(msj);
+    activateNavigationVoice(text);
   }, [currentStep]);
+
+  useEffect(() => {
+    if (warning.neighborhood.length == 0 || !activeNavigationVoice) return;
+
+    let text = `Entrando a barrio ${warning.neighborhood} el cual tiene una
+        ${warning.type == "crime" ? " tasa de homicidio " : " percepcion de seguridad "}
+        ${warning.rateLevel}`;
+
+    activateNavigationVoice(text);
+  }, [warning]);
 
   return (
     <div>
@@ -63,32 +61,7 @@ export const Navigation = () => {
         </div>
       </MapControl>
 
-      <div className={styles.detailsIndication}>
-        <ZoneInfo warning={warning} />
-        <button className={styles.btnClose} onClick={handleCloseNavigation}>
-          X
-        </button>
-
-        <div className={styles.column}>
-          <h4>{currentStep.localizedValues.staticDuration.text}</h4>
-          <span>{currentStep.localizedValues.distance.text}</span>
-        </div>
-
-        <button
-          onClick={() =>
-            handleOptionVoice(
-              activeNavigationVoice,
-              setActiveNavigationVoice,
-              currentStep
-            )
-          }
-          className={styles.btnVoice}
-        >
-          <img
-            src={activeNavigationVoice ? iconEnableVoice : iconDisableVoice}
-          ></img>
-        </button>
-      </div>
+      <DetailsIndication currentStep={currentStep} warning={warning} />
     </div>
   );
 };

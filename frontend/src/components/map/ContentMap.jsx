@@ -85,9 +85,9 @@ export const ContentMap = ({
         </MapControl>
       )}
 
-      <MapControl position={ControlPosition.TOP_RIGHT}>
+      {/* <MapControl position={ControlPosition.TOP_RIGHT}>
         <DrawMode drawMode={drawMode} setDrawMode={setDrawMode}></DrawMode>
-      </MapControl>
+      </MapControl> */}
     </>
   );
 };

@@ -78,6 +78,8 @@ export const NavigationProvider = ({ children }) => {
     setPolylineNavigation();
     setRouteNavigation();
 
+    if (activeNavigationVoice) setActiveNavigationVoice(false);
+
     if (destinationArrived == true) setDestinationArrived(false);
 
     map.setOptions({
