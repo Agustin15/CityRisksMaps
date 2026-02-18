@@ -16,8 +16,15 @@ import { MyLocation } from "./myLocation/MyLocation";
 import { Navigation } from "./navigation/Navigation";
 import { SearchPlace } from "./searchPlace/SearchPlace";
 import { Geolocation } from "./geolocation/Geolocation";
+import { DrawMode } from "./drawMode/DrawMode";
 
-export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
+export const ContentMap = ({
+  polygonSelected,
+  markerRef,
+  marker,
+  drawMode,
+  setDrawMode
+}) => {
   const { userLocation } = useMapControls();
   const { selectedPlace, placesSearched } = useSearchPlace();
   const { originLocation, destinationLocation } = useRoutes();
@@ -77,6 +84,10 @@ export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
           <Navigation />
         </MapControl>
       )}
+
+      <MapControl position={ControlPosition.TOP_RIGHT}>
+        <DrawMode drawMode={drawMode} setDrawMode={setDrawMode}></DrawMode>
+      </MapControl>
     </>
   );
 };

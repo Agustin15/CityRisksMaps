@@ -9,6 +9,7 @@ import { BtnIndications } from "../BtnIndications/BtnIndications";
 import { resize } from "../optionsMap/viewStatistics/functions.js";
 
 export const PlaceDetails = ({ place }) => {
+
   return (
     <div className={styles.containDetails}>
       <div onClick={(event) => resize(event)} className={styles.deploy}></div>

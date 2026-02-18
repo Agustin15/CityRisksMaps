@@ -25,6 +25,7 @@ export const ContainMap = () => {
   const { windowWidth } = useWindowResize();
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
+  const [drawMode, setDrawMode] = useState();
 
   return (
     <>
@@ -41,7 +42,7 @@ export const ContainMap = () => {
           position: ControlPosition.RIGHT_BOTTOM
         }}
         onClick={(event) => {
-          if (routeNavigation) return;
+          if (routeNavigation || drawMode) return;
           handleClickOnMap(event, marker);
         }}
         onMousemove={(event) => {
@@ -59,6 +60,8 @@ export const ContainMap = () => {
           polygonSelected={polygonSelected}
           markerRef={markerRef}
           marker={marker}
+          drawMode={drawMode}
+          setDrawMode={setDrawMode}
         />
       </Map>
 
