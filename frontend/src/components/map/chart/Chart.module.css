@@ -26,3 +26,11 @@
     height: 45px;
     opacity: 55%;
 }
+
+@media (width<=650px) {
+    .containChart {
+        width: 87%;
+        height: auto;
+        margin-right: 9vw;
+    }
+}

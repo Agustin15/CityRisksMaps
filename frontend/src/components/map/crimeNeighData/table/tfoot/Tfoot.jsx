@@ -1,15 +1,13 @@
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import {
   calculateAmountCrime,
   calculateAmountRateCrime
 } from "../functions.js";
 
 export const Tfoot = ({ neighborhoodsCrimeByYear, crime }) => {
-  const { defineCrimeRate } = useZoneCrimes();
   return (
     <tfoot>
       <tr>
-        <td>
+        <td colSpan={3}>
           Total de denuncias {crime}s:
           {neighborhoodsCrimeByYear &&
             calculateAmountCrime(neighborhoodsCrimeByYear).toLocaleString()}

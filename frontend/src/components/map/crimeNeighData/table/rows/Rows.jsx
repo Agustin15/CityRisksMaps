@@ -1,8 +1,9 @@
 import styles from "../Table.module.css";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useWindowResize } from "../../../../../contexts/WindowResizeContext";
 import { ColorRate } from "../colorRate/ColorRate";
 import { Activity } from "react";
-import { DetailsRow } from "./DetailsRow";
+import { DetailsRow } from "./detailsRow/DetailsRow";
 
 export const Rows = ({
   handleClickNeighborhood,
@@ -12,6 +13,7 @@ export const Rows = ({
 }) => {
   const { defineCrimeRate, indexChartActive, setIndexChartActive } =
     useZoneCrimes();
+  const { windowWidth } = useWindowResize();
 
   const handleClickRow = () => {
     if (indexChartActive == numberRow) {
@@ -62,7 +64,11 @@ export const Rows = ({
         </td>
       </tr>
       <Activity mode={indexChartActive == numberRow ? "visible" : "hidden"}>
-        <DetailsRow neighborhoodCrime={neighborhoodCrime} crime={crime} />
+        <tr>
+          <td colSpan={windowWidth <= 650 ? 2 : 4}>
+            <DetailsRow neighborhoodCrime={neighborhoodCrime} crime={crime} />
+          </td>
+        </tr>
       </Activity>
     </>
   );

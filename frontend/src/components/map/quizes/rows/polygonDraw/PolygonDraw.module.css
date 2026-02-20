@@ -10,6 +10,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    text-align: start;
     align-items: start;
     list-style: none;
     width: 65%;
@@ -23,7 +24,7 @@
 
 .containPolygon ul li {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     gap: 0.4rem;
 }
@@ -47,4 +48,34 @@
     box-shadow: 2px 2px 2px rgb(20, 20, 20);
     background: linear-gradient(#2c3d8a, #5a6fcf);
     padding: 0.4rem;
+}
+
+@media (width<=650px) {
+    .containPolygon {
+        gap: 0.5rem;
+        justify-content: start;
+        width: 97%;
+    }
+
+    .containPolygon ul {
+        width: 39%;
+        text-align: start;
+        overflow-x: scroll;
+    }
+
+    .containPolygon ul li {
+        overflow-x: scroll;
+        width: 24rem;
+    }
+
+    .containPolygon ul li label {
+        font-weight: bold;
+        font-size: 15px;
+        width: auto;
+    }
+
+    .canvas {
+        width: 32%;
+        height: 7.5rem;
+    }
 }

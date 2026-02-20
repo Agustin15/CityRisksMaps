@@ -2,12 +2,14 @@ import styles from "../Table.module.css";
 import { Chart } from "../../chart/Chart";
 import { ColorRate } from "../colorRate/ColorRate";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext";
 import { Activity } from "react";
-import { PolygonDraw } from "../polygonDraw/PolygonDraw";
+import { PolygonDraw } from "./polygonDraw/PolygonDraw";
 import { CrimesQuiz } from "./crimesQuiz/CrimesQuiz";
 
 export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
   const { indexChartActive, setIndexChartActive } = useZoneCrimes();
+  const { windowWidth } = useWindowResize();
 
   const handleClickRow = (neighborhood) => {
     if (indexChartActive == numberRow) {
@@ -38,7 +40,7 @@ export const Rows = ({ numberRow, quiz, handleClickNeighborhood }) => {
       <Activity mode={indexChartActive == numberRow ? "visible" : "hidden"}>
         {
           <tr>
-            <td colSpan={5}>
+            <td colSpan={windowWidth <= 650 ? 2 : 5}>
               {
                 <div className={styles.moreDetails}>
                   <h4>{quiz.name}</h4>

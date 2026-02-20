@@ -1,12 +1,12 @@
 import styles from "./PolygonDraw.module.css";
-import iconQuizes from "../../../../assets/img/quizes.png";
-import iconLike from "../../../../assets/img/like.png";
-import iconDislike from "../../../../assets/img/dislike.png";
-import iconSecure from "../../../../assets/img/security.png";
+import iconQuizes from "../../../../../assets/img/quizes.png";
+import iconLike from "../../../../../assets/img/like.png";
+import iconDislike from "../../../../../assets/img/dislike.png";
+import iconSecure from "../../../../../assets/img/security.png";
 import { useEffect, useRef, useState } from "react";
-import { useMapControls } from "../../../../contexts/MapContext";
-import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
-import { drawShape } from "../../crimeNeighData/table/polygonDraw/functions.js";
+import { useMapControls } from "../../../../../contexts/MapContext";
+import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext";
+import { drawShape } from "../../../crimeNeighData/table/rows/detailsRow/polygonDraw/functions.js";
 
 export const PolygonDraw = ({ quiz }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
@@ -45,22 +45,22 @@ export const PolygonDraw = ({ quiz }) => {
       <ul>
         <li>
           <img src={iconQuizes}></img>
-          <label>Cantidad de encuestas:</label>
+          <label>Total de votos:</label>
           <span>{quiz.total}</span>
         </li>
         <li>
           <img src={iconLike}></img>
-          <label>Puntuacion de seguridad:</label>
+          <label>Votos seguro:</label>
           <span>{quiz.secure}</span>
         </li>
         <li>
           <img src={iconDislike}></img>
-          <label>Puntuacion de inseguridad:</label>
+          <label>Votos inseguro:</label>
           <span>{quiz.insecure}</span>
         </li>
         <li>
           <img src={iconSecure}></img>
-          <label>Porcentaje de seguridad:</label>
+          <label>Porcentaje de votos seguros:</label>
           <span>
             {quiz.total == 0 ? "Sin encuestas" : quiz.percentage + "%"}
           </span>

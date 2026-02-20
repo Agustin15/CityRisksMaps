@@ -23,3 +23,14 @@
     opacity: 55%;
     margin-right: 0.4rem;
 }
+
+@media (width<1200px) {
+    .notData {
+        color: rgb(26, 26, 26);
+    }
+    .notData img {
+        width: 75px;
+        height: 75px;
+        opacity: 88%;
+    }
+}

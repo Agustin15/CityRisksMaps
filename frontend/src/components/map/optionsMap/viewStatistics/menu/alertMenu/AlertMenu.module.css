@@ -126,6 +126,7 @@
     .containLoader .box {
         height: auto;
         width: 85%;
+        box-shadow: none;
     }
     .containLoader .msj p {
         font-size: 16px;
@@ -144,6 +145,7 @@
     .containLoader .box {
         height: auto;
         width: 45%;
+        box-shadow: none;
     }
     .containLoader .msj p {
         font-size: 17px;

@@ -6,6 +6,7 @@ import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimes
 import { Loading } from "../../loading/Loading";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { References } from "../references/References";
+import { ModalsQuizes } from "./ModalsQuizes";
 
 export const LoadDataQuizes = () => {
   const { loadingYears, years } = useZoneCrimes();
@@ -14,6 +15,7 @@ export const LoadDataQuizes = () => {
 
   return (
     <div className={styles.containDetails}>
+      <ModalsQuizes newQuiz={newQuiz} showListQuizes={showListQuizes} />
       {loadingYears && <Loading />}
 
       <div className={styles.containOptionsQuiz}>

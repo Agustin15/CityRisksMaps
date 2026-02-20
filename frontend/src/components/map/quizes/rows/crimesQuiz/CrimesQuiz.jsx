@@ -10,7 +10,7 @@ export const CrimesQuiz = ({ neighborhood }) => {
 
   useEffect(() => {
     if (crimesNeighborhood) return;
-    
+
     getCrimesQuizNeighborhood(
       neighborhood,
       yearSelected,
@@ -24,8 +24,8 @@ export const CrimesQuiz = ({ neighborhood }) => {
       <h3>Delitos señalados mas comunes en el barrio:</h3>
       <ul>
         {crimesNeighborhood &&
-          crimesNeighborhood.map((crimeNeighborhood) => (
-            <li>
+          crimesNeighborhood.map((crimeNeighborhood, index) => (
+            <li key={index}>
               <span>
                 {crimeNeighborhood.crime +
                   ":" +

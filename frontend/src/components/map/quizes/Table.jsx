@@ -27,17 +27,17 @@ export const Table = () => {
         <thead>
           <tr>
             <th>Barrio</th>
-            <th>Puntuacion seguridad</th>
-            <th>Puntuacion inseguridad</th>
+            <th>Votos seguridad</th>
+            <th>Votos inseguridad</th>
             <th>Encuestas</th>
-            <th>Porcentaje de seguridad</th>
+            <th>Porcentaje votos seguros</th>
           </tr>
         </thead>
 
         <tbody>
           {loadingQuizes == true && (
             <tr>
-              <td colSpan={windowWidth<="650"? 1:4} rowSpan={windowWidth<="650"? 1:4}>
+              <td colSpan={windowWidth<="650"? 2:4} rowSpan={windowWidth<="650"? 2:4}>
                 <Loading />
               </td>
             </tr>
@@ -46,7 +46,7 @@ export const Table = () => {
             loadingQuizes == false &&
             !neighborhoodsQuizesByYear && (
               <tr>
-                <td colSpan={windowWidth<="650"? 1:4} rowSpan={windowWidth<="650"? 1:4}>
+                <td colSpan={windowWidth<="650"? 2:4} rowSpan={windowWidth<="650"? 2:4}>
                   <NotData error={errorGetQuiz} />
                 </td>
               </tr>

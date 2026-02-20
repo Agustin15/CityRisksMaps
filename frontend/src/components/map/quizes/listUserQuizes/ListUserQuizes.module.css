@@ -56,8 +56,14 @@
     .listUserQuizes {
         width: 95%;
     }
-    .header {
-        font-size: 14px;
+    .header h3 {
+        font-size: 15px;
+    }
+    .optionClose {
+        width: 104%;
+    }
+    .optionClose button {
+        width: 2rem;
     }
 }
 

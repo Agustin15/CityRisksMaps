@@ -17,6 +17,7 @@
     width: 99%;
     height: auto;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .table th {
@@ -48,9 +49,9 @@ td {
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 99%;
+    width: 8rem;
     gap: 0.5rem;
-    padding-left: 8%;
+    padding-left: 5%;
 }
 .table .moreDetails {
     display: flex;
@@ -70,10 +71,12 @@ td {
 @media (width<=650px) {
     .containTable {
         overflow-y: scroll;
+        align-items: start;
         background: white;
         box-shadow: none;
         padding-bottom: 0.5rem;
     }
+
     .table th {
         padding-bottom: 0.7rem;
         padding-top: 0.3rem;
@@ -88,10 +91,12 @@ td {
     }
 
     .table {
-        width: 215%;
-        height: auto;
-        border-collapse: collapse;
-        margin-left: 111vw;
+        width: 286vw;
+        table-layout: fixed;
+    }
+    .table .nameNeighborhood {
+        padding-left: 5%;
+        width: 99%;
     }
 
     .table .moreDetails {
@@ -123,6 +128,11 @@ td {
         height: auto;
         overflow-y: scroll;
         border-collapse: collapse;
+        table-layout: fixed;
+    }
+    .table .nameNeighborhood {
+        padding-left: 5%;
+        width: 10rem;
     }
 
     .table .moreDetails {

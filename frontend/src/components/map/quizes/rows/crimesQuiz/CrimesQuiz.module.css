@@ -19,6 +19,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: start;
+    text-align: start;
     list-style: none;
     gap: 0.5rem;
     padding: 0 0 0.5rem 0;

@@ -1,5 +1,5 @@
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 const MapContext = createContext();
@@ -9,6 +9,7 @@ export const MapProvider = ({ children }) => {
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [idWatchPosition, setIdWatchPosition] = useState();
   const [userLocation, setUserLocation] = useState();
+  const userLocationRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
 
   const map = useMap();
@@ -17,6 +18,10 @@ export const MapProvider = ({ children }) => {
     if (!apiIsLoaded || !map) return;
     loadMap();
   }, [map]);
+
+  useEffect(() => {
+    userLocationRef.current = userLocation;
+  }, [userLocation]);
 
   const loadMap = async () => {
     await createNeighbordhoodCoordinates();
@@ -34,43 +39,40 @@ export const MapProvider = ({ children }) => {
     handleMyLocation();
   };
 
-  const handleMyLocation = async () => {
+  const handleMyLocation = async (option) => {
     setLoadingMyLocation(true);
 
-    if (idWatchPosition) {
-      navigator.geolocation.clearWatch(idWatchPosition);
-    }
+    if (idWatchPosition && option != "current") return;
 
-    const idWatch = navigator.geolocation.watchPosition(
-      success,
-      error,
-      options
-    );
-    setIdWatchPosition(idWatch);
+    if (option == "current") {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    } else {
+      const idWatch = navigator.geolocation.watchPosition(
+        success,
+        error,
+        options
+      );
+      setIdWatchPosition(idWatch);
+    }
   };
 
   const success = (pos) => {
     const crd = pos.coords;
 
-    if (!userLocation) {
-      setUserLocation({
-        lat: crd.latitude,
-        lng: crd.longitude
-      });
-    } else if (
-      crd.latitude != userLocation.lat ||
-      crd.longitude != userLocation.lng
+    if (
+      !userLocationRef.current ||
+      crd.latitude != userLocationRef.current.lat ||
+      crd.longitude != userLocationRef.current.lng
     ) {
       setUserLocation({
-        ...userLocation,
         lat: crd.latitude,
         lng: crd.longitude
       });
-    }
 
-    map.setZoom(15);
-    map.panTo({ lat: crd.latitude, lng: crd.longitude });
-    setLoadingMyLocation(false);
+      map.setZoom(15);
+      map.panTo({ lat: crd.latitude, lng: crd.longitude });
+      setLoadingMyLocation(false);
+    } else return;
   };
 
   const error = (error) => {

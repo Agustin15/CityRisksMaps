@@ -12,7 +12,7 @@ export const Geolocation = () => {
           <span>Localizando...</span>
         </li>
       )}
-      <button onClick={handleMyLocation}>
+      <button onClick={() => handleMyLocation("current")}>
         <img src={iconGeolocation}></img>
       </button>
     </div>

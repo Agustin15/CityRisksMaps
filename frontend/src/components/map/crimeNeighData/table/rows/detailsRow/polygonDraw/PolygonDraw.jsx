@@ -1,11 +1,11 @@
 import styles from "./PolygonDraw.module.css";
-import iconRate from "../../../../../assets/img/average.png";
-import iconComplaint from "../../../../../assets/img/complaint.png";
-import iconSecurity from "../../../../../assets/img/security.png";
-import iconPopulation from "../../../../../assets/img/population.png";
+import iconRate from "../../../../../../../assets/img/average.png";
+import iconComplaint from "../../../../../../../assets/img/complaint.png";
+import iconSecurity from "../../../../../../../assets/img/security.png";
+import iconPopulation from "../../../../../../../assets/img/population.png";
 import { useEffect, useRef, useState } from "react";
-import { useMapControls } from "../../../../../contexts/MapContext";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useMapControls } from "../../../../../../../contexts/MapContext";
+import { useZoneCrimes } from "../../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { drawShape } from "./functions.js";
 
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {

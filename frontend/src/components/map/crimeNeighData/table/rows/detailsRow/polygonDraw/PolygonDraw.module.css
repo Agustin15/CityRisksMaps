@@ -48,3 +48,34 @@
     box-shadow: 2px 2px 2px rgb(20, 20, 20);
     background: linear-gradient(#2c3d8a, #5a6fcf);
 }
+
+@media (width<=650px) {
+    .containPolygon {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 0.5rem;
+        width: 99%;
+    }
+    .containPolygon ul {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        list-style: none;
+        width: 46%;
+        margin-left: 0.2rem;
+        gap: 0.4rem;
+    }
+    .containPolygon ul li label {
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .containPolygon ul li span {
+        font-size: 13px;
+    }
+    .canvas {
+        width: 31%;
+        height: 8rem;
+    }
+}
