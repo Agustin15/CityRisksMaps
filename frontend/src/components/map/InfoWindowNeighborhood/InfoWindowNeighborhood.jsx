@@ -24,12 +24,13 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
         <div style={{ background: polygonSelected.data.rateColor }}></div>
       </div>
 
-      <p>
-        Poblacion:{polygonSelected.data.population.toLocaleString()} habitantes
-      </p>
-
       {polygonSelected.data.type == "crime" && (
         <>
+          <p>
+            Poblacion:{polygonSelected.data.population.toLocaleString()}{" "}
+            habitantes
+          </p>
+
           <p>
             Denuncias de
             {" " +
@@ -47,16 +48,15 @@ export const InfoWindowNeighborhood = ({ polygonSelected }) => {
       )}
 
       {polygonSelected.data.type == "quiz" && (
-        <p>
-          Percepcion de seguridad:
-          {polygonSelected.data.total == 0
-            ? "Sin encuestas"
-            : polygonSelected.data.percentage + "%"}
-        </p>
-      )}
-
-      {polygonSelected.data.type == "quiz" && (
-        <button onClick={handleNewQuiz}>Agregar encuesta</button>
+        <>
+          <p>
+            Percepcion de seguridad:
+            {polygonSelected.data.total == 0
+              ? "Sin encuestas"
+              : polygonSelected.data.percentage + "%"}
+          </p>
+          <button onClick={handleNewQuiz}>Agregar encuesta</button>
+        </>
       )}
     </div>
   );

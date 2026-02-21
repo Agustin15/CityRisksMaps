@@ -1,4 +1,4 @@
-import styles from "../FormAdd.module.css";
+import styles from "./Perception.module.css";
 import { handleChange } from "../functions.js";
 
 export const Perception = ({ valuesForm, setValuesForm }) => {

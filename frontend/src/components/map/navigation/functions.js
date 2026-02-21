@@ -65,7 +65,11 @@ const getCoordOfStepMostClosestToUser = (pathStep, userLocation) => {
   return { latLngMostClosest: latLngMostClosest, indexLatLng: indexLatLng };
 };
 
-export const verifyUserDistanceToPolyline = (step, userLocation, transport) => {
+export const verifyUserDistanceToCurrentStep = (
+  step,
+  userLocation,
+  transport
+) => {
   let toleranceMeters;
 
   const pathStep = google.maps.geometry.encoding.decodePath(

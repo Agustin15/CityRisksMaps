@@ -61,25 +61,6 @@
     gap: 2rem;
 }
 
-.containForm .column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-    position: relative;
-}
-
-.containForm .column p {
-    color: red;
-    width: auto;
-    font-size: 15px;
-    position: absolute;
-    margin-top: 4.4rem;
-    margin-left: 1rem;
-    width: 56%;
-}
-
 .containForm .row {
     display: flex;
     flex-direction: row;
@@ -90,73 +71,9 @@
 }
 
 .containForm label {
-    width: 45%;
+    width: 54%;
     font-weight: bold;
     font-size: 15px;
-}
-
-.containForm input:hover {
-    border: 2px solid rgb(55, 172, 226);
-}
-
-.containForm select {
-    width: 56%;
-    height: 2.4rem;
-    border: 1px solid gray;
-    font-size: 15px;
-    border-radius: 5px;
-    padding-left: 0.5rem;
-    outline: none;
-}
-
-.containForm .column span {
-    width: 55%;
-    height: 2.4rem;
-}
-
-.perception,
-.columnPerception {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    width: 56%;
-    position: relative;
-}
-
-.perception .lblTitle {
-    position: absolute;
-    z-index: 3;
-    background-color: white;
-    margin-left: 0.4rem;
-    width: auto;
-}
-
-.columnPerception {
-    gap: 0.8rem;
-    border: 1px solid gray;
-    margin-top: 0.6rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    width: 99%;
-}
-
-.perception .rowPerception {
-    display: flex;
-    justify-content: start;
-    align-items: end;
-    gap: 0.2rem;
-}
-
-.perception .rowPerception label {
-    font-size: 15px;
-    font-weight: 100;
-}
-
-.perception .rowPerception input {
-    width: 1rem;
-    height: 1rem;
-    cursor: pointer;
 }
 
 .send {
@@ -194,8 +111,12 @@
 @media (width>650px) and (width<1200px) {
     .containForm {
         width: 65%;
+        height: 76%;
+        overflow-y: scroll;
     }
     .header {
         font-size: 14px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
 }

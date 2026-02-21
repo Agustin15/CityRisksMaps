@@ -1,4 +1,4 @@
-import styles from "../FormAdd.module.css";
+import styles from "./Neighborhood.module.css";
 import { useEffect } from "react";
 import { useFormQuiz } from "../../../../../contexts/quizesContext/FormAddQuizContext.jsx";
 import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext.jsx";

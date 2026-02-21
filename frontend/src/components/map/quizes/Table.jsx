@@ -27,8 +27,8 @@ export const Table = () => {
         <thead>
           <tr>
             <th>Barrio</th>
-            <th>Votos seguridad</th>
-            <th>Votos inseguridad</th>
+            <th>Votos seguro</th>
+            <th>Votos inseguo</th>
             <th>Encuestas</th>
             <th>Porcentaje votos seguros</th>
           </tr>

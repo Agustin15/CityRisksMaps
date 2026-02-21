@@ -4,7 +4,7 @@ import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesCon
 import { useMapControls } from "../../../contexts/MapContext";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext";
 import {
-  verifyUserDistanceToPolyline,
+  verifyUserDistanceToCurrentStep,
   verifyUserLocationInPolygon
 } from "./functions.js";
 
@@ -38,7 +38,7 @@ export const HandleUserLocation = ({ warning, setWarning }) => {
     setLastCheck(new Date());
     verifyUserLocationInPolygon(userLocation, polygons, setWarning, warning);
 
-    const latLngIndex = verifyUserDistanceToPolyline(
+    const latLngIndex = verifyUserDistanceToCurrentStep(
       currentStep,
       userLocation,
       transportSelected
