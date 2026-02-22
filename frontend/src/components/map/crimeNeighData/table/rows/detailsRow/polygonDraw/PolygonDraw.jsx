@@ -19,16 +19,7 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
     draw();
   }, []);
 
-  const rate =
-    neighborhoodCrime.quantityCrime == null
-      ? null
-      : Math.floor(
-          (neighborhoodCrime.quantityCrime /
-            neighborhoodCrime.quantityPopulation) *
-            100000
-        );
-
-  const crimeRange = rate == null ? null : getCrimeRange(rate, categoryCrime);
+  const crimeRange = getCrimeRange(neighborhoodCrime.rate, categoryCrime);
 
   const draw = () => {
     if (refCanvasPolygon.current) {
@@ -64,7 +55,7 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
         <li>
           <img src={iconRate}></img>
           <label>Tasa de denuncias:</label>
-          <span>{rate}</span>
+          <span>{neighborhoodCrime.rate}</span>
         </li>
         <li>
           <img src={iconSecurity}></img>

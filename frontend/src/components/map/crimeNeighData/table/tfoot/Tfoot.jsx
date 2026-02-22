@@ -1,7 +1,4 @@
-import {
-  calculateAmountCrime,
-  calculateAmountRateCrime
-} from "../functions.js";
+import { calculateAmountCrime, calculateAmountRate } from "../functions.js";
 
 export const Tfoot = ({ neighborhoodsCrimeByYear, crime }) => {
   return (
@@ -17,7 +14,7 @@ export const Tfoot = ({ neighborhoodsCrimeByYear, crime }) => {
         <td colSpan={4}>
           Tasa total de denuncias de {crime}s 100.000 habitantes:
           {neighborhoodsCrimeByYear &&
-            calculateAmountRateCrime(neighborhoodsCrimeByYear).toLocaleString()}
+            calculateAmountRate(neighborhoodsCrimeByYear).toLocaleString()}
         </td>
       </tr>
     </tfoot>

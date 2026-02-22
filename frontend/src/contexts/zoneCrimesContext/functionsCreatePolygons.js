@@ -1,7 +1,3 @@
-export const defineCrimeRate = (quantityCrime, quantityPopulation) => {
-  return Math.floor((quantityCrime / quantityPopulation) * 100000);
-};
-
 export const defineCrimeRange = (rate, ranges) => {
   const crimeRanges = [
     {
@@ -19,7 +15,11 @@ export const defineCrimeRange = (rate, ranges) => {
       color: "#fa7c06ff",
       level: "Alta"
     },
-    { rate: rate >= ranges[6], color: "#f73d1cff", level: "Muy alta" }
+    {
+      rate: rate >= ranges[6],
+      color: "#f73d1cff",
+      level: "Muy alta"
+    }
   ];
 
   const crimeRangeFound = crimeRanges.find((item) => item.rate == true);
@@ -53,18 +53,11 @@ export const createArrayForPolygons = (
       if (
         nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
       ) {
-        let rate = null;
         let colorRange = null;
         let levelRange = null;
 
-        if (nhCrime.quantityCrime != null)
-          rate = defineCrimeRate(
-            nhCrime.quantityCrime,
-            nhCrime.quantityPopulation
-          );
-
-        if (rate != null) {
-          const range = getCrimeRange(rate, categoryCrime);
+        if (nhCrime.rate != null) {
+          const range = getCrimeRange(nhCrime.rate.toFixed(0), categoryCrime);
           colorRange = range.color;
           levelRange = range.level;
         }
@@ -73,7 +66,7 @@ export const createArrayForPolygons = (
           name: nhCrime.name,
           population: nhCrime.quantityPopulation,
           quantityCrime: nhCrime.quantityCrime,
-          rate: rate,
+          rate: nhCrime.rate,
           rateLevel: levelRange ? levelRange : "Sin datos",
           rateColor: colorRange ? colorRange : "#bbbbbbff",
           categoryCrime: categoryCrime,

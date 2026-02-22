@@ -38,6 +38,7 @@ export const Table = ({ crime }) => {
                 neighborhoodsCrimeByYear[0].yearPopulation}
             </th>
             <th>Tasa 100.000 habits.</th>
+            <th>Crecimiento</th>
           </tr>
         </thead>
 

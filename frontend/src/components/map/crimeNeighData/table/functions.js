@@ -46,13 +46,14 @@ export const calculateAmountCrime = (neighborhoodsCrimeByYear) => {
   return amount;
 };
 
-export const calculateAmountRateCrime = (neighborhoodsCrimeByYear) => {
-  const amountCrime = calculateAmountCrime(neighborhoodsCrimeByYear);
-
-  const amountPopulation = neighborhoodsCrimeByYear.reduce(
-    (acc, neighborhoodsCrime) => (acc += neighborhoodsCrime.quantityPopulation),
+export const calculateAmountRate = (neighborhoodsCrimeByYear) => {
+  const amountRate = neighborhoodsCrimeByYear.reduce(
+    (acc, neighborhoodCrime) => {
+      if (neighborhoodCrime.rate != null) acc++;
+      return acc;
+    },
     0
   );
 
-  return ((amountCrime / amountPopulation) * 100000).toFixed(0);
+  return amountRate;
 };

@@ -47,9 +47,12 @@ CREATE TABLE Neighborhoods_Crimes(
 neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
 crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
 quantity INT CHECK(quantity>=0),
+increase DECIMAL(5,1),
+rate DECIMAL(6,1) CHECK(rate>=0),
 year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
+
 
 CREATE TABLE Zones(
 idZone INT Primary key,
@@ -97,7 +100,6 @@ Primary key(quiz,crime)
 
 
 GO
-
 --------------------------------------------------------------------------------------------------------------
 
 --Rols PROCEDURES
@@ -585,11 +587,17 @@ CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime 
 
 BEGIN
 
+DECLARE @population INT;
+DECLARE @increase DECIMAL(5,1);
+DECLARE @rate DECIMAL(6,1);
+DECLARE @quantityCrimesPrevYear INT
+
 IF @quantity<0
 RETURN -1
 
 IF @year>YEAR(GETDATE())
 RETURN -2
+
 IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
 RETURN -3
 
@@ -599,19 +607,49 @@ RETURN -4
 IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year)
 RETURN -5
 
-INSERT INTO Neighborhoods_Crimes VALUES(@neighborhood,@crime,@quantity,@year)
+select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where N.name=@neighborhood and
+(CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
+(select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population) 
+
+IF(@population IS NULL) 
+RETURN -6
+
+select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year-1;
+
+IF(@quantity IS NOT NULL) SET @rate=(CAST(@quantity as decimal)/@population)*100000
+
+IF(@quantity IS NOT NULL AND @quantityCrimesPrevYear IS NOT NULL)
+BEGIN
+SET @increase=(
+CASE 
+WHEN (@quantity-@quantityCrimesPrevYear)=0 THEN 0
+WHEN @quantityCrimesPrevYear=0 and @quantity>@quantityCrimesPrevYear THEN 100
+WHEN @quantity=0 and @quantityCrimesPrevYear>@quantity THEN -100
+ELSE 
+((@quantity-@quantityCrimesPrevYear)/CAST(@quantityCrimesPrevYear as decimal))*100
+
+END
+)
+END
+
+
+INSERT INTO Neighborhoods_Crimes VALUES(@neighborhood,@crime,@quantity,@increase,@rate,@year)
 
 IF(@@ERROR<>0)
-RETURN -6
+RETURN -7
 
 RETURN 1
 END
 GO
 
-
 CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(20),@quantity INT,@year INT AS
 
 BEGIN
+
+DECLARE @population INT;
+DECLARE @increase DECIMAL(5,1);
+DECLARE @rate DECIMAL(6,1);
+DECLARE @quantityCrimesPrevYear INT
 
 IF @quantity<0
 RETURN -1
@@ -622,16 +660,42 @@ RETURN -2
 IF NOT EXISTS (select * from Neighborhoods_Crimes  where neighborhood=@neighborhood and crime=@crime and year=@year)
 RETURN -3
 
-UPDATE Neighborhoods_Crimes set quantity=@quantity where neighborhood=@neighborhood and crime=@crime and year=@year
+select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where N.name=@neighborhood and 
+(CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
+(select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population)
+
+IF(@population IS NULL) 
+RETURN -4
+
+select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year-1;
+
+IF(@quantity IS NOT NULL) SET @rate=(CAST(@quantity as decimal)/@population)*100000
+
+Print @quantityCrimesPrevYear
+
+IF(@quantity IS NOT NULL AND @quantityCrimesPrevYear IS NOT NULL)
+BEGIN
+SET @increase=(
+CASE 
+WHEN @quantity-@quantityCrimesPrevYear=0 THEN 0
+WHEN @quantityCrimesPrevYear=0 and @quantity>@quantityCrimesPrevYear THEN 100
+WHEN @quantity=0 and @quantityCrimesPrevYear>@quantity THEN -100
+ELSE 
+((@quantity-@quantityCrimesPrevYear)/CAST(@quantityCrimesPrevYear as decimal))*100
+END
+)
+END
+
+UPDATE Neighborhoods_Crimes set quantity=@quantity,increase=@increase,rate=@rate where neighborhood=@neighborhood and crime=@crime and year=@year
 
 IF(@@ERROR<>0)
-RETURN -4
+RETURN -5
 
 RETURN 1
 
 END
-GO
 
+GO
 
 CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@neighborhood VARCHAR(30),@year INT AS
 BEGIN
@@ -660,16 +724,14 @@ GO
 CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYear @crime VARCHAR(20),@year INT AS
 BEGIN
 
+DECLARE @populationYear INT
 
-select name,P.quantity as 'quantityPopulation',P.year as 'yearPopulation',NC.quantity as 'quantityCrime',NC.year as 'yearCrime'
-from Neighborhoods N LEFT JOIN Neighborhoods_Crimes NC on N.name=NC.neighborhood INNER JOIN 
+select @populationYear=P.year from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where(CASE when @year>=year THEN (@year-year)WHEN year>=@year 
+THEN(year-@year)END)=(select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population)
 
-(select * from Population where (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
-(select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)  as 'diferencia' 
-
-from Population ORDER BY 'diferencia' asc)) P on P.neighborhood=NC.neighborhood 
-where crime=@crime and NC.year=@year ORDER BY (CASE when NC.quantity is null then null WHEN NC.quantity is not null 
-THEN((CAST (NC.quantity AS DECIMAL(7,2))/P.quantity)*100000) END) desc;
+select name,P.quantity as 'quantityPopulation',P.year as 'yearPopulation',NC.quantity as 'quantityCrime',NC.year as 'yearCrime',
+increase,rate from  Neighborhoods_Crimes NC INNER JOIN  Neighborhoods N on N.name=NC.neighborhood INNER JOIN
+Population P ON P.neighborhood=N.name where crime=@crime and NC.year=@year and P.year=@populationYear ORDER BY rate desc;
 
 END
 
@@ -1234,394 +1296,6 @@ EXEC AddCrime 'Tráfico de drogas','El delito de tráfico de drogas se define como
 comete al ejecutar actos de cultivo, elaboración o tráfico, o al promover, favorecer o facilitar el 
 consumo ilegal de drogas tóxicas, estupefacientes o sustancias psicotrópicas, o cuando se poseen con los fines mencionados.'
 
-EXEC AddNeighborhoodCrime 'Aguada','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',7,2024;
-EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Buceo','Homicidio',4,2024;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',22,2024;
-EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',12,2024;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',3,2024;
-EXEC AddNeighborhoodCrime 'Centro','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',3,2024;
-EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2024;
-EXEC AddNeighborhoodCrime 'Cordón','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2024;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',8,2024;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2024;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',36,2024;
-EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',7,2024;
-EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',3,2024;
-EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2024;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',7,2024;
-EXEC AddNeighborhoodCrime 'Manga','Homicidio',2,2024;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',6,2024;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2024;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',9,2024;
-EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2024; 
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2024;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',2,2024;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2024;
-EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',3,2024;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2024;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2024; 
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',7,2024; 
-EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2024; 
-EXEC AddNeighborhoodCrime 'Sayago','Homicidio',4,2024;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',0,2024; 
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',4,2024;
-EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2024;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',12,2024;
-EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2024;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',9,2024;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',3,2024;
-
-EXEC AddNeighborhoodCrime 'Aguada','Hurto',1190,2024;
-EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Belvedere','Hurto',1014,2024;
-EXEC AddNeighborhoodCrime 'Buceo','Hurto',2376,2024;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',745,2024;
-EXEC AddNeighborhoodCrime 'Casavalle','Hurto',701,2024;
-EXEC AddNeighborhoodCrime 'Carrasco','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Centro','Hurto',2493,2024;
-EXEC AddNeighborhoodCrime 'Cerrito','Hurto',611,2024;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1022,2024;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1299,2024;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Conciliación','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Cordón','Hurto',2943,2024;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',818,2024;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',691,2024;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',832,2024;
-EXEC AddNeighborhoodCrime 'La Comercial','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'La Figurita','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',983,2024;
-EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',633,2024;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Hurto',679,2024;
-EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'La Teja','Hurto',743,2024;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Hurto',665,2024;
-EXEC AddNeighborhoodCrime 'Malvín','Hurto',1272,2024;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Manga','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Hurto',694,2024;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Hurto',1227,2024;
-EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',849,2024;
-EXEC AddNeighborhoodCrime 'Palermo','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Hurto',2063,2024;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',643,2024;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',741,2024;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Hurto',791,2024;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',718,2024;
-EXEC AddNeighborhoodCrime 'Pocitos','Hurto',2252,2024;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Hurto',1296,2024;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1164,2024;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Hurto',832,2024;
-EXEC AddNeighborhoodCrime 'Reducto','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Sayago','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1494,2024;
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Hurto',null,2024;
-EXEC AddNeighborhoodCrime 'Unión','Hurto',3113,2024;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Hurto',857,2024;
-EXEC AddNeighborhoodCrime 'Villa Española','Hurto',630,2024;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Hurto',307,2024;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Hurto',null,2024;
-
-GO
-
-EXEC AddNeighborhoodCrime 'Aguada','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',293,2024;
-EXEC AddNeighborhoodCrime 'Buceo','Rapiña',352,2024;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',635,2024;
-EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Rapiña',281,2024;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Centro','Rapiña',288,2024;
-EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',521,2024;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',243,2024;
-EXEC AddNeighborhoodCrime 'Cordón','Rapiña',285,2024;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',324,2024;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',215,2024;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',369,2024;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',207,2024;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Rapiña',362,2024;
-EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',272,2024;
-EXEC AddNeighborhoodCrime 'La Teja','Rapiña',193,2024;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Rapiña',242,2024;
-EXEC AddNeighborhoodCrime 'Malvín','Rapiña',239,2024;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',730,2024;
-EXEC AddNeighborhoodCrime 'Manga','Rapiña',190,2024;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',306,2024;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Rapiña',331,2024;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Rapiña',192,2024;
-EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',317,2024;
-EXEC AddNeighborhoodCrime 'Palermo','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Rapiña',207,2024;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',446,2024;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Rapiña',491,2024;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',385,2024;
-EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Rapiña',265,2024;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Rapiña',375,2024;
-EXEC AddNeighborhoodCrime 'Reducto','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Sayago','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Unión','Rapiña',522,2024;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Rapiña',468,2024;
-EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',null,2024;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',341,2024;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2024;
-
-GO
-
-EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',4,2023;
-EXEC AddNeighborhoodCrime 'Buceo','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',13,2023;
-EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',11,2023;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',3,2023;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Centro','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',7,2023;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',3,2023;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',5,2023;
-EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2023;
-EXEC AddNeighborhoodCrime 'Cordón','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2023;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',3,2023;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',11,2023;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',10,2023;
-EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',10,2023;
-EXEC AddNeighborhoodCrime 'La Teja','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Malvín','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Manga','Homicidio',4,2023;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',14,2023;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',7,2023;
-EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',7,2023;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',4,2023;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',8,2023;
-EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2023;
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',5,2023;
-EXEC AddNeighborhoodCrime 'Reducto','Homicidio',2,2023;
-EXEC AddNeighborhoodCrime 'Sayago','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',1,2023;
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',8,2023;
-EXEC AddNeighborhoodCrime 'Unión','Homicidio',6,2023;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',9,2023;
-EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',7,2023;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',8,2023;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',0,2023;
-
-GO
-
-EXEC AddNeighborhoodCrime 'Aguada','Hurto',1190,2023;
-EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Belvedere','Hurto',917,2023;
-EXEC AddNeighborhoodCrime 'Buceo','Hurto',1914,2023;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',752,2023;
-EXEC AddNeighborhoodCrime 'Casavalle','Hurto',781,2023;
-EXEC AddNeighborhoodCrime 'Carrasco','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Hurto',599,2023;
-EXEC AddNeighborhoodCrime 'Centro','Hurto',2647,2023;
-EXEC AddNeighborhoodCrime 'Cerrito','Hurto',611,2023;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1220,2023;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1170,2023;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',1299,2023;
-EXEC AddNeighborhoodCrime 'Conciliación','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Cordón','Hurto',3288,2023;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',837,2023;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',856,2023;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',816,2023;
-EXEC AddNeighborhoodCrime 'La Comercial','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'La Figurita','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',1078,2023;
-EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',633,2023;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Hurto',697,2023;
-EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'La Teja','Hurto',727,2023;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Hurto',871,2023;
-EXEC AddNeighborhoodCrime 'Malvín','Hurto',1123,2023;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Manga','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Hurto',714,2023;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Hurto',1038,2023;
-EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',1011,2023;
-EXEC AddNeighborhoodCrime 'Palermo','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Hurto',1966,2023;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',643,2023;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',807,2023;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Hurto',909,2023;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',711,2023;
-EXEC AddNeighborhoodCrime 'Pocitos','Hurto',1994,2023;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Hurto',1482,2023;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1150,2023;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Hurto',844,2023;
-EXEC AddNeighborhoodCrime 'Reducto','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Sayago','Hurto',623,2023;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1852,2023;
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Hurto',null,2023;
-EXEC AddNeighborhoodCrime 'Unión','Hurto',3524,2023;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Hurto',931,2023;
-EXEC AddNeighborhoodCrime 'Villa Española','Hurto',770,2023;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Hurto',641,2023;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Hurto',null,2023;
-
-
-GO
-
-EXEC AddNeighborhoodCrime 'Aguada','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',397,2023;
-EXEC AddNeighborhoodCrime 'Buceo','Rapiña',362,2023;
-EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',916,2023;
-EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Rapiña',405,2023;
-EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Centro','Rapiña',336,2023;
-EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',249,2023;
-EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',650,2023;
-EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Rapiña',257,2023;
-EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',366,2023;
-EXEC AddNeighborhoodCrime 'Cordón','Rapiña',342,2023;
-EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',427,2023;
-EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',304,2023;
-EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',472,2023;
-EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',350,2023;
-EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Rapiña',609,2023;
-EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',450,2023;
-EXEC AddNeighborhoodCrime 'La Teja','Rapiña',257,2023;
-EXEC AddNeighborhoodCrime 'Lezica - Melilla','Rapiña',431,2023;
-EXEC AddNeighborhoodCrime 'Malvín','Rapiña',242,2023;
-EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',689,2023;
-EXEC AddNeighborhoodCrime 'Manga','Rapiña',305,2023;
-EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',478,2023;
-EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Rapiña',439,2023;
-EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Rapiña',192,2023;
-EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',549,2023;
-EXEC AddNeighborhoodCrime 'Palermo','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Rapiña',207,2023;
-EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',643,2023;
-EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',518,2023;
-EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Rapiña',579,2023;
-EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',400,2023;
-EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Rapiña',327,2023;
-EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Rapiña',454,2023;
-EXEC AddNeighborhoodCrime 'Reducto','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Sayago','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Rapiña',246,2023;
-EXEC AddNeighborhoodCrime 'Unión','Rapiña',701,2023;
-EXEC AddNeighborhoodCrime 'Villa del Cerro','Rapiña',516,2023;
-EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',null,2023;
-EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',437,2023;
-EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2023;
-
-GO
 
 EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2022;
 EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2022;
@@ -1815,3 +1489,394 @@ EXEC AddNeighborhoodCrime 'Villa del Cerro','Rapiña',660,2022;
 EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',null,2022;
 EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',555,2022;
 EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2022;
+
+GO
+
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',4,2023;
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',13,2023;
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',11,2023;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',3,2023;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',7,2023;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',3,2023;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',5,2023;
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2023;
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2023;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',3,2023;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',11,2023;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',10,2023;
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',10,2023;
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',4,2023;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',14,2023;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',7,2023;
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',7,2023;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',4,2023;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',8,2023;
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2023;
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',5,2023;
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',2,2023;
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',1,2023;
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',8,2023;
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',6,2023;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',9,2023;
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',7,2023;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',8,2023;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',0,2023;
+
+GO
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',1190,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',917,2023;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',1914,2023;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',752,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',781,2023;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Hurto',599,2023;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2647,2023;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',611,2023;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1220,2023;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1170,2023;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',1299,2023;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',3288,2023;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',837,2023;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',856,2023;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',816,2023;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',1078,2023;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',633,2023;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Hurto',697,2023;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',727,2023;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Hurto',871,2023;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1123,2023;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Hurto',714,2023;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Hurto',1038,2023;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',1011,2023;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Hurto',1966,2023;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',643,2023;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',807,2023;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Hurto',909,2023;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',711,2023;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',1994,2023;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Hurto',1482,2023;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1150,2023;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Hurto',844,2023;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',623,2023;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1852,2023;
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Hurto',null,2023;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',3524,2023;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Hurto',931,2023;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',770,2023;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Hurto',641,2023;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Hurto',null,2023;
+
+
+GO
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',397,2023;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',362,2023;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',916,2023;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Rapiña',405,2023;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',336,2023;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',249,2023;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',650,2023;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Rapiña',257,2023;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',366,2023;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',342,2023;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',427,2023;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',304,2023;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',472,2023;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',350,2023;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Rapiña',609,2023;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',450,2023;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',257,2023;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Rapiña',431,2023;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',242,2023;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',689,2023;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',305,2023;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',478,2023;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Rapiña',439,2023;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Rapiña',192,2023;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',549,2023;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Rapiña',207,2023;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',643,2023;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',518,2023;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Rapiña',579,2023;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',400,2023;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Rapiña',327,2023;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Rapiña',454,2023;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Rapiña',246,2023;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',701,2023;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Rapiña',516,2023;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',null,2023;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',437,2023;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2023;
+
+GO
+
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',22,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Homicidio',12,2024;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',8,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Homicidio',36,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',6,2024;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',9,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2024; 
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2024; 
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Homicidio',7,2024; 
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2024; 
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',0,2024; 
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Homicidio',12,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2024;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Homicidio',9,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Homicidio',3,2024;
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',1190,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',1014,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',2376,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',745,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',701,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2493,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',611,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1022,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1299,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',2943,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',818,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',691,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',832,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',983,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',633,2024;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Hurto',679,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',743,2024;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Hurto',665,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1272,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Hurto',694,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Hurto',1227,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',849,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Hurto',2063,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',643,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',741,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Hurto',791,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',718,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',2252,2024;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Hurto',1296,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1164,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Hurto',832,2024;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1494,2024;
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Hurto',null,2024;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',3113,2024;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Hurto',857,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',630,2024;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Hurto',307,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Hurto',null,2024;
+
+GO
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',293,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',352,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',635,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Casabó - Pajas Blancas','Rapiña',281,2024;
+EXEC AddNeighborhoodCrime 'Castro - Pérez Castellanos','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Capurro - Bella Vista','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',288,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',521,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste - Abayubá','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',243,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',285,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',324,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',215,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',369,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',207,2024;
+EXEC AddNeighborhoodCrime 'La Paloma - Tomkinson','Rapiña',362,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',272,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',193,2024;
+EXEC AddNeighborhoodCrime 'Lezica - Melilla','Rapiña',242,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',239,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',730,2024;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',190,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',306,2024;
+EXEC AddNeighborhoodCrime 'Maroñas - Parque Guaraní','Rapiña',331,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo y Bolívar','Rapiña',192,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',317,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Parque Batlle - Villa Dolores','Rapiña',207,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',446,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Peñarol - Lavalleja','Rapiña',491,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',385,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Prado - Nueva Savona','Rapiña',265,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Punta Rieles - Bella Italia','Rapiña',375,2024;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Tres Ombúes - Pueblo Victoria','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',522,2024;
+EXEC AddNeighborhoodCrime 'Villa del Cerro','Rapiña',468,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',null,2024;
+EXEC AddNeighborhoodCrime 'Villa García - Manga Rural','Rapiña',341,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz - Retiro','Rapiña',null,2024;
+

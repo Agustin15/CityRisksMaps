@@ -4,6 +4,7 @@ import { createContext, useState } from "react";
 import { useRoutes } from "./routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import { useMapControls } from "./MapContext";
+import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 
 const NavigationContext = createContext();
 
@@ -140,6 +141,10 @@ export const NavigationProvider = ({ children }) => {
         setPolylineNavigation(polylineNavigation);
       }
     } catch (error) {
+      alertSwalError(
+        "Ups,ruta no encontrada",
+        "Hubo un error al recalcular las ruta"
+      );
       console.log(error);
     }
   };

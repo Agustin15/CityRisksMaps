@@ -5,12 +5,16 @@ export class NeighborhoodCrime {
   #crime;
   #neighborhood;
   #quantity;
+  #increase;
+  #rate;
   #year;
 
   constructor(
     crime = new Crime(),
     neighbordhood = new Neighborhood(),
     quantity = 0,
+    increase = 0,
+    rate = 0,
     year = new Date().getFullYear()
   ) {
     this.crime = crime;
@@ -57,5 +61,18 @@ export class NeighborhoodCrime {
   set quantity(value) {
     if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
     this.#quantity = value;
+  }
+  get increase() {
+    return this.#increase;
+  }
+  set increase(value) {
+    this.#increase = value;
+  }
+
+  get rate() {
+    return this.#rate;
+  }
+  set rate(value) {
+    this.#rate = value;
   }
 }

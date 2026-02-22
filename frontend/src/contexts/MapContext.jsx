@@ -32,8 +32,8 @@ export const MapProvider = ({ children }) => {
       tiltInteractionEnabled: true,
       gestureHandling: "greedy",
       heading: 0,
-      tilt: 0
-      // restriction: { latLngBounds: bounds, strictBounds: true }
+      tilt: 0,
+      restriction: { latLngBounds: bounds, strictBounds: false }
     });
 
     handleMyLocation();
@@ -77,10 +77,11 @@ export const MapProvider = ({ children }) => {
 
   const error = (error) => {
     setLoadingMyLocation(false);
+
     alertSwalError(
       "Ups, no pudimos encontrar la ubicacion",
       error.code == 1
-        ? "Permiso para acceder a la ubicacion no habilitado"
+        ? "Permiso para acceder a la ubicacion, no habilitada"
         : "No se pudo obtener su ubicacion"
     );
   };
@@ -104,6 +105,10 @@ export const MapProvider = ({ children }) => {
       return null;
     } catch (error) {
       console.log(error);
+      alertSwalError(
+        "Ups,sin coordenas de barrios",
+        "Hubo un error al cargar las coordenadas de los barrios"
+      );
     }
   };
 
@@ -129,7 +134,7 @@ export const MapProvider = ({ children }) => {
       const result = await response.json();
 
       if (!response.ok)
-        throw new Error("Error al obtener las coordenas de Montevideo");
+        throw new Error("Error al cargar las coordenas de Montevideo");
 
       if (result) {
         const coordinatesMdveo = result.features[0].geometry.coordinates
@@ -147,7 +152,7 @@ export const MapProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      throw error;
+      alertSwalError("Ups, algo salio mal", error);
     }
   };
 
@@ -157,8 +162,7 @@ export const MapProvider = ({ children }) => {
         handleMyLocation,
         userLocation,
         loadingMyLocation,
-        neighbordhoodsCoordinates,
-        boundsMontevideo
+        neighbordhoodsCoordinates
       }}
     >
       {children}

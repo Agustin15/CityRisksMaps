@@ -11,8 +11,7 @@ export const Rows = ({
   crime,
   numberRow
 }) => {
-  const { defineCrimeRate, indexChartActive, setIndexChartActive } =
-    useZoneCrimes();
+  const { indexChartActive, setIndexChartActive } = useZoneCrimes();
   const { windowWidth } = useWindowResize();
 
   const handleClickRow = () => {
@@ -34,17 +33,7 @@ export const Rows = ({
       >
         <td>
           <div className={styles.nameNeighborhood}>
-            <ColorRate
-              rate={
-                neighborhoodCrime.quantityCrime == null
-                  ? null
-                  : defineCrimeRate(
-                      neighborhoodCrime.quantityCrime,
-                      neighborhoodCrime.quantityPopulation
-                    )
-              }
-              crime={crime}
-            />
+            <ColorRate rate={neighborhoodCrime.rate} crime={crime} />
             {neighborhoodCrime.name}
           </div>
         </td>
@@ -53,19 +42,27 @@ export const Rows = ({
             ? "Sin Datos"
             : neighborhoodCrime.quantityCrime}
         </td>
+
         <td>{neighborhoodCrime.quantityPopulation.toLocaleString()}</td>
-        <td>
-          {neighborhoodCrime.quantityCrime == null
-            ? "Sin Datos"
-            : defineCrimeRate(
-                neighborhoodCrime.quantityCrime,
-                neighborhoodCrime.quantityPopulation
-              )}
+        <td>{neighborhoodCrime.rate}</td>
+        <td
+          className={
+            neighborhoodCrime.increase < 0
+              ? styles.decrease
+              : neighborhoodCrime.increase > 0
+                ? styles.increase
+                : ""
+          }
+        >
+          {neighborhoodCrime.increase
+            ? neighborhoodCrime.increase + "%"
+            : "Sin datos"}
         </td>
       </tr>
+
       <Activity mode={indexChartActive == numberRow ? "visible" : "hidden"}>
         <tr>
-          <td colSpan={windowWidth <= 650 ? 2 : 4}>
+          <td colSpan={windowWidth <= 650 ? 2 : 5}>
             <DetailsRow neighborhoodCrime={neighborhoodCrime} crime={crime} />
           </td>
         </tr>

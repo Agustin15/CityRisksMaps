@@ -45,6 +45,14 @@ export class NeighborhoodCrimeDAL {
           );
 
         case -6:
+          throw new Error(
+            "No se pudo encontrar la poblacion mas cercana a este año del barrio indicado",
+            {
+              cause: { code: 404 }
+            }
+          );
+
+        case -7:
           throw new Error("Error inesperado al agregar crimen en barrio", {
             cause: { code: 502 }
           });
@@ -88,8 +96,15 @@ export class NeighborhoodCrimeDAL {
               cause: { code: 404 }
             }
           );
-
         case -4:
+          throw new Error(
+            "No se pudo encontrar la poblacion mas cercana a este año del barrio indicado",
+            {
+              cause: { code: 404 }
+            }
+          );
+
+        case -5:
           throw new Error("Error inesperado al actualizar crimen en barrio", {
             cause: { code: 502 }
           });

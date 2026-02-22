@@ -1,5 +1,4 @@
 import {
-  defineCrimeRate,
   getCrimeRange,
   createPolygonsNeighbordhood
 } from "./functionsCreatePolygons.js";
@@ -138,7 +137,6 @@ export const ZoneCrimesProvider = ({ children }) => {
         setNeighborhoodsCrimeByYear,
         loadCrimeDataNeighborhoods,
         loadCrimesByYear,
-        defineCrimeRate,
         getCrimeRange,
         createPolygonsNeighbordhood,
         polygons,
