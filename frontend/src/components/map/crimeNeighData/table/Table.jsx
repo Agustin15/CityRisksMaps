@@ -46,8 +46,8 @@ export const Table = ({ crime }) => {
           {loadingNeighborhoodsCrime == true && (
             <tr>
               <td
-                colSpan={windowWidth <= 650 ? 2 : 4}
-                rowSpan={windowWidth <= 650 ? 2 : 4}
+                colSpan={windowWidth <= 650 ? 2 : 5}
+                rowSpan={windowWidth <= 650 ? 2 : 5}
               >
                 <Loading />
               </td>
@@ -58,8 +58,8 @@ export const Table = ({ crime }) => {
             !neighborhoodsCrimeByYear && (
               <tr>
                 <td
-                  colSpan={windowWidth <= 650 ? 2 : 4}
-                  rowSpan={windowWidth <= 650 ? 2 : 4}
+                  colSpan={windowWidth <= 650 ? 2 : 5}
+                  rowSpan={windowWidth <= 650 ? 2 : 5}
                 >
                   <NotData />
                 </td>

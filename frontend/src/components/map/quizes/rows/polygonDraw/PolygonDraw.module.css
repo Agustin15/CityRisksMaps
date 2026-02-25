@@ -58,14 +58,14 @@
     }
 
     .containPolygon ul {
-        width: 39%;
+        width: 57%;
         text-align: start;
         overflow-x: scroll;
     }
 
     .containPolygon ul li {
         overflow-x: scroll;
-        width: 24rem;
+        width: 18rem;
     }
 
     .containPolygon ul li label {

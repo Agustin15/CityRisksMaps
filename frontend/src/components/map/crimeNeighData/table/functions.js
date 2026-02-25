@@ -47,13 +47,17 @@ export const calculateAmountCrime = (neighborhoodsCrimeByYear) => {
 };
 
 export const calculateAmountRate = (neighborhoodsCrimeByYear) => {
+  let index = 0;
   const amountRate = neighborhoodsCrimeByYear.reduce(
     (acc, neighborhoodCrime) => {
-      if (neighborhoodCrime.rate != null) acc++;
+      if (neighborhoodCrime.rate != null) {
+        acc += neighborhoodCrime.rate;
+        index++;
+      }
       return acc;
     },
     0
   );
 
-  return amountRate;
+  return amountRate / index;
 };

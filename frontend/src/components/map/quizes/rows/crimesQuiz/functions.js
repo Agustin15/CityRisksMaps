@@ -39,5 +39,7 @@ export const calculatePercentage = (
     0
   );
 
-  return (amountCategoryCrime * 100) / amountCategoryCrimes;
+  const percentege = (amountCategoryCrime * 100) / amountCategoryCrimes;
+
+  return percentege.toFixed(1);
 };

@@ -63,7 +63,7 @@
         flex-direction: column;
         align-items: start;
         list-style: none;
-        width: 46%;
+        width: 52%;
         margin-left: 0.2rem;
         gap: 0.4rem;
     }
@@ -75,7 +75,7 @@
         font-size: 13px;
     }
     .canvas {
-        width: 31%;
+        width: 32%;
         height: 8rem;
     }
 }

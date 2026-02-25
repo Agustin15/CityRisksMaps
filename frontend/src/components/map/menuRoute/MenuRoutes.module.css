@@ -49,25 +49,40 @@
         width: 100%;
         background: white;
         color: black;
-        overflow-y:scroll;
+        overflow-y: scroll;
         overflow-x: hidden;
-        scrollbar-width: thin;
+        scrollbar-width: none;
         border-top-left-radius: 27px;
         border-top-right-radius: 27px;
         padding-bottom: 2rem;
     }
-    .deploy {
-        display: flex;
-        position: absolute;
-        top: 0.5vh;
-        left: 44vw;
-        z-index: 5;
-        margin: auto;
-        width: 3rem;
-        height: 0.3rem;
-        border-radius: 25px;
-        background: rgb(145, 145, 145);
-        opacity: 59%;
+    .menuRoute Statistics:not(.deploy:checked) {
+        animation-name: deployUp;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuRoute :has(.deploy:checked) {
+        animation-name: deployDown;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes deployDown {
+        from {
+            margin-top: 11vh;
+        }
+        to {
+            margin-top: 82vh;
+        }
+    }
+
+    @keyframes deployUp {
+        from {
+            margin-top: 81vh;
+        }
+        to {
+            margin-top: 11vh;
+        }
     }
 
     .close {
@@ -111,9 +126,38 @@
     .menuRoute {
         height: 100%;
         width: 100%;
+        scrollbar-width: none;
         background: white;
         color: black;
         border-top-right-radius: 27px;
+    }
+
+    .menuRoute:not(.deploy:checked) {
+        animation-name: deployRight;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .menuRoute:has(.deploy:checked) {
+        animation-name: deployLeft;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes deployRight {
+        from {
+            right: 88vw;
+        }
+        to {
+            right: 7.5vw;
+        }
+    }
+    @keyframes deployLeft {
+        from {
+            right: 7.5vw;
+        }
+        to {
+            right: 88vw;
+        }
     }
 
     .close {
@@ -126,18 +170,6 @@
         height: 1.2rem;
         margin: 0;
         background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
-    }
-    .deploy {
-        display: flex;
-        position: absolute;
-        top: 38vh;
-        right: 0.8vw;
-        z-index: 5;
-        width: 0.4rem;
-        height: 3rem;
-        border-radius: 25px;
-        background: rgb(177, 177, 177);
-        opacity: 59%;
     }
 
     .notRoutes {

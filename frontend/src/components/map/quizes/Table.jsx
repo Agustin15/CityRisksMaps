@@ -7,7 +7,7 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../notData/NotData";
 import { Loading } from "../loading/Loading";
 import { Rows } from "./rows/Rows";
-import { focusPolygon } from "../crimeNeighData/table/functions.js"
+import { focusPolygon } from "../crimeNeighData/table/functions.js";
 
 export const Table = () => {
   const map = useMap();
@@ -15,7 +15,7 @@ export const Table = () => {
     useQuizes();
   const { neighbordhoodsCoordinates } = useMapControls();
   const { loadingYears, polygons } = useZoneCrimes();
-    const { windowWidth } = useWindowResize();
+  const { windowWidth } = useWindowResize();
 
   const handleClickNeighborhood = (neighborhood) => {
     focusPolygon(neighbordhoodsCoordinates, neighborhood, polygons, map);
@@ -37,7 +37,10 @@ export const Table = () => {
         <tbody>
           {loadingQuizes == true && (
             <tr>
-              <td colSpan={windowWidth<="650"? 2:4} rowSpan={windowWidth<="650"? 2:4}>
+              <td
+                colSpan={windowWidth <= 650 ? 2 : 4}
+                rowSpan={windowWidth <= 650 ? 2 : 4}
+              >
                 <Loading />
               </td>
             </tr>
@@ -46,7 +49,10 @@ export const Table = () => {
             loadingQuizes == false &&
             !neighborhoodsQuizesByYear && (
               <tr>
-                <td colSpan={windowWidth<="650"? 2:4} rowSpan={windowWidth<="650"? 2:4}>
+                <td
+                  colSpan={windowWidth <= 650 ? 2 : 4}
+                  rowSpan={windowWidth <= "650" ? 2 : 4}
+                >
                   <NotData error={errorGetQuiz} />
                 </td>
               </tr>

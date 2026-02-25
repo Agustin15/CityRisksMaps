@@ -1,55 +1,29 @@
 import styles from "./ContainPhoto.module.css";
 import imageNotFound from "../../../../assets/img/imageNotFound.png";
 import gallery from "../../../../assets/img/gallery.png";
-import { useEffect } from "react";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext";
+import { Preview } from "./preview/Preview";
 
-export const ContainPhoto = ({ place }) => {
-  const {
-    getPhotoDetails,
-    getStreetViewStaticImage,
-    loading,
-    setMainPhoto,
-    mainPhoto,
-    setShowPhotos
-  } = usePhotosPlace();
-
-  useEffect(() => {
-    if (!place || mainPhoto) return;
-
-    getMainPhoto(place.photos ? place.photos[0] : null);
-  }, []);
-
-  const getMainPhoto = async (photo) => {
-    let url;
-    if (photo) {
-      url = await getPhotoDetails(photo.name, 400, 400, "mainPicture");
-    } else {
-      url = await getStreetViewStaticImage(
-        400,
-        400,
-        place.location.latitude,
-        place.location.longitude
-      );
-    }
-
-    if (url) setMainPhoto(url);
-  };
+export const ContainPhoto = () => {
+  const { photosList, setShowPhotos } = usePhotosPlace();
+  const { windowWidth } = useWindowResize();
 
   return (
     <div className={styles.containPhoto}>
-      {loading && <span className={styles.loader}></span>}
+      {photosList &&
+        (windowWidth >= 1200 ? (
+          <img
+            className={photosList ? styles.mainPhoto : styles.imageNotFound}
+            src={photosList ? photosList[1].url : imageNotFound}
+          ></img>
+        ) : (
+          <Preview photosList={photosList} />
+        ))}
 
-      {!loading && (
-        <img
-          className={mainPhoto ? styles.mainPhoto : styles.imageNotFound}
-          src={mainPhoto ? mainPhoto : imageNotFound}
-        ></img>
-      )}
+      {!photosList && <span>Imagenes no encontradas</span>}
 
-      {!loading && !mainPhoto && <span>Imagen no encontrada</span>}
-
-      {place.photos && (
+      {photosList.length > 1 && windowWidth >= 1200 && (
         <div className={styles.optionWatchPhotos}>
           <button onClick={() => setShowPhotos(true)}>
             Ver fotos

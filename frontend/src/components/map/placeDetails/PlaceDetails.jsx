@@ -1,69 +1,51 @@
 import styles from "./PlaceDetails.module.css";
-import iconAddress from "../../../assets/img/address.png";
-import iconPhone from "../../../assets/img/phone.png";
-import iconWeb from "../../../assets/img/web.png";
-import { OpeningDays } from "./openingDays/OpeningDays";
+import { usePhotosPlace } from "../../../contexts/PhotosContext.jsx";
+import { useSearchPlace } from "../../../contexts/SearchPlaceContext.jsx";
 import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";
-import { resize } from "../optionsMap/viewStatistics/functions.js";
+import { Info } from "./info/Info.jsx";
+import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
 
-export const PlaceDetails = ({ place }) => {
+export const PlaceDetails = () => {
+  const { streetFound, selectedPlace } = useSearchPlace();
+  const { photosList } = usePhotosPlace();
+  const { windowWidth } = useWindowResize();
+
   return (
     <div className={styles.containDetails}>
-      <div onClick={(event) => resize(event)} className={styles.deploy}></div>
-
-      <ContainPhoto place={place} />
+      {photosList && windowWidth >= 1200 && <ContainPhoto />}
 
       <div className={styles.column}>
-        <h3 className={styles.title}>{place.displayName.text}</h3>
+        <h3 className={styles.title}>{selectedPlace.displayName.text}</h3>
 
-        {place.rating || place.primaryTypeDisplayName ? (
-          <About place={place} />
+        {selectedPlace.rating || selectedPlace.primaryTypeDisplayName ? (
+          <About place={selectedPlace} />
         ) : (
           <div className={styles.row}>
-            <span>{place.addressComponents[1].longText}</span>
+            <span>{selectedPlace.addressComponents[1].longText}</span>
 
-            <BtnIndications place={place}></BtnIndications>
+            <BtnIndications place={selectedPlace}></BtnIndications>
           </div>
         )}
 
-        {place.editorialSummary && (
-          <div className={styles.aboutIt}>
+        {photosList && windowWidth < 1200 && <ContainPhoto />}
+
+        {selectedPlace.editorialSummary && (
+          <div className={styles.description}>
             <span>Datos básicos</span>
-            <p>{place.editorialSummary.text}</p>
+            <p>{selectedPlace.editorialSummary.text}</p>
           </div>
         )}
-        <ul className={styles.info}>
-          {place.formattedAddress && (
-            <li>
-              <div className={styles.boxIcon}>
-                <img src={iconAddress}></img>
-              </div>
-              <p>{place.formattedAddress}</p>
-            </li>
-          )}
-          {place.regularOpeningHours && <OpeningDays place={place} />}
 
-          {place.nationalPhoneNumber && (
-            <li>
-              <div className={styles.boxIcon}>
-                <img src={iconPhone}></img>
-              </div>
-              {place.nationalPhoneNumber}
-            </li>
-          )}
-          {place.websiteUri && (
-            <li>
-              <div className={styles.boxIcon}>
-                <img src={iconWeb}></img>
-              </div>
-              <a href={place.websiteUri}>
-                {new URL(place.websiteUri).hostname}
-              </a>
-            </li>
-          )}
-        </ul>
+        {streetFound && (
+          <div className={styles.coordinates}>
+            {selectedPlace.location.longitude + " "}
+            {streetFound && selectedPlace.location.latitude}
+          </div>
+        )}
+
+        <Info />
       </div>
     </div>
   );

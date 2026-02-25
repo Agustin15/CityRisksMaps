@@ -89,12 +89,12 @@ td {
         cursor: pointer;
     }
     .table {
-        width: 217vw;
+        width: 253vw;
         table-layout: fixed;
     }
 
     .table .nameNeighborhood {
-        width: 99%;
+        width: 12rem;
         padding-left: 5%;
     }
 

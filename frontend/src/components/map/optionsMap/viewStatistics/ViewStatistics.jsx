@@ -7,12 +7,12 @@ import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { Menu } from "./menu/Menu.jsx";
 import { ContainQuizes } from "../../quizes/containQuizes/ContainQuizes.jsx";
 import { CrimeNeighbordhoods } from "../../crimeNeighData/CrimeNeighbordhoods.jsx";
-import { resize } from "./functions.js";
 
 export const ViewStatistics = () => {
   const [showViewStatistics, setShowViewStatistics] = useState(
     window.innerWidth < 1200 ? false : true
   );
+
   const viewStatisticsId = useId();
   const { windowWidth } = useWindowResize();
   const { crimeSelected } = useZoneCrimes();
@@ -20,12 +20,6 @@ export const ViewStatistics = () => {
   const { showQuizes } = useQuizes();
 
   useEffect(() => {
-    if (document.getElementById(viewStatisticsId)) {
-      document
-        .getElementById(viewStatisticsId)
-        .getAnimations()
-        .map((animation) => animation.cancel());
-    }
     if (windowWidth < 1200 || showViewStatistics == true) return;
     else setShowViewStatistics(true);
   }, [windowWidth]);
@@ -40,12 +34,13 @@ export const ViewStatistics = () => {
 
       <Activity mode={showViewStatistics == true ? "visible" : "hidden"}>
         <div id={viewStatisticsId} className={styles.viewStatistics}>
+          <div className={styles.containCheckDeploy}>
+            <label htmlFor="checkDeploy"></label>
+            <input type="checkbox" id="checkDeploy" className={styles.deploy} />
+          </div>
+
           {crimeSelected && (
             <div className={styles.containOptionsCrimes}>
-              <div
-                onClick={(event) => resize(event)}
-                className={styles.deploy}
-              ></div>
               <CrimeNeighbordhoods
                 categoryCrime={crimeSelected}
                 setShowViewStatistics={setShowViewStatistics}

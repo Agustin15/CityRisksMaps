@@ -33,7 +33,7 @@ export const ListUserQuizes = () => {
       )}
 
       {cookies.email && <Filter />}
-      {cookies.email && <List />}
+      {cookies.email && years && <List />}
     </div>
   );
 };

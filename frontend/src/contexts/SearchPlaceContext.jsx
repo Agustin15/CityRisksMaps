@@ -1,5 +1,5 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useMapControls } from "./MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
@@ -10,19 +10,20 @@ const SearchPlaceContext = createContext();
 export const SearchPlaceProvider = ({ children }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [placesSearched, setPlacesSearched] = useState(null);
+  const [streetFound, setStreetFound] = useState(null);
   const [valueSearchedByText, setValueSearchedByText] = useState();
   const [valueInput, setValueInput] = useState("");
-  const inputRef = useRef(null);
   const [loadingPlace, setLoadingPlace] = useState(false);
+  const inputRef = useRef(null);
 
-  const { userLocation } = useMapControls();
-  const { setMainPhoto } = usePhotosPlace();
   const map = useMap();
+  const { userLocation } = useMapControls();
+  const { setPhotosList, createPhotosList } = usePhotosPlace();
 
   const handleCleanInput = async (setSuggestions) => {
     setSuggestions();
     if (selectedPlace) {
-      setMainPhoto();
+      setPhotosList();
       setSelectedPlace();
       if (placesSearched) setValueInput(valueSearchedByText);
       else setValueInput("");
@@ -56,6 +57,8 @@ export const SearchPlaceProvider = ({ children }) => {
         throw new Error("Sitio solicitado no encontrado");
 
       if (result && optionSetPlace) {
+        await createPhotosList(result);
+
         setSelectedPlace(result);
         setValueInput(result.displayName.text);
 
@@ -84,6 +87,7 @@ export const SearchPlaceProvider = ({ children }) => {
       });
 
       if (result) {
+        setStreetFound(true);
         await moreDetailsPlace(result.results[0].place_id, true);
       } else throw new Error("Error inesperado en la geocodificacion");
     } catch (error) {
@@ -169,6 +173,7 @@ export const SearchPlaceProvider = ({ children }) => {
         setSelectedPlace,
         setPlacesSearched,
         placesSearched,
+        streetFound,
         moreDetailsPlace,
         handleClickOnMap,
         searchByText,

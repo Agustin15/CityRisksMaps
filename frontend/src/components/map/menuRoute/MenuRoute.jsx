@@ -8,7 +8,6 @@ import { getSuggestions } from "./functions.js";
 import { RoutesCalculated } from "./routesCalculated/RoutesCalculated.jsx";
 import { Transports } from "./transports/Transports.jsx";
 import { EnterAdresses } from "./enterAddresses/EnterAdresses.jsx";
-import { resize } from "../optionsMap/viewStatistics/functions.js";
 
 export const MenuRoute = () => {
   const [suggestions, setSuggestions] = useState();
@@ -46,8 +45,6 @@ export const MenuRoute = () => {
 
   return (
     <div className={styles.menuRoute}>
-      <div onClick={(event) => resize(event)} className={styles.deploy}></div>
-
       <div className={styles.close}>
         <button onClick={() => handleClose(setSuggestions)}>x</button>
       </div>

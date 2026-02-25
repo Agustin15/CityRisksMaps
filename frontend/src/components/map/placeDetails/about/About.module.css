@@ -45,14 +45,23 @@
 @media (width<=650px) {
     .about {
         box-shadow: none;
-        background: rgb(241, 241, 241);
-        border-radius: 5px;
+        background: none;
+        padding: 0;
+    }
+
+    .about .rowTwo {
+        width: 99%;
     }
 }
 
 @media (width>650px) and (width<1200px) {
     .about {
-        background: rgb(241, 241, 241);
+        background: none;
         box-shadow: none;
+        padding: 0;
+    }
+
+    .about .rowTwo {
+        width: 99%;
     }
 }

@@ -29,8 +29,7 @@
 
 @media (width<=650px) {
     .containChart {
-        width: 87%;
+        width: 97%;
         height: auto;
-        margin-right: 9vw;
     }
 }

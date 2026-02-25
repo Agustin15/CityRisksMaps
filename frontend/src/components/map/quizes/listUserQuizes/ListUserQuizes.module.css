@@ -70,6 +70,7 @@
 @media (width>650px) and (width<1200px) {
     .listUserQuizes {
         width: 91%;
+        height: auto;
         overflow-y: scroll;
     }
     .header {

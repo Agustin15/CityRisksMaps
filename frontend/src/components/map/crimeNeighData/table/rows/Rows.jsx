@@ -54,7 +54,7 @@ export const Rows = ({
                 : ""
           }
         >
-          {neighborhoodCrime.increase
+          {neighborhoodCrime.increase!=null
             ? neighborhoodCrime.increase + "%"
             : "Sin datos"}
         </td>

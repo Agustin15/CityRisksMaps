@@ -12,22 +12,19 @@ export const ViewPlaces = () => {
   const { showMenuRoutes } = useRoutes();
   const { selectedPlace, placesSearched } = useSearchPlace();
   const viewPlacesId = useId();
-  const { windowWidth } = useWindowResize();
-
-  useEffect(() => {
-    if (document.getElementById(viewPlacesId)) {
-      document
-        .getElementById(viewPlacesId)
-        .getAnimations()
-        .map((animation) => animation.cancel());
-    }
-  }, [windowWidth]);
 
   return (
     <div id={viewPlacesId} className={styles.viewPlaces}>
-      {selectedPlace && showMenuRoutes == false && (
-        <PlaceDetails place={selectedPlace} />
-      )}
+      <div className={styles.containCheckDeploy}>
+        <label htmlFor="checkDeployPlaces"></label>
+        <input
+          type="checkbox"
+          id="checkDeployPlaces"
+          className={styles.deploy}
+        />
+      </div>
+
+      {selectedPlace && showMenuRoutes == false && <PlaceDetails />}
 
       {placesSearched && (
         <Activity mode={selectedPlace ? "hidden" : "display"}>

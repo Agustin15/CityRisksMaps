@@ -13,7 +13,7 @@ import iconWheelchair from "../../../../assets/img/wheelchair.png";
 import { BtnIndications } from "../../BtnIndications/BtnIndications";
 import styles from "./About.module.css";
 
-export const About = ({ setSelectedPlace, place }) => {
+export const About = ({ place }) => {
   const getStarsRating = (rating) => {
     const ratingStars = [
       { rating: { min: 0.0, max: 0.4 }, stars: ceroStars },
@@ -64,7 +64,7 @@ export const About = ({ setSelectedPlace, place }) => {
             )}
         </div>
 
-        <BtnIndications setSelectedPlace={setSelectedPlace} place={place} />
+        <BtnIndications />
       </div>
     </div>
   );

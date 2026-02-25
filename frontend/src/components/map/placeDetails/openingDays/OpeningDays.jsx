@@ -2,7 +2,7 @@ import styles from "./openingDays.module.css";
 import iconClock from "../../../../assets/img/clock.png";
 import iconArrow from "../../../../assets/img/arrow.png";
 import { useState } from "react";
-import { Weekdays } from "./weekdays";
+import { Weekdays } from "./Weekdays/Weekdays";
 
 export const OpeningDays = ({ place }) => {
   const [showOpeningDays, setShowOpeningDays] = useState(false);
@@ -21,13 +21,13 @@ export const OpeningDays = ({ place }) => {
 
   const nextTime = (nextTime, option) => {
     const days = [
-      "Domingo",
-      "Lunes",
-      "Martes",
-      "Miercoles",
-      "Jueves",
-      "Viernes",
-      "Sabado"
+      "domingo",
+      "lunes",
+      "martes",
+      "miercoles",
+      "jueves",
+      "viernes",
+      "sabado"
     ];
 
     if (
@@ -84,7 +84,7 @@ export const OpeningDays = ({ place }) => {
       </div>
 
       {showOpeningDays && (
-        <Weekdays periods={place.regularOpeningHours.periods} />
+        <Weekdays periods={place.regularOpeningHours.weekdayDescriptions} />
       )}
     </li>
   );

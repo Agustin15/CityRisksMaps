@@ -32,6 +32,10 @@
     opacity: 76%;
 }
 
+.containCheckDeploy {
+    display: none;
+}
+
 @media (width<=650px) {
     .viewPlaces {
         position: absolute;
@@ -41,15 +45,62 @@
         justify-content: center;
         gap: 0.5rem;
         left: 0;
-        top: 11vh;
+        top: 0;
         background: none;
         box-shadow: none;
         height: 81vh;
         width: 100vw;
         overflow-y: hidden;
     }
+
+    .viewPlaces:not(.deploy:checked) {
+        animation-name: deployUp;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .viewPlaces:has(.deploy:checked) {
+        animation-name: deployDown;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes deployDown {
+        from {
+            top: 11vh;
+        }
+        to {
+            top: 81vh;
+        }
+    }
+
+    @keyframes deployUp {
+        from {
+            margin-top: 81vh;
+        }
+        to {
+            margin-top: 11vh;
+        }
+    }
     .placeNotSelected {
         display: none;
+    }
+    .containCheckDeploy {
+        display: flex;
+        position: absolute;
+        top: 1vh;
+        left: 44vw;
+        z-index: 1;
+    }
+    .containCheckDeploy label {
+        width: 3rem;
+        height: 0.3rem;
+        border-radius: 25px;
+        opacity: 99%;
+        background: rgb(204, 204, 204);
+    }
+
+    .containCheckDeploy .deploy {
+        visibility: hidden;
     }
 }
 
@@ -64,7 +115,52 @@
         height: 85.7vh;
         width: 84vw;
     }
+    .viewPlaces:not(.deploy:checked) {
+        animation-name: deployRight;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+    .viewPlaces:has(.deploy:checked) {
+        animation-name: deployLeft;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes deployRight {
+        from {
+            left: -71vw;
+        }
+        to {
+            left: 7.9vw;
+        }
+    }
+    @keyframes deployLeft {
+        from {
+            left: 7.9vw;
+        }
+        to {
+            left: -71vw;
+        }
+    }
     .placeNotSelected {
         display: none;
+    }
+    .containCheckDeploy {
+        display: flex;
+        position: absolute;
+        top: 37vh;
+        right: -1.5vw;
+        z-index: 1;
+    }
+    .containCheckDeploy label {
+        width: 0.5rem;
+        height: 3rem;
+        border-radius: 25px;
+        opacity: 99%;
+        background: rgb(204, 204, 204);
+    }
+
+    .containCheckDeploy .deploy {
+        visibility: hidden;
     }
 }

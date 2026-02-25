@@ -671,8 +671,6 @@ select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighbor
 
 IF(@quantity IS NOT NULL) SET @rate=(CAST(@quantity as decimal)/@population)*100000
 
-Print @quantityCrimesPrevYear
-
 IF(@quantity IS NOT NULL AND @quantityCrimesPrevYear IS NOT NULL)
 BEGIN
 SET @increase=(

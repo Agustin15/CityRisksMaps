@@ -91,17 +91,18 @@ td {
     }
 
     .table {
-        width: 286vw;
+        width: 243vw;
         table-layout: fixed;
     }
     .table .nameNeighborhood {
         padding-left: 5%;
-        width: 99%;
+        width: 15rem;
     }
 
     .table .moreDetails {
         width: 100%;
         box-shadow: none;
+        text-align: start;
         background-color: #ffffff;
         border-top: 1px solid rgb(197, 197, 197);
         border-bottom: 1px solid rgb(170, 170, 170);
