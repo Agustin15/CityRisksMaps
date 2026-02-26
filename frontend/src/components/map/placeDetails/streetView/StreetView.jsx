@@ -1,6 +1,6 @@
 import styles from "./StreetView.module.css";
 import rotation from "../../../../assets/img/rotation.png";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
 import { usePhotosPlace } from "../../../../contexts/PhotosContext";
@@ -8,7 +8,6 @@ import { FullScreen } from "./fullScreen/FullScreen";
 import { Modal } from "../../modal/Modal";
 
 export const StreetView = () => {
-  const panoRef = useRef();
   const [isFullScreen, setIsFullScreen] = useState(false);
   const { getStreetViewStaticImage, imageStreet } = usePhotosPlace();
   const { selectedPlace } = useSearchPlace();
@@ -28,7 +27,6 @@ export const StreetView = () => {
     imageStreet && (
       <>
         <div
-          ref={panoRef}
           style={{ backgroundImage: `url(${imageStreet})` }}
           className={styles.streetView}
         >
