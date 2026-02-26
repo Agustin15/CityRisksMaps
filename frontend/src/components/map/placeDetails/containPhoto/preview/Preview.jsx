@@ -15,7 +15,7 @@ export const Preview = ({ photosList }) => {
         {photosList.map(
           (photo, index) =>
             index % 3 == 0 && (
-              <li>
+              <li key={index}>
                 <img
                   onClick={() => handleViewList(index)}
                   className={styles.imageBig}

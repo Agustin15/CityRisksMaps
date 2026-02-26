@@ -11,17 +11,19 @@ export const ContainPhoto = () => {
 
   return (
     <div className={styles.containPhoto}>
+      {!photosList && (
+        <div className={styles.noPhotosFound}>
+          <img className={styles.mainPhoto} src={imageNotFound}></img>
+          <span>Imagenes no encontradas</span>
+        </div>
+      )}
+
       {photosList &&
         (windowWidth >= 1200 ? (
-          <img
-            className={photosList ? styles.mainPhoto : styles.imageNotFound}
-            src={photosList ? photosList[1].url : imageNotFound}
-          ></img>
+          <img className={styles.mainPhoto} src={photosList[1].url}></img>
         ) : (
           <Preview photosList={photosList} />
         ))}
-
-      {!photosList && <span>Imagenes no encontradas</span>}
 
       {photosList.length > 1 && windowWidth >= 1200 && (
         <div className={styles.optionWatchPhotos}>

@@ -1,9 +1,9 @@
 import {
   Map,
   ControlPosition,
-  useAdvancedMarkerRef,
-  useMap
+  useAdvancedMarkerRef
 } from "@vis.gl/react-google-maps";
+
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
 
@@ -25,7 +25,6 @@ export const ContainMap = () => {
   const { windowWidth } = useWindowResize();
   const [polygonSelected, setPolygonSelected] = useState();
   const [markerRef, marker] = useAdvancedMarkerRef();
-  const [drawMode, setDrawMode] = useState();
 
   return (
     <>
@@ -42,7 +41,7 @@ export const ContainMap = () => {
           position: ControlPosition.RIGHT_BOTTOM
         }}
         onClick={(event) => {
-          if (routeNavigation || drawMode) return;
+          if (routeNavigation) return;
           handleClickOnMap(event, marker);
         }}
         onMousemove={(event) => {
@@ -60,8 +59,6 @@ export const ContainMap = () => {
           polygonSelected={polygonSelected}
           markerRef={markerRef}
           marker={marker}
-          drawMode={drawMode}
-          setDrawMode={setDrawMode}
         />
       </Map>
 

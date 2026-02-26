@@ -7,11 +7,15 @@
     margin-top: -1rem;
 }
 
-.detailOpeningHours .iconInfo {
-    width: 25px;
-    height: 25px;
+.detailOpeningHours .clock {
+    width: 22px;
+    height: 22px;
     margin-left: 0.1rem;
     opacity: 75%;
+    background: url("../../../../assets/img/clock.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
 }
 
 .row {
@@ -30,11 +34,6 @@
     align-items: center;
 }
 
-.detailOpeningHours .state .boxIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .detailOpeningHours .close {
     color: red;
     font-weight: bold;
@@ -58,8 +57,16 @@
     transform: rotate(0deg);
 }
 
-@media (width<=650px) {
+@media (width<=1200px) {
     .row {
         font-size: 15px;
+    }
+    .detailOpeningHours .clock {
+        width: 24px;
+        height: 24px;
+        background: url("../../../../assets/img/clockMobile.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        border: none;
     }
 }

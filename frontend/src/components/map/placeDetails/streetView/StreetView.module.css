@@ -1,0 +1,28 @@
+.streetView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 5rem;
+    border-radius: 9px;
+    margin-left: 1rem;
+    position: relative;
+    border: 4px solid #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.streetView img {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    margin: auto;
+    z-index: 5;
+    cursor: pointer;
+}
+
+@media (width<1200px) {
+    .streetView {
+        width: 7rem;
+        height: 3.7rem;
+    }
+}

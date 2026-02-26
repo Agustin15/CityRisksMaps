@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 
 const PhotosContext = createContext();
@@ -6,6 +6,7 @@ const PhotosContext = createContext();
 export const PhotosProvider = ({ children }) => {
   const [showPhotos, setShowPhotos] = useState(false);
   const [photosList, setPhotosList] = useState();
+  const [imageStreet, setImageStreet] = useState();
   const [indexSelected, setIndexSelected] = useState(0);
 
   const getPhotoDetails = async (namePhoto, maxHeightPx, maxWidthPx) => {
@@ -51,7 +52,9 @@ export const PhotosProvider = ({ children }) => {
 
       const result = response.url;
 
-      if (result) return result;
+      if (result) {
+        setImageStreet(result);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +70,9 @@ export const PhotosProvider = ({ children }) => {
         photosList,
         setPhotosList,
         setIndexSelected,
-        indexSelected
+        indexSelected,
+        imageStreet,
+        setImageStreet
       }}
     >
       {children}

@@ -11,20 +11,13 @@ import { useWindowResize } from "../../contexts/WindowResizeContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { MarkerOrigin } from "./markerOrigin/MarkerOrigin";
 import { MarkersPlaces } from "./markersPlaces/MarkersPlaces";
-import { MapHandler } from "./mapHandler/MapHandler";
+import { MapHandlerPlaceSelected } from "./mapHandlerPlaceSelected/MapHandlerPlaceSelected";
 import { MyLocation } from "./myLocation/MyLocation";
 import { Navigation } from "./navigation/Navigation";
 import { SearchPlace } from "./searchPlace/SearchPlace";
 import { Geolocation } from "./geolocation/Geolocation";
-import { DrawMode } from "./drawMode/DrawMode";
 
-export const ContentMap = ({
-  polygonSelected,
-  markerRef,
-  marker,
-  drawMode,
-  setDrawMode
-}) => {
+export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
   const { userLocation } = useMapControls();
   const { selectedPlace, placesSearched } = useSearchPlace();
   const { originLocation, destinationLocation } = useRoutes();
@@ -49,7 +42,7 @@ export const ContentMap = ({
         {!routeNavigation && <SearchPlace />}
       </MapControl>
 
-      <MapHandler place={selectedPlace} marker={marker} />
+      <MapHandlerPlaceSelected place={selectedPlace} marker={marker} />
 
       {!routeNavigation && (
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
@@ -84,10 +77,6 @@ export const ContentMap = ({
           <Navigation />
         </MapControl>
       )}
-
-      {/* <MapControl position={ControlPosition.TOP_RIGHT}>
-        <DrawMode drawMode={drawMode} setDrawMode={setDrawMode}></DrawMode>
-      </MapControl> */}
     </>
   );
 };

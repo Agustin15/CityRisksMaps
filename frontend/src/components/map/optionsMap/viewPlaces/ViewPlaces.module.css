@@ -69,16 +69,16 @@
             top: 11vh;
         }
         to {
-            top: 81vh;
+            top: 83vh;
         }
     }
 
     @keyframes deployUp {
         from {
-            margin-top: 81vh;
+            top: 83vh;
         }
         to {
-            margin-top: 11vh;
+            top: 11vh;
         }
     }
     .placeNotSelected {

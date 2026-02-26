@@ -120,10 +120,11 @@
         flex-direction: column;
         align-items: start;
         justify-content: start;
-        overflow-y: scroll;
         border-top-right-radius: 27px;
         background: white;
         color: black;
+        overflow-y: scroll;
+        scrollbar-width: none;
     }
 
     .containDetails .column {

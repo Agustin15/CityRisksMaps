@@ -25,17 +25,27 @@
     width: 82%;
 }
 
-.info li .boxIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.info li .boxIcon img {
+.address,
+.phone,
+.web {
+    background-size: contain;
+    background-repeat: no-repeat;
     width: 25px;
     height: 25px;
     opacity: 75%;
 }
 
+.address {
+    background-image: url("../../../../assets/img/address.png");
+}
+
+.phone {
+    background-image: url("../../../../assets/img/phone.png");
+}
+
+.web {
+    background-image: url("../../../../assets/img/web.png");
+}
 .info li a {
     color: white;
     text-decoration: none;
@@ -63,6 +73,18 @@
         color: rgb(41, 107, 151);
         text-decoration: none;
     }
+
+    .address {
+        background-image: url("../../../../assets/img/addressMobile.png");
+    }
+
+    .phone {
+        background-image: url("../../../../assets/img/phoneMobile.png");
+    }
+
+    .web {
+        background-image: url("../../../../assets/img/webMobile.png");
+    }
 }
 @media (width>650px) and (width<1200px) {
     .info {
@@ -77,5 +99,17 @@
     .info li a {
         color: rgb(41, 107, 151);
         text-decoration: none;
+    }
+
+    .address {
+        background-image: url("../../../../assets/img/addressMobile.png");
+    }
+
+    .phone {
+        background-image: url("../../../../assets/img/phoneMobile.png");
+    }
+
+    .web {
+        background-image: url("../../../../assets/img/webMobile.png");
     }
 }

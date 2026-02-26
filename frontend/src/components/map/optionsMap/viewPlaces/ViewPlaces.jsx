@@ -1,9 +1,8 @@
 import styles from "./viewPlaces.module.css";
 import iconMap from "../../../../assets/img/map.png";
-import { Activity, useEffect, useId } from "react";
+import { Activity,  useId } from "react";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
-import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { MenuRoute } from "../../menuRoute/MenuRoute";
 import { PlaceDetails } from "../../placeDetails/PlaceDetails.jsx";
 import { PlacesSearched } from "../../placesSearched/PlacesSearched";

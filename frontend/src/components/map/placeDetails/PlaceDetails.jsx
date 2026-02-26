@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import styles from "./PlaceDetails.module.css";
 import { usePhotosPlace } from "../../../contexts/PhotosContext.jsx";
 import { useSearchPlace } from "../../../contexts/SearchPlaceContext.jsx";

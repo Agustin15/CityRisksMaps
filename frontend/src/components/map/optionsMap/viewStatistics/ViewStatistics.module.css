@@ -57,13 +57,13 @@
             margin-top: 11vh;
         }
         to {
-            margin-top: 82vh;
+            margin-top: 83vh;
         }
     }
 
     @keyframes deployUp {
         from {
-            margin-top: 81vh;
+            margin-top: 83vh;
         }
         to {
             margin-top: 11vh;

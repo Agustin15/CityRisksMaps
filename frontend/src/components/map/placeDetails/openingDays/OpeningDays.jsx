@@ -1,5 +1,4 @@
 import styles from "./openingDays.module.css";
-import iconClock from "../../../../assets/img/clock.png";
 import iconArrow from "../../../../assets/img/arrow.png";
 import { useState } from "react";
 import { Weekdays } from "./Weekdays/Weekdays";
@@ -47,9 +46,7 @@ export const OpeningDays = ({ place }) => {
     <li className={styles.detailOpeningHours}>
       <div className={styles.row}>
         <div className={styles.state}>
-          <div className={styles.boxIcon}>
-            <img className={styles.iconInfo} src={iconClock}></img>
-          </div>
+          <div className={styles.clock}></div>
           <span
             className={
               place.regularOpeningHours.openNow ? styles.open : styles.close

@@ -15,16 +15,30 @@
     padding: 0.2rem;
 }
 
-.containPhoto span {
-    margin-right: 1rem;
-}
 .mainPhoto {
     width: 95%;
     height: 95%;
 }
-.imageNotFound {
-    width: 8rem;
-    height: 8rem;
+
+.noPhotosFound {
+    width: 95%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 0.6rem;
+}
+
+.noPhotosFound span {
+    margin-top: -0.2rem;
+}
+
+.noPhotosFound img {
+    width: 6rem;
+    height: 6rem;
 }
 
 .optionWatchPhotos {
@@ -70,12 +84,33 @@
 @media (width>650px) and (width<1200px) {
     .containPhoto {
         width: 100%;
-        height: 75%;
+        height: 35%;
         align-items: start;
         margin: 0;
         box-shadow: none;
         background: none;
         overflow-x: scroll;
         scrollbar-width: none;
+    }
+
+    .noPhotosFound {
+        width: 95%;
+        height: 95%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-bottom: 0.6rem;
+    }
+
+    .noPhotosFound span {
+        margin-top: -0.2rem;
+    }
+
+    .noPhotosFound img {
+        width: 6rem;
+        height: 6rem;
     }
 }
