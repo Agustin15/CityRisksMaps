@@ -1,15 +1,16 @@
 import styles from "./viewPlaces.module.css";
 import iconMap from "../../../../assets/img/map.png";
-import { Activity,  useId } from "react";
+import { Activity, useId } from "react";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
 import { MenuRoute } from "../../menuRoute/MenuRoute";
 import { PlaceDetails } from "../../placeDetails/PlaceDetails.jsx";
 import { PlacesSearched } from "../../placesSearched/PlacesSearched";
+import { StreetSelected } from "../../streetSelected/StreetSelected.jsx";
 
 export const ViewPlaces = () => {
   const { showMenuRoutes } = useRoutes();
-  const { selectedPlace, placesSearched } = useSearchPlace();
+  const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
   const viewPlacesId = useId();
 
   return (
@@ -24,6 +25,7 @@ export const ViewPlaces = () => {
       </div>
 
       {selectedPlace && showMenuRoutes == false && <PlaceDetails />}
+      {streetSelected && showMenuRoutes == false && <StreetSelected />}
 
       {placesSearched && (
         <Activity mode={selectedPlace ? "hidden" : "display"}>
@@ -31,12 +33,15 @@ export const ViewPlaces = () => {
         </Activity>
       )}
 
-      {!showMenuRoutes && !placesSearched && !selectedPlace && (
-        <div className={styles.placeNotSelected}>
-          <img src={iconMap}></img>
-          <h3>No se selecciono ningun lugar aun</h3>
-        </div>
-      )}
+      {!showMenuRoutes &&
+        !placesSearched &&
+        !selectedPlace &&
+        !streetSelected && (
+          <div className={styles.placeNotSelected}>
+            <img src={iconMap}></img>
+            <h3>No se selecciono ningun lugar aun</h3>
+          </div>
+        )}
 
       {showMenuRoutes && <MenuRoute />}
     </div>

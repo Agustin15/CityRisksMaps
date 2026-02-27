@@ -9,7 +9,7 @@ import { useNavigation } from "../../../contexts/NavigationContext.jsx";
 
 export const OptionsMap = () => {
   const { showPhotos } = usePhotosPlace();
-  const { selectedPlace, placesSearched } = useSearchPlace();
+  const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
   const { windowWidth } = useWindowResize();
   const { routeNavigation } = useNavigation();
 
@@ -19,7 +19,8 @@ export const OptionsMap = () => {
 
       {((windowWidth >= 1200 && !routeNavigation) ||
         (selectedPlace && !routeNavigation) ||
-        placesSearched) && <ViewPlaces />}
+        placesSearched ||
+        streetSelected) && <ViewPlaces />}
 
       {showPhotos && (
         <Modal>

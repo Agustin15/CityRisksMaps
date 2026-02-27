@@ -23,10 +23,10 @@ export const RoutesProvider = ({ children }) => {
   const map = useMap();
   const { polygons, crimeSelected } = useZoneCrimes();
 
-  const handleClickRoute = (place) => {
+  const handleClickRoute = (address, location) => {
     setShowMenuRoutes(true);
-    setDestination(place.formattedAddress);
-    setDestinationLocation(place.location);
+    setDestination(address);
+    setDestinationLocation(location);
   };
 
   const showRoutes = async (travelMode) => {

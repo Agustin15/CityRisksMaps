@@ -11,15 +11,15 @@ import { useWindowResize } from "../../contexts/WindowResizeContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { MarkerOrigin } from "./markerOrigin/MarkerOrigin";
 import { MarkersPlaces } from "./markersPlaces/MarkersPlaces";
-import { MapHandlerPlaceSelected } from "./mapHandlerPlaceSelected/MapHandlerPlaceSelected";
+import { MapHandlerClick } from "./MapHandlerClick/MapHandlerClick";
 import { MyLocation } from "./myLocation/MyLocation";
 import { Navigation } from "./navigation/Navigation";
 import { SearchPlace } from "./searchPlace/SearchPlace";
 import { Geolocation } from "./geolocation/Geolocation";
 
-export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
+export const ContentMap = ({ polygonSelected }) => {
   const { userLocation } = useMapControls();
-  const { selectedPlace, placesSearched } = useSearchPlace();
+  const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
   const { originLocation, destinationLocation } = useRoutes();
   const { routeNavigation } = useNavigation();
   const { windowWidth } = useWindowResize();
@@ -29,8 +29,6 @@ export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
       <AdvancedMarker position={userLocation ? userLocation : null}>
         <MyLocation />
       </AdvancedMarker>
-
-      <AdvancedMarker ref={markerRef} position={null}></AdvancedMarker>
 
       <MapControl
         position={
@@ -42,13 +40,15 @@ export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
         {!routeNavigation && <SearchPlace />}
       </MapControl>
 
-      <MapHandlerPlaceSelected place={selectedPlace} marker={marker} />
-
       {!routeNavigation && (
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
           <Geolocation />
         </MapControl>
       )}
+
+      {(selectedPlace || streetSelected) && <MapHandlerClick />}
+
+      {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
 
       {polygonSelected && (
         <AdvancedMarker
@@ -58,8 +58,6 @@ export const ContentMap = ({ polygonSelected, markerRef, marker }) => {
           <InfoWindowNeighborhood polygonSelected={polygonSelected} />
         </AdvancedMarker>
       )}
-
-      {placesSearched && <MarkersPlaces placesSearched={placesSearched} />}
 
       {originLocation && destinationLocation && !userLocation && (
         <AdvancedMarker

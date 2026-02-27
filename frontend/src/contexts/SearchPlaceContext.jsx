@@ -1,5 +1,5 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
 import { useMapControls } from "./MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
@@ -10,7 +10,7 @@ const SearchPlaceContext = createContext();
 export const SearchPlaceProvider = ({ children }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [placesSearched, setPlacesSearched] = useState(null);
-  const [streetFound, setStreetFound] = useState(null);
+  const [streetSelected, setStreetSelected] = useState(null);
   const [valueSearchedByText, setValueSearchedByText] = useState();
   const [valueInput, setValueInput] = useState("");
   const [loadingPlace, setLoadingPlace] = useState(false);
@@ -22,24 +22,32 @@ export const SearchPlaceProvider = ({ children }) => {
 
   const handleCleanInput = async (setSuggestions) => {
     setSuggestions();
-    if (selectedPlace) {
-      setPhotosList();
-      setSelectedPlace();
-      if (placesSearched) setValueInput(valueSearchedByText);
-      else setValueInput("");
-    } else if (placesSearched) {
-      setPlacesSearched();
-      setValueSearchedByText();
-      setValueInput("");
+
+    switch (true) {
+      case selectedPlace != null:
+        setPhotosList();
+        setSelectedPlace();
+        if (placesSearched) setValueInput(valueSearchedByText);
+        else setValueInput("");
+        break;
+      case placesSearched != null:
+        setPlacesSearched();
+        setValueSearchedByText();
+        setValueInput("");
+        break;
+      case streetSelected != null:
+        setStreetSelected();
+        setValueInput("");
+        break;
     }
   };
 
-  const handleClickOnMap = async (event, marker) => {
+  const handleClickOnMap = async (event) => {
     if (event.detail.placeId) {
+      setStreetSelected(null);
       await moreDetailsPlace(event.detail.placeId, true);
     } else {
-      setSelectedPlace();
-      marker.position = event.detail.latLng;
+      setSelectedPlace(null);
       getReverseGeocodification(event.detail.latLng);
     }
   };
@@ -82,13 +90,14 @@ export const SearchPlaceProvider = ({ children }) => {
     try {
       const geocoder = new google.maps.Geocoder();
 
-      const result = await geocoder.geocode({
+      const resultGeocodification = await geocoder.geocode({
         location: latLng
       });
 
-      if (result) {
-        setStreetFound(true);
-        await moreDetailsPlace(result.results[0].place_id, true);
+      if (resultGeocodification.results) {
+        setValueInput(resultGeocodification.results[0].formatted_address);
+
+        setStreetSelected(resultGeocodification.results);
       } else throw new Error("Error inesperado en la geocodificacion");
     } catch (error) {
       alertSwalError("Ups,no pudimos encontrar la ubicacion", error);
@@ -173,7 +182,8 @@ export const SearchPlaceProvider = ({ children }) => {
         setSelectedPlace,
         setPlacesSearched,
         placesSearched,
-        streetFound,
+        streetSelected,
+        setStreetSelected,
         moreDetailsPlace,
         handleClickOnMap,
         searchByText,

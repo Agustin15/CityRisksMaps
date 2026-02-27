@@ -9,7 +9,7 @@ import { Info } from "./info/Info.jsx";
 import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
 
 export const PlaceDetails = () => {
-  const { streetFound, selectedPlace } = useSearchPlace();
+  const { selectedPlace } = useSearchPlace();
   const { photosList } = usePhotosPlace();
   const { windowWidth } = useWindowResize();
 
@@ -36,13 +36,6 @@ export const PlaceDetails = () => {
           <div className={styles.description}>
             <span>Datos básicos</span>
             <p>{selectedPlace.editorialSummary.text}</p>
-          </div>
-        )}
-
-        {streetFound && (
-          <div className={styles.coordinates}>
-            {selectedPlace.location.longitude + " "}
-            {streetFound && selectedPlace.location.latitude}
           </div>
         )}
 
