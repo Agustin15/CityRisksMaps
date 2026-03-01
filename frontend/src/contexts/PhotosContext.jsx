@@ -40,7 +40,7 @@ export const PhotosProvider = ({ children }) => {
     );
 
     if (photos) {
-      setPhotosList(photos);
+      return photos;
     }
   };
 

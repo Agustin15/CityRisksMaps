@@ -1,10 +1,9 @@
-const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { createContext, useState } from "react";
-import { useRoutes } from "./routesContext/RoutesContext";
+import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
-import { useMapControls } from "./MapContext";
-import { alertSwalError } from "../components/sweetAlert/sweetAlert.js";
+import { useMapControls } from "../MapContext";
+import { getNewRoute, getUserStep } from "./functions.js";
 
 const NavigationContext = createContext();
 
@@ -16,6 +15,12 @@ export const NavigationProvider = ({ children }) => {
   const [indexStep, setIndexStep] = useState(0);
   const [destinationArrived, setDestinationArrived] = useState(false);
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
+  const [warning, setWarning] = useState({
+    rateLevel: "",
+    rateColor: "",
+    type: "",
+    neighborhood: ""
+  });
 
   const { userLocation } = useMapControls();
   const {
@@ -94,62 +99,31 @@ export const NavigationProvider = ({ children }) => {
   };
 
   const recalculateRoute = async () => {
-    try {
-      const response = await fetch(
-        "https://routes.googleapis.com/directions/v2:computeRoutes",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-            "X-Goog-Api-Key": API_KEY,
-            "X-Goog-FieldMask":
-              "routes.duration,routes.distanceMeters,routes.polyline,routes.polyline.encodedPolyline,routes.legs"
-          },
-          body: JSON.stringify({
-            origin: {
-              location: { latLng: userLocation }
-            },
-            destination: {
-              location: { latLng: destinationLocation }
-            },
-            travelMode: transportSelected,
-            computeAlternativeRoutes: false,
-            routeModifiers: {
-              avoidTolls: false,
-              avoidHighways: false,
-              avoidFerries: false
-            },
-            languageCode: "es-419"
-          })
-        }
+    const result = await getNewRoute(
+      {
+        latitude: userLocation.lat,
+        longitude: userLocation.lng
+      },
+      transportSelected,
+      destinationLocation
+    );
+
+    if (result && result.routes) {
+      const newRoute = result.routes[0];
+      const pathRoute = new google.maps.geometry.encoding.decodePath(
+        newRoute.polyline.encodedPolyline
       );
-      const result = await response.json();
 
-      if (!response.ok) throw new Error(result.error.message);
+      polylineNavigation.setOptions({
+        path: pathRoute
+      });
 
-      if (result.routes) {
-        const newRoute = result.routes[0];
-        const pathRoute = new google.maps.geometry.encoding.decodePath(
-          newRoute.polyline.encodedPolyline
-        );
-
-        polylineNavigation.setOptions({
-          path: pathRoute
-        });
-
-        setRouteNavigation(newRoute);
-        setPolylineNavigation(polylineNavigation);
-      }
-    } catch (error) {
-      alertSwalError(
-        "Ups,ruta no encontrada",
-        "Hubo un error al recalcular las ruta"
-      );
-      console.log(error);
+      setRouteNavigation(newRoute);
+      setPolylineNavigation(polylineNavigation);
     }
   };
 
-  const redrawPolylineWhenUserMove = (indexLatLng) => {
+  const redrawRouteWhenUserMove = (indexLatLng) => {
     const newPolylinePath = polylineNavigation
       .getPath()
       .mh.filter((latLng, index) => {
@@ -164,7 +138,11 @@ export const NavigationProvider = ({ children }) => {
   };
 
   const calculateUserStep = () => {
-    let userStepFound = getUserStep();
+    let userStepFound = getUserStep(
+      routeNavigation,
+      userLocation,
+      transportSelected
+    );
 
     if (userStepFound.stepFound && userStepFound.indexStepFound != indexStep) {
       let startLocation = userStepFound.stepFound.startLocation.latLng;
@@ -199,45 +177,6 @@ export const NavigationProvider = ({ children }) => {
     }
   };
 
-  const getUserStep = () => {
-    let toleranceGrades, indexCurrentStepFound;
-
-    const stepCurrentFound = routeNavigation.legs[0].steps.find(
-      (step, index) => {
-        const polylineStep = new google.maps.Polyline({
-          path: google.maps.geometry.encoding.decodePath(
-            step.polyline.encodedPolyline
-          )
-        });
-
-        ///1 grado longitud equivale 111319 metros
-        if (
-          transportSelected == "Drive" ||
-          transportSelected == "Transit" ||
-          transportSelected == "Two_wheeler"
-        )
-          toleranceGrades = 30 / 111319;
-        else toleranceGrades = 15 / 111319;
-
-        const userInStep = google.maps.geometry.poly.isLocationOnEdge(
-          userLocation,
-          polylineStep,
-          toleranceGrades
-        );
-
-        if (userInStep == true) {
-          indexCurrentStepFound = index;
-          return step;
-        }
-      }
-    );
-
-    return {
-      stepFound: stepCurrentFound,
-      indexStepFound: indexCurrentStepFound
-    };
-  };
-
   return (
     <NavigationContext.Provider
       value={{
@@ -246,11 +185,13 @@ export const NavigationProvider = ({ children }) => {
         currentStep,
         setPolylineNavigation,
         recalculateRoute,
-        redrawPolylineWhenUserMove,
+        redrawRouteWhenUserMove,
         handleNavigation,
         activeNavigationVoice,
         setActiveNavigationVoice,
         destinationArrived,
+        warning,
+        setWarning,
         handleCloseNavigation
       }}
     >

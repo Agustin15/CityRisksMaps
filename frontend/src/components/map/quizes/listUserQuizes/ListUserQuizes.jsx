@@ -1,4 +1,5 @@
 import styles from "./ListUserQuizes.module.css";
+import iconQuizes from "../../../../assets/img/quizes.png";
 import { VerifyEmail } from "../verifyEmail/VerifyEmail";
 import { VerifyProvider } from "../../../../contexts/VerifyContext";
 import { Filter } from "./filter/Filter";
@@ -21,11 +22,13 @@ export const ListUserQuizes = () => {
   return (
     <div className={styles.listUserQuizes}>
       <div className={styles.header}>
-        <h3>Lista de encuestas de percepcion</h3>
+        <h3>Mi encuestas de percepcion</h3>
+        <img src={iconQuizes}></img>
         <div className={styles.optionClose}>
           <button onClick={() => setShowListQuizes(false)}>X</button>
         </div>
       </div>
+
       {!cookies.email && (
         <VerifyProvider>
           <VerifyEmail />

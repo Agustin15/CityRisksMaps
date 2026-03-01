@@ -1,5 +1,5 @@
 .indication {
-    width: 26rem;
+    width: 23rem;
     height: 4rem;
     color: white;
     font-size: 16px;
@@ -7,13 +7,13 @@
     justify-content: start;
     align-items: center;
     gap: 1rem;
-    margin: 2vw 1vw 0 0;
+    margin: 1vw 1vw 0 0;
     background-color: rgb(21, 145, 21);
     border-radius: 8px;
 }
 
 .indication .maneuver {
-    width: 20%;
+    width: 17%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -36,9 +36,10 @@
 @media (width<=650px) {
     .indication {
         width: 96vw;
+        height: 3.5rem;
         border-radius: 8px;
         font-size: 15px;
-        margin: 0.7vh 0 0 0;
+        margin: 2vh 0 0 0;
     }
 
     .indication .maneuver img {
@@ -46,3 +47,4 @@
         height: 39px;
     }
 }
+

@@ -24,6 +24,7 @@ export const FormAddQuizProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [allTypeCrimes, setAllTypeCrimes] = useState();
   const [neighborhoodsNotUsed, setNeighborhoodsNotUsed] = useState();
+  
   const [valuesForm, setValuesForm] = useState({
     email: cookies && cookies.email ? cookies.email : "",
     neighborhoodSelected: "",
@@ -101,11 +102,11 @@ export const FormAddQuizProvider = ({ children }) => {
     const result = await fetchSendQuiz(setLoading, valuesForm);
 
     if (result) {
-      if (yearSelected) loadQuizesDataNeighborhoodsByYear(yearSelected);
-      else loadDataQuizes();
-
       cleanForm();
       alertSwalSuccess("¡Encuesta realizada exitosamente!");
+
+      if (yearSelected) loadQuizesDataNeighborhoodsByYear(yearSelected);
+      else loadDataQuizes();
 
       if (newQuiz == true) return getNeighborhoodsNotUsed();
     }

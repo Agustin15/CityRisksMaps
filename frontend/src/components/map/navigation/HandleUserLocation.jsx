@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigation } from "../../../contexts/NavigationContext";
+import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useMapControls } from "../../../contexts/MapContext";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext";
@@ -8,16 +8,22 @@ import {
   verifyUserLocationInPolygon
 } from "./functions.js";
 
-export const HandleUserLocation = ({ warning, setWarning }) => {
+export const HandleUserLocation = () => {
   const [lastCheck, setLastCheck] = useState(
     new Date().setSeconds(new Date().getSeconds() - 16)
   );
 
+  const {
+    recalculateRoute,
+    currentStep,
+    redrawRouteWhenUserMove,
+    warning,
+    setWarning
+  } = useNavigation();
+  
   const { transportSelected } = useRoutes();
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
-  const { recalculateRoute, currentStep, redrawPolylineWhenUserMove } =
-    useNavigation();
 
   useEffect(() => {
     switch (true) {
@@ -47,7 +53,7 @@ export const HandleUserLocation = ({ warning, setWarning }) => {
     if (latLngIndex == null) {
       recalculateRoute();
     } else {
-      redrawPolylineWhenUserMove(latLngIndex);
+      redrawRouteWhenUserMove(latLngIndex);
     }
   };
 };

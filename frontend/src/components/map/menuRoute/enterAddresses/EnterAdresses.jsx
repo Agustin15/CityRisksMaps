@@ -12,9 +12,15 @@ export const EnterAdresses = ({
   handleSearchSuggestions,
   loading
 }) => {
-  const { destination, originLocation, showRoutes, loadingRoutes } = useRoutes();
+  const { destination, originLocation, showRoutes, loadingRoutes } =
+    useRoutes();
   const { crimeSelected } = useZoneCrimes();
   const { showQuizes } = useQuizes();
+
+  const handleClickShowRoutes = () => {
+    if (destination.length > 0 && originLocation) showRoutes("Drive");
+    else return;
+  };
 
   return (
     <div className={styles.columnShowRoutes}>
@@ -34,11 +40,9 @@ export const EnterAdresses = ({
         </div>
         <button
           disabled={loadingRoutes}
-          onClick={() => showRoutes("Drive")}
+          onClick={handleClickShowRoutes}
           className={
-            destination.length > 0 &&
-            originLocation &&
-            (crimeSelected == "Homicidio" || showQuizes)
+            destination.length > 0 && originLocation
               ? styles.btnEnabled
               : styles.btnDisabled
           }

@@ -11,30 +11,34 @@ export const getRangeSecureQuiz = (percentage) => {
   }
 };
 
-const createArrayForPolygons = (nhQuizes, neighbordhoodsCoordinates) => {
+const createArrayForPolygons = (
+  neighborhoodQuizes,
+  neighbordhoodsCoordinates
+) => {
   const neighbordhoodsDataForPolygons = [];
 
-  neighbordhoodsCoordinates.forEach((nhCoordinate) => {
-    const nhQuizFound = nhQuizes.find(
-      (nhQuiz) =>
-        nhQuiz.name.toLowerCase() == nhCoordinate.neighborhood.toLowerCase()
+  neighbordhoodsCoordinates.forEach((neighborhoodCoordinate) => {
+    const neighborhoodQuizFound = neighborhoodQuizes.find(
+      (neighborhoodQuiz) =>
+        neighborhoodQuiz.name.toLowerCase() ==
+        neighborhoodCoordinate.neighborhood.toLowerCase()
     );
 
-    if (nhQuizFound) {
+    if (neighborhoodQuizFound) {
       let rateColor = "#bbbbbbff";
       let rateLevel = "Sin datos";
 
-      if (nhQuizFound.total != 0) {
-        const range = getRangeSecureQuiz(nhQuizFound.percentage);
+      if (neighborhoodQuizFound.total != 0) {
+        const range = getRangeSecureQuiz(neighborhoodQuizFound.percentage);
         rateColor = range.color;
         rateLevel = range.level;
       }
 
       neighbordhoodsDataForPolygons.push({
-        coordinates: nhCoordinate.coordinates,
-        name: nhQuizFound.name,
-        total: nhQuizFound.total,
-        percentage: nhQuizFound.percentage,
+        coordinates: neighborhoodCoordinate.coordinates,
+        name: neighborhoodQuizFound.name,
+        total: neighborhoodQuizFound.total,
+        percentage: neighborhoodQuizFound.percentage,
         rateColor: rateColor,
         rateLevel: rateLevel,
         type: "quiz"

@@ -1,6 +1,6 @@
 import styles from "./MyLocation.module.css";
 import iconNavigation from "../../../assets/img/currentNavigation.png";
-import { useNavigation } from "../../../contexts/NavigationContext";
+import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 
 export const MyLocation = () => {
   const { routeNavigation } = useNavigation();

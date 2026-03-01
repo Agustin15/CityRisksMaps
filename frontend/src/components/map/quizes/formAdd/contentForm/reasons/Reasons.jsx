@@ -1,10 +1,10 @@
 import styles from "./Reasons.module.css";
 import Switch from "react-switch";
 import { useEffect } from "react";
-import { useFormQuiz } from "../../../../../contexts/quizesContext/FormAddQuizContext";
+import { useFormQuiz } from "../../../../../../contexts/quizesContext/FormAddQuizContext";
 import { Loading } from "../loading/Loading";
 import { NotData } from "../notData/NotData";
-import { handleChange } from "../functions.js";
+import { handleChange } from "../../functions.js";
 
 export const Reasons = ({ valuesForm, setValuesForm }) => {
   const { getAllTypeCrimes, allTypeCrimes, loadingCrimes } = useFormQuiz();

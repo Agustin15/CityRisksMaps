@@ -84,7 +84,6 @@ export const RoutesProvider = ({ children }) => {
         setRouteSelected(0);
       }
     } catch (error) {
-      console.log(error);
       alertSwalError(
         "Ups,rutas no encontradas",
         "Hubo un error al obtener las rutas"

@@ -5,7 +5,7 @@
     gap: 1rem;
     width: 46%;
     height: auto;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     background: white;
     border-radius: 5px;
     font-family: Arial, Helvetica, sans-serif;
@@ -15,13 +15,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0.4rem;
     width: 100%;
-    height: 2.2rem;
+    height: 4rem;
     position: relative;
-    background: linear-gradient(rgb(48, 171, 219), rgb(38, 123, 156));
+    background: linear-gradient(rgb(48, 128, 219), rgb(20, 93, 122));
     color: white;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+}
+
+.header img {
+    width: 34px;
+    height: 34px;
 }
 
 .header h3 {
@@ -29,8 +33,8 @@
     margin: 0;
 }
 .optionClose {
-    width: 100%;
-    height: 2.2rem;
+    width: 103.4%;
+    height: 100%;
     display: flex;
     justify-content: end;
     align-items: start;
@@ -46,8 +50,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom-left-radius: 3px;
     border: none;
+    box-shadow: none;
     font-size: 14px;
     cursor: pointer;
 }
@@ -56,11 +60,18 @@
     .listUserQuizes {
         width: 95%;
     }
+    .header {
+        height: 3.4rem;
+    }
+    .header img {
+        width: 31px;
+        height: 31px;
+    }
     .header h3 {
-        font-size: 15px;
+        font-size: 16px;
     }
     .optionClose {
-        width: 104%;
+        width: 106.5%;
     }
     .optionClose button {
         width: 2rem;
@@ -71,9 +82,12 @@
     .listUserQuizes {
         width: 91%;
         height: auto;
+        max-height: 85%;
         overflow-y: scroll;
+        overflow-x: hidden;
     }
     .header {
+        padding: 0.5rem 0 0.5rem 0;
         font-size: 14px;
     }
 }

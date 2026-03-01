@@ -41,7 +41,6 @@ export const ZoneCrimesProvider = ({ children }) => {
       if (result) return result;
       else return null;
     } catch (error) {
-      console.log(error.message);
     } finally {
       setLoading(false);
     }

@@ -1,15 +1,14 @@
 import styles from "./InfoStreet.module.css";
-import iconDestination from "../../../../assets/img/destination.png";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext";
+import { ButtonIndications } from "./buttonIndications/ButtonIndicatios";
 import { findComponentAddress } from "../functions";
-import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 
 export const InfoStreet = ({ streetSelected, lat, lng }) => {
-  const { handleClickRoute } = useRoutes();
+  const { windowWidth } = useWindowResize();
 
   let street = findComponentAddress(["route", "establishment"], streetSelected);
   let streetNumber = findComponentAddress(["street_number"], streetSelected);
   let postalCode = findComponentAddress(["postal_code"], streetSelected);
-
   return (
     <ul className={styles.infoStreet}>
       <div className={styles.columnOne}>
@@ -22,11 +21,19 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
               (streetNumber ? streetNumber.long_name : "")}
           </li>
         )}
-        <li>
+        <li className={styles.itemPostalCode}>
           <div className={styles.postalCode}></div>
           <span>Codigo Postal:</span>
           {postalCode.long_name}
+          {windowWidth < 1200 && (
+            <ButtonIndications
+              streetSelected={streetSelected}
+              lat={lat}
+              lng={lng}
+            />
+          )}
         </li>
+
         <li>
           <div className={styles.coordinates}></div>
           <span>Coordenadas:</span>
@@ -34,20 +41,15 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
         </li>
       </div>
 
-      <li className={styles.containBtnIndications}>
-        <button
-          className={styles.btnIndications}
-          onClick={() =>
-            handleClickRoute(streetSelected[0].formatted_address, {
-              lat: lat(),
-              lng: lng()
-            })
-          }
-        >
-          Ver indicaciones
-          <img src={iconDestination}></img>
-        </button>
-      </li>
+      {windowWidth >= 1200 && (
+        <li className={styles.containBtnIndications}>
+          <ButtonIndications
+            streetSelected={streetSelected}
+            lat={lat}
+            lng={lng}
+          />
+        </li>
+      )}
     </ul>
   );
 };

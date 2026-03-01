@@ -1,63 +1,60 @@
 .zoneInfo {
-    width: 45%;
-    height: 100%;
+    width: auto;
+    height: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
+    margin: 0 1vw 16vh 0;
+    padding: 0;
     font-size: 14px;
-    border-right: 1px solid rgb(19, 11, 46);
-}
-.zoneInfo svg {
-    width: 100%;
-    height: 6vh;
-    margin-top: 0.5vh;
+    background: linear-gradient(#333f7c, #222c57);
+    color: white;
+    border-radius: 99px;
 }
 
-.zoneInfo p {
-    width: 99%;
-    padding: 0 0 0.4rem 0;
+.zoneInfo .detailsWarning {
+    width: auto;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.zoneInfo .detailsWarning span {
+    font-weight: bold;
+    padding-left: 1rem;
+}
+
+.zoneInfo .detailsWarning p {
+    width: auto;
+    padding-left: 0.2rem;
     margin: 0;
     text-align: center;
 }
 
 @media (width<=650px) {
     .zoneInfo {
-        width: 58%;
-        height: auto;
+        background: linear-gradient(#4659b9, #202c5e);
+        margin: 0 1vw 15vh 0;
+    }
+
+    .zoneInfo .detailsWarning {
+        width: auto;
         display: flex;
-        font-size: 13px;
-    }
-    .zoneInfo svg {
-        width: 100%;
-        height: 2.5rem;
-        margin-top: 0.5vh;
+        justify-content: start;
+        align-items: center;
+        gap: 0.2rem;
     }
 
-    .zoneInfo p {
-        width: 99%;
-        padding: 0 0 0.4rem 0;
-        margin: 0;
-        text-align: center;
-    }
-}
-
-@media (width<=650px) {
-    .zoneInfo {
-        width: 58%;
-        height: auto;
-        display: flex;
-        font-size: 13px;
-    }
-    .zoneInfo svg {
-        width: 100%;
-        height: 2.5rem;
-        margin-top: 0.5vh;
+    .zoneInfo .detailsWarning span {
+        font-weight: bold;
+        padding-left: 1rem;
     }
 
-    .zoneInfo p {
-        width: 11rem;
-        padding: 0 0 0.4rem 0;
+    .zoneInfo .detailsWarning p {
+        width: auto;
+        padding-left: 0.2rem;
         margin: 0;
         text-align: center;
     }
@@ -65,21 +62,17 @@
 
 @media (width>650px) and (width<1200px) {
     .zoneInfo {
-        width: 58%;
+        width: auto;
         height: auto;
         display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        margin: 0 1vw 25vh 0;
+        padding: 0;
         font-size: 14px;
-    }
-    .zoneInfo svg {
-        width: 100%;
-        height: 2.5rem;
-        margin-top: 0.5vh;
-    }
-
-    .zoneInfo p {
-        width: 99%;
-        padding: 0 0 0.4rem 0;
-        margin: 0;
-        text-align: center;
+        background: linear-gradient(#4659b9, #202c5e);
+        color: white;
+        border-radius: 99px;
     }
 }

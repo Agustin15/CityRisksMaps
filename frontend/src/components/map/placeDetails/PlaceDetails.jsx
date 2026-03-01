@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import styles from "./PlaceDetails.module.css";
 import { usePhotosPlace } from "../../../contexts/PhotosContext.jsx";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext.jsx";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
 import { About } from "./about/About.jsx";
 import { ContainPhoto } from "./containPhoto/ContainPhoto";
 import { BtnIndications } from "../BtnIndications/BtnIndications";

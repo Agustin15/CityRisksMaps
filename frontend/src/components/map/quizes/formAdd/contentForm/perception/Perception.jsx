@@ -1,5 +1,5 @@
 import styles from "./Perception.module.css";
-import { handleChange } from "../functions.js";
+import { handleChange } from "../../functions.js";
 
 export const Perception = ({ valuesForm, setValuesForm }) => {
   return (

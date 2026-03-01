@@ -107,9 +107,10 @@
         color: black;
         gap: 0.5rem;
         height: 5rem;
-        margin-top: 5vh;
-        font-size: 17px;
         width: 100%;
+        margin-top: 5vh;
+        padding-bottom: 3rem;
+        font-size: 17px;
     }
     .notRoutes span {
         width: 95%;
@@ -177,13 +178,13 @@
         flex-direction: column-reverse;
         justify-content: center;
         align-items: center;
-        color: rgb(197, 197, 197);
+        color: rgb(20, 20, 20);
         gap: 0.5rem;
         height: 5rem;
-        margin-top: 9vh;
-        font-size: 17px;
         width: 100%;
-        padding-bottom: 1rem;
+        margin-top: 4vh;
+        font-size: 17px;
+        padding-bottom: 1.5rem;
     }
     .notRoutes span {
         width: 95%;

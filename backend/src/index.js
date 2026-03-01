@@ -26,7 +26,10 @@ const limiterOptions = {
 const limitRate = rateLimit(limiterOptions);
 const limitRateVerificationCode = rateLimit({
   ...limiterOptions,
-  ["limit"]: 4
+  ["limit"]: 4,
+  ["message"]: {
+    messageError: "Demasiados intentos, intente de nuevo en 30 minutos"
+  }
 });
 
 dotenv.config();

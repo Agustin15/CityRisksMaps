@@ -1,6 +1,6 @@
 import styles from "./MarkersPlaces.module.css";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
 
 export const MarkersPlaces = ({ placesSearched }) => {
   const { setSelectedPlace } = useSearchPlace();

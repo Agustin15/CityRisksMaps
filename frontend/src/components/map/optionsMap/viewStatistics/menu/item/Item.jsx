@@ -3,7 +3,7 @@ import { alertSwalWarning } from "../../../../../sweetAlert/sweetAlert.js";
 import { useRoutes } from "../../../../../../contexts/routesContext/RoutesContext.jsx";
 import { useQuizes } from "../../../../../../contexts/quizesContext/QuizesContext.jsx";
 import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
-import { useNavigation } from "../../../../../../contexts/NavigationContext.jsx";
+import { useNavigation } from "../../../../../../contexts/navigationContext/NavigationContext.jsx";
 
 export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
   const {

@@ -1,22 +1,17 @@
 import styles from "./Navigation.module.css";
-import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
-import { useNavigation } from "../../../contexts/NavigationContext";
+import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { HandleUserLocation } from "./HandleUserLocation.jsx";
 import { activateNavigationVoice, getImageManeuver } from "./functions.js";
-import { DetailsIndication } from "./detailsIndication/DetailsIndication.jsx";
+import { OptionsIndication } from "./optionsIndication/OptionsIndication.jsx";
 
 export const Navigation = () => {
-  const [warning, setWarning] = useState({
-    rateLevel: "",
-    rateColor: "",
-    type: "",
-    neighborhood: ""
-  });
-  const { windowWidth } = useWindowResize();
-  const { destinationArrived, currentStep, activeNavigationVoice } =
+  const { destinationArrived, warning, currentStep, activeNavigationVoice } =
     useNavigation();
+
+  const { windowWidth } = useWindowResize();
 
   useEffect(() => {
     if (!currentStep || !activeNavigationVoice) return;
@@ -38,7 +33,7 @@ export const Navigation = () => {
 
   return (
     <div>
-      <HandleUserLocation warning={warning} setWarning={setWarning} />
+      <HandleUserLocation />
 
       <MapControl
         position={
@@ -61,7 +56,7 @@ export const Navigation = () => {
         </div>
       </MapControl>
 
-      <DetailsIndication currentStep={currentStep} warning={warning} />
+      <OptionsIndication />
     </div>
   );
 };

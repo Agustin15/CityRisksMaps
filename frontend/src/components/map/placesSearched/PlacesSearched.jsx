@@ -1,18 +1,20 @@
 import styles from "./PlacesSearched.module.css";
-import { PhotosProvider } from "../../../contexts/PhotosContext";
+import { usePhotosPlace } from "../../../contexts/PhotosContext";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
+import { useMap } from "@vis.gl/react-google-maps";
 import { Photo } from "./photo/Photo";
 import { Rating } from "./rating/Rating";
 import { StateOpen } from "./stateOpen/StateOpen";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
-import { useMap } from "@vis.gl/react-google-maps";
 
 export const PlacesSearched = () => {
   const { setSelectedPlace, placesSearched, setValueInput, valueInput } =
     useSearchPlace();
+  const { setPhotosList } = usePhotosPlace();
 
   const map = useMap();
 
   const handleClick = (place) => {
+    setPhotosList(place.photosList);
     setSelectedPlace(place);
     setValueInput(place.displayName.text);
     map.setZoom(15);
@@ -33,9 +35,8 @@ export const PlacesSearched = () => {
 
                 {place.regularOpeningHours && <StateOpen place={place} />}
               </div>
-              <PhotosProvider>
-                <Photo place={place} />
-              </PhotosProvider>
+
+              <Photo place={place} />
             </div>
           </li>
         ))}

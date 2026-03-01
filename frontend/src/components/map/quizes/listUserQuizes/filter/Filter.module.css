@@ -3,8 +3,10 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    border-bottom: 1px solid rgb(212, 212, 212);
+    padding-bottom: 1rem;
+    margin-top: 0.5rem;
 }
-
 
 .containFilter .notData {
     height: auto;
@@ -14,7 +16,6 @@
     align-items: center;
     font-size: 15px;
     font-weight: bold;
-    
 }
 
 .containFilter .notData img {
@@ -63,11 +64,11 @@
     height: 1.9rem;
     margin-left: 0.5rem;
     border-radius: 4px;
-    background-color: rgb(26, 172, 182);
+    background: linear-gradient(rgb(48, 128, 219), rgb(20, 93, 122));
     color: white;
     border: none;
     cursor: pointer;
 }
 .containFilter .filter button:hover {
-    background-color: rgb(27, 143, 151);
+    background: linear-gradient(rgb(48, 128, 219), rgb(19, 73, 95));
 }

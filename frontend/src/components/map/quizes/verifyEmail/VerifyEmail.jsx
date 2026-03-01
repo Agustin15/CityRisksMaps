@@ -1,5 +1,6 @@
 import styles from "./VerifyEmail.module.css";
 import iconInfo from "../../../../assets/img/info.png";
+import iconVerifyUser from "../../../../assets/img/auth.png";
 import { VerificationCode } from "./verificationCode/VerificationCode.jsx";
 import { useVerify } from "../../../../contexts/VerifyContext.jsx";
 import { useState } from "react";
@@ -18,6 +19,11 @@ export const VerifyEmail = () => {
 
   return (
     <div className={styles.verifyEmail}>
+      <div className={styles.title}>
+        <img src={iconVerifyUser}></img>
+        <h3>Verificacion de correo</h3>
+      </div>
+
       <h4>
         <img src={iconInfo}></img> La verificacion sera necesaria solo una vez
         cada 24 horas

@@ -58,34 +58,6 @@
     opacity: 75%;
 }
 
-.infoStreet .containBtnIndications {
-    justify-content: end;
-    width: 99%;
-}
-
-.infoStreet li .btnIndications {
-    width: 11rem;
-    height: 1.9rem;
-    box-shadow: none;
-    background: rgb(35, 159, 175);
-    border-radius: 4px;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    gap: 0.5rem;
-}
-.infoStreet li .btnIndications:hover {
-    background: rgb(28, 134, 148);
-    box-shadow: none;
-}
-
-.infoStreet li .btnIndications img {
-    width: 21px;
-    height: 21px;
-}
-
 @media (width<=650px) {
     .infoStreet {
         font-size: 15px;
@@ -98,15 +70,22 @@
         box-shadow: none;
     }
     .infoStreet .columnOne {
-        gap: 0.5rem;
+        gap: 0;
         width: 100%;
     }
     .infoStreet li {
-        background: rgb(222, 228, 255);
+        background: none;
         height: 2.4rem;
         width: 97%;
         padding-left: 0.5rem;
         border-radius: 5px;
+    }
+
+    .infoStreet li span {
+        display: none;
+    }
+    .infoStreet .itemPostalCode {
+        position: relative;
     }
 
     .address {
@@ -131,7 +110,70 @@
     }
 
     .infoStreet li .btnIndications {
-        margin-top: 1rem;
+        position: absolute;
+        top: 14vh;
+        right: 3vw;
+        box-shadow: none;
+        background: rgb(35, 159, 175);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .infoStreet {
+        font-size: 16px;
+        padding: 0.5rem 0 0 0;
+        margin: 0;
+        width: 97%;
+        height: auto;
+        background: none;
+        border-radius: 5px;
+        box-shadow: none;
+    }
+    .infoStreet .columnOne {
+        gap: 0;
+        width: 100%;
+    }
+    .infoStreet li {
+        background: none;
+        height: 2.4rem;
+        width: 97%;
+        padding-left: 0.5rem;
+        border-radius: 5px;
+    }
+
+    .infoStreet li span {
+        display: none;
+    }
+
+    .infoStreet .itemPostalCode {
+        position: relative;
+    }
+
+    .address {
+        background: url("../../../../assets/img/addressMobile.png");
+    }
+
+    .postalCode {
+        background: url("../../../../assets/img/postalCodeMobile.png");
+    }
+    .coordinates {
+        background: url("../../../../assets/img/coordinatesMobile.png");
+    }
+
+    .address,
+    .postalCode,
+    .coordinates {
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 1.6rem;
+        height: 1.6rem;
+        opacity: 75%;
+    }
+
+    .infoStreet li .btnIndications {
+        position: absolute;
+        top: 14vh;
+        right: 3vw;
         box-shadow: none;
         background: rgb(35, 159, 175);
     }

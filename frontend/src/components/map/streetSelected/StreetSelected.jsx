@@ -1,6 +1,6 @@
 import styles from "./StreetSelected.module.css";
 import { useEffect, useRef } from "react";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
 import { InfoStreet } from "./infoStreet/InfoStreet";
 import { findComponentAddress } from "./functions";
 

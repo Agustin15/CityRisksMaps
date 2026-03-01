@@ -4,9 +4,9 @@ import {
   MapControl
 } from "@vis.gl/react-google-maps";
 import { useMapControls } from "../../contexts/MapContext";
-import { useNavigation } from "../../contexts/NavigationContext";
+import { useNavigation } from "../../contexts/navigationContext/NavigationContext";
 import { useRoutes } from "../../contexts/routesContext/RoutesContext";
-import { useSearchPlace } from "../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
 import { useWindowResize } from "../../contexts/WindowResizeContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
 import { MarkerOrigin } from "./markerOrigin/MarkerOrigin";
@@ -71,7 +71,7 @@ export const ContentMap = ({ polygonSelected }) => {
       )}
 
       {routeNavigation && (
-        <MapControl position={ControlPosition.BOTTOM_CENTER}>
+        <MapControl position={ControlPosition.RIGHT_BOTTOM}>
           <Navigation />
         </MapControl>
       )}

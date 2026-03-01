@@ -31,7 +31,6 @@ export const ListQuizesProvider = ({ children }) => {
       return result;
     } catch (error) {
       setErrorSearch(error.message);
-      console.log(error.message);
     } finally {
       setLoading(false);
     }
@@ -113,7 +112,6 @@ export const ListQuizesProvider = ({ children }) => {
 
       return result;
     } catch (error) {
-      console.log(error);
       alertSwalErrorQuiz("Error al eliminar encuesta", error.messageError);
     }
   };

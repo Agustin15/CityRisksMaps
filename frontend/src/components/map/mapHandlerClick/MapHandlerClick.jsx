@@ -5,9 +5,9 @@ import {
   useMap
 } from "@vis.gl/react-google-maps";
 import { useEffect } from "react";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
+import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 import { StreetView } from "../streetView/StreetView";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
-import { useNavigation } from "../../../contexts/NavigationContext";
 
 export const MapHandlerClick = () => {
   const map = useMap();
@@ -31,7 +31,7 @@ export const MapHandlerClick = () => {
   }, [map, selectedPlace, streetSelected]);
 
   return (
-    <>
+    <div>
       <AdvancedMarker
         position={
           selectedPlace
@@ -48,6 +48,6 @@ export const MapHandlerClick = () => {
           <StreetView />
         </MapControl>
       )}
-    </>
+    </div>
   );
 };

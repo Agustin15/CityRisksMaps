@@ -1,7 +1,7 @@
 import styles from "./BtnIndications.module.css";
 import iconDestination from "../../../assets/img/destination.png";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext";
-import { useSearchPlace } from "../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
 
 export const BtnIndications = () => {
   const { handleClickRoute } = useRoutes();
@@ -11,7 +11,10 @@ export const BtnIndications = () => {
     <button
       onClick={() => {
         if (placesSearched) setPlacesSearched();
-        handleClickRoute(selectedPlace);
+        handleClickRoute(
+          selectedPlace.formattedAddress,
+          selectedPlace.location
+        );
       }}
       className={styles.buttonStartRoute}
     >

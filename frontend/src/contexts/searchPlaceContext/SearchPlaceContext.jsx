@@ -1,0 +1,130 @@
+import { createContext, useContext, useRef, useState } from "react";
+import { useMapControls } from "../MapContext.jsx";
+import { useMap } from "@vis.gl/react-google-maps";
+import { usePhotosPlace } from "../PhotosContext.jsx";
+import {
+  getMoreDetailsPlace,
+  getPlacesByText,
+  getReverseGeocodification
+} from "./functions.js";
+
+const SearchPlaceContext = createContext();
+
+export const SearchPlaceProvider = ({ children }) => {
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [placesSearched, setPlacesSearched] = useState(null);
+  const [streetSelected, setStreetSelected] = useState(null);
+  const [valueSearchedByText, setValueSearchedByText] = useState();
+  const [valueInput, setValueInput] = useState("");
+  const [loadingPlace, setLoadingPlace] = useState(false);
+  const inputRef = useRef(null);
+
+  const map = useMap();
+  const { userLocation } = useMapControls();
+  const { setPhotosList, createPhotosList } = usePhotosPlace();
+
+  const handleCleanInput = async (setSuggestions) => {
+    setSuggestions();
+
+    switch (true) {
+      case selectedPlace != null:
+        setPhotosList();
+        setSelectedPlace();
+        if (placesSearched) setValueInput(valueSearchedByText);
+        else setValueInput("");
+        break;
+      case placesSearched != null:
+        setPlacesSearched();
+        setValueSearchedByText();
+        setValueInput("");
+        break;
+      case streetSelected != null:
+        setStreetSelected();
+        setValueInput("");
+        break;
+    }
+  };
+
+  const handleClickOnMap = async (event) => {
+    if (event.detail.placeId) {
+      setStreetSelected(null);
+      await moreDetailsPlace(event.detail.placeId, true);
+    } else {
+      setSelectedPlace(null);
+      getReverseGeocodification(event.detail.latLng,setValueInput,setStreetSelected);
+    }
+  };
+
+  const moreDetailsPlace = async (placeId, optionSetPlace) => {
+    const result = await getMoreDetailsPlace(placeId, setLoadingPlace);
+
+    if (result && optionSetPlace) {
+      setPhotosList(await createPhotosList(result));
+      setSelectedPlace(result);
+      setValueInput(result.displayName.text);
+
+      map.setZoom(15);
+      map.panTo({
+        lat: result.location.latitude,
+        lng: result.location.longitude
+      });
+    }
+  };
+
+  const searchByText = async () => {
+    const result = await getPlacesByText(
+      setLoadingPlace,
+      inputRef.current.value,
+      userLocation
+    );
+
+    if (result.places) {
+      const photosList = await Promise.all(
+        result.places.map(async (place) => {
+          const list = await createPhotosList(place);
+          place.photosList = list;
+          return place;
+        })
+      );
+      result.places.photosList = photosList;
+
+      if (result.places.length == 1) setSelectedPlace(result.places[0]);
+      else {
+        setPlacesSearched(result.places);
+        setValueSearchedByText(inputRef.current.value);
+      }
+
+      map.setZoom(15);
+      map.panTo({
+        lat: result.places[0].location.latitude,
+        lng: result.places[0].location.longitude
+      });
+    }
+  };
+
+  return (
+    <SearchPlaceContext.Provider
+      value={{
+        valueInput,
+        setValueInput,
+        inputRef,
+        handleCleanInput,
+        selectedPlace,
+        setSelectedPlace,
+        setPlacesSearched,
+        placesSearched,
+        streetSelected,
+        setStreetSelected,
+        moreDetailsPlace,
+        handleClickOnMap,
+        searchByText,
+        loadingPlace,
+        setLoadingPlace
+      }}
+    >
+      {children}
+    </SearchPlaceContext.Provider>
+  );
+};
+
+export const useSearchPlace = () => useContext(SearchPlaceContext);

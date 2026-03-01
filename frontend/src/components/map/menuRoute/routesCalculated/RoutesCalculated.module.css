@@ -88,6 +88,7 @@
 
     .containRoutes li {
         width: 98%;
+        padding: 0 0.4rem 0.4rem 0.4rem;
         box-shadow: none;
         border-bottom: 1px solid rgb(196, 196, 196);
         background: rgb(226, 226, 226);

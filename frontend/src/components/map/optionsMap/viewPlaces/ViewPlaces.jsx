@@ -2,7 +2,7 @@ import styles from "./viewPlaces.module.css";
 import iconMap from "../../../../assets/img/map.png";
 import { Activity, useId } from "react";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
-import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../../contexts/searchPlaceContext/SearchPlaceContext";
 import { MenuRoute } from "../../menuRoute/MenuRoute";
 import { PlaceDetails } from "../../placeDetails/PlaceDetails.jsx";
 import { PlacesSearched } from "../../placesSearched/PlacesSearched";
@@ -33,6 +33,8 @@ export const ViewPlaces = () => {
         </Activity>
       )}
 
+      {showMenuRoutes && <MenuRoute />}
+
       {!showMenuRoutes &&
         !placesSearched &&
         !selectedPlace &&
@@ -42,8 +44,6 @@ export const ViewPlaces = () => {
             <h3>No se selecciono ningun lugar aun</h3>
           </div>
         )}
-
-      {showMenuRoutes && <MenuRoute />}
     </div>
   );
 };

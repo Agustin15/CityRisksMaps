@@ -1,12 +1,11 @@
 import { alertSwalErrorQuiz } from "../../components/sweetAlert/sweetAlert.js";
-
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const fetchGetNeighborhoodsNotUsed = async (
-  setLoading,
+  setLoadingNeighborhood,
   setNeighborhoodsNotUsed
 ) => {
-  setLoading(true);
+  setLoadingNeighborhood(true);
 
   const optionGet = JSON.stringify({
     option: "getNeighborhoodsWithoutQuizByYear",
@@ -32,7 +31,7 @@ export const fetchGetNeighborhoodsNotUsed = async (
   } catch (error) {
     console.log(error.message);
   } finally {
-    setLoading(false);
+    setLoadingNeighborhood(false);
   }
 };
 
@@ -75,7 +74,6 @@ export const fetchSendQuiz = async (setLoading, valuesForm) => {
 
     return result;
   } catch (error) {
-    console.log(error.message);
     alertSwalErrorQuiz(
       "Ups, hubo un error al realizar la encuesta",
       error.message

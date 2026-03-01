@@ -1,0 +1,54 @@
+.detailsIndication {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+    background: linear-gradient(#333f7c, #222c57);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3vh;
+    gap: 0.4rem;
+    width: 22vw;
+    height: 4rem;
+}
+.detailsIndication a {
+    font-weight: bold;
+}
+
+.detailsIndication button {
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background: url("../../../../../assets/img/close.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: none;
+}
+
+@media (width<=650px) {
+    .detailsIndication {
+        font-size: 14px;
+        gap: 0.4rem;
+        width: 75vw;
+        height: 4rem;
+        margin-bottom: 3vh;
+        background: linear-gradient(#3a4ca3, #202c5e);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .detailsIndication {
+        width: 34vw;
+        height: 4rem;
+        padding: 0;
+        font-size: 15px;
+        margin-bottom: 4vh;
+    }
+}

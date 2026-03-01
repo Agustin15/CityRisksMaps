@@ -22,6 +22,15 @@
 @media (width<=650px) {
     .advice {
         font-size: 15px;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
+        color: rgb(41, 41, 41);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .advice {
+        font-size: 16px;
+        margin-top: 0.5rem;
+        color: rgb(41, 41, 41);
     }
 }

@@ -40,7 +40,6 @@ export const QuizesProvider = ({ children }) => {
       return result;
     } catch (error) {
       setErrorGetQuiz(error.message);
-      console.log(error.message);
     } finally {
       setLoading(false);
     }

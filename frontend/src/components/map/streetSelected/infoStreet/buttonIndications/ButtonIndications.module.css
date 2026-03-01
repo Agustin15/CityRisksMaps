@@ -1,0 +1,29 @@
+.btnIndications {
+    width: 9rem;
+    height: 1.9rem;
+    box-shadow: none;
+    background: rgb(35, 159, 175);
+    border-radius: 4px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    gap: 0.5rem;
+}
+.btnIndications:hover {
+    background: rgb(28, 134, 148);
+    box-shadow: none;
+}
+
+.btnIndications img {
+    width: 21px;
+    height: 21px;
+}
+
+@media (width<1200px) {
+    .btnIndications {
+        position: absolute;
+        right:0;
+    }
+}

@@ -1,5 +1,5 @@
 import styles from "./Info.module.css";
-import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../../contexts/searchPlaceContext/SearchPlaceContext";
 import { OpeningDays } from "../openingDays/OpeningDays";
 
 export const Info = () => {

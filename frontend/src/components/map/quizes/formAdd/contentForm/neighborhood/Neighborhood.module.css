@@ -7,15 +7,6 @@
     position: relative;
 }
 
-.column p {
-    color: red;
-    width: auto;
-    font-size: 15px;
-    position: absolute;
-    margin-top: 4.4rem;
-    margin-left: 1rem;
-    width: 56%;
-}
 .column select {
     width: 56%;
     height: 2.4rem;
@@ -24,4 +15,13 @@
     border-radius: 5px;
     padding-left: 0.5rem;
     outline: none;
+}
+
+@media (width<=650px) {
+    .column select {
+        width: 68%;
+    }
+    .column label {
+        width: 65%;
+    }
 }

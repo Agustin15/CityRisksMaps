@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import styles from "./FullScreen.module.css";
-import { useSearchPlace } from "../../../../contexts/SearchPlaceContext";
+import { useSearchPlace } from "../../../../contexts/searchPlaceContext/SearchPlaceContext";
 
 export const FullScreen = ({ isFullScreen, setIsFullScreen }) => {
   const fullScreenRef = useRef();

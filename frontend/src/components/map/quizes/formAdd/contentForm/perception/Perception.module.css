@@ -42,3 +42,9 @@
     height: 1rem;
     cursor: pointer;
 }
+
+@media (width<=650px) {
+    .perception {
+        width: 66%;
+    }
+}

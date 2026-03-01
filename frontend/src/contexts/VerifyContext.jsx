@@ -50,7 +50,6 @@ export const VerifyProvider = ({ children }) => {
 
       setCodeAlreadySent(true);
     } catch (error) {
-      console.log(error.message);
       alertSwalErrorQuiz(
         "Ups, error al enviar codigo de verificacion",
         error.message
@@ -62,7 +61,6 @@ export const VerifyProvider = ({ children }) => {
 
   const handleVerifyCode = async (event, refInputCode) => {
     event.preventDefault();
-    let resultVerify;
 
     let valueCode = refInputCode.current.value;
 
@@ -83,18 +81,15 @@ export const VerifyProvider = ({ children }) => {
       const result = await response.json();
       if (!response.ok) throw new Error(result.messageError);
 
-      resultVerify = result;
+      setCookie("email", emailEntered, {
+        secure: true,
+        sameSite: true,
+        maxAge: 24 * 3600
+      });
     } catch (error) {
-      console.log(error.message);
       return alertSwalErrorQuiz("Ups, error en la verificacion", error.message);
     } finally {
       setLoading(false);
-      if (resultVerify)
-        setCookie("email", emailEntered, {
-          secure: true,
-          sameSite: true,
-          maxAge: 24 * 3600
-        });
     }
   };
 

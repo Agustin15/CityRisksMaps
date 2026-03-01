@@ -1,31 +1,42 @@
 import styles from "./zoneInfo.module.css";
+import { SvgWarning } from "./svgWarning/SvgWarning";
+import { useState } from "react";
+import { useNavigation } from "../../../../contexts/navigationContext/NavigationContext";
 
-export const ZoneInfo = ({ warning }) => {
+export const ZoneInfo = ({ svgWarningRef }) => {
+  const [showDetailsWarning, setShowDetailsWarning] = useState(false);
+  const { warning } = useNavigation();
+
+  const handleClick = () => {
+    if (showDetailsWarning) setShowDetailsWarning(false);
+    else setShowDetailsWarning(true);
+  };
+
   return (
     <div className={styles.zoneInfo}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <polygon
-          points="50,5 95,75 5,75"
-          fill={warning.rateColor}
-          stroke="#000"
-          strokeWidth={5}
-        ></polygon>
+      <SvgWarning
+        warning={warning}
+        handleClick={handleClick}
+        svgWarningRef={svgWarningRef}
+      />
 
-        <rect x="47" y="23" width="6" height="35" fill="#000"></rect>
-        <circle cx="50" cy="64" r="4" fill="#000"></circle>
-      </svg>
+      {showDetailsWarning && (
+        <div className={styles.detailsWarning}>
+          {warning.type.length > 0 && (
+            <span>
+              {warning.type == "crime"
+                ? "Tasa de homicidios " + warning.neighborhood + ":"
+                : "Percepcion de seguridad" + warning.neighborhood + ":"}
+            </span>
+          )}
 
-      {warning.type.length > 0 && (
-        <p>
-          {warning.type == "crime"
-            ? "Tasa de homicidios " + warning.neighborhood + ":"
-            : "Percepcion de seguridad" + warning.neighborhood + ":"}
-        </p>
+          <p>
+            {warning.rateLevel.length > 0
+              ? warning.rateLevel
+              : "barrio sin datos"}
+          </p>
+        </div>
       )}
-
-      <p>
-        {warning.rateLevel.length > 0 ? warning.rateLevel : "barrio sin datos"}
-      </p>
     </div>
   );
 };

@@ -5,16 +5,33 @@
     align-items: center;
     gap: 0.5rem;
 }
+
+.verifyEmail .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.verifyEmail .title h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 17px;
+}
+
+.verifyEmail .title img {
+    width: 42px;
+    height: 42px;
+}
 .verifyEmail h4 {
-    font-size: 15px;
+    font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .verifyEmail h4 img {
-    width: 29px;
-    height: 29px;
+    width: 27px;
+    height: 27px;
 }
 
 .rowOne {
@@ -150,6 +167,16 @@
 }
 
 @media (width<=650px) {
+    .verifyEmail .title h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .verifyEmail .title img {
+        width: 46px;
+        height: 46px;
+    }
     .verifyEmail h4 {
         font-size: 13px;
         width: 94%;
@@ -205,5 +232,11 @@
     .enterCode button {
         width: 7rem;
         font-size: 14px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .verifyEmail {
+        padding-bottom: 3rem;
     }
 }
