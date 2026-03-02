@@ -16,15 +16,18 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
           <li>
             <div className={styles.address}></div>
             <span>Direccion:</span>
-            {street.long_name +
-              " " +
-              (streetNumber ? streetNumber.long_name : "")}
+            <p>
+              {street.long_name +
+                " " +
+                (streetNumber ? streetNumber.long_name : "")}
+            </p>
           </li>
         )}
         <li className={styles.itemPostalCode}>
           <div className={styles.postalCode}></div>
           <span>Codigo Postal:</span>
           {postalCode.long_name}
+
           {windowWidth < 1200 && (
             <ButtonIndications
               streetSelected={streetSelected}
@@ -37,7 +40,7 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
         <li>
           <div className={styles.coordinates}></div>
           <span>Coordenadas:</span>
-          {lng()}, {lat()}
+          <p>{lng() + "," + lat()}</p>
         </li>
       </div>
 

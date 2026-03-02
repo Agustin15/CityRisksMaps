@@ -7,7 +7,6 @@ const MapContext = createContext();
 export const MapProvider = ({ children }) => {
   const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
-  const [idWatchPosition, setIdWatchPosition] = useState();
   const [userLocation, setUserLocation] = useState();
   const userLocationRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
@@ -41,18 +40,11 @@ export const MapProvider = ({ children }) => {
 
   const handleMyLocation = async (option) => {
     setLoadingMyLocation(true);
-
-    if (idWatchPosition && option != "current") return;
-
-    if (option == "current") {
+    
+    if (option == "current" && userLocation) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
-      const idWatch = navigator.geolocation.watchPosition(
-        success,
-        error,
-        options
-      );
-      setIdWatchPosition(idWatch);
+      navigator.geolocation.watchPosition(success, error, options);
     }
   };
 
@@ -104,7 +96,6 @@ export const MapProvider = ({ children }) => {
       if (result) return result.features;
       return null;
     } catch (error) {
-      console.log(error);
       alertSwalError(
         "Ups,sin coordenas de barrios",
         "Hubo un error al cargar las coordenadas de los barrios"

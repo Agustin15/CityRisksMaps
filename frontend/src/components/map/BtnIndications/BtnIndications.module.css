@@ -32,7 +32,7 @@
         border-radius: 5px;
     }
     .buttonStartRoute::before {
-        content: "Como llegar";
+        content: "Indicaciones";
         color: white;
         font-size: 13px;
     }
@@ -52,7 +52,7 @@
         border-radius: 5px;
     }
     .buttonStartRoute::before {
-        content: "Como llegar";
+        content: "Indicaciones";
         color: white;
         font-size: 15px;
     }

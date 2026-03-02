@@ -94,7 +94,8 @@
         margin: 0;
     }
     .optionClose {
-        width: 107%;
+        width: 106.5%;
+        height: 102%;
     }
     .optionClose button {
         width: 2rem;
@@ -107,9 +108,14 @@
         padding-bottom: 0.5rem;
         max-height: 75%;
         overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .header {
         font-size: 14px;
+    }
+    .optionClose {
+        width: 105%;
+        height: 102%;
     }
 }

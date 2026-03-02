@@ -1,0 +1,99 @@
+.enterCode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+.enterCode .column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    position: relative;
+}
+
+.enterCode .column label {
+    width: auto;
+    position: absolute;
+    margin-top: -0.6rem;
+    margin-left: -2rem;
+    background-color: white;
+    font-weight: 100;
+}
+
+.enterCode .column input {
+    width: 16rem;
+    height: 2.3rem;
+    border: 1px solid gray;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 0.5rem;
+    outline: none;
+    box-shadow: 1px 1px 1px rgb(192, 192, 192);
+}
+
+.enterCode .column:has(input:hover) label {
+    color: rgb(49, 104, 175);
+}
+
+.enterCode .column input:hover {
+    border: 2px solid rgb(65, 127, 221);
+}
+
+.enterCode .btnSendAgain {
+    margin-top: -1rem;
+    width: auto;
+    border: none;
+    box-shadow: none;
+    background: none;
+    color: rgb(44, 151, 194);
+}
+.enterCode .btnSendAgain:hover {
+    text-decoration: underline;
+}
+
+.enterCode .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.enterCode .row button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    width: 7rem;
+    height: 2rem;
+    padding: 1rem;
+    box-shadow: none;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    color: white;
+    background-color: rgb(65, 127, 221);
+}
+
+.enterCode .row button:hover {
+    background-color: rgb(49, 104, 175);
+    box-shadow: none;
+}
+
+@media (width<=650px) {
+    .enterCode .column label {
+        font-size: 15px;
+    }
+
+    .enterCode .column input {
+        font-size: 16px;
+    }
+
+    .enterCode .btnSendAgain {
+        font-size: 15px;
+    }
+}

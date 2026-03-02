@@ -41,8 +41,7 @@
     width: 100%;
 }
 
-.rowOne button,
-.enterCode button {
+.rowOne button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,13 +58,12 @@
     cursor: pointer;
 }
 
-.rowOne button:hover,
-.enterCode button:hover {
+.rowOne button:hover {
     background-color: rgb(49, 104, 175);
     box-shadow: none;
 }
 
-.columnOne {
+.verifyEmail .columnOne {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,7 +71,7 @@
     gap: 0.5rem;
     position: relative;
 }
-.columnOne label {
+.verifyEmail .columnOne label {
     width: auto;
     position: absolute;
     margin-top: -0.6rem;
@@ -82,11 +80,7 @@
     font-weight: 100;
 }
 
-.columnOne .lblHover {
-    color: rgb(49, 104, 175);
-}
-
-.columnOne p {
+.verifyEmail .columnOne p {
     color: red;
     width: auto;
     font-size: 14px;
@@ -96,7 +90,7 @@
     width: 16rem;
 }
 
-.columnOne input {
+.verifyEmail .columnOne input {
     width: 16rem;
     height: 2.3rem;
     border: 1px solid gray;
@@ -106,64 +100,12 @@
     outline: none;
     box-shadow: 1px 1px 1px rgb(192, 192, 192);
 }
+.verifyEmail .columnOne:has(input:hover) label {
+    color: rgb(49, 104, 175);
+}
 
-.columnOne input[type="email"]:hover {
+.verifyEmail .columnOne input[type="email"]:hover {
     border: 2px solid rgb(65, 127, 221);
-}
-
-.enterCode {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 0.5rem;
-}
-.enterCode .row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-.enterCode .columnOne {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-}
-
-.enterCode label {
-    width: auto;
-    margin-left: -2rem;
-}
-
-.enterCode input {
-    width: 16rem;
-}
-
-.enterCode input:hover {
-    width: 16rem;
-}
-
-.enterCode button {
-    margin-top: 0.5rem;
-    margin-left: 0;
-    width: 7rem;
-    font-size: 14px;
-}
-
-.enterCode .btnSendAgain {
-    border: none;
-    background: none;
-    color: rgb(44, 151, 194);
-    margin-top: -1rem;
-    margin-left: 0;
-    width: auto;
-}
-.enterCode .btnSendAgain:hover {
-    background: none;
-    text-decoration: underline;
 }
 
 @media (width<=650px) {
@@ -194,44 +136,29 @@
         gap: 2.2rem;
     }
 
-    .rowOne button,
-    .enterCode button {
+    .rowOne button {
         width: 9rem;
         padding: 1rem;
         height: 2rem;
     }
 
-    .columnOne {
+    .verifyEmail .columnOne {
         width: 100%;
     }
-    .columnOne p {
+    .verifyEmail .columnOne p {
         margin-top: 2.9rem;
         margin-left: 0;
         width: 75%;
     }
 
-    .columnOne label {
+    .verifyEmail .columnOne label {
         position: absolute;
         margin-top: -0.6rem;
         margin-left: -8.5rem;
     }
 
-    .columnOne input {
+    .verifyEmail .columnOne input {
         width: 76%;
-    }
-
-    .enterCode label {
-        width: auto;
-        margin-left: -2rem;
-    }
-
-    .enterCode input {
-        width: 75%;
-    }
-
-    .enterCode button {
-        width: 7rem;
-        font-size: 14px;
     }
 }
 

@@ -11,11 +11,11 @@ export const Preview = ({ photosList }) => {
 
   return (
     <ul className={styles.preview}>
-      <li className={styles.containThreePhotos}>
+      <li className={styles.previewPhotos}>
         {photosList.map(
           (photo, index) =>
             index % 3 == 0 && (
-              <li key={index}>
+              <div className={styles.containThreePhotos} key={index}>
                 <img
                   onClick={() => handleViewList(index)}
                   className={styles.imageBig}
@@ -39,7 +39,7 @@ export const Preview = ({ photosList }) => {
                     ></img>
                   )}
                 </div>
-              </li>
+              </div>
             )
         )}
       </li>

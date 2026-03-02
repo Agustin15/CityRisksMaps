@@ -9,12 +9,11 @@ export const alertSwalError = (title, error) => {
     <p class=${styles.customMsj}>${error}</p>
     `,
     imageUrl: iconGeolocation,
-    imageWidth: 70,
-    imageHeight: 70,
-    width: 420,
     customClass: {
-      title: styles.customTitle,
-      confirmButton: styles.customBtnConfirm
+      popup: styles.popup,
+      image: styles.image,
+      title: styles.title,
+      confirmButton: styles.btnConfirm
     }
   });
 };
@@ -26,10 +25,11 @@ export const alertSwalErrorQuiz = (title, error) => {
     html: `
     <p class=${styles.customMsj}>${error}</p>
     `,
-    width: 420,
     customClass: {
-      title: styles.customTitle,
-      confirmButton: styles.customBtnConfirm
+      popup: styles.popup,
+      icon: styles.icon,
+      title: styles.title,
+      confirmButton: styles.btnConfirm
     }
   });
 };
@@ -41,10 +41,11 @@ export const alertSwalWarning = (error) => {
     <p class=${styles.customMsj}>${error}</p>
     `,
     icon: "warning",
-    width: 420,
     customClass: {
-      title: styles.customTitle,
-      confirmButton: styles.customBtnConfirmWarning
+      popup: styles.popup,
+      icon: styles.icon,
+      title: styles.title,
+      confirmButton: styles.btnConfirmWarning
     }
   });
 };
@@ -56,10 +57,11 @@ export const alertSwalSuccess = (msj) => {
     <p class=${styles.customMsj}>${msj}</p>
     `,
     icon: "success",
-    width: 420,
     customClass: {
-      title: styles.customTitle,
-      confirmButton: styles.customBtnConfirmSuccess
+      popup: styles.popup,
+      icon: styles.icon,
+      title: styles.title,
+      confirmButton: styles.btnConfirmSuccess
     }
   });
 };
@@ -74,11 +76,12 @@ export const alertSwalConfirmDeleteQuiz = async (msj) => {
     showCancelButton: true,
     confirmButtonText: "Si,eliminar",
     cancelButtonText: "No,cancelar",
-    width: 420,
     customClass: {
-      title: styles.customTitle,
-      confirmButton: styles.customBtnConfirmSuccess,
-      cancelButton: styles.customBtnConfirm
+      popup: styles.popup,
+      icon: styles.icon,
+      title: styles.title,
+      confirmButton: styles.btnConfirmSuccess,
+      cancelButton: styles.btnConfirm
     }
   });
 

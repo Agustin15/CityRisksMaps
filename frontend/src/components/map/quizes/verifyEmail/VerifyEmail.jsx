@@ -3,7 +3,6 @@ import iconInfo from "../../../../assets/img/info.png";
 import iconVerifyUser from "../../../../assets/img/auth.png";
 import { VerificationCode } from "./verificationCode/VerificationCode.jsx";
 import { useVerify } from "../../../../contexts/VerifyContext.jsx";
-import { useState } from "react";
 
 export const VerifyEmail = () => {
   const {
@@ -14,8 +13,6 @@ export const VerifyEmail = () => {
     handleSendCode,
     codeAlreadySent
   } = useVerify();
-
-  const [inputHover, setInputHover] = useState(false);
 
   return (
     <div className={styles.verifyEmail}>
@@ -31,17 +28,13 @@ export const VerifyEmail = () => {
       {!codeAlreadySent && (
         <div className={styles.rowOne}>
           <div className={styles.columnOne}>
-            <label className={inputHover ? styles.lblHover : ""}>
-              Ingresar correo:
-            </label>
+            <label>Ingresar correo:</label>
             <input
               autoComplete="off"
               type="email"
               name="email"
               value={emailEntered}
               onChange={(event) => handleEmailChanged(event.target.value)}
-              onMouseLeave={() => setInputHover(false)}
-              onMouseEnter={() => setInputHover(true)}
             ></input>
             {msjErrorEmail && <p>{msjErrorEmail}</p>}
           </div>
@@ -55,12 +48,7 @@ export const VerifyEmail = () => {
         </div>
       )}
 
-      {codeAlreadySent && (
-        <VerificationCode
-          inputHover={inputHover}
-          setInputHover={setInputHover}
-        />
-      )}
+      {codeAlreadySent && <VerificationCode />}
     </div>
   );
 };

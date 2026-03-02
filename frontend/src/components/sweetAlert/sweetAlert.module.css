@@ -1,61 +1,106 @@
+.popup {
+    width: 420px;
+}
+
+.image {
+    width: 85px;
+    height: 85px;
+}
+
 .customMsj {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 19px;
+    margin: 0;
 }
 
-.customTitle {
+.title {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 22px;
+    font-size: 20px;
 }
 
-.customBtnConfirm,
-.customBtnCancel,
-.customBtnConfirmWarning,
-.customBtnConfirmSuccess {
+.btnConfirm,
+.btnCancel,
+.btnConfirmWarning,
+.btnConfirmSuccess {
     width: 8rem;
     font-weight: bold;
     background: rgb(216, 34, 34);
 }
 
-.customBtnCancel {
+.btnCancel {
     background: rgb(150, 150, 150);
 }
 
-.customBtnCancel:hover {
+.btnCancel:hover {
     background: rgb(131, 131, 131);
 }
-.customBtnConfirmWarning {
+.btnConfirmWarning {
     background: rgb(199, 108, 34);
 }
 
-.customBtnConfirmSuccess {
+.btnConfirmSuccess {
     background: rgb(49, 196, 35);
     width: 8rem;
 }
 
-.customBtnConfirm:hover {
+.btnConfirm:hover {
     background: rgb(184, 23, 23);
 }
-.customBtnConfirmWarning:hover {
+.btnConfirmWarning:hover {
     background: rgb(180, 94, 23);
 }
 
-.customBtnConfirmSuccess:hover {
+.btnConfirmSuccess:hover {
     background: rgb(37, 145, 27);
 }
 
 @media (width<=650px) {
+    .popup {
+        width: 320px;
+    }
+    .icon,
+    .image {
+        width: 65px;
+        height: 65px;
+    }
+    .title {
+        font-size: 18px;
+    }
+
     .customMsj {
         font-size: 17px;
     }
 
-    .customTitle {
+    .btnConfirm,
+    .btnCancel,
+    .btnConfirmWarning,
+    .btnConfirmSuccess {
+        font-size: 15px;
+        width: auto;
+    }
+}
+
+@media (width>650px) and (width<=1000px) {
+    .popup {
+        width: 390px;
+        height: auto;
+    }
+    .icon,
+    .image {
+        width: 65px;
+        height: 65px;
+    }
+    .customMsj {
+        font-size: 17px;
+    }
+
+    .title {
         font-size: 18px;
     }
-    .customBtnConfirm,
-    .customBtnCancel,
-    .customBtnConfirmWarning,
-    .customBtnConfirmSuccess {
+    .btnConfirm,
+    .btnCancel,
+    .btnConfirmWarning,
+    .btnConfirmSuccess {
         font-size: 15px;
         width: auto;
     }
