@@ -1,5 +1,6 @@
 .containStreetSelected {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     justify-content: start;
     height: 100%;
@@ -63,7 +64,7 @@
 
 @media (width<=650px) {
     .containStreetSelected {
-        flex-direction: column-reverse;
+        flex-direction: column;
         gap: 0;
         border-top-left-radius: 27px;
         border-top-right-radius: 27px;
@@ -71,12 +72,12 @@
         width: 100%;
         height: 100%;
         overflow-y: scroll;
+        scrollbar-width: none;
         color: black;
-        min-height: 0;
     }
     .containStreetView {
         width: 96%;
-        height: 58%;
+        height: 59%;
         padding: 0.4rem;
         background: none;
         margin: 0;
@@ -85,13 +86,14 @@
 
     .containStreetView .streetView {
         width: 99%;
-        height: 99%;
+        height: 100%;
         border-radius: 3px;
     }
 
     .locationInfo {
-        height: auto;
         width: 99%;
+        height: 22%;
+        background: none;
         list-style: none;
         align-items: center;
         padding: 0.5rem;
@@ -117,20 +119,22 @@
 @media (width>650px) and (width<1200px) {
     .containStreetSelected {
         justify-content: start;
-        flex-direction: column-reverse;
+        flex-direction: column;
         gap: 0;
         border-top-right-radius: 27px;
         background: white;
         width: 100%;
         height: 100%;
         overflow-y: scroll;
-        scrollbar-width: auto;
         overflow-x: hidden;
+        scrollbar-width: none;
         color: black;
+        padding-bottom: 0.5rem;
     }
     .containStreetView {
         width: 92%;
-        height: 34rem;
+        height: 100%;
+        background: gray;
         padding: 0.4rem 0.4rem 0.4rem 0;
         margin: 0;
         background: none;
@@ -139,12 +143,13 @@
 
     .containStreetView .streetView {
         width: 99%;
-        height: 99%;
+        height: 65vh;
     }
 
     .locationInfo {
         width: 99%;
         height: auto;
+        background: none;
         list-style: none;
         align-items: center;
         padding: 0.5rem;

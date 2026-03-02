@@ -30,10 +30,6 @@ export const StreetSelected = () => {
 
   return (
     <div className={styles.containStreetSelected}>
-      <div className={styles.containStreetView}>
-        <div className={styles.streetView} ref={streetViewRef}></div>
-      </div>
-
       <div className={styles.locationInfo}>
         <div className={styles.title}>
           <div className={styles.territory}></div>
@@ -41,6 +37,10 @@ export const StreetSelected = () => {
         </div>
 
         <InfoStreet streetSelected={streetSelected} lat={lat} lng={lng} />
+      </div>
+      
+      <div className={styles.containStreetView}>
+        <div className={styles.streetView} ref={streetViewRef}></div>
       </div>
     </div>
   );

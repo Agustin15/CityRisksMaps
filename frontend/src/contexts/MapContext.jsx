@@ -40,7 +40,7 @@ export const MapProvider = ({ children }) => {
 
   const handleMyLocation = async (option) => {
     setLoadingMyLocation(true);
-    
+
     if (option == "current" && userLocation) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
