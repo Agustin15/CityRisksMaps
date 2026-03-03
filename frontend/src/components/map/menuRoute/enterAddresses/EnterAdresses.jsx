@@ -18,7 +18,12 @@ export const EnterAdresses = ({
   const { showQuizes } = useQuizes();
 
   const handleClickShowRoutes = () => {
-    if (destination.length > 0 && originLocation) showRoutes("Drive");
+    if (
+      destination.length > 0 &&
+      originLocation &&
+      (crimeSelected == "Homicidio" || showQuizes)
+    )
+      showRoutes("Drive");
     else return;
   };
 
@@ -42,7 +47,9 @@ export const EnterAdresses = ({
           disabled={loadingRoutes}
           onClick={handleClickShowRoutes}
           className={
-            destination.length > 0 && originLocation
+            destination.length > 0 &&
+            originLocation &&
+            (crimeSelected == "Homicidio" || showQuizes)
               ? styles.btnEnabled
               : styles.btnDisabled
           }
