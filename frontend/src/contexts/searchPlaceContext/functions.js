@@ -1,8 +1,7 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 
-export const getMoreDetailsPlace = async (placeId, setLoadingPlace) => {
-  setLoadingPlace(true);
+export const getMoreDetailsPlace = async (placeId) => {
   try {
     const response = await fetch(
       `https://places.googleapis.com/v1/places/${placeId}?fields=location,formattedAddress,shortFormattedAddress,rating,primaryTypeDisplayName,addressComponents,editorialSummary,regularOpeningHours,nationalPhoneNumber,userRatingCount,websiteUri,accessibilityOptions,photos,displayName,iconMaskBaseUri,iconBackgroundColor&languageCode=es&key=${API_KEY}`
@@ -16,8 +15,6 @@ export const getMoreDetailsPlace = async (placeId, setLoadingPlace) => {
     return result;
   } catch (error) {
     alertSwalError("Ups,algo salio mal al buscar sitio", error);
-  } finally {
-    setLoadingPlace(false);
   }
 };
 
@@ -89,11 +86,20 @@ export const getReverseGeocodification = async (
       location: latLng
     });
 
-    if (resultGeocodification.results) {
+    if (
+      resultGeocodification.results &&
+      findPostalCode(resultGeocodification.results[0].address_components)
+    ) {
       setValueInput(resultGeocodification.results[0].formatted_address);
       setStreetSelected(resultGeocodification.results);
     } else throw new Error("Error inesperado en la geocodificacion");
   } catch (error) {
-    alertSwalError("Ups,no pudimos encontrar la ubicacion", error);
+    alertSwalError("Ups,no pudimos encontrar la ubicacion", error.message);
   }
+};
+
+const findPostalCode = (addressComponent) => {
+  return addressComponent.find((component) =>
+    component.types.includes("postal_code")
+  );
 };

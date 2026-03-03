@@ -19,13 +19,7 @@ export const handleMouseNeighborhoohdPolygon = (
   }
 
   if (polygonFound) {
-    setPolygonSelected({
-      data: polygonFound.data,
-      mouse: {
-        offsetX: event.domEvent.offsetX,
-        offsetY: event.domEvent.offsetY
-      }
-    });
+    setPolygonSelected(polygonFound);
   } else setPolygonSelected();
 };
 

@@ -38,7 +38,7 @@ export const StreetSelected = () => {
 
         <InfoStreet streetSelected={streetSelected} lat={lat} lng={lng} />
       </div>
-      
+
       <div className={styles.containStreetView}>
         <div className={styles.streetView} ref={streetViewRef}></div>
       </div>

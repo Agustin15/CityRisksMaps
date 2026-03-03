@@ -11,23 +11,23 @@ import { useNavigation } from "../../contexts/navigationContext/NavigationContex
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
-import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
   const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation } = useNavigation();
-  const { windowWidth } = useWindowResize();
   const [polygonSelected, setPolygonSelected] = useState();
 
   return (
     <>
       <Map
         renderingType="VECTOR"
-        className={!routeNavigation ? style.map : style.mapNavigation}
-        disableDefaultUI
+        gestureHandling="greedy"
+        mapId={MAP_ID}
         defaultZoom={15}
+        disableDefaultUI
+        className={!routeNavigation ? style.map : style.mapNavigation}
         defaultCenter={
           userLocation ? userLocation : { lat: -34.8340562, lng: -56.3622838 }
         }
@@ -35,20 +35,25 @@ export const ContainMap = () => {
         streetViewControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
         }}
-        onClick={(event) => {
-          if (routeNavigation) return;
-          handleClickOnMap(event);
-        }}
-        onMousemove={(event) => {
-          if (windowWidth < 1200) return;
-          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected);
-        }}
         zoomControl={true}
         zoomControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
         }}
-        gestureHandling="greedy"
-        mapId={MAP_ID}
+        onClick={(event) => {
+          if (event.detail.placeId && !routeNavigation) {
+            event.stop();
+            handleClickOnMap(event);
+          } else
+            handleMouseNeighborhoohdPolygon(
+              event,
+              polygons,
+              setPolygonSelected
+            );
+        }}
+        onDblclick={(event) => {
+          if (routeNavigation) return;
+          handleClickOnMap(event);
+        }}
       >
         <ContentMap polygonSelected={polygonSelected} />
       </Map>

@@ -51,12 +51,17 @@ export const SearchPlaceProvider = ({ children }) => {
       await moreDetailsPlace(event.detail.placeId, true);
     } else {
       setSelectedPlace(null);
-      getReverseGeocodification(event.detail.latLng,setValueInput,setStreetSelected);
+      getReverseGeocodification(
+        event.detail.latLng,
+        setValueInput,
+        setStreetSelected
+      );
     }
   };
 
   const moreDetailsPlace = async (placeId, optionSetPlace) => {
-    const result = await getMoreDetailsPlace(placeId, setLoadingPlace);
+    setLoadingPlace(true);
+    const result = await getMoreDetailsPlace(placeId);
 
     if (result && optionSetPlace) {
       setPhotosList(await createPhotosList(result));
@@ -69,6 +74,7 @@ export const SearchPlaceProvider = ({ children }) => {
         lng: result.location.longitude
       });
     }
+    setLoadingPlace(false);
   };
 
   const searchByText = async () => {
