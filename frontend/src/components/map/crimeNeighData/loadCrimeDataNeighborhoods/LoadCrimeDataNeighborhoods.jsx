@@ -3,6 +3,7 @@ import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimes
 import { Loading } from "../../loading/Loading";
 import { References } from "../references/References";
 import { FilterYears } from "../../filterYears/FilterYears";
+import { Searcher } from "../searcher/Searcher";
 
 export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
   const { loadingYears, years } = useZoneCrimes();
@@ -15,17 +16,18 @@ export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
         <>
           <p>
             Los datos mostrados a continuacion son estadisticas de denuncias
-            obtenidas de documentacion perteneciente al{" "}
-            <a href="https://www.gub.uy/ministerio-interior/">
-              Ministerio del interior
+            obtenidas de documentacion perteneciente a{" "}
+            <a href="https://catalogodatos.gub.uy/dataset/ministerio-del-interior-delitos_denunciados_en_el_uruguay">
+              AECA
             </a>
             , de esta forma la tasa de criminalidad esta basada en la cantidad
-            de denuncias por cada numero de habitantes en los barrios, por lo
-            que puede haber discrepancias con la verdadera realidad del riesgo
-            en cada zona.
+            de denuncias por cada numero de habitantes en los barrios.
           </p>
 
-          <References categoryCrime={categoryCrime} />
+          <div className={styles.rowSearcher}>
+            <References categoryCrime={categoryCrime} />
+            <Searcher />
+          </div>
 
           <FilterYears categoryCrime={categoryCrime} />
         </>

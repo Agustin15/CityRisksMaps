@@ -7,6 +7,7 @@ import { Loading } from "../../loading/Loading";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { References } from "../references/References";
 import { ModalsQuizes } from "./ModalsQuizes";
+import { Searcher } from "./searcher/Searcher";
 
 export const LoadDataQuizes = () => {
   const { loadingYears, years } = useZoneCrimes();
@@ -44,6 +45,7 @@ export const LoadDataQuizes = () => {
           </p>
 
           <References />
+          <Searcher />
           <FilterYears />
         </>
       )}

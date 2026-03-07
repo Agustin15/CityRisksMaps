@@ -1,0 +1,47 @@
+.containSearcher {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    width: 42%;
+}
+
+.containSearcher .rowSearcher {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 99%;
+}
+
+.containSearcher input {
+    width: 99%;
+    height: 2rem;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    background: #1c2652;
+    padding-left: 1rem;
+    outline: none;
+}
+
+@media (width<=650px) {
+    .containSearcher {
+        width: 99%;
+    }
+    .containSearcher input {
+        background: #e0e0e0;
+        color: rgb(36, 36, 36);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containSearcher {
+        width: 32vw;
+        justify-content: start;
+    }
+    .containSearcher input {
+        background: #e0e0e0;
+        color: rgb(36, 36, 36);
+    }
+}
