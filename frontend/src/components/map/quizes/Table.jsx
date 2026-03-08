@@ -11,7 +11,7 @@ import { focusPolygon } from "../crimeNeighData/table/functions.js";
 
 export const Table = () => {
   const map = useMap();
-  const { loadingQuizes, neighborhoodsQuizesByYear, errorGetQuiz } =
+  const { tableRef, loadingQuizes, neighborhoodsQuizesByYear, errorGetQuiz } =
     useQuizes();
   const { neighbordhoodsCoordinates } = useMapControls();
   const { loadingYears, polygons } = useZoneCrimes();
@@ -23,7 +23,7 @@ export const Table = () => {
 
   return (
     <div className={styles.containTable}>
-      <table className={styles.table}>
+      <table ref={tableRef} className={styles.table}>
         <thead>
           <tr>
             <th>Barrio</th>

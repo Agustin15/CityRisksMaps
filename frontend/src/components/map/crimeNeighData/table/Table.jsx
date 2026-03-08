@@ -17,7 +17,8 @@ export const Table = ({ crime }) => {
     polygons,
     neighborhoodsCrimeByYear,
     loadingNeighborhoodsCrime,
-    loadingYears
+    loadingYears,
+    tableRef
   } = useZoneCrimes();
   const map = useMap();
 
@@ -27,7 +28,7 @@ export const Table = ({ crime }) => {
 
   return (
     <div className={styles.containTable}>
-      <table className={styles.table}>
+      <table ref={tableRef} className={styles.table}>
         <thead>
           <tr>
             <th>Barrio</th>

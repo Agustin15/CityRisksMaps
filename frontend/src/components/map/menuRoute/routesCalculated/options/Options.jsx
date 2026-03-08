@@ -4,9 +4,14 @@ import iconNavigator from "../../../../../assets/img/navigator.png";
 import { useMapControls } from "../../../../../contexts/MapContext";
 import { useNavigation } from "../../../../../contexts/navigationContext/NavigationContext";
 
-export const Options = ({ index, showDetails, handleDetails }) => {
+export const Options = ({ index, showDetails, setShowDetails }) => {
   const { userLocation } = useMapControls();
   const { handleNavigation } = useNavigation();
+
+  const handleDetails = (index) => {
+    if (showDetails == index) setShowDetails();
+    else setShowDetails(index);
+  };
 
   return (
     <div className={styles.options}>
@@ -17,6 +22,7 @@ export const Options = ({ index, showDetails, handleDetails }) => {
         {showDetails == index ? "Cerrar" : "Pasos"}
         <img src={iconDetailsRoute}></img>
       </button>
+
       {userLocation && (
         <button onClick={() => handleNavigation()}>
           Navegar

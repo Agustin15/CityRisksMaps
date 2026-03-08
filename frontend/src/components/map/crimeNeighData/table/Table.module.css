@@ -53,13 +53,23 @@ td {
     padding-left: 5%;
 }
 
-.table .increase {
+.table .increase,
+.table .decrease {
     color: rgb(231, 87, 87);
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
 }
 .table .decrease {
     color: rgb(31, 212, 106);
-    font-weight: bold;
+}
+
+.table .increase img,
+.table .decrease img {
+    width: 21px;
+    height: 21px;
 }
 
 .table tfoot tr td {

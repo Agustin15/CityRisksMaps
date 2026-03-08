@@ -37,9 +37,11 @@ export const Navigation = () => {
 
       <MapControl
         position={
-          windowWidth > 650
-            ? ControlPosition.TOP_RIGHT
-            : ControlPosition.TOP_CENTER
+          windowWidth <= 650
+            ? ControlPosition.TOP_CENTER
+            : windowWidth > 650 && windowWidth < 1200
+              ? ControlPosition.TOP_LEFT
+              : ControlPosition.TOP_RIGHT
         }
       >
         <div className={styles.indication}>

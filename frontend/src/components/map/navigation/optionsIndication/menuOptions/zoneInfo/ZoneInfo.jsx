@@ -1,7 +1,7 @@
 import styles from "./zoneInfo.module.css";
 import { SvgWarning } from "./svgWarning/SvgWarning";
 import { useState } from "react";
-import { useNavigation } from "../../../../contexts/navigationContext/NavigationContext";
+import { useNavigation } from "../../../../../../contexts/navigationContext/NavigationContext";
 
 export const ZoneInfo = ({ svgWarningRef }) => {
   const [showDetailsWarning, setShowDetailsWarning] = useState(false);

@@ -2,7 +2,7 @@ import {
   createPolygonsNeighbordhood,
   getRangeSecureQuiz
 } from "./functionsCreatePolygons.js";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import { useMapControls } from "../MapContext";
 import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext";
 import { useMap } from "@vis.gl/react-google-maps";
@@ -11,12 +11,14 @@ const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 const QuizesContext = createContext();
 
 export const QuizesProvider = ({ children }) => {
+  const tableRef = useRef();
   const [showQuizes, setShowQuizes] = useState(false);
   const [loadingQuizes, setLoadingQuizes] = useState(false);
   const [neighborhoodsQuizesByYear, setNeighborhoodsQuizesByYear] = useState();
   const [newQuiz, setNewQuiz] = useState(false);
   const [errorGetQuiz, setErrorGetQuiz] = useState(false);
   const [showListQuizes, setShowListQuizes] = useState(false);
+
   const map = useMap();
 
   const { setYears, setYearSelected, setLoadingYears, setPolygons, polygons } =
@@ -88,6 +90,7 @@ export const QuizesProvider = ({ children }) => {
   return (
     <QuizesContext.Provider
       value={{
+        tableRef,
         neighborhoodsQuizesByYear,
         setNeighborhoodsQuizesByYear,
         loadingQuizes,

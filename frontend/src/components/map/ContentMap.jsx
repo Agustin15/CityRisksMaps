@@ -30,15 +30,17 @@ export const ContentMap = ({ polygonSelected }) => {
         <MyLocation />
       </AdvancedMarker>
 
-      <MapControl
-        position={
-          windowWidth <= 650
-            ? ControlPosition.TOP_CENTER
-            : ControlPosition.TOP_LEFT
-        }
-      >
-        {!routeNavigation && <SearchPlace />}
-      </MapControl>
+      {!routeNavigation && (
+        <MapControl
+          position={
+            windowWidth <= 650
+              ? ControlPosition.TOP_CENTER
+              : ControlPosition.TOP_LEFT
+          }
+        >
+          <SearchPlace />
+        </MapControl>
+      )}
 
       {!routeNavigation && (
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
@@ -71,7 +73,7 @@ export const ContentMap = ({ polygonSelected }) => {
       )}
 
       {routeNavigation && (
-        <MapControl position={ControlPosition.RIGHT_BOTTOM}>
+        <MapControl position={ControlPosition.RIGHT_CENTER}>
           <Navigation />
         </MapControl>
       )}

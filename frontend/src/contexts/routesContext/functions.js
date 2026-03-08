@@ -24,13 +24,6 @@ export const createDataRoutes = (routes, polygons, map, option) => {
 
     routesWithNewData.push(route);
 
-    const polylineBackground = new google.maps.Polyline({
-      path: pathRoute,
-      strokeWeight: 10,
-      strokeOpacity: 1.0,
-      strokeColor: "#ffffffff"
-    });
-
     const polylineRoute = new google.maps.Polyline({
       path: pathRoute,
       strokeWeight: 7,
@@ -38,16 +31,14 @@ export const createDataRoutes = (routes, polygons, map, option) => {
       strokeColor: "#3b70d3ff",
       zIndex: index == 0 ? 2 : 1
     });
-    polylineBackground.setMap(map);
+
     polylineRoute.setMap(map);
 
-    polylinesBackground.push(polylineBackground);
     polylines.push(polylineRoute);
   });
   return {
     routes: routesWithNewData,
-    polylines: polylines,
-    polylinesBackground: polylinesBackground
+    polylines: polylines
   };
 };
 

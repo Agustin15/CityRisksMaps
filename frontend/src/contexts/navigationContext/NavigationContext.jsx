@@ -15,6 +15,7 @@ export const NavigationProvider = ({ children }) => {
   const [indexStep, setIndexStep] = useState(0);
   const [destinationArrived, setDestinationArrived] = useState(false);
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
+  const [editRoute, setEditRoute] = useState(false);
   const [warning, setWarning] = useState({
     rateLevel: "",
     rateColor: "",
@@ -30,16 +31,12 @@ export const NavigationProvider = ({ children }) => {
     setRoutes,
     polylines,
     setPolylines,
-    polylinesBackground,
-    setPolylinesBackground,
     setShowMenuRoutes,
     destinationLocation,
     transportSelected
   } = useRoutes();
 
   const handleNavigation = () => {
-    polylinesBackground.map((polyline) => polyline.setMap(null));
-
     const polylineFound = polylines.filter((polyline, index) => {
       if (index != routeSelected) polyline.setMap(null);
       else return polyline;
@@ -67,7 +64,6 @@ export const NavigationProvider = ({ children }) => {
     map.setTilt(100);
     map.setHeading(heading);
 
-    setPolylinesBackground();
     setPolylines();
     setRoutes();
     setRouteSelected();
@@ -83,29 +79,36 @@ export const NavigationProvider = ({ children }) => {
     polylineNavigation.setMap(null);
     setPolylineNavigation();
     setRouteNavigation();
+    setEditRoute(false);
 
     if (activeNavigationVoice) setActiveNavigationVoice(false);
 
     if (destinationArrived == true) setDestinationArrived(false);
+
+    google.maps.event.clearListeners(map, "click");
 
     map.setOptions({
       disableDefaultUI: true,
       clickableIcons: true,
       zoomControl: true,
       streetViewControl: true,
+      draggableCursor: "auto",
       center: userLocation,
       zoom: 15
     });
   };
 
-  const recalculateRoute = async () => {
+  const recalculateRoute = async (intermediates) => {
+    let originLocation = {
+      latitude: userLocation.lat,
+      longitude: userLocation.lng
+    };
+
     const result = await getNewRoute(
-      {
-        latitude: userLocation.lat,
-        longitude: userLocation.lng
-      },
+      originLocation,
       transportSelected,
-      destinationLocation
+      destinationLocation,
+      intermediates
     );
 
     if (result && result.routes) {
@@ -192,6 +195,8 @@ export const NavigationProvider = ({ children }) => {
         destinationArrived,
         warning,
         setWarning,
+        editRoute,
+        setEditRoute,
         handleCloseNavigation
       }}
     >

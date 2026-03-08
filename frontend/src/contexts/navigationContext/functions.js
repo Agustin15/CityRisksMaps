@@ -45,7 +45,8 @@ export const getUserStep = (
 export const getNewRoute = async (
   newOriginLocation,
   transportSelected,
-  destinationLocation
+  destinationLocation,
+  intermediates
 ) => {
   try {
     const response = await fetch(
@@ -67,6 +68,7 @@ export const getNewRoute = async (
           destination: {
             location: { latLng: destinationLocation }
           },
+          intermediates: intermediates ? intermediates : [],
           travelMode: transportSelected,
           computeAlternativeRoutes: false,
           routeModifiers: {

@@ -3,7 +3,7 @@ import {
   createPolygonsNeighbordhood
 } from "./functionsCreatePolygons.js";
 
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { createContext } from "react";
 import { useMapControls } from "../MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
@@ -22,6 +22,7 @@ export const ZoneCrimesProvider = ({ children }) => {
   const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
   const { neighbordhoodsCoordinates } = useMapControls();
   const [indexChartActive, setIndexChartActive] = useState(null);
+  const tableRef = useRef();
 
   const map = useMap();
 
@@ -121,6 +122,7 @@ export const ZoneCrimesProvider = ({ children }) => {
   return (
     <ZoneCrimesContext.Provider
       value={{
+        tableRef,
         crimeSelected,
         setCrimeSelected,
         getYearsNeighborhoodsCrime,

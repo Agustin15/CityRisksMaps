@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { Component, createContext, useContext, useState } from "react";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useMap } from "@vis.gl/react-google-maps";
 import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext.jsx";
@@ -18,7 +18,6 @@ export const RoutesProvider = ({ children }) => {
   const [routes, setRoutes] = useState();
   const [routeSelected, setRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
-  const [polylinesBackground, setPolylinesBackground] = useState();
 
   const map = useMap();
   const { polygons, crimeSelected } = useZoneCrimes();
@@ -79,7 +78,6 @@ export const RoutesProvider = ({ children }) => {
       );
       if (resultDataRoutes) {
         setRoutes(resultDataRoutes.routes);
-        setPolylinesBackground(resultDataRoutes.polylinesBackground);
         setPolylines(resultDataRoutes.polylines);
         setRouteSelected(0);
       }
@@ -111,10 +109,8 @@ export const RoutesProvider = ({ children }) => {
   const cleanPolylines = () => {
     if (polylines) {
       polylines.map((polyline) => polyline.setMap(null));
-      polylinesBackground.map((polyline) => polyline.setMap(null));
 
       setPolylines();
-      setPolylinesBackground();
     }
   };
 
@@ -136,8 +132,6 @@ export const RoutesProvider = ({ children }) => {
         polylines,
         setPolylines,
         cleanPolylines,
-        polylinesBackground,
-        setPolylinesBackground,
         transportSelected,
         loadingRoutes,
         routes,

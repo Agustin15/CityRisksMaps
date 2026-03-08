@@ -5,7 +5,6 @@
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
-    margin: 0 1vw 16vh 0;
     padding: 0;
     font-size: 14px;
     background: linear-gradient(#333f7c, #222c57);
@@ -36,7 +35,6 @@
 @media (width<=650px) {
     .zoneInfo {
         background: linear-gradient(#4659b9, #202c5e);
-        margin: 0 1vw 15vh 0;
     }
 
     .zoneInfo .detailsWarning {
@@ -68,7 +66,6 @@
         flex-direction: row-reverse;
         justify-content: center;
         align-items: center;
-        margin: 0 1vw 25vh 0;
         padding: 0;
         font-size: 14px;
         background: linear-gradient(#4659b9, #202c5e);

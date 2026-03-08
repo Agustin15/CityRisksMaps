@@ -29,14 +29,3 @@ export const colorReference = (range, crimeSelected) => {
     }
   }
 };
-
-export const calculateAverage = (routeRangesDanger) => {
-  const average = routeRangesDanger.reduce((acc, rangeDanger) => {
-    if (rangeDanger.levelRange)
-      acc += (rangeDanger.percentage / 100) * (rangeDanger.levelRange / 100);
-
-    return acc;
-  }, 0);
-
-  return (average * 100).toFixed(0);
-};

@@ -8,6 +8,7 @@ import { useMapControls } from "../../contexts/MapContext";
 import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
 import { useNavigation } from "../../contexts/navigationContext/NavigationContext.jsx";
+import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
@@ -18,6 +19,7 @@ export const ContainMap = () => {
   const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation } = useNavigation();
   const [polygonSelected, setPolygonSelected] = useState();
+  const { windowWidth } = useWindowResize();
 
   return (
     <>
@@ -35,6 +37,7 @@ export const ContainMap = () => {
         streetViewControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
         }}
+ 
         zoomControl={true}
         zoomControlOptions={{
           position: ControlPosition.RIGHT_BOTTOM
@@ -43,12 +46,17 @@ export const ContainMap = () => {
           if (event.detail.placeId && !routeNavigation) {
             event.stop();
             handleClickOnMap(event);
-          } else
+          } else if (windowWidth < 1200) {
             handleMouseNeighborhoohdPolygon(
               event,
               polygons,
               setPolygonSelected
             );
+          }
+        }}
+        onMousemove={(event) => {
+          if (windowWidth < 1200) return;
+          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected);
         }}
         onDblclick={(event) => {
           if (routeNavigation) return;

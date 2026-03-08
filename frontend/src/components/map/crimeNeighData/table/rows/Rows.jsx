@@ -1,4 +1,6 @@
 import styles from "../Table.module.css";
+import iconDecrease from "../../../../../assets/img/decrease.png";
+import iconIncrease from "../../../../../assets/img/increase.png";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext";
 import { ColorRate } from "../colorRate/ColorRate";
@@ -54,7 +56,12 @@ export const Rows = ({
                 : ""
           }
         >
-          {neighborhoodCrime.increase!=null
+          {neighborhoodCrime.increase != 0 && (
+            <img
+              src={neighborhoodCrime.increase > 0 ? iconIncrease : iconDecrease}
+            ></img>
+          )}
+          {neighborhoodCrime.increase != null
             ? neighborhoodCrime.increase + "%"
             : "Sin datos"}
         </td>

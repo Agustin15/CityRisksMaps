@@ -1,6 +1,6 @@
 import styles from "./RouteRangesDanger.module.css";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { colorReference, calculateAverage } from "./functions";
+import { colorReference } from "./functions";
 
 export const RouteRangesDanger = ({ route }) => {
   const { crimeSelected } = useZoneCrimes();
@@ -25,11 +25,6 @@ export const RouteRangesDanger = ({ route }) => {
             {rangeDanger.range}:{rangeDanger.percentage}%
           </li>
         ))}
-        <li>
-          <span>
-            (Promedio:{calculateAverage(route.routeRangesDanger)}%)
-          </span>
-        </li>
       </ul>
     </div>
   );

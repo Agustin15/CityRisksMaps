@@ -34,10 +34,6 @@ export const RoutesCalculated = ({
       changeRoute(index, polylines, setPolylines);
     }
   };
-  const handleDetails = (index) => {
-    if (showDetails == index) setShowDetails();
-    else setShowDetails(index);
-  };
 
   return (
     <ul className={styles.containRoutes}>
@@ -71,7 +67,7 @@ export const RoutesCalculated = ({
                 <Options
                   index={index}
                   showDetails={showDetails}
-                  handleDetails={handleDetails}
+                  setShowDetails={setShowDetails}
                 />
               </div>
             </div>

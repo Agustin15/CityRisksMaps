@@ -13,7 +13,7 @@
 }
 
 .indication .maneuver {
-    width: 17%;
+    width: 5rem;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -48,3 +48,17 @@
     }
 }
 
+@media (width>650px) and (width<1200px) {
+    .indication {
+        width: 24rem;
+        height: 3.5rem;
+        border-radius: 8px;
+        font-size: 15px;
+        margin: 2vh 0 0 2vw;
+    }
+
+    .indication .maneuver img {
+        width: 39px;
+        height: 39px;
+    }
+}
