@@ -5,7 +5,10 @@ import { References } from "../references/References";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { Searcher } from "../searcher/Searcher";
 
-export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
+export const LoadCrimesInNeighborhoods = ({
+  categoryCrime,
+  setElementSearchedNotFound
+}) => {
   const { loadingYears, years } = useZoneCrimes();
 
   return (
@@ -26,7 +29,7 @@ export const LoadCrimesInNeighborhoods = ({ categoryCrime }) => {
 
           <div className={styles.rowSearcher}>
             <References categoryCrime={categoryCrime} />
-            <Searcher />
+            <Searcher setElementSearchedNotFound={setElementSearchedNotFound} />
           </div>
 
           <FilterYears categoryCrime={categoryCrime} />

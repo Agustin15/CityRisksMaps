@@ -40,7 +40,7 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
         <li>
           <div className={styles.coordinates}></div>
           <span>Coordenadas:</span>
-          <p>{lng() + "," + lat()}</p>
+          <p>{lat() + "," + lng()}</p>
         </li>
       </div>
 

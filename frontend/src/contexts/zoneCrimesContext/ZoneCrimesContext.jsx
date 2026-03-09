@@ -122,7 +122,6 @@ export const ZoneCrimesProvider = ({ children }) => {
   return (
     <ZoneCrimesContext.Provider
       value={{
-        tableRef,
         crimeSelected,
         setCrimeSelected,
         getYearsNeighborhoodsCrime,
@@ -139,6 +138,7 @@ export const ZoneCrimesProvider = ({ children }) => {
         loadCrimeDataNeighborhoods,
         loadCrimesByYear,
         getCrimeRange,
+        tableRef,
         createPolygonsNeighbordhood,
         polygons,
         setPolygons,

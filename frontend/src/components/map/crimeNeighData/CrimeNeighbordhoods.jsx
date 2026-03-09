@@ -5,11 +5,14 @@ import iconMinimize from "../../../assets/img/minimize.png";
 import iconHoldup from "../../../assets/img/holdup.png";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
+import { useState } from "react";
 
 export const CrimeNeighbordhoods = ({
   categoryCrime,
   setShowViewStatistics
 }) => {
+  const [elementSearchedNotFound, setElementSearchedNotFound] = useState(false);
+
   return (
     <div className={styles.containData}>
       <div className={styles.header}>
@@ -34,9 +37,15 @@ export const CrimeNeighbordhoods = ({
         </div>
       </div>
 
-      <LoadCrimesInNeighborhoods categoryCrime={categoryCrime} />
+      <LoadCrimesInNeighborhoods
+        categoryCrime={categoryCrime}
+        setElementSearchedNotFound={setElementSearchedNotFound}
+      />
 
-      <Table crime={categoryCrime} />
+      <Table
+        crime={categoryCrime}
+        elementSearchedNotFound={elementSearchedNotFound}
+      />
     </div>
   );
 };

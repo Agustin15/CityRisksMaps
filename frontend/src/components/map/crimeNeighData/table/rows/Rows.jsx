@@ -56,11 +56,15 @@ export const Rows = ({
                 : ""
           }
         >
-          {neighborhoodCrime.increase != 0 && (
-            <img
-              src={neighborhoodCrime.increase > 0 ? iconIncrease : iconDecrease}
-            ></img>
-          )}
+          {neighborhoodCrime.increase != null &&
+            neighborhoodCrime.increase != 0 && (
+              <img
+                src={
+                  neighborhoodCrime.increase > 0 ? iconIncrease : iconDecrease
+                }
+              ></img>
+            )}
+
           {neighborhoodCrime.increase != null
             ? neighborhoodCrime.increase + "%"
             : "Sin datos"}

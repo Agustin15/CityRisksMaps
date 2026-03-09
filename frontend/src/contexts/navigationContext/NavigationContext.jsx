@@ -106,8 +106,8 @@ export const NavigationProvider = ({ children }) => {
 
     const result = await getNewRoute(
       originLocation,
-      transportSelected,
       destinationLocation,
+      transportSelected,
       intermediates
     );
 

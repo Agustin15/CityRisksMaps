@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const InputSearcher = ({ tableRef }) => {
+export const InputSearcher = ({ tableRef, setElementSearchedNotFound }) => {
   const [valueInput, setValueInput] = useState("");
 
   const handleChange = (event) => {
@@ -20,7 +20,15 @@ export const InputSearcher = ({ tableRef }) => {
         else row.style.display = "none";
       }
     });
+
+    const rowsHidden = rows.filter((tr) => tr.style.display == "none");
+
+    if (setElementSearchedNotFound) {
+      if (rowsHidden.length == rows.length) setElementSearchedNotFound(true);
+      else setElementSearchedNotFound(false);
+    }
   };
+
   return (
     <input
       onChange={(event) => handleChange(event)}

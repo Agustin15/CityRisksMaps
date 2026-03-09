@@ -1,5 +1,5 @@
-import { NotFound } from "../notFound/NotFound";
+import { Error404 } from "../error404/Error404";
 
 export const NotFoundPage = () => {
-  return <NotFound />;
+  return <Error404 />;
 };

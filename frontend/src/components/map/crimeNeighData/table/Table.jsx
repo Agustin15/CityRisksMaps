@@ -9,7 +9,7 @@ import { Rows } from "./rows/Rows";
 import { Tfoot } from "./tfoot/Tfoot.jsx";
 import { focusPolygon } from "./functions.js";
 
-export const Table = ({ crime }) => {
+export const Table = ({ crime, elementSearchedNotFound }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
   const { windowWidth } = useWindowResize();
 
@@ -83,6 +83,7 @@ export const Table = ({ crime }) => {
           <Tfoot
             neighborhoodsCrimeByYear={neighborhoodsCrimeByYear}
             crime={crime}
+            elementSearchedNotFound={elementSearchedNotFound}
           />
         )}
       </table>

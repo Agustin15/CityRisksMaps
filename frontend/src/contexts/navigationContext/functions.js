@@ -44,8 +44,8 @@ export const getUserStep = (
 
 export const getNewRoute = async (
   newOriginLocation,
-  transportSelected,
   destinationLocation,
+  transportSelected,
   intermediates
 ) => {
   try {
@@ -88,8 +88,7 @@ export const getNewRoute = async (
   } catch (error) {
     alertSwalError(
       "Ups,ruta no encontrada",
-      "Hubo un error al recalcular las ruta"
+      "Hubo un error al recalcular la ruta"
     );
-    console.log(error);
   }
 };

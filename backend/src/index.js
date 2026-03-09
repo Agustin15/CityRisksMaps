@@ -10,10 +10,9 @@ import { RoutesParticipant } from "./route/routeParticipant.js";
 import { RoutesVerificationCode } from "./route/routeVerificationCode.js";
 import cookieParser from "cookie-parser";
 
-
 const limiterOptions = {
   windowMs: 30 * 60 * 1000,
-  limit: 100,
+  limit: 300,
   standardHeaders: "draft-8",
   legacyHeaders: false,
   statusCode: 429,

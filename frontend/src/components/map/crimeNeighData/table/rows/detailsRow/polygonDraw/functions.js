@@ -20,10 +20,10 @@ export const drawShape = (neighborhoodCoordinates, canvas, ctx, rateColor) => {
   ctx.moveTo(0, 0);
 
   cartesiansPoints.forEach((cartesianPoint) => {
-    const pixelX = (cartesianPoint.x - Xmin) * scaleX;
-    const pixelY = (Ymax - cartesianPoint.y) * scaleY;
+    const canvaX = (cartesianPoint.x - Xmin) * scaleX;
+    const canvaY = (Ymax - cartesianPoint.y) * scaleY;
 
-    ctx.lineTo(pixelX, pixelY);
+    ctx.lineTo(canvaX, canvaY);
   });
   ctx.closePath();
 
@@ -37,11 +37,14 @@ const createCartesiansPoints = (neighborhoodCoordinates, canvas) => {
     const lngRadianes = coord.lng * (Math.PI / 180);
     const latRadianes = coord.lat * (Math.PI / 180);
 
-    const x = (canvas.width / (2 * Math.PI)) * (lngRadianes + Math.PI);
+    const scaleWidth = (canvas.width * Math.pow(2, 2)) / (2 * Math.PI);
+    const scaleHeight = (canvas.height * Math.pow(2, 2)) / (2 * Math.PI);
+
+    const x = scaleWidth * (lngRadianes + Math.PI);
 
     const y =
       canvas.height -
-      (canvas.height / (2 * Math.PI)) *
+      scaleHeight *
         (Math.PI - Math.log(Math.tan(Math.PI / 4 + latRadianes / 2)));
 
     return { x: x, y: y };
