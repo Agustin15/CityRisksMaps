@@ -107,13 +107,16 @@ GO
 CREATE OR ALTER PROCEDURE AddRol @name VARCHAR(10)  AS
 BEGIN
 
-IF EXISTS (select * from Rols where name=@name)
+IF (LEN(@name)>10)
 RETURN -1
+
+IF EXISTS (select * from Rols where name=@name)
+RETURN -2
 
 INSERT INTO Rols VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -123,16 +126,19 @@ GO
 CREATE OR ALTER PROCEDURE UpdateRol @idRol INT,@name VARCHAR(10) AS
 BEGIN
 
-IF NOT EXISTS (select * from Rols where idRol=@idRol)
+IF (LEN(@name)>10)
 RETURN -1
 
-IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
+IF NOT EXISTS (select * from Rols where idRol=@idRol)
 RETURN -2
+
+IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
+RETURN -3
 
 UPDATE Rols set name=@name where idRol=@idRol;
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -172,19 +178,28 @@ CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(50),@name VARCHAR(30),@lastname
 
 BEGIN
 
-IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
+IF (LEN(@name)>30)
 RETURN -1
 
-IF NOT EXISTS (select * from Rols where idRol=@rol)
+IF (LEN(@lastname)>30)
 RETURN -2
 
-IF EXISTS (select * from Users where email=@email)
+IF (LEN(@email)>50)
 RETURN -3
+
+IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
+RETURN -4
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -5
+
+IF EXISTS (select * from Users where email=@email)
+RETURN -6
 
 INSERT INTO Users(email,name,lastname,password,rol) VALUES(@email,@name,@lastname,@password,@rol);
 
 IF(@@ERROR<>0)
-RETURN -4
+RETURN -7
 
 RETURN 1
 
@@ -197,22 +212,31 @@ CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(30),@name VARCHA
 
 BEGIN
 
-IF PATINDEX('%@[a-zA-Z]%.com%%',@email)=0
+IF (LEN(@name)>30)
 RETURN -1
 
-IF NOT EXISTS (select * from Users where idUser=@idUser)
+IF (LEN(@lastname)>30)
 RETURN -2
 
-IF NOT EXISTS (select * from Rols where idRol=@rol)
+IF (LEN(@email)>50)
 RETURN -3
 
-IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
+IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
 RETURN -4
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -5
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -6
+
+IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
+RETURN -7
 
 UPDATE Users set email=@email,name=@name,password=@password,lastname=@lastname,@rol=rol where idUser=@idUser;
 
 IF(@@ERROR<>0)
-RETURN -5
+RETURN -8
 
 RETURN 1
 
@@ -258,13 +282,16 @@ GO
 CREATE OR ALTER PROCEDURE AddDepartment @name VARCHAR(30) AS
 BEGIN
 
-IF EXISTS (select * from Departments where name=@name)
+IF (LEN(@name)>30)
 RETURN -1
+
+IF EXISTS (select * from Departments where name=@name)
+RETURN -2
 
 INSERT INTO Departments VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -274,16 +301,19 @@ GO
 CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
 BEGIN
 
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+IF (LEN(@name)>30)
 RETURN -1
 
-IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
 RETURN -2
+
+IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
+RETURN -3
 
 UPDATE Departments set name=@name where idDepartment=@idDepartment;
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -334,13 +364,19 @@ CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(20),@description VARCHAR(70
 
 BEGIN
 
-IF EXISTS (select * from Crimes where category=@category)
+IF (LEN(@category)>20)
 RETURN -1
+
+IF (LEN(@description)>700)
+RETURN -2
+
+IF EXISTS (select * from Crimes where category=@category)
+RETURN -3
 
 INSERT INTO Crimes VALUES(@category,@description);
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -4
 
 RETURN 1
 
@@ -352,13 +388,20 @@ CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(20),@description VARCHAR
 
 BEGIN
 
-IF NOT EXISTS (select * from Crimes where category=@category)
+
+IF (LEN(@category)>20)
 RETURN -1
+
+IF (LEN(@description)>700)
+RETURN -2
+
+IF NOT EXISTS (select * from Crimes where category=@category)
+RETURN -3
 
 UPDATE Crimes set description=@description where category=@category;
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -4
 
 RETURN 1
 
@@ -412,17 +455,19 @@ CREATE OR ALTER PROCEDURE AddNeighborhood @name VARCHAR(30), @idDepartment INT A
 
 BEGIN
 
-IF EXISTS (select * from Neighborhoods where name=@name)
+IF (LEN(@name)>30)
 RETURN -1
 
+IF EXISTS (select * from Neighborhoods where name=@name)
+RETURN -2
 
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -2
+RETURN -3
 
 INSERT INTO Neighborhoods VALUES(@name,@idDepartment);
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -433,13 +478,17 @@ GO
 CREATE OR ALTER PROCEDURE UpdateNeighborhood @name VARCHAR(30),@idDepartment INT AS
 BEGIN
 
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+
+IF (LEN(@name)>30)
 RETURN -1
+
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+RETURN -2
 
 UPDATE Neighborhoods set department=@idDepartment where name=@name;
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -489,6 +538,7 @@ GO
 CREATE OR ALTER PROCEDURE AddPopulation @neighbordhood VARCHAR(30), @quantity INT,@year INT AS
 
 BEGIN
+
 IF(@quantity<0)
 RETURN -1
 

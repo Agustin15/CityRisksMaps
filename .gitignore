@@ -31,10 +31,6 @@ coverage
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
-.firebase
-firebase.json
-.firebaserc
-
 # Bower dependency directory (https://bower.io/)
 bower_components
 
@@ -124,6 +120,9 @@ dist
 .dynamodb/
 
 # Firebase cache directory
+.firebase
+.firebaserc
+firebase.json
 .firebase/
 
 # TernJS port file

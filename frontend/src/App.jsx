@@ -1,5 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { MapPage } from "./components/Pages/MapPage.jsx";
 import { CookiesProvider } from "react-cookie";
 import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";

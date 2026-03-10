@@ -14,18 +14,24 @@ export class NeighborhoodDAL {
 
       const result = await request.execute("AddNeighborhood");
 
-      if (result.returnValue == -1)
-        throw new Error("Ya hay un barrio registrado con este nombre", {
-          cause: { code: 409 }
-        });
-      else if (result.returnValue == -2)
-        throw new Error("No hay un departamento registrado con este ID", {
-          cause: { code: 404 }
-        });
-      else if (result.returnValue == -3)
-        throw new Error("Error inesperado al agregar barrio", {
-          cause: { code: 502 }
-        });
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("Nombre no debe tener mas de 30 caracteres", {
+            cause: { code: 400 }
+          });
+        case -2:
+          throw new Error("Ya hay un barrio registrado con este nombre", {
+            cause: { code: 409 }
+          });
+        case -3:
+          throw new Error("No hay un departamento registrado con este ID", {
+            cause: { code: 404 }
+          });
+        case -4:
+          throw new Error("Error inesperado al agregar barrio", {
+            cause: { code: 502 }
+          });
+      }
 
       return result.returnValue;
     } catch (error) {
@@ -45,14 +51,21 @@ export class NeighborhoodDAL {
 
       const result = await request.execute("UpdateNeighborhood");
 
-      if (result.returnValue == -1)
-        throw new Error("No hay un departamento registrado con este ID", {
-          cause: { code: 404 }
-        });
-      else if (result.returnValue == -2)
-        throw new Error("Error inesperado al actualizar barrio", {
-          cause: { code: 502 }
-        });
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("Nombre no debe tener mas de 30 caracteres", {
+            cause: { code: 400 }
+          });
+
+        case -2:
+          throw new Error("No hay un departamento registrado con este ID", {
+            cause: { code: 404 }
+          });
+        case -3:
+          throw new Error("Error inesperado al agregar barrio", {
+            cause: { code: 502 }
+          });
+      }
 
       return result.returnValue;
     } catch (error) {
@@ -107,7 +120,7 @@ export class NeighborhoodDAL {
     }
   }
 
-  static async getNeighborhoodsWithoutQuizByYear(year,email) {
+  static async getNeighborhoodsWithoutQuizByYear(year, email) {
     try {
       const request = new sql.Request(connection.pool);
 
