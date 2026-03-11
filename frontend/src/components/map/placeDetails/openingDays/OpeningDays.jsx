@@ -65,7 +65,7 @@ export const OpeningDays = ({ place }) => {
               ? nextTime(place.regularOpeningHours.nextCloseTime, "Cierra")
               : nextTime(place.regularOpeningHours.nextOpenTime, "Abre"))}
         </div>
-        <img
+        <div
           onClick={() =>
             showOpeningDays
               ? setShowOpeningDays(false)
@@ -77,7 +77,7 @@ export const OpeningDays = ({ place }) => {
               : styles.openedOptionMenuDays
           }
           src={iconArrow}
-        ></img>
+        ></div>
       </div>
 
       {showOpeningDays && (

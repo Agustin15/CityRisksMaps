@@ -89,7 +89,7 @@
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
+        background: rgb(221, 221, 221);
         color: white;
         display: flex;
         justify-content: center;
@@ -155,7 +155,7 @@
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        background: linear-gradient(rgb(214, 52, 52), rgb(165, 38, 38));
+        background: rgb(221, 221, 221);
         color: white;
         border-left-color: 3px;
         display: flex;

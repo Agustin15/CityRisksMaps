@@ -61,7 +61,7 @@
         width: 3rem;
         height: 1.3rem;
         margin-top: 0.6rem;
-        background: linear-gradient(rgb(218, 59, 59), rgb(170, 47, 47));
+        background: rgb(221, 221, 221);
         box-shadow: none;
         color: white;
         border-left-color: 3px;
@@ -108,7 +108,7 @@
         width: 3rem;
         height: 1.3rem;
         margin-top: 0.6rem;
-        background: linear-gradient(rgb(218, 59, 59), rgb(170, 47, 47));
+        background: rgb(221, 221, 221);
         box-shadow: none;
         color: white;
         display: flex;

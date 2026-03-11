@@ -14,17 +14,11 @@ export const getMoreDetailsPlace = async (placeId) => {
 
     return result;
   } catch (error) {
-    alertSwalError("Ups,algo salio mal al buscar sitio", error);
+    throw error;
   }
 };
 
-export const getPlacesByText = async (
-  setLoadingPlace,
-  inputValue,
-  userLocation
-) => {
-  setLoadingPlace(true);
-
+export const getPlacesByText = async (inputValue, userLocation) => {
   const request = {
     textQuery: inputValue,
     includedType: "",
@@ -63,14 +57,12 @@ export const getPlacesByText = async (
 
     const result = await response.json();
 
-    if (response.status != 200)
+    if (response.status != 200 || !result.places)
       throw new Error("Sitio solicitado no encontrado");
 
     return result;
   } catch (error) {
-    alertSwalError("Ups,no pudimos encontrar el sitio", error);
-  } finally {
-    setLoadingPlace(false);
+    throw error;
   }
 };
 

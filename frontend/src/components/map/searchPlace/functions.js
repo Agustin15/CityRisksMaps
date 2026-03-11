@@ -1,3 +1,5 @@
+import { alertSwalError } from "../../sweetAlert/sweetAlert.js";
+
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 
@@ -34,11 +36,12 @@ export const getSuggestions = async (
     );
     const result = await response.json();
 
-    if (result.suggestions) {
-      setSuggestions(result.suggestions);
-    }
+    if (!response.ok || !result.suggestions)
+      throw new Error("Sitio solicitado no encontrado");
+
+    setSuggestions(result.suggestions);
   } catch (error) {
-    console.log(error);
+    alertSwalError("Ups algo salio mal al buscar el sitio", error.message);
   } finally {
     setLoadingPlace(false);
   }

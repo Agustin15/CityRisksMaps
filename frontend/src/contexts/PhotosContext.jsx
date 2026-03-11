@@ -15,32 +15,37 @@ export const PhotosProvider = ({ children }) => {
         `https://places.googleapis.com/v1/${namePhoto}/media?key=${API_KEY}&maxHeightPx=${maxHeightPx}&maxWidthPx=${maxWidthPx}`
       );
 
-      if (!response.ok) throw new Error("Error al buscar foto");
+      if (!response.ok)
+        throw new Error("No se pudieron encontrar imagenes del sitio");
 
       const result = response.url;
       return result;
     } catch (error) {
-      console.log(error);
+      throw new Error(error.message);
     }
   };
 
   const createPhotosList = async (place) => {
-    const photos = await Promise.all(
-      place.photos.map(async (photo) => {
-        let url = await getPhotoDetails(photo.name, 340, 865);
+    try {
+      const photos = await Promise.all(
+        place.photos.map(async (photo) => {
+          let url = await getPhotoDetails(photo.name, 340, 865);
 
-        return {
-          url: url,
-          author:
-            photo.authorAttributions.length > 0
-              ? photo.authorAttributions[0]
-              : null
-        };
-      })
-    );
+          return {
+            url: url,
+            author:
+              photo.authorAttributions.length > 0
+                ? photo.authorAttributions[0]
+                : null
+          };
+        })
+      );
 
-    if (photos) {
-      return photos;
+      if (photos) {
+        return photos;
+      }
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -50,13 +55,16 @@ export const PhotosProvider = ({ children }) => {
         `https://maps.googleapis.com/maps/api/streetview?size=${width}x${height}&location=${lat},${lng}&heading=151.7&pitch=-0.76&key=${API_KEY}`
       );
 
+      if (!response.ok)
+        throw new Error("Imagen de la calle solicitada no pudo encontrarse");
+
       const result = response.url;
 
       if (result) {
         setImageStreet(result);
       }
     } catch (error) {
-      console.log(error);
+      throw new Error("Ups, hubo un error al obtener imagen", error.message);
     }
   };
 

@@ -2,6 +2,7 @@ import { createContext, useContext, useRef, useState } from "react";
 import { useMapControls } from "../MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
 import { usePhotosPlace } from "../PhotosContext.jsx";
+import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import {
   getMoreDetailsPlace,
   getPlacesByText,
@@ -61,38 +62,42 @@ export const SearchPlaceProvider = ({ children }) => {
 
   const moreDetailsPlace = async (placeId, optionSetPlace) => {
     setLoadingPlace(true);
-    const result = await getMoreDetailsPlace(placeId);
+    try {
+      const result = await getMoreDetailsPlace(placeId);
 
-    if (result && optionSetPlace) {
-      setPhotosList(await createPhotosList(result));
-      setSelectedPlace(result);
-      setValueInput(result.displayName.text);
+      if (result && optionSetPlace) {
+        setPhotosList(await createPhotosList(result));
+        setSelectedPlace(result);
+        setValueInput(result.displayName.text);
 
-      map.setZoom(15);
-      map.panTo({
-        lat: result.location.latitude,
-        lng: result.location.longitude
-      });
+        map.setZoom(15);
+        map.panTo({
+          lat: result.location.latitude,
+          lng: result.location.longitude
+        });
+      }
+    } catch (error) {
+      alertSwalError("Ups,algo salio mal al buscar sitio", error.message);
+    } finally {
+      setLoadingPlace(false);
     }
-    setLoadingPlace(false);
   };
 
   const searchByText = async () => {
-    const result = await getPlacesByText(
-      setLoadingPlace,
-      inputRef.current.value,
-      userLocation
-    );
+    setLoadingPlace(true);
+    try {
+      const result = await getPlacesByText(
+        inputRef.current.value,
+        userLocation
+      );
 
-    if (result.places) {
-      const photosList = await Promise.all(
+      await Promise.all(
         result.places.map(async (place) => {
           const list = await createPhotosList(place);
           place.photosList = list;
           return place;
         })
       );
-      result.places.photosList = photosList;
 
       if (result.places.length == 1) setSelectedPlace(result.places[0]);
       else {
@@ -105,6 +110,12 @@ export const SearchPlaceProvider = ({ children }) => {
         lat: result.places[0].location.latitude,
         lng: result.places[0].location.longitude
       });
+
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoadingPlace(false);
     }
   };
 

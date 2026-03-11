@@ -42,29 +42,51 @@ export const MapProvider = ({ children }) => {
     setLoadingMyLocation(true);
 
     if (option == "current" && userLocation) {
-      navigator.geolocation.getCurrentPosition(success, error, options);
+      const position = await getCurrentPosition();
+      setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+      configMapGeolocation(position);
+      setLoadingMyLocation(false);
     } else {
-      navigator.geolocation.watchPosition(success, error, options);
+      const position = await getWatchPosition();
+      setUserLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      });
+
+      if (!userLocation) {
+        configMapGeolocation(position);
+      }
+      setLoadingMyLocation(false);
     }
   };
 
-  const success = (pos) => {
-    const crd = pos.coords;
+  const configMapGeolocation = (position) => {
+    map.setZoom(15);
+    map.panTo({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    });
+  };
 
-    if (
-      !userLocationRef.current ||
-      crd.latitude != userLocationRef.current.lat ||
-      crd.longitude != userLocationRef.current.lng
-    ) {
-      setUserLocation({
-        lat: crd.latitude,
-        lng: crd.longitude
+  const getCurrentPosition = async () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, error, {
+        enableHighAccuracy: true,
+        maximumAge: 0
       });
+    });
+  };
 
-      map.setZoom(15);
-      map.panTo({ lat: crd.latitude, lng: crd.longitude });
-      setLoadingMyLocation(false);
-    } else return;
+  const getWatchPosition = async () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.watchPosition(resolve, error, {
+        enableHighAccuracy: true,
+        maximumAge: 0
+      });
+    });
   };
 
   const error = (error) => {
@@ -76,10 +98,6 @@ export const MapProvider = ({ children }) => {
         ? "Permiso para acceder a la ubicacion, no habilitada"
         : "No se pudo obtener su ubicacion"
     );
-  };
-  const options = {
-    enableHighAccuracy: true,
-    maximumAge: 0
   };
 
   const formatCoordinates = (coordinates) => {
@@ -125,7 +143,9 @@ export const MapProvider = ({ children }) => {
       const result = await response.json();
 
       if (!response.ok)
-        throw new Error("Error al cargar las coordenas de Montevideo");
+        throw new Error(
+          "Hubo un error al cargar las coordenadas de la ciudad de Montevideo"
+        );
 
       if (result) {
         const coordinatesMdveo = result.features[0].geometry.coordinates
