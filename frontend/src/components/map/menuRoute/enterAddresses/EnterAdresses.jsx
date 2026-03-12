@@ -2,7 +2,6 @@ import styles from "./EnterAdresses.module.css";
 import iconDestination from "../../../../assets/img/destinationAddress.png";
 import iconShow from "../../../../assets/img/showRoutes.png";
 import { Advice } from "../advice/Advice.jsx";
-import { useQuizes } from "../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { Origin } from "./origin/Origin.jsx";
@@ -15,13 +14,12 @@ export const EnterAdresses = ({
   const { destination, originLocation, showRoutes, loadingRoutes } =
     useRoutes();
   const { crimeSelected } = useZoneCrimes();
-  const { showQuizes } = useQuizes();
 
   const handleClickShowRoutes = () => {
     if (
       destination.length > 0 &&
       originLocation &&
-      (crimeSelected == "Homicidio" || showQuizes)
+      crimeSelected == "Homicidio"
     )
       showRoutes("Drive");
     else return;
@@ -49,7 +47,7 @@ export const EnterAdresses = ({
           className={
             destination.length > 0 &&
             originLocation &&
-            (crimeSelected == "Homicidio" || showQuizes)
+            crimeSelected == "Homicidio"
               ? styles.btnEnabled
               : styles.btnDisabled
           }
@@ -59,7 +57,7 @@ export const EnterAdresses = ({
         </button>
       </div>
 
-      {crimeSelected != "Homicidio" && !showQuizes && <Advice />}
+      {crimeSelected != "Homicidio" && <Advice />}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>
           Cargando rutas

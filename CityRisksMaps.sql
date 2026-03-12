@@ -10,13 +10,20 @@ name VARCHAR(10) UNIQUE
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
 email VARCHAR(50) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
-name VARCHAR(30) NOT NULL,
-lastname VARCHAR(30) NOT NULL,
+name VARCHAR(20) NOT NULL,
+lastname VARCHAR(20) NOT NULL,
 password VARCHAR(60) NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME NOT NULL DEFAULT GETDATE(),
 rol INT NOT NULL FOREIGN KEY REFERENCES Rols(idRol) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE Verifications_Codes(
+code VARCHAR(60) PRIMARY KEY,
+expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
+idUser INT NOT NULL FOREIGN KEY REFERENCES Users(idUser) ON UPDATE CASCADE ON DELETE CASCADE,
+);
+
 
 CREATE TABLE Departments(
 idDepartment INT IDENTITY(1,1) Primary key, 
@@ -59,43 +66,15 @@ idZone INT Primary key,
 description VARCHAR(250) NOT NULL,
 coordinates NVARCHAR(MAX) NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
-lastModified DATETIME DEFAULT GETDATE()
+lastModified DATETIME DEFAULT GETDATE(),
+enable bit NOT NULL
+
 );
 
 CREATE TABLE Zones_Neighborhoods(
 zone INT FOREIGN KEY REFERENCES Zones(idZone)ON UPDATE CASCADE ON DELETE CASCADE,
 neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE 
 Primary key(zone,neighborhood)
-);
-
-
-CREATE TABLE Participants(
-email VARCHAR(50) PRIMARY KEY CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
-created DATETIME NOT NULL DEFAULT GETDATE(),
-lastIncome DATETIME NOT NULL DEFAULT GETDATE(),
-);
-
-
-CREATE TABLE Verifications_Codes(
-code VARCHAR(60) PRIMARY KEY,
-participant VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
-expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
-);
-
-
-CREATE TABLE Quizes(
-idQuiz INT IDENTITY(1,1) PRIMARY KEY,
-participant VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES Participants(email) ON UPDATE CASCADE ON DELETE CASCADE,
-neighborhood VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES  Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
-secure bit NOT NULL,
-quizDate DATE NOT NULL CHECK(quizDate<=GETDATE())
-);
-
-
-CREATE TABLE Quizes_Crimes(
-quiz INT FOREIGN KEY REFERENCES Quizes(idQuiz) ON UPDATE CASCADE ON DELETE CASCADE,
-crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
-Primary key(quiz,crime)
 );
 
 
@@ -173,15 +152,15 @@ GO
 --------------------------------------------------------------------------------------------------------------
 --Users PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(50),@name VARCHAR(30),@lastname VARCHAR(30),@password VARCHAR(60),
+CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(50),@name VARCHAR(20),@lastname VARCHAR(20),@password VARCHAR(60),
 @rol INT AS
 
 BEGIN
 
-IF (LEN(@name)>30)
+IF (LEN(@name)>20)
 RETURN -1
 
-IF (LEN(@lastname)>30)
+IF (LEN(@lastname)>20)
 RETURN -2
 
 IF (LEN(@email)>50)
@@ -207,15 +186,15 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(30),@name VARCHAR(30),@lastname VARCHAR(30),@password VARCHAR(60),
+CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(20),@name VARCHAR(20),@lastname VARCHAR(30),@password VARCHAR(60),
 @rol INT AS
 
 BEGIN
 
-IF (LEN(@name)>30)
+IF (LEN(@name)>20)
 RETURN -1
 
-IF (LEN(@lastname)>30)
+IF (LEN(@lastname)>20)
 RETURN -2
 
 IF (LEN(@email)>50)
@@ -261,9 +240,21 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE AllUsers AS
-
 BEGIN
 SELECT * FROM Users;
+END
+GO
+
+CREATE OR ALTER PROCEDURE UsersOffset @offset INT AS
+BEGIN
+SELECT * FROM Users ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+GO
+
+CREATE OR ALTER PROCEDURE UserById @idUser INT AS
+
+BEGIN
+SELECT * FROM Users where idUser=@idUser;
 END
 
 GO
@@ -273,6 +264,8 @@ CREATE OR ALTER PROCEDURE UserById @idUser INT AS
 BEGIN
 SELECT * FROM Users where idUser=@idUser;
 END
+
+
 
 GO
 
@@ -517,10 +510,9 @@ select * from Neighborhoods;
 END
 GO
 
-CREATE OR ALTER PROCEDURE NeighborhoodsWithoutQuizByYear @year INT,@email VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE NeighborhoodsOffset @offset INT AS
 BEGIN
-select name from Neighborhoods where name NOT IN(select neighborhood from Quizes Q INNER JOIN Participants P ON Q.participant= 
-P.email where YEAR(quizDate)=@year) ORDER BY name asc;
+select * from Neighborhoods ORDER BY name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
@@ -622,6 +614,18 @@ select * from Population;
 END
 GO
 
+CREATE OR ALTER PROCEDURE PopulationsOffset @offset INT AS
+BEGIN
+
+select * from Population ORDER BY neighborhood OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+GO
+
+CREATE OR ALTER PROCEDURE PopulationsByNeighborhood @neighborhood VARCHAR(30) AS
+BEGIN
+select * from population where neighborhood=@neighborhood;
+END
+GO
 
 CREATE OR ALTER PROCEDURE PopulationByNeighborhoodAndYear @neighborhood VARCHAR(30),@year INT AS
 BEGIN
@@ -793,19 +797,51 @@ END
 
 GO
 
+CREATE OR ALTER  PROCEDURE NeighborhoodsCrimeByYearSecondVersion @crime VARCHAR(20), @year INT AS 
+
+BEGIN 
+select * from Neighborhoods_Crimes where crime=@crime and year=@year;
+END
+
+GO
+
+
+CREATE OR ALTER  PROCEDURE NeighborhoodsCrimeByYearOffset @crime VARCHAR(20), @year INT,@offset INT AS 
+
+BEGIN 
+select * from Neighborhoods_Crimes where crime=@crime and year=@year ORDER BY rate desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+
+GO
+
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX) AS
+CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit,
+@neighborhood VARCHAR(30) AS
 BEGIN 
 
 IF(LEN(@description)>250)
 RETURN -1
 
 
-INSERT INTO Zones(description,coordinates,lastModified) VALUES(@description,@coordinates,null);
+IF(@enable!=0 or @enable!=1)
+RETURN -2
+
+BEGIN TRANSACTION
+
+INSERT INTO Zones(description,coordinates,enable) VALUES(@description,@coordinates,@enable);
 IF(@@ERROR<>0)
 RETURN -3
+
+INSERT INTO Zones_Neighborhoods VALUES(IDENT_CURRENT('zones'),@neighborhood);
+IF(@@ERROR<>0)
+BEGIN
+ROLLBACK TRANSACTION
+RETURN -4
+END
+
+COMMIT TRANSACTION
 
 END
 
@@ -825,16 +861,19 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE UpdateZone @idZone INT,@description VARCHAR(250),@coordinates NVARCHAR(MAX) AS
+CREATE OR ALTER PROCEDURE UpdateZone @idZone INT,@description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit AS
 BEGIN 
 
 IF(LEN(@description)>250)
 RETURN -1
 
+IF(@enable!=0 or @enable!=1)
+RETURN -2
+
 IF NOT EXISTS(select * from Zones where idZone=@idZone)
 RETURN -3
 
-Update Zones set description=@description,coordinates=@coordinates where idZone=@idZone
+Update Zones set description=@description,coordinates=@coordinates,enable=@enable where idZone=@idZone
 
 IF(@@ERROR<>0)
 RETURN -4
@@ -846,9 +885,15 @@ GO
 CREATE OR ALTER PROCEDURE AllZones AS
 BEGIN 
 
-select * from Zones;
+select * from Zones ORDER BY created;
 END
+GO
 
+CREATE OR ALTER PROCEDURE ZonesOffset @offset INT AS
+BEGIN 
+
+select * from Zones ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
 GO
 
 CREATE OR ALTER PROCEDURE ZoneById @idZone INT AS
@@ -863,20 +908,6 @@ GO
 --Zones_Neighborhoods PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddZoneNeighborhood @idZone INT,@neighborhood VARCHAR(30) AS
-BEGIN 
-
-IF NOT EXISTS(select * from Neighborhoods where name=@neighborhood)
-RETURN -1
-
-INSERT INTO Zones_Neighborhoods VALUES (@idZone,@neighborhood);
-
-IF(@@ERROR<>0)
-RETURN -2
-
-END
-
-GO
 
 CREATE OR ALTER PROCEDURE DeleteZoneNeighborhood @idZone INT,@neighborhood VARCHAR(30) AS
 BEGIN 
@@ -893,47 +924,18 @@ END
 
 GO
 
-
-------------------------------------------------------------------------------------------------------------------
---Participants PROCEDURES
-
-CREATE OR ALTER PROCEDURE AddParticipant @email VARCHAR(50) AS
-
-BEGIN
-
-IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
-RETURN -1
-
-IF EXISTS (select * from Participants where email=@email)
-RETURN -2
-
-INSERT INTO Participants(email) VALUES(@email)
-
-IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
-END
-GO
-
-CREATE OR ALTER PROCEDURE DeleteParticipant @email VARCHAR(50) AS
+CREATE OR ALTER PROCEDURE ZoneNeighborhoodByNeighborhood @neighborhood VARCHAR(30) AS
 BEGIN 
 
-IF NOT EXISTS(select * from Participants where email=@email)
-RETURN -1
-
-DELETE FROM Participants where email=@email
-
-IF(@@ERROR<>0)
-RETURN -2
-
+select * from Zones_Neighborhoods where neighborhood=@neighborhood;
 END
 
 GO
 
-CREATE OR ALTER PROCEDURE ParticipantByEmail @email VARCHAR(50) AS
+CREATE OR ALTER PROCEDURE ZoneNeighborhoodByZone @idZone INT AS
 BEGIN 
-select * from Participants where email=@email
+
+select * from Zones_Neighborhoods where zone=@idZone;
 END
 
 GO
@@ -942,20 +944,20 @@ GO
 --VerificationsCodes PROCEDURES
 
 
-CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@participant VARCHAR(50),@expiration DATETIME AS
+CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@idUser INT,@expiration DATETIME AS
 
 BEGIN
 
 IF @expiration<GETDATE()
 RETURN -1
 
-IF NOT EXISTS (select * from Participants where email=@participant)
+IF NOT EXISTS (select * from Users where idUser=@idUser)
 RETURN -2
 
 IF EXISTS (select * from Verifications_Codes where code=@code)
 RETURN -3
 
-INSERT INTO Verifications_Codes VALUES(@code,@participant,@expiration)
+INSERT INTO Verifications_Codes VALUES(@code,@expiration,@idUser)
 
 IF(@@ERROR<>0)
 RETURN -4
@@ -965,209 +967,80 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByEmail @email VARCHAR(50) AS
-BEGIN 
+CREATE OR ALTER PROCEDURE UpdateVerificationCode @code VARCHAR(60),@idUser INT,@expiration DATETIME AS
 
-select TOP 1 *  from Verifications_Codes where participant=@email ORDER BY expiration DESC
-END
-
-GO
-
-------------------------------------------------------------------------------------------------------------------
---Quizes PROCEDURES
-
-
-CREATE OR ALTER PROCEDURE AddQuiz @participant VARCHAR(50),@neighborhood VARCHAR(30),@secure BIT AS
 BEGIN
 
-
-IF NOT EXISTS (select * from  Participants where email=@participant)
+IF @expiration<GETDATE()
 RETURN -1
 
-IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
+IF NOT EXISTS (select * from Verifications_Codes where code=@code)
 RETURN -2
 
-IF EXISTS (select * from Quizes where participant=@participant and YEAR(quizDate)=YEAR(GETDATE()) and neighborhood=@neighborhood)
+IF NOT EXISTS (select * from Users where idUser=@idUser)
 RETURN -3
 
-INSERT INTO Quizes VALUES(@participant,@neighborhood,@secure,GETDATE());
-
-IF(@@ERROR<>0)
-RETURN -4
-
-RETURN IDENT_CURRENT('Quizes');
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE UpdateQuiz @idQuiz INT,@secure BIT AS
-BEGIN
-
-IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-UPDATE Quizes set secure=@secure where idQuiz=@idQuiz;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeleteQuiz @idQuiz INT AS
-BEGIN
-
-IF NOT EXISTS(select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-DELETE from Quizes where idQuiz=@idQuiz;
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-
-END
-GO
-
-CREATE OR ALTER PROCEDURE QuizesNeighbordhoodByYear @year INT AS
-BEGIN 
-
-select Neighborhoods.name,t1.secure,t2.insecure from Neighborhoods LEFT JOIN (select neighborhood,COUNT(*) as 'secure' 
-from Quizes where YEAR(quizDate)=@year and secure=1 GROUP BY neighborhood) as t1 on t1.neighborhood=Neighborhoods.name 
-LEFT JOIN (select neighborhood,COUNT(*) as 'insecure' 
-from Quizes where YEAR(quizDate)=@year and secure=0 GROUP BY neighborhood) as t2 on t2.neighborhood=Neighborhoods.name;
-
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE QuizQuantitySecureInNeighborhood @neighborhood VARCHAR(30) AS
-BEGIN
-
-select Neighborhoods.name,t1.year,t1.quantityQuizes,t2.quantitySecure  
-from Neighborhoods INNER JOIN
-
-(select neighborhood,YEAR(quizDate) as 'year',COUNT(*) as 'quantityQuizes' from Quizes where neighborhood=@neighborhood 
-GROUP BY neighborhood,YEAR(quizDate)) as t1 on t1.neighborhood=Neighborhoods.name LEFT JOIN
-
-(select neighborhood,YEAR(quizDate) as 'year',COUNT(*) as 'quantitySecure' from Quizes where neighborhood=@neighborhood 
-and secure=1 GROUP BY neighborhood,YEAR(quizDate)) as t2 on t1.neighborhood=Neighborhoods.name 
-
-ORDER BY t1.year asc; 
-
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE QuizesYears AS
-BEGIN 
-
-select distinct YEAR(quizDate) as year from Quizes ORDER BY Year(quizDate);
-
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE YearsOfParticipantQuizes @participant VARCHAR(50) AS
-BEGIN
-
-
-select DISTINCT YEAR(quizDate) as 'year' from Quizes where participant=@participant ORDER BY YEAR(quizDate) desc
-
-END
-GO
-
-CREATE OR ALTER PROCEDURE QuizesByParticipantAndYear @participant VARCHAR(50),@year INT AS
-BEGIN
-
-select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc;
-
-END
-GO
-
-CREATE OR ALTER PROCEDURE QuizNeighborhoodParticipant @participant VARCHAR(50),@neighborhood VARCHAR(30) AS
-BEGIN 
-
-select * from Quizes where participant=@participant and neighborhood=@neighborhood and YEAR(GETDATE())=YEAR(quizDate)
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE QuizesLimitByParticipantAndYear @participant VARCHAR(50),@offset INT,@year INT AS
-BEGIN
-
-select * from Quizes where participant=@participant and YEAR(quizDate)=@year ORDER BY quizDate desc OFFSET @offset ROWS
-FETCH NEXT 10 ROWS ONLY
-
-END
-GO
-
-
-------------------------------------------------------------------------------------------------------------------
---QuizesCrimes PROCEDURES
-
-CREATE OR ALTER PROCEDURE AddQuizCrime @idQuiz INT,@crime VARCHAR(20) AS
-BEGIN
-
-IF NOT EXISTS (select * from Quizes where idQuiz=@idQuiz)
-RETURN -1
-
-IF NOT EXISTS (select * from Crimes where category=@crime)
-RETURN -2
-
-IF EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@crime)
-RETURN -3
-
-INSERT INTO Quizes_Crimes VALUES(@idQuiz,@crime);
+Update Verifications_Codes set idUser=@idUser,expiration=@expiration where code=@code
 
 IF(@@ERROR<>0)
 RETURN -4
 
 RETURN 1
-
 END
 GO
 
 
-CREATE OR ALTER PROCEDURE DeleteQuizCrime @idQuiz INT,@category VARCHAR(20) AS
+CREATE OR ALTER PROCEDURE DeleteVerificationCode @code VARCHAR(60) AS
+
 BEGIN
 
-IF NOT EXISTS(select * from Quizes_Crimes where quiz=@idQuiz and crime=@category)
+IF NOT EXISTS (select * from Verifications_Codes where code=@code)
 RETURN -1
 
-DELETE from Quizes_Crimes where quiz=@idQuiz and crime=@category;
+delete from Verifications_Codes where code=@code
 
 IF(@@ERROR<>0)
 RETURN -2
 
 RETURN 1
-
 END
 GO
 
-CREATE OR ALTER PROCEDURE CrimesQuiz @idQuiz INT AS
+CREATE OR ALTER PROCEDURE AllVerificationCodes  AS
+BEGIN 
+select * from Verifications_Codes;
+END
+GO
+
+CREATE OR ALTER PROCEDURE VerificationCodesOffset @offset INT AS
+BEGIN 
+select * from Verifications_Codes ORDER BY expiration OFFSET @offset rows FETCH NEXT 10 ROWS ONLY;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByIdUser @idUser INT AS
 BEGIN 
 
-select * from Quizes_Crimes where quiz=@idQuiz
+select TOP 1 *  from Verifications_Codes where idUser=@idUser;
 END
 
 GO
 
-CREATE OR ALTER PROCEDURE CrimesOfNeighborhoodQuizes @neighborhood VARCHAR(30),@year INT AS
+
+CREATE OR ALTER PROCEDURE VerificationCodesByUser @idUser INT AS
+BEGIN 
+select * from Verifications_Codes where idUser=@idUser;
+END
+GO
+
+CREATE OR ALTER PROCEDURE VerificationCodesByUserOffset @idUser INT,@offset INT AS
 BEGIN 
 
-select QC.Crime as crime,COUNT(QC.crime) as amount from Quizes_Crimes QC INNER JOIN Quizes Q on QC.quiz=Q.idQuiz where Q.neighborhood=@neighborhood and 
-YEAR(Q.quizDate)=@year GROUP BY QC.crime
-
+select * from Verifications_Codes where idUser=@idUser ORDER BY expiration OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 
 GO
-
 
 ------------------------------------------------------------------------------------------------------------------
 EXEC AddRol 'Admin';

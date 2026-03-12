@@ -71,7 +71,6 @@ export const createArrayForPolygons = (
           rateColor: colorRange ? colorRange : "#bbbbbbff",
           categoryCrime: categoryCrime,
           coordinates: nhCoordinate.coordinates,
-          type: "crime"
         });
       }
     });

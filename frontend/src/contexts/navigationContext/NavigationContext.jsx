@@ -19,7 +19,6 @@ export const NavigationProvider = ({ children }) => {
   const [warning, setWarning] = useState({
     rateLevel: "",
     rateColor: "",
-    type: "",
     neighborhood: ""
   });
 

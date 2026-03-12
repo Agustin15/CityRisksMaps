@@ -5,8 +5,7 @@ export class DepartmentService {
     try {
       if (department == null)
         throw new Error("Debe indicar un departamento para agregar");
-      const added = await DepartmentDAL.add(department);
-      return added;
+      await DepartmentDAL.add(department);
     } catch (error) {
       throw error;
     }
@@ -17,9 +16,7 @@ export class DepartmentService {
       if (department == null)
         throw new Error("Debe indicar un departamento para editar");
 
-      const updated = await DepartmentDAL.update(department);
-
-      return updated;
+      await DepartmentDAL.update(department);
     } catch (error) {
       throw error;
     }
@@ -27,9 +24,7 @@ export class DepartmentService {
 
   static async delete(idDepartment) {
     try {
-      const deleted = await DepartmentDAL.delete(idDepartment);
-
-      return deleted;
+      await DepartmentDAL.delete(idDepartment);
     } catch (error) {
       throw error;
     }

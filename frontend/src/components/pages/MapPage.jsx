@@ -4,7 +4,6 @@ import { MapProvider } from "../../contexts/MapContext";
 import { RoutesProvider } from "../../contexts/routesContext/RoutesContext";
 import { PhotosProvider } from "../../contexts/PhotosContext";
 import { ZoneCrimesProvider } from "../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { QuizesProvider } from "../../contexts/quizesContext/QuizesContext";
 import { SearchPlaceProvider } from "../../contexts/searchPlaceContext/SearchPlaceContext";
 import { NavigationProvider } from "../../contexts/navigationContext/NavigationContext";
 
@@ -17,13 +16,11 @@ export const MapPage = () => {
         <PhotosProvider>
           <ZoneCrimesProvider>
             <SearchPlaceProvider>
-              <QuizesProvider>
                 <RoutesProvider>
                   <NavigationProvider>
                     <ContainMap />
                   </NavigationProvider>
                 </RoutesProvider>
-              </QuizesProvider>
             </SearchPlaceProvider>
           </ZoneCrimesProvider>
         </PhotosProvider>

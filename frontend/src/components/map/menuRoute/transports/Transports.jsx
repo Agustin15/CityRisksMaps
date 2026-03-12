@@ -4,13 +4,28 @@ import iconCar from "../../../../assets/img/car.png";
 import iconTrain from "../../../../assets/img/train.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
+import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 
 export const Transports = () => {
-  const { transportSelected, setTransportSelected, showRoutes } = useRoutes();
+  const {
+    transportSelected,
+    destination,
+    originLocation,
+    setTransportSelected,
+    showRoutes
+  } = useRoutes();
+
+  const { crimeSelected } = useZoneCrimes();
 
   const handleClick = (transport) => {
-    setTransportSelected(transport);
-    showRoutes(transport);
+    if (
+      destination.length > 0 &&
+      originLocation &&
+      crimeSelected == "Homicidio"
+    ) {
+      setTransportSelected(transport);
+      showRoutes(transport);
+    } else return;
   };
 
   return (
@@ -23,9 +38,7 @@ export const Transports = () => {
       </li>
       <li
         onClick={() => handleClick("Two_wheeler")}
-        className={
-          transportSelected == "Two_wheeler" ? styles.selected : ""
-        }
+        className={transportSelected == "Two_wheeler" ? styles.selected : ""}
       >
         <img src={iconMotorBike}></img>
       </li>

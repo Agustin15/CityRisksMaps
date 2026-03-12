@@ -22,13 +22,7 @@ export const ZoneInfo = ({ svgWarningRef }) => {
 
       {showDetailsWarning && (
         <div className={styles.detailsWarning}>
-          {warning.type.length > 0 && (
-            <span>
-              {warning.type == "crime"
-                ? "Tasa de homicidios " + warning.neighborhood + ":"
-                : "Percepcion de seguridad" + warning.neighborhood + ":"}
-            </span>
-          )}
+          <span>Tasa de homicidios {warning.neighborhood + ":"}</span>
 
           <p>
             {warning.rateLevel.length > 0

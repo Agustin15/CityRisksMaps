@@ -3,7 +3,7 @@ import { VerificationCodeDAL } from "../dataAccessLayer/verificationCodeDAL.js";
 import bcrypt from "bcrypt";
 
 export class VerificationCodeService {
-  static async add(verificationCode, transaction) {
+  static async add(verificationCode) {
     try {
       if (!verificationCode)
         throw new Error("Debe indicar un codigo de verificacion para agregar");
@@ -11,22 +11,81 @@ export class VerificationCodeService {
       const salt = await bcrypt.genSalt(10);
       verificationCode.code = await bcrypt.hash(verificationCode.code, salt);
 
-      const added = VerificationCodeDAL.add(verificationCode, transaction);
-
-      return added;
+      await VerificationCodeDAL.add(verificationCode);
     } catch (error) {
       throw error;
     }
   }
 
-  static async getVerificationCodeMostRecentlyByEmail(email) {
+  static async update(verificationCode) {
+    try {
+      if (!verificationCode)
+        throw new Error(
+          "Debe indicar un codigo de verificacion para actualizar"
+        );
+
+      await VerificationCodeDAL.update(verificationCode);
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async delete(code) {
+    try {
+      await VerificationCodeDAL.delete(code);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getVerificationCodeMostRecentlyByUser(idUser) {
     try {
       const result =
-        await VerificationCodeDAL.getVerificationCodeMostRecentlyByEmail(email);
+        await VerificationCodeDAL.getVerificationCodeMostRecentlyByUser(idUser);
 
       if (result.length > 0) {
         return result[0];
       } else null;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllVerificationCodes() {
+    try {
+      const result = await VerificationCodeDAL.getAllVerificationCodes();
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getVerificationCodesOffset(offset) {
+    try {
+      const result =
+        await VerificationCodeDAL.getVerificationCodesOffset(offset);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getVerificationCodesByUser(idUser) {
+    try {
+      const result =
+        await VerificationCodeDAL.getVerificationCodesByUser(idUser);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getVerificationCodesOffset(idUser, offset) {
+    try {
+      const result = await VerificationCodeDAL.getVerificationCodesByUserOffset(
+        idUser,
+        offset
+      );
+
+      return result;
     } catch (error) {
       throw error;
     }

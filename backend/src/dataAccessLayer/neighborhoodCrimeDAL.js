@@ -57,7 +57,6 @@ export class NeighborhoodCrimeDAL {
             cause: { code: 502 }
           });
       }
-      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -109,8 +108,6 @@ export class NeighborhoodCrimeDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -138,8 +135,6 @@ export class NeighborhoodCrimeDAL {
         throw new Error("Error inesperado al eliminar crimen en barrio", {
           cause: { code: 502 }
         });
-
-      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -183,6 +178,36 @@ export class NeighborhoodCrimeDAL {
         "QuantityCategoryCrimeInNeighborhood"
       );
 
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getNeighborhoodsCrimeByYearSecondVersion(category, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("crime", sql.VarChar(20), category);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute(
+        "NeighborhoodsCrimeByYearSecondVersion"
+      );
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getNeighborhoodsCrimeByYearOffset(category, year, offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("crime", sql.VarChar(20), category);
+      request.input("year", sql.Int, year);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("NeighborhoodsCrimeByYearOffset");
       return result.recordset;
     } catch (error) {
       throw error;

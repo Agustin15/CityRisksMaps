@@ -34,8 +34,7 @@
 
 .menuOptionsCrimes .holdup,
 .menuOptionsCrimes .theft,
-.menuOptionsCrimes .kill,
-.menuOptionsCrimes .quiz {
+.menuOptionsCrimes .kill {
     background-image: url("../../../../../assets/img/holdup.png");
     background-repeat: no-repeat;
     background-size: 100%;
@@ -47,10 +46,6 @@
 
 .menuOptionsCrimes .kill {
     background-image: url("../../../../../assets/img/kill.png");
-}
-
-.menuOptionsCrimes .quiz {
-    background-image: url("../../../../../assets/img/quizes.png");
 }
 
 .menuOptionsCrimes li:hover,
@@ -93,8 +88,7 @@
 
     .menuOptionsCrimes .holdup,
     .menuOptionsCrimes .theft,
-    .menuOptionsCrimes .kill,
-    .menuOptionsCrimes .quiz {
+    .menuOptionsCrimes .kill {
         background-image: url("../../../../../assets/img/holdupMobile.png");
         background-repeat: no-repeat;
         background-size: 100%;
@@ -107,10 +101,6 @@
 
     .menuOptionsCrimes .kill {
         background-image: url("../../../../../assets/img/killMobile.png");
-    }
-
-    .menuOptionsCrimes .quiz {
-        background-image: url("../../../../../assets/img/quizMobile.png");
     }
 }
 
@@ -145,8 +135,7 @@
 
     .menuOptionsCrimes .holdup,
     .menuOptionsCrimes .theft,
-    .menuOptionsCrimes .kill,
-    .menuOptionsCrimes .quiz {
+    .menuOptionsCrimes .kill {
         background-image: url("../../../../../assets/img/holdupMobile.png");
         background-repeat: no-repeat;
         background-size: 100%;
@@ -158,10 +147,6 @@
 
     .menuOptionsCrimes .kill {
         background-image: url("../../../../../assets/img/killMobile.png");
-    }
-
-    .menuOptionsCrimes .quiz {
-        background-image: url("../../../../../assets/img/quizMobile.png");
     }
 }
 
@@ -190,8 +175,7 @@
 
     .menuOptionsCrimes .holdup,
     .menuOptionsCrimes .theft,
-    .menuOptionsCrimes .kill,
-    .menuOptionsCrimes .quiz {
+    .menuOptionsCrimes .kill {
         background-image: url("../../../../../assets/img/holdupMobile.png");
         background-repeat: no-repeat;
         background-size: 100%;
@@ -205,9 +189,6 @@
         background-image: url("../../../../../assets/img/killMobile.png");
     }
 
-    .menuOptionsCrimes .quiz {
-        background-image: url("../../../../../assets/img/quizMobile.png");
-    }
     .menuOptionsCrimes li div {
         width: 31px;
         height: 31px;

@@ -32,8 +32,6 @@ export class NeighborhoodDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }
@@ -66,8 +64,6 @@ export class NeighborhoodDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }
@@ -88,8 +84,6 @@ export class NeighborhoodDAL {
         throw new Error("Error inesperado al eliminar barrio", {
           cause: { code: 502 }
         });
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }
@@ -107,12 +101,12 @@ export class NeighborhoodDAL {
     }
   }
 
-  static async getNeighborhoodByName(name) {
+  static async getNeighborhoodsOffset(offset) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
+      request.input("offset", sql.Int, offset);
 
-      const result = await request.execute("NeighborhoodByName");
+      const result = await request.execute("NeighborhoodsOffset");
 
       return result.recordset;
     } catch (error) {
@@ -120,14 +114,12 @@ export class NeighborhoodDAL {
     }
   }
 
-  static async getNeighborhoodsWithoutQuizByYear(year, email) {
+  static async getNeighborhoodByName(name) {
     try {
       const request = new sql.Request(connection.pool);
+      request.input("name", sql.VarChar(30), name);
 
-      request.input("year", sql.Int, year);
-      request.input("email", sql.VarChar(30), email);
-
-      const result = await request.execute("NeighborhoodsWithoutQuizByYear");
+      const result = await request.execute("NeighborhoodByName");
 
       return result.recordset;
     } catch (error) {

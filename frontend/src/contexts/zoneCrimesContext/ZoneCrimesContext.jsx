@@ -2,7 +2,6 @@ import {
   getCrimeRange,
   createPolygonsNeighbordhood
 } from "./functionsCreatePolygons.js";
-
 import { useContext, useRef, useState } from "react";
 import { createContext } from "react";
 import { useMapControls } from "../MapContext.jsx";

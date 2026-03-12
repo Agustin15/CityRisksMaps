@@ -1,12 +1,9 @@
 import styles from "./Menu.module.css";
 import { useState, useEffect } from "react";
-import { useQuizes } from "../../../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
-import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext.jsx";
 import { Item } from "./item/Item.jsx";
 import { AlertMenu } from "./AlertMenu/alertMenu.jsx";
-import { alertSwalWarning } from "../../../../sweetAlert/sweetAlert.js";
 import { getCrimes } from "../functions.js";
 
 export const Menu = ({
@@ -19,12 +16,7 @@ export const Menu = ({
   const [closeAlert, setCloseAlert] = useState(true);
 
   const { windowWidth } = useWindowResize();
-  const { setCrimeSelected, handleClose, loadCrimeDataNeighborhoods } =
-    useZoneCrimes();
-  const { setShowQuizes, showQuizes, loadDataQuizes } = useQuizes();
-
-  const { routes } = useRoutes();
-  [];
+  const { setCrimeSelected, loadCrimeDataNeighborhoods } = useZoneCrimes();
 
   useEffect(() => {
     if (!neighbordhoodsCoordinates) return;
@@ -40,23 +32,6 @@ export const Menu = ({
         loadCrimeDataNeighborhoods(crimes[0].category);
       }
     }
-  };
-
-  const handleClickQuizes = () => {
-    if (!showQuizes) {
-      if (routes) {
-        alertSwalWarning(
-          "Tiene que salir del modo navegacion para elegir otra opcion"
-        );
-      } else {
-        if (!showViewStatistics) setShowViewStatistics(true);
-
-        handleClose();
-        setCrimeSelected();
-        loadDataQuizes();
-        setShowQuizes(true);
-      }
-    } else if (!showViewStatistics) setShowViewStatistics(true);
   };
 
   return (
@@ -80,14 +55,6 @@ export const Menu = ({
       <ul className={styles.menuOptionsCrimes}>
         {loadingMenu == false && crimes && (
           <>
-            <li
-              className={showQuizes ? styles.selected : ""}
-              onClick={handleClickQuizes}
-            >
-              <div className={styles.quiz}></div>
-              <span> Encuestas</span>
-            </li>
-
             {crimes.map((crime, index) => (
               <Item
                 key={index}

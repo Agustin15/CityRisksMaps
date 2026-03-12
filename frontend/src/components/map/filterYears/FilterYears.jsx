@@ -1,12 +1,9 @@
 import styles from "./FilterYears.module.css";
-import { useQuizes } from "../../../contexts/quizesContext/QuizesContext";
 import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 
 export const FilterYears = ({ categoryCrime }) => {
   const { loadCrimesByYear, years, yearSelected, setIndexChartActive } =
     useZoneCrimes();
-
-  const { loadQuizesDataNeighborhoodsByYear } = useQuizes();
 
   const getCrimesByYear = async (yearSelected) => {
     loadCrimesByYear(yearSelected, categoryCrime);

@@ -1,4 +1,4 @@
-import { Component, createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useMap } from "@vis.gl/react-google-maps";
 import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext.jsx";
@@ -68,14 +68,7 @@ export const RoutesProvider = ({ children }) => {
 
       if (!response.ok) throw new Error(result.error.message);
 
-      let option = crimeSelected ? "homicides" : "quizes";
-
-      const resultDataRoutes = createDataRoutes(
-        result.routes,
-        polygons,
-        map,
-        option
-      );
+      const resultDataRoutes = createDataRoutes(result.routes, polygons, map);
       if (resultDataRoutes) {
         setRoutes(resultDataRoutes.routes);
         setPolylines(resultDataRoutes.polylines);

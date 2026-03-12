@@ -29,8 +29,6 @@ export class CrimeDAL {
             cause: { code: 502 }
           });
       }
-
-      result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -64,8 +62,6 @@ export class CrimeDAL {
             cause: { code: 502 }
           });
       }
-
-      result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -87,8 +83,6 @@ export class CrimeDAL {
         throw new Error("Error inesperado al agregar crimen", {
           cause: { code: 502 }
         });
-
-      result.returnValue;
     } catch (error) {
       throw error;
     }

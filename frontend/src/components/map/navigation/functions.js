@@ -14,13 +14,12 @@ export const verifyUserLocationInPolygon = (
   });
 
   if (!polygonFound) {
-    setWarning({ rateLevel: "", rateColor: "", type: "", neighborhood: "" });
+    setWarning({ rateLevel: "", rateColor: "", neighborhood: "" });
   } else if (warning.neighborhood != polygonFound.data.name) {
     setWarning({
       ...warning,
       rateLevel: polygonFound.data.rateLevel,
       rateColor: polygonFound.data.rateColor,
-      type: polygonFound.data.type,
       neighborhood: polygonFound.data.name
     });
   }

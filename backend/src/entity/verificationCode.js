@@ -1,26 +1,18 @@
-import { Participant } from "./participant.js";
+import { User } from "./user.js";
 import { randomInt } from "node:crypto";
 
 export class VerificationCode {
   #code;
   #expiration;
-  #participant;
+  #user;
 
-  constructor(
-    code = "000FFF",
-    expiration = new Date(),
-    participant = new Participant()
-  ) {
+  constructor(code, expiration = new Date(), user = new User()) {
     this.code = code;
     this.expiration = expiration;
-    this.participant = participant;
+    this.user = user;
   }
 
   set code(value) {
-    if (!value)
-      throw new Error("Codigo de verificacion no indicado", {
-        cause: { code: 400 }
-      });
     this.#code = value;
   }
 
@@ -30,7 +22,9 @@ export class VerificationCode {
 
   set expiration(value) {
     if (!value || new Date(value) == "Invalid Date")
-      throw new Error("Fecha de expiration no valida");
+      throw new Error("Fecha de expiration no valida", {
+        cause: { code: 400 }
+      });
     this.#expiration = value;
   }
 
@@ -38,13 +32,14 @@ export class VerificationCode {
     return this.#expiration;
   }
 
-  set participant(value) {
-    if (!value) throw new Error("Debe indicar un participante");
-    this.#participant = value;
+  set user(value) {
+    if (!user)
+      throw new Error("Debe indicar un usuario", { cause: { code: 400 } });
+    this.#user = value;
   }
 
-  get participant() {
-    return this.#participant;
+  get user() {
+    return this.#user;
   }
 
   generateCode() {

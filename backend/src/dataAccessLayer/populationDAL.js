@@ -42,8 +42,6 @@ export class PopulationDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -94,8 +92,6 @@ export class PopulationDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -120,8 +116,6 @@ export class PopulationDAL {
           cause: { code: 502 }
         });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw error;
     }
@@ -161,6 +155,32 @@ export class PopulationDAL {
       const request = new sql.Request(connection.pool);
 
       const result = await request.execute("AllPopulations");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsOffset() {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("PopulationsOffset");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsByNeighborhood(neighborhood) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("neighborhood", sql.VarChar(30), neighborhood);
+
+      const result = await request.execute("PopulationsByNeighborhood");
 
       return result.recordset;
     } catch (error) {

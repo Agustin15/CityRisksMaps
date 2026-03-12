@@ -5,9 +5,7 @@ export class PopulationService {
     try {
       if (population == null)
         throw new Error("Debe indicar un poblacion para agregar");
-      const added = await PopulationDAL.add(population);
-
-      return added;
+      await PopulationDAL.add(population);
     } catch (error) {
       throw error;
     }
@@ -18,9 +16,7 @@ export class PopulationService {
       if (population == null)
         throw new Error("Debe indicar un poblacion para editar");
 
-      const updated = await PopulationDAL.update(population);
-
-      return updated;
+      await PopulationDAL.update(population);
     } catch (error) {
       throw error;
     }
@@ -28,9 +24,7 @@ export class PopulationService {
 
   static async delete(idPopulation) {
     try {
-      const deleted = await PopulationDAL.delete(idPopulation);
-
-      return deleted;
+      await PopulationDAL.delete(idPopulation);
     } catch (error) {
       throw error;
     }
@@ -65,6 +59,24 @@ export class PopulationService {
   static async getPopulations() {
     try {
       const result = await PopulationDAL.getPopulations();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getPopulationsOffset(offset) {
+    try {
+      const result = await PopulationDAL.getPopulationsOffset(offset);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsByNeighborhood(neighborhood) {
+    try {
+      const result =
+        await PopulationDAL.getPopulationsByNeighborhood(neighborhood);
       return result;
     } catch (error) {
       throw error;

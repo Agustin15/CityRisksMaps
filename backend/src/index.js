@@ -5,9 +5,6 @@ import { rateLimit } from "express-rate-limit";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
-import { RoutesQuiz } from "./route/routeQuiz.js";
-import { RoutesParticipant } from "./route/routeParticipant.js";
-import { RoutesVerificationCode } from "./route/routeVerificationCode.js";
 import cookieParser from "cookie-parser";
 
 const limiterOptions = {
@@ -24,13 +21,7 @@ const limiterOptions = {
 };
 
 const limitRate = rateLimit(limiterOptions);
-const limitRateVerificationCode = rateLimit({
-  ...limiterOptions,
-  ["limit"]: 4,
-  ["message"]: {
-    messageError: "Demasiados intentos, intente de nuevo en 30 minutos"
-  }
-});
+
 
 dotenv.config();
 const app = express();
@@ -54,10 +45,4 @@ try {
 app.use("/crimes/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
-app.use("/participant/", limitRateVerificationCode, RoutesParticipant);
-app.use(
-  "/verificationCode/",
-  limitRateVerificationCode,
-  RoutesVerificationCode
-);
-app.use("/quiz/", RoutesQuiz);
+

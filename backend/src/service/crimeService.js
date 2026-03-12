@@ -6,9 +6,7 @@ export class CrimeService {
     try {
       if (crime == null) throw new Error("Debe indicar un crimen para agregar");
 
-      const added = await CrimeDAL.add(crime);
-
-      return added;
+      await CrimeDAL.add(crime);
     } catch (error) {
       throw error;
     }
@@ -17,9 +15,7 @@ export class CrimeService {
   static async update(crime) {
     try {
       if (crime == null) throw new Error("Debe indicar un crimen para editar");
-      const updated = await CrimeDAL.update(crime);
-
-      return updated;
+      await CrimeDAL.update(crime);
     } catch (error) {
       throw error;
     }
@@ -27,9 +23,7 @@ export class CrimeService {
 
   static async delete(category) {
     try {
-      const returnValue = await CrimeDAL.delete(category);
-
-      return returnValue;
+      await CrimeDAL.delete(category);
     } catch (error) {
       throw error;
     }

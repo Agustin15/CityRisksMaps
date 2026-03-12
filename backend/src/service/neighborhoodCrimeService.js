@@ -6,9 +6,7 @@ export class NeighborhoodCrimeService {
       if (neighbordhoodCrime == null)
         throw new Error("Debe indicar un crimen de barrio para agregar");
 
-      const added = await NeighborhoodCrimeDAL.add(neighbordhoodCrime);
-
-      return added;
+      await NeighborhoodCrimeDAL.add(neighbordhoodCrime);
     } catch (error) {
       throw error;
     }
@@ -18,9 +16,7 @@ export class NeighborhoodCrimeService {
     try {
       if (neighbordhoodCrime == null)
         throw new Error("Debe indicar un crimen de barrio para agregar");
-      const updated = await NeighborhoodCrimeDAL.update(neighbordhoodCrime);
-
-      return updated;
+      await NeighborhoodCrimeDAL.update(neighbordhoodCrime);
     } catch (error) {
       throw error;
     }
@@ -28,17 +24,15 @@ export class NeighborhoodCrimeService {
 
   static async delete(category, name, year) {
     try {
-      const deleted = await NeighborhoodCrimeDAL.delete(category, name, year);
-      return deleted;
+      await NeighborhoodCrimeDAL.delete(category, name, year);
     } catch (error) {
       throw error;
     }
   }
   static async getYearsNeighborhoodsCrime(category) {
     try {
-      const result = await NeighborhoodCrimeDAL.getYearsNeighborhoodsCrime(
-        category
-      );
+      const result =
+        await NeighborhoodCrimeDAL.getYearsNeighborhoodsCrime(category);
 
       return result;
     } catch (error) {
@@ -52,6 +46,38 @@ export class NeighborhoodCrimeService {
         category,
         year
       );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getNeighborhoodsCrimeByYearSecondVersion(category, year) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYearSecondVersion(
+          category,
+          year
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getNeighborhoodsCrimeByYearSecondVersion(
+    category,
+    year,
+    offset
+  ) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYearOffset(
+          category,
+          year,
+          offset
+        );
 
       return result;
     } catch (error) {

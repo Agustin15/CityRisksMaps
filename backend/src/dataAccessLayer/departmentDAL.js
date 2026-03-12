@@ -25,8 +25,6 @@ export class DepartmentDAL {
         throw new Error("Error inesperado al agregar departmento", {
           cause: { code: 502 }
         });
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }
@@ -62,8 +60,6 @@ export class DepartmentDAL {
             cause: { code: 502 }
           });
       }
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }
@@ -83,8 +79,6 @@ export class DepartmentDAL {
         throw new Error("Error inesperado al eliminar departamento", {
           cause: { code: 502 }
         });
-
-      return result.returnValue;
     } catch (error) {
       throw new Error(error);
     }

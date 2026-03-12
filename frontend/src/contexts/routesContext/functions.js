@@ -1,6 +1,5 @@
-export const createDataRoutes = (routes, polygons, map, option) => {
+export const createDataRoutes = (routes, polygons, map) => {
   const polylines = [];
-  const polylinesBackground = [];
   const routesWithNewData = [];
 
   routes.map((route, index) => {
@@ -15,8 +14,7 @@ export const createDataRoutes = (routes, polygons, map, option) => {
     if (coordinatesRouteInPolygons.length > 0) {
       const routeRangesDanger = setDangerRangesToRoute(
         pathRoute.length,
-        coordinatesRouteInPolygons,
-        option
+        coordinatesRouteInPolygons
       );
 
       route["routeRangesDanger"] = routeRangesDanger;
@@ -68,25 +66,15 @@ export const verifyCoordinatesRouteInPolygons = (routePath, polygons) => {
 
 export const setDangerRangesToRoute = (
   coordinatesAmountRoute,
-  coordinatesRoutePolygons,
-  option
+  coordinatesRoutePolygons
 ) => {
-  const ranges =
-    option == "quizes"
-      ? [
-          { level: "Seguro", rangeValue: 100 },
-          { level: "Medio seguro", rangeValue: 50 },
-          { level: "Inseguro", rangeValue: 20 },
-          { level: "Muy inseguro", rangeValue: 10 },
-          { level: "Sin datos" }
-        ]
-      : [
-          { level: "Baja", rangeValue: 100 },
-          { level: "Media baja", rangeValue: 50 },
-          { level: "Alta", rangeValue: 20 },
-          { level: "Muy alta", rangeValue: 10 },
-          { level: "Sin datos" }
-        ];
+  const ranges = [
+    { level: "Baja", rangeValue: 100 },
+    { level: "Media baja", rangeValue: 50 },
+    { level: "Alta", rangeValue: 20 },
+    { level: "Muy alta", rangeValue: 10 },
+    { level: "Sin datos" }
+  ];
 
   let routeRangesDanger = ranges.map((range) => {
     let amount = coordinatesRoutePolygons.reduce((acc, item) => {

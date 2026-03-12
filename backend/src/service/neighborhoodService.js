@@ -5,9 +5,7 @@ export class NeighborhoodService {
     try {
       if (neighbordhood == null)
         throw new Error("Debe indicar un barrio para agregar");
-      const added = await NeighborhoodDAL.add(neighbordhood);
-
-      return added;
+      await NeighborhoodDAL.add(neighbordhood);
     } catch (error) {
       throw error;
     }
@@ -17,9 +15,7 @@ export class NeighborhoodService {
     try {
       if (neighbordhood == null)
         throw new Error("Debe indicar un barrio para editar");
-      const updated = await NeighborhoodDAL.update(neighbordhood);
-
-      return updated;
+      await NeighborhoodDAL.update(neighbordhood);
     } catch (error) {
       throw error;
     }
@@ -27,8 +23,7 @@ export class NeighborhoodService {
 
   static async delete(name) {
     try {
-      const deleted = await NeighborhoodDAL.delete(name);
-      return deleted;
+      await NeighborhoodDAL.delete(name);
     } catch (error) {
       throw error;
     }
@@ -44,6 +39,15 @@ export class NeighborhoodService {
     }
   }
 
+  static async getNeighborhoodsOffset(offset) {
+    try {
+      const result = await NeighborhoodDAL.getNeighborhoodsOffset(offset);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getNeighborhoodByName(name) {
     try {
       const result = await NeighborhoodDAL.getNeighborhoodByName(name);
@@ -51,18 +55,6 @@ export class NeighborhoodService {
       if (result.length > 0) {
         return result[0];
       } else null;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async getNeighborhoodsWithoutQuizByYear(year, email) {
-    try {
-      const result = await NeighborhoodDAL.getNeighborhoodsWithoutQuizByYear(
-        year,
-        email
-      );
-      return result;
     } catch (error) {
       throw error;
     }

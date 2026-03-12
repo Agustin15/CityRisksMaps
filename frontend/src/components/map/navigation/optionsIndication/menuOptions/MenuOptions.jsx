@@ -5,10 +5,11 @@ import iconEditRoute from "../../../../../assets/img/editRoute.png";
 import iconNoEditRoute from "../../../../../assets/img/noEditRoute.png";
 import { useNavigation } from "../../../../../contexts/navigationContext/NavigationContext";
 import { useRef } from "react";
+import { useMap } from "@vis.gl/react-google-maps";
 import { ZoneInfo } from "./zoneInfo/ZoneInfo.jsx";
 import { handleOptionVoice } from "../../functions.js";
 import { handleEditRoute } from "./functions.js";
-import { useMap } from "@vis.gl/react-google-maps";
+
 
 export const MenuOptions = () => {
   const {
