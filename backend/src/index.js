@@ -8,20 +8,19 @@ import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
 import cookieParser from "cookie-parser";
 
 const limiterOptions = {
-  windowMs: 30 * 60 * 1000,
-  limit: 300,
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
   standardHeaders: "draft-8",
   legacyHeaders: false,
   statusCode: 429,
   ipv6Subnet: 56,
   message: {
     messageError:
-      "Alcanzo el limite de solicitudes, intente de nuevo en 30 minutos"
+      "Alcanzo el limite de solicitudes, intente de nuevo en 15 minutos"
   }
 };
 
 const limitRate = rateLimit(limiterOptions);
-
 
 dotenv.config();
 const app = express();
@@ -45,4 +44,3 @@ try {
 app.use("/crimes/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
-

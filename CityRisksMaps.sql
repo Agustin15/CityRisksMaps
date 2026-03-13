@@ -251,10 +251,9 @@ SELECT * FROM Users ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY
 END
 GO
 
-CREATE OR ALTER PROCEDURE UserById @idUser INT AS
-
+CREATE OR ALTER PROCEDURE UsersByRol @idRol INT AS
 BEGIN
-SELECT * FROM Users where idUser=@idUser;
+SELECT * FROM Users where rol=@idRol;
 END
 
 GO
@@ -924,7 +923,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE ZoneNeighborhoodByNeighborhood @neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE ZonesNeighborhoodByNeighborhood @neighborhood VARCHAR(30) AS
 BEGIN 
 
 select * from Zones_Neighborhoods where neighborhood=@neighborhood;
@@ -932,7 +931,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE ZoneNeighborhoodByZone @idZone INT AS
+CREATE OR ALTER PROCEDURE ZonesNeighborhoodByZone @idZone INT AS
 BEGIN 
 
 select * from Zones_Neighborhoods where zone=@idZone;
