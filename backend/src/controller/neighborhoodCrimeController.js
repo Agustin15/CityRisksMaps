@@ -62,8 +62,10 @@ export const getCategoryCrimeInNeighborhood = async (req, res) => {
         neighborhood
       );
 
-    if (categoryCrimeInNeighborhood && categoryCrimeInNeighborhood.length == 0)
-      throw new Error("No hay registros de este crimen en este barrio");
+    if (!categoryCrimeInNeighborhood || categoryCrimeInNeighborhood.length == 0)
+      throw new Error(
+        "No se encontraron registros de este crimen en este barrio"
+      );
 
     return res.status(200).json(categoryCrimeInNeighborhood);
   } catch (error) {

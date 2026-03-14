@@ -3,19 +3,28 @@ import iconNoData from "../../../assets/img/notData.png";
 import { useState } from "react";
 import { useEffect } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
-import { loadDataChart, setOptionsChart } from "./functions";
+import { setOptionsChart, getDataChart } from "./functions";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 export const Chart = ({ categoryCrime, nameNeighborhood }) => {
   const [dataChart, setDataChart] = useState();
   const [loading, setLoading] = useState(false);
+  const [errorDataChart, setErrorDataChart] = useState();
 
   useEffect(() => {
     if (dataChart) return;
-    loadDataChart(categoryCrime, nameNeighborhood, setLoading, setDataChart);
+    loadDataChart();
   }, []);
 
+  const loadDataChart = () => {
+    const result = getDataChart(
+      nameNeighborhood,
+      setLoading,
+      setErrorDataChart
+    );
+    if (result) setDataChart(result);
+  };
   return (
     <div className={styles.containChart}>
       {loading && <span className={styles.loading}>Cargando datos...</span>}
@@ -27,7 +36,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
       {!loading && !dataChart && (
         <div className={styles.noData}>
           <img src={iconNoData}></img>
-          <span>Sin registros para graficar</span>
+          <span>{errorDataChart}</span>
         </div>
       )}
     </div>

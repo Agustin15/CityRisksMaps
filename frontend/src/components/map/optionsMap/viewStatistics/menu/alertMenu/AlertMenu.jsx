@@ -1,7 +1,13 @@
 import styles from "./AlertMenu.module.css";
 import iconNotData from "../../../../../../assets/img/notDataAlert.png";
 
-export const AlertMenu = ({ title, msj, doneOption, setCloseAlert }) => {
+export const AlertMenu = ({
+  title,
+  msj,
+  doneOption,
+  setCloseAlert,
+  setErrorLoad
+}) => {
   return (
     <div className={styles.containLoader}>
       <div className={styles.box}>
@@ -25,7 +31,14 @@ export const AlertMenu = ({ title, msj, doneOption, setCloseAlert }) => {
           </p>
         </div>
         {doneOption == true && (
-          <button onClick={() => setCloseAlert(false)}>OK</button>
+          <button
+            onClick={() => {
+              setErrorLoad();
+              setCloseAlert(false);
+            }}
+          >
+            OK
+          </button>
         )}
       </div>
     </div>

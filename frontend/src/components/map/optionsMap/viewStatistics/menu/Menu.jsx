@@ -13,6 +13,7 @@ export const Menu = ({
 }) => {
   const [crimes, setCrimes] = useState();
   const [loadingMenu, setLoadingMenu] = useState(true);
+  const [errorLoad, setErrorLoad] = useState();
   const [closeAlert, setCloseAlert] = useState(true);
 
   const { windowWidth } = useWindowResize();
@@ -24,7 +25,7 @@ export const Menu = ({
   }, [neighbordhoodsCoordinates]);
 
   const loadData = async () => {
-    const crimes = await getCrimes(loadingMenu, setLoadingMenu);
+    const crimes = await getCrimes(loadingMenu, setLoadingMenu, setErrorLoad);
     if (crimes) {
       setCrimes(crimes);
       if (windowWidth >= 1200) {
@@ -46,9 +47,10 @@ export const Menu = ({
       {loadingMenu == false && !crimes && closeAlert && (
         <AlertMenu
           title={"Ups,algo salio mal"}
-          msj={"No se pudieron cargar las opciones"}
+          msj={errorLoad}
           doneOption={true}
           setCloseAlert={setCloseAlert}
+          setErrorLoad={setErrorLoad}
         />
       )}
 

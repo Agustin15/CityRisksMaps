@@ -1,6 +1,6 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const getCrimes = async (loadingMenu, setLoadingMenu) => {
+export const getCrimes = async (loadingMenu, setLoadingMenu, setErrorLoad) => {
   let optionGET = JSON.stringify({ option: "getCrimes" });
 
   if (!loadingMenu) setLoadingMenu(true);
@@ -12,13 +12,14 @@ export const getCrimes = async (loadingMenu, setLoadingMenu) => {
     });
 
     const result = await response.json();
-    if (!response.ok) throw result.messageError;
+
+    if (!response.ok) throw new Error(result.messageError);
 
     if (result) {
       return result;
     }
   } catch (error) {
-    console.log(error.message);
+    setErrorLoad(error.message);
   } finally {
     setLoadingMenu(false);
   }

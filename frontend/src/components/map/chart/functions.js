@@ -1,39 +1,32 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const loadDataChart = async (
-  categoryCrime,
+export const getDataChart = async (
   nameNeighborhood,
   setLoading,
-  setDataChart
+  setErrorDataChart
 ) => {
-  let optionGET = JSON.stringify(
-    categoryCrime
-      ? {
-          option: "getCategoryCrimeInNeighborhood",
-          neighborhood: nameNeighborhood,
-          categoryCrime: categoryCrime
-        }
-      : {
-          option: "getSecurityPercentagesInNeighborhood",
-          neighborhood: nameNeighborhood
-        }
-  );
-
-  let endpoint = categoryCrime ? "/neighborhoodCrime/" : "/quiz/";
+  let optionGET = JSON.stringify({
+    option: "getCategoryCrimeInNeighborhood",
+    neighborhood: nameNeighborhood,
+    categoryCrime: categoryCrime
+  });
 
   setLoading(true);
   try {
-    const response = await fetch(localhostBackend + endpoint + optionGET, {
-      method: "GET",
-      credentials: "include",
-      headers: { "Content-type": "application/json" }
-    });
+    const response = await fetch(
+      localhostBackend + "/neighborhoodCrime/" + optionGET,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-type": "application/json" }
+      }
+    );
 
     const result = await response.json();
-
-    if (result.length > 0) setDataChart(result);
+    if (!response.ok) throw new Error(result.messageError);
+    return result;
   } catch (error) {
-    console.log(error);
+    setErrorDataChart(error.message);
   } finally {
     setLoading(false);
   }

@@ -20,6 +20,7 @@ export const ZoneCrimesProvider = ({ children }) => {
   const [years, setYears] = useState();
   const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
   const { neighbordhoodsCoordinates } = useMapControls();
+  const [errorLoad, setErrorLoad] = useState();
   const [indexChartActive, setIndexChartActive] = useState(null);
   const tableRef = useRef();
 
@@ -41,6 +42,7 @@ export const ZoneCrimesProvider = ({ children }) => {
       if (result) return result;
       else return null;
     } catch (error) {
+      setErrorLoad(error.message);
     } finally {
       setLoading(false);
     }
@@ -136,6 +138,7 @@ export const ZoneCrimesProvider = ({ children }) => {
         setNeighborhoodsCrimeByYear,
         loadCrimeDataNeighborhoods,
         loadCrimesByYear,
+        errorLoad,
         getCrimeRange,
         tableRef,
         createPolygonsNeighbordhood,
