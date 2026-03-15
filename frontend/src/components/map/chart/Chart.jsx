@@ -17,13 +17,16 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
     loadDataChart();
   }, []);
 
-  const loadDataChart = () => {
-    const result = getDataChart(
+  const loadDataChart = async () => {
+    setLoading(true);
+    const result = await getDataChart(
+      categoryCrime,
       nameNeighborhood,
-      setLoading,
       setErrorDataChart
     );
     if (result) setDataChart(result);
+
+    setLoading(false);
   };
   return (
     <div className={styles.containChart}>

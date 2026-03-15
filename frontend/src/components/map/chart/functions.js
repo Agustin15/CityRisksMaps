@@ -1,8 +1,8 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getDataChart = async (
+  categoryCrime,
   nameNeighborhood,
-  setLoading,
   setErrorDataChart
 ) => {
   let optionGET = JSON.stringify({
@@ -11,7 +11,6 @@ export const getDataChart = async (
     categoryCrime: categoryCrime
   });
 
-  setLoading(true);
   try {
     const response = await fetch(
       localhostBackend + "/neighborhoodCrime/" + optionGET,
@@ -23,12 +22,11 @@ export const getDataChart = async (
     );
 
     const result = await response.json();
+
     if (!response.ok) throw new Error(result.messageError);
     return result;
   } catch (error) {
     setErrorDataChart(error.message);
-  } finally {
-    setLoading(false);
   }
 };
 
