@@ -51,13 +51,15 @@ export const MapProvider = ({ children }) => {
       setLoadingMyLocation(false);
     } else {
       const position = await getWatchPosition();
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      });
+      if (position) {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
 
-      if (!userLocation) {
-        configMapGeolocation(position);
+        if (!userLocation) {
+          configMapGeolocation(position);
+        }
       }
       setLoadingMyLocation(false);
     }
@@ -75,6 +77,7 @@ export const MapProvider = ({ children }) => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, error, {
         enableHighAccuracy: true,
+        timeout: 9000,
         maximumAge: 0
       });
     });
@@ -84,6 +87,7 @@ export const MapProvider = ({ children }) => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.watchPosition(resolve, error, {
         enableHighAccuracy: true,
+        timeout: 9000,
         maximumAge: 0
       });
     });

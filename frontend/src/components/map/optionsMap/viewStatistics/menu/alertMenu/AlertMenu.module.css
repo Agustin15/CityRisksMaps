@@ -129,9 +129,11 @@
         width: 85%;
         box-shadow: none;
     }
+    .containLoader .msj {
+        width: 90%;
+    }
     .containLoader .msj p {
         font-size: 15px;
-        width: 91%;
     }
     .containLoader button {
         font-size: 15px;
@@ -149,9 +151,11 @@
         width: 45%;
         box-shadow: none;
     }
+    .containLoader .msj {
+        width: 90%;
+    }
     .containLoader .msj p {
         font-size: 16px;
-        width: 91%;
     }
     .containLoader button {
         font-size: 15px;
