@@ -36,7 +36,7 @@ export const MapProvider = ({ children }) => {
     setLoadingMyLocation(true);
 
     if (option == "current" && userLocation) {
-      navigator.geolocation.getCurrentPosition(success, error, {
+      navigator.geolocation.getCurrentPosition(successCurrentPosition, error, {
         enableHighAccuracy: true,
         maximumAge: 0
       });
@@ -44,28 +44,35 @@ export const MapProvider = ({ children }) => {
       if (watchIdRef.current)
         navigator.geolocation.clearWatch(watchIdRef.current);
 
-      watchIdRef.current = navigator.geolocation.watchPosition(success, error, {
-        enableHighAccuracy: true,
-        maximumAge: 0
-      });
+      watchIdRef.current = navigator.geolocation.watchPosition(
+        successWatchPosition,
+        error,
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0
+        }
+      );
     }
   };
 
   const success = (position) => {
-    console.log(position);
     setUserLocation({
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
-
-    if (!userLocation) {
-      configMapGeolocation(position);
-    }
     setLoadingMyLocation(false);
+  };
+  const successWatchPosition = (position) => {
+    success(position);
+  };
+
+  const successCurrentPosition = (position) => {
+    success(position);
+    configMapGeolocation(position);
   };
 
   const configMapGeolocation = (position) => {
-    map.setZoom(25);
+    map.setZoom(15);
     map.panTo({
       lat: position.coords.latitude,
       lng: position.coords.longitude
