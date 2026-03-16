@@ -72,11 +72,11 @@ export class ZoneDAL {
       throw error;
     }
   }
-  static async delete(idUser) {
+  static async delete(idZone) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("idZone", sql.Int, idUser);
+      request.input("idZone", sql.Int, idZone);
 
       const result = await request.execute("DeleteZone");
 

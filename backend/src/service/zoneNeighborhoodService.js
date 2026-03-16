@@ -9,10 +9,10 @@ export class ZoneNeighborhoodService {
     }
   }
 
-  static async getZonesNeighborhoodByNeighborhood(neighborhood) {
+  static async getZonesByNeighborhood(neighborhood) {
     try {
       const result =
-        await ZoneNeighborhoodDAL.getZonesNeighborhoodByNeighborhood(
+        await ZoneNeighborhoodDAL.getZonesByNeighborhood(
           neighborhood
         );
 
@@ -21,10 +21,10 @@ export class ZoneNeighborhoodService {
       throw error;
     }
   }
-  static async getZonesNeighborhoodByZone(idZone) {
+  static async getNeighborhoodsInZone(idZone) {
     try {
       const result =
-        await ZoneNeighborhoodDAL.getZonesNeighborhoodByZone(idZone);
+        await ZoneNeighborhoodDAL.getNeighborhoodsInZone(idZone);
 
       return result;
     } catch (error) {

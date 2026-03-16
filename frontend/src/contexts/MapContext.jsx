@@ -8,19 +8,14 @@ export const MapProvider = ({ children }) => {
   const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
-  const userLocationRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
-
+  const watchIdRef = useRef();
   const map = useMap();
 
   useEffect(() => {
     if (!apiIsLoaded || !map) return;
     loadMap();
   }, [map]);
-
-  useEffect(() => {
-    userLocationRef.current = userLocation;
-  }, [userLocation]);
 
   const loadMap = async () => {
     await createNeighbordhoodCoordinates();
@@ -34,7 +29,6 @@ export const MapProvider = ({ children }) => {
       tilt: 0,
       restriction: { latLngBounds: bounds, strictBounds: false }
     });
-
     handleMyLocation();
   };
 
@@ -42,54 +36,39 @@ export const MapProvider = ({ children }) => {
     setLoadingMyLocation(true);
 
     if (option == "current" && userLocation) {
-      const position = await getCurrentPosition();
-      setUserLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+      navigator.geolocation.getCurrentPosition(success, error, {
+        enableHighAccuracy: true,
+        maximumAge: 0
       });
-      configMapGeolocation(position);
-      setLoadingMyLocation(false);
     } else {
-      const position = await getWatchPosition();
-      if (position) {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
+      if (watchIdRef.current)
+        navigator.geolocation.clearWatch(watchIdRef.current);
 
-        if (!userLocation) {
-          configMapGeolocation(position);
-        }
-      }
-      setLoadingMyLocation(false);
+      watchIdRef.current = navigator.geolocation.watchPosition(success, error, {
+        enableHighAccuracy: true,
+        maximumAge: 0
+      });
     }
   };
 
-  const configMapGeolocation = (position) => {
-    map.setZoom(15);
-    map.panTo({
+  const success = (position) => {
+    console.log(position);
+    setUserLocation({
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
+
+    if (!userLocation) {
+      configMapGeolocation(position);
+    }
+    setLoadingMyLocation(false);
   };
 
-  const getCurrentPosition = async () => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, error, {
-        enableHighAccuracy: true,
-        timeout: 9000,
-        maximumAge: 0
-      });
-    });
-  };
-
-  const getWatchPosition = async () => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.watchPosition(resolve, error, {
-        enableHighAccuracy: true,
-        timeout: 9000,
-        maximumAge: 0
-      });
+  const configMapGeolocation = (position) => {
+    map.setZoom(25);
+    map.panTo({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
     });
   };
 

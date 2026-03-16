@@ -26,24 +26,24 @@ export class ZoneNeighborhoodDAL {
     }
   }
 
-  static async getZonesNeighborhoodByNeighborhood(neighborhood) {
+  static async getZonesByNeighborhood(neighborhood) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("neighborhood", sql.VarChar(30), neighborhood);
 
-      const result = await request.execute("ZonesNeighborhoodByNeighborhood");
+      const result = await request.execute("ZonesByNeighborhood");
 
       result.recordset;
     } catch (error) {
       throw error;
     }
   }
-  static async getZonesNeighborhoodByZone(idZone) {
+  static async getNeighborhoodsInZone(idZone) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("idZone", sql.Int, idZone);
 
-      const result = await request.execute("ZonesNeighborhoodByZone");
+      const result = await request.execute("NeighborhoodInZone");
 
       result.recordset;
     } catch (error) {

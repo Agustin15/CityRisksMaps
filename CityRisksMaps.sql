@@ -923,18 +923,18 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE ZonesNeighborhoodByNeighborhood @neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE ZonesByNeighborhood @neighborhood VARCHAR(30) AS
 BEGIN 
 
-select * from Zones_Neighborhoods where neighborhood=@neighborhood;
+select * from Zones_Neighborhoods ZN INNER JOIN Zones Z ON ZN.zone=Z.idZone where neighborhood=@neighborhood;
 END
 
 GO
 
-CREATE OR ALTER PROCEDURE ZonesNeighborhoodByZone @idZone INT AS
+CREATE OR ALTER PROCEDURE NeighborhoodInZone @idZone INT AS
 BEGIN 
 
-select * from Zones_Neighborhoods where zone=@idZone;
+select * from Zones_Neighborhoods ZN INNER JOIN Neighborhoods N ON ZN.neighborhood=N.name where zone=@idZone;
 END
 
 GO
