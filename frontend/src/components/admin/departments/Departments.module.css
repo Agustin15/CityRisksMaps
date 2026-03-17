@@ -1,0 +1,16 @@
+.departments {
+    display: flex;
+    justify-content: start;
+    align-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+}
+
+.body {
+    display: flex;
+    justify-content: start;
+    align-content: center;
+    width: 85%;
+    height: 100vh;
+}

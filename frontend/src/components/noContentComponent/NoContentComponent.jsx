@@ -1,9 +1,9 @@
-import styles from "./errorComponent.module.css";
+import styles from "./NoContentComponent.module.css";
 import iconLogo from "../../assets/img/logo.png";
 
-export const ErrorComponent = ({ title, msj, image }) => {
+export const NoContentComponent = ({ title, msj, image }) => {
   return (
-    <div className={styles.errorComponentPage}>
+    <div className={styles.noContentComponentPage}>
       <div className={styles.wave}></div>
       <div className={styles.msj}>
         <img src={image}></img>

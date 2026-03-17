@@ -1,9 +1,9 @@
 import iconMaintenance from "../../assets/img/maintenance.png";
-import { ErrorComponent } from "../errorComponent/ErrorComponent";
+import { NoContentComponent } from "../noContentComponent/NoContentComponent";
 
 export const Maintenance = () => {
   return (
-    <ErrorComponent
+    <NoContentComponent
       title={"Sitio en mantenimiento"}
       msj={
         "¡Estamos trabajando en actualizaciones para brindarle la mejor experiencia posible!"

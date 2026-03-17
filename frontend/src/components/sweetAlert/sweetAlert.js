@@ -18,22 +18,6 @@ export const alertSwalError = (title, error) => {
   });
 };
 
-export const alertSwalErrorQuiz = (title, error) => {
-  Swal.fire({
-    title: title,
-    icon: "error",
-    html: `
-    <p class=${styles.customMsj}>${error}</p>
-    `,
-    customClass: {
-      popup: styles.popup,
-      icon: styles.icon,
-      title: styles.title,
-      confirmButton: styles.btnConfirm
-    }
-  });
-};
-
 export const alertSwalWarning = (error) => {
   Swal.fire({
     title: "¡Advertencia!",
@@ -66,24 +50,18 @@ export const alertSwalSuccess = (msj) => {
   });
 };
 
-export const alertSwalConfirmDeleteQuiz = async (msj) => {
-  const result = await Swal.fire({
-    title: "Eliminar encuesta",
+export const alertSwalErrorAdmin = (title, error) => {
+  Swal.fire({
+    icon: "error",
+    title: title,
     html: `
-    <p class=${styles.customMsj}>${msj}</p>
+    <p class=${styles.customMsj}>${error}</p>
     `,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Si,eliminar",
-    cancelButtonText: "No,cancelar",
     customClass: {
       popup: styles.popup,
-      icon: styles.icon,
+      image: styles.image,
       title: styles.title,
-      confirmButton: styles.btnConfirmSuccess,
-      cancelButton: styles.btnConfirm
+      confirmButton: styles.btnConfirm
     }
   });
-
-  return result;
 };

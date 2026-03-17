@@ -10,12 +10,17 @@ export const MapProvider = ({ children }) => {
   const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
   const watchIdRef = useRef();
+  const userLocationRef = useRef();
   const map = useMap();
 
   useEffect(() => {
     if (!apiIsLoaded || !map) return;
     loadMap();
   }, [map]);
+
+  useEffect(() => {
+    userLocationRef.current = userLocation;
+  }, [userLocation]);
 
   const loadMap = async () => {
     await createNeighbordhoodCoordinates();
@@ -60,10 +65,12 @@ export const MapProvider = ({ children }) => {
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
+
     setLoadingMyLocation(false);
   };
   const successWatchPosition = (position) => {
     success(position);
+    if (!userLocationRef.current) configMapGeolocation(position);
   };
 
   const successCurrentPosition = (position) => {
