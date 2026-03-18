@@ -1,8 +1,9 @@
 import styles from "../LoginAdmin.module.css";
 import iconHidePassword from "../../../assets/img/hidePassword.png";
 import { handleViewPassword, submitForm } from "./functions.js";
-import { useCookies } from "react-cookie";
+import { redirect } from "react-router";
 import { useRef, useState } from "react";
+import { useAuth } from "../../../contexts/adminContext/AuthContext.jsx";
 const localhostFrontend = import.meta.env.VITE_LOCALHOST_FRONTEND;
 
 export const LoginForm = () => {
@@ -10,7 +11,7 @@ export const LoginForm = () => {
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies();
+  const { setUser } = useAuth();
 
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -37,8 +38,8 @@ export const LoginForm = () => {
     setLoading(true);
     const userFound = await submitForm(values, errors, setErrors);
     if (userFound) {
-      setCookie("nameUser", userFound.name);
-      location.href = localhostFrontend + "/admin/departamentos";
+      setUser(userFound);
+      return redirect(localhostFrontend + "/admin/departamentos");
     }
     setLoading(false);
   };

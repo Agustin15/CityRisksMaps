@@ -18,7 +18,7 @@ export const LoginAdmin = () => {
             <h3>Iniciar sesion</h3>
           </div>
 
-          <LoginForm></LoginForm>
+          <LoginForm />
 
           <div className={styles.footer}>
             <img src={iconLogo}></img>
@@ -27,6 +27,5 @@ export const LoginAdmin = () => {
         </div>
       </div>
     </div>
-    
   );
 };

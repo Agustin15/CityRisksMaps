@@ -15,7 +15,7 @@ export class User {
     name = "desconocido",
     lastname = "desconocido",
     email = "email@gmail.com",
-    password = "desconocido",
+    password = "D98932B1kfo#m.l",
     created,
     lastModified,
     rol = new Rol()
