@@ -38,7 +38,7 @@ export const LoginForm = () => {
     const userFound = await submitForm(values, errors, setErrors);
     if (userFound) {
       setCookie("nameUser", userFound.name);
-      location.href = localhostFrontend + "/admin/Departamentos";
+      location.href = localhostFrontend + "/admin/departamentos";
     }
     setLoading(false);
   };

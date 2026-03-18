@@ -62,4 +62,13 @@ export class DepartmentService {
       throw error;
     }
   }
+  static async getDepartmentsOffset(offset) {
+    try {
+      const result = await DepartmentDAL.getDepartmentsOffset(offset);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

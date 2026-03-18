@@ -145,7 +145,7 @@ export class UserDAL {
 
       const result = await request.execute("AllUsers");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -157,7 +157,7 @@ export class UserDAL {
 
       const result = await request.execute("UsersOffset");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -170,7 +170,7 @@ export class UserDAL {
 
       const result = await request.execute("UsersByRol");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -183,7 +183,19 @@ export class UserDAL {
 
       const result = await request.execute("UserById");
 
-      result.recordset;
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getUserByEmail(email) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("email", sql.VarChar(50), email);
+
+      const result = await request.execute("UserByEmail");
+
+      return result.recordset;
     } catch (error) {
       throw error;
     }

@@ -1,0 +1,29 @@
+.containEdit {
+    width: 55%;
+    height: 35%;
+    background: white;
+    border-radius: 4px;
+}
+
+.containEdit .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 15px;
+}
+
+.containEdit .backgroundIcon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 99px;
+    background: rgb(39, 134, 211);
+}
+
+.containEdit .title img {
+    width: 28px;
+    height: 28px;
+}

@@ -7,8 +7,8 @@ export class Rol {
     this.name = name;
   }
 
-  get idRol() {
-    return this.#idRol;
+  set idRol(value) {
+    this.#idRol = value;
   }
 
   get idRol() {

@@ -5,6 +5,7 @@ export class User {
   #name;
   #lastname;
   #email;
+  #password;
   #created;
   #lastModified;
   #rol;
@@ -14,6 +15,7 @@ export class User {
     name = "desconocido",
     lastname = "desconocido",
     email = "email@gmail.com",
+    password = "desconocido",
     created,
     lastModified,
     rol = new Rol()
@@ -22,11 +24,15 @@ export class User {
     this.name = name;
     this.lastname = lastname;
     this.email = email;
+    this.password = password;
     this.created = created;
     this.lastModified = lastModified;
     this.rol = rol;
   }
 
+  set idUser(value) {
+    this.#idUser = value;
+  }
   get idUser() {
     return this.#idUser;
   }
@@ -78,6 +84,14 @@ export class User {
   get email() {
     return this.#email;
   }
+  set password(value) {
+    if (value.length == 0) throw new Error("Debe indicar un contraseña");
+    this.#password = value;
+  }
+
+  get password() {
+    return this.#password;
+  }
 
   set created(value) {
     this.#created = value;
@@ -100,7 +114,7 @@ export class User {
         cause: { code: 400 }
       });
 
-    this.#rol = value.trim();
+    this.#rol = value;
   }
 
   get rol() {

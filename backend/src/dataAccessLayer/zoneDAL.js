@@ -102,7 +102,7 @@ export class ZoneDAL {
 
       const result = await request.execute("AllZones");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -114,7 +114,7 @@ export class ZoneDAL {
 
       const result = await request.execute("zonesOffset");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -126,7 +126,7 @@ export class ZoneDAL {
 
       const result = await request.execute("ZoneById");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

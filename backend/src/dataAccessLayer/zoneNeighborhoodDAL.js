@@ -33,7 +33,7 @@ export class ZoneNeighborhoodDAL {
 
       const result = await request.execute("ZonesByNeighborhood");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }
@@ -45,7 +45,7 @@ export class ZoneNeighborhoodDAL {
 
       const result = await request.execute("NeighborhoodInZone");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

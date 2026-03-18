@@ -121,4 +121,16 @@ export class DepartmentDAL {
       throw new Error(error);
     }
   }
+  static async getDepartmentsOffset(offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("DepartmentsOffset");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

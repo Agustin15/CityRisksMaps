@@ -4,18 +4,15 @@ export class Neighborhood {
   #name;
   #department;
   #anualPopulations;
-  #quizes;
 
   constructor(
     name = "desconocido",
     department = new Department(),
-    anualPopulations = [],
-    quizes = []
+    anualPopulations = []
   ) {
     this.name = name;
     this.department = department;
     this.anualPopulations = anualPopulations;
-    this.quizes = quizes;
   }
 
   set name(value) {
@@ -55,17 +52,5 @@ export class Neighborhood {
 
   get anualPopulations() {
     return this.#anualPopulations;
-  }
-
-  set quizes(value) {
-    if (typeof value != "object")
-      throw new Error("Encuestas debe ser una lista", {
-        cause: { code: 400 }
-      });
-    this.#quizes = value;
-  }
-
-  get quizes() {
-    return this.#quizes;
   }
 }

@@ -259,11 +259,16 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE UserById @idUser INT AS
-
 BEGIN
 SELECT * FROM Users where idUser=@idUser;
 END
 
+GO
+
+CREATE OR ALTER PROCEDURE UserByEmail @email VARCHAR(50) AS
+BEGIN
+SELECT * FROM Users where email=@email;
+END
 
 
 GO
@@ -333,6 +338,12 @@ GO
 CREATE OR ALTER PROCEDURE AllDepartments AS
 BEGIN
 select * from Departments;
+END
+GO
+
+CREATE OR ALTER PROCEDURE DepartmentsOffset @offset INT AS
+BEGIN
+select * from Departments ORDER BY name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY
 END
 GO
 
@@ -1043,7 +1054,6 @@ GO
 
 ------------------------------------------------------------------------------------------------------------------
 EXEC AddRol 'Admin';
-EXEC AddRol 'User';
 
 EXEC AddDepartment 'Montevideo';
 

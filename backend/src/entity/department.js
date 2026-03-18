@@ -1,12 +1,10 @@
 export class Department {
   #idDepartment;
   #name;
-  #neighborhoods;
 
-  constructor(idDepartment = 0, name = "desconocido", neighborhoods = []) {
+  constructor(idDepartment = 0, name = "desconocido") {
     this.idDepartment = idDepartment;
     this.name = name;
-    this.neighborhoods = neighborhoods;
   }
 
   set idDepartment(value) {
@@ -34,15 +32,5 @@ export class Department {
 
   get name() {
     return this.#name;
-  }
-
-  set neighborhoods(value) {
-    if (typeof value != "object")
-      throw new Error("Barrios debe ser una lista", { cause: { code: 400 } });
-    this.#neighborhoods = value;
-  }
-
-  get neighborhoods() {
-    return this.#neighborhoods;
   }
 }

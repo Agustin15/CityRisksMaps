@@ -1,0 +1,99 @@
+.containTable {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 96%;
+    height: 83vh;
+    background: white;
+    border: 1px solid rgb(206, 206, 206);
+    position: relative;
+}
+
+.containTable .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: absolute;
+    left: 2rem;
+    top: 0.5rem;
+}
+.containTable input {
+    padding-left: 1rem;
+    outline: none;
+    width: 13rem;
+    height: 1.8rem;
+    background: rgb(238, 238, 238);
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.containTable .controls button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-weight: bold;
+    background: rgb(43, 199, 43);
+    width: 8rem;
+    height: 1.9rem;
+    border-radius: 17px;
+}
+
+.containTable .controls button img {
+    width: 25px;
+    height: 25px;
+}
+
+.containTable table {
+    margin-top: 5%;
+    height: auto;
+    max-height: 79%;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    table-layout: fixed;
+}
+
+.containTable table thead {
+    color: white;
+    background: linear-gradient(rgb(37, 37, 37), rgb(34, 34, 34));
+}
+
+.containTable table thead th {
+    padding: 0.8rem;
+}
+
+.containTable .pagination {
+    position: absolute;
+    bottom: 1rem;
+    width: 99%;
+    border-top: 1px solid rgb(207, 207, 207);
+}
+.containTable .pagination ul {
+    margin: 0.3rem 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.containTable .pagination ul li button {
+    width: 1.8rem;
+    height: 1.8rem;
+    background: linear-gradient(rgb(37, 130, 143), rgb(27, 88, 146));
+    color: white;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px gray;
+}
+.containTable .pagination ul li .disabled {
+    opacity: 76%;
+}
+
+.containTable .pagination ul li button:hover,
+.containTable .pagination ul li .disabled {
+    box-shadow: none;
+}

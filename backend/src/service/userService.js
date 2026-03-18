@@ -63,4 +63,14 @@ export class UserService {
       throw error;
     }
   }
+  static async getUserByEmail(email) {
+    try {
+      const result = await UserDAL.getUserByEmail(email);
+
+      if (result.length > 0) return result[0];
+      else return null;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

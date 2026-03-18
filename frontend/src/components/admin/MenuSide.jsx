@@ -7,11 +7,8 @@ import iconRols from "../../assets/img/rols.png";
 import iconZones from "../../assets/img/zones.png";
 import iconPopulation from "../../assets/img/populationsTwo.png";
 import iconLogo from "../../assets/img/logo.png";
-import { useCookies } from "react-cookie";
 
 export const MenuSide = () => {
-  const [cookies] = useCookies();
-
   return (
     <nav className={styles.menu}>
       <div className={styles.logo}>
@@ -19,7 +16,11 @@ export const MenuSide = () => {
         <span>AdminIDM</span>
       </div>
       <ul>
-        <li>
+        <li
+          className={
+            location.href.indexOf("Departamentos") > -1 ? styles.selected : ""
+          }
+        >
           <img src={iconDepartaments}></img>
           <a href="/Departamentos">Departamentos</a>
         </li>

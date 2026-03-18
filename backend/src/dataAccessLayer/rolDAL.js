@@ -94,7 +94,7 @@ export class RolDAL {
 
       const result = await request.execute("AllRols");
 
-      result.recordset;
+      return result.recordset;
     } catch (error) {
       throw error;
     }

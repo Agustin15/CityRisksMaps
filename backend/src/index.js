@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
-import cookieParser from "cookie-parser";
+import { RoutesLogin } from "./route/routeLogin.js";
+import { RoutesDepartment } from "./route/routeDepartment.js";
 
 const limiterOptions = {
   windowMs: 15 * 60 * 1000,
@@ -41,6 +43,8 @@ try {
   process.exit(1);
 }
 
+app.use("/login/", RoutesLogin);
 app.use("/crimes/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
+app.use("/departments/", RoutesDepartment);
