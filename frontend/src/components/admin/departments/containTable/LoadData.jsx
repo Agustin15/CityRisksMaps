@@ -1,44 +1,30 @@
 import { useEffect } from "react";
-import { useCrudContext } from "../../../../contexts/adminContext/CrudContext";
-const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
+import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 
-export const LoadData = ({
-  setDepartments,
-  setPages,
-  setError,
-  setLoading
-}) => {
-  const { fetchGet } = useCrudContext();
+export const LoadData = () => {
+  const { fetchGet, setRegisters, setPages } = useCrud();
 
   useEffect(() => {
     load();
   }, []);
 
   const load = async () => {
-    let url = localhostBackend + "/departments/";
-    let params = JSON.stringify({ option: "getDepartments" });
+    let url = "/departments/" + JSON.stringify({ option: "getDepartments" });
 
-    const departments = await fetchGet(
-      url + params,
-      "GET",
-      setLoading,
-      setError
-    );
+    const departments = await fetchGet(url, "GET");
+
     if (departments) {
       setPages(Math.ceil(departments.length / 10));
 
-      let params = JSON.stringify({
-        option: "getDepartmentsOffset",
-        offset: 0
-      });
+      let url =
+        "/departments/" +
+        JSON.stringify({
+          option: "getDepartmentsOffset",
+          offset: 0
+        });
 
-      const departmentsOffset = await fetchGet(
-        url + params,
-        "GET",
-        setLoading,
-        setError
-      );
-      if (departmentsOffset) setDepartments(departments);
+      const departmentsOffset = await fetchGet(url, "GET");
+      if (departmentsOffset) setRegisters(departments);
     }
   };
 };

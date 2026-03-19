@@ -1,6 +1,9 @@
 import express from "express";
 import { verifyAuthToken } from "../controller/authentication.js";
 import {
+  add,
+  deleteById,
+  update,
   getDepartmentById,
   getDepartments,
   getDepartmentsOffset
@@ -24,3 +27,7 @@ RoutesDepartment.get("/:paramsGet", (req, res) => {
       return getDepartmentById(req, res);
   }
 });
+
+RoutesDepartment.post("/", add);
+RoutesDepartment.put("/:idDepartment", update);
+RoutesDepartment.delete("/:idDepartment", deleteById);

@@ -5,51 +5,13 @@
     align-items: center;
     justify-content: start;
     width: 96%;
-    height: 83vh;
+    height: 79vh;
     background: white;
-    border: 1px solid rgb(206, 206, 206);
+    border: 1px solid rgb(185, 185, 185);
     position: relative;
 }
 
-.containTable .controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    position: absolute;
-    left: 2rem;
-    top: 0.5rem;
-}
-.containTable input {
-    padding-left: 1rem;
-    outline: none;
-    width: 13rem;
-    height: 1.8rem;
-    background: rgb(238, 238, 238);
-    border: 1px solid gray;
-    border-radius: 5px;
-}
-
-.containTable .controls button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    color: white;
-    font-weight: bold;
-    background: rgb(43, 199, 43);
-    width: 8rem;
-    height: 1.9rem;
-    border-radius: 17px;
-}
-
-.containTable .controls button img {
-    width: 25px;
-    height: 25px;
-}
-
 .containTable table {
-    margin-top: 5%;
     height: auto;
     max-height: 79%;
     width: 100%;

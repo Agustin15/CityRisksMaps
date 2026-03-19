@@ -65,3 +65,24 @@ export const alertSwalErrorAdmin = (title, error) => {
     }
   });
 };
+export const alertSwalConfirmDelete = async (title, msj) => {
+  const result = await Swal.fire({
+    icon: "question",
+    title: title,
+    html: `
+    <p class=${styles.customMsj}>${msj}</p>
+    `,
+    showCancelButton:true,
+    cancelButtonText:"Cancelar",
+    confirmButtonText:"Confimar",
+    customClass: {
+      popup: styles.popup,
+      image: styles.image,
+      title: styles.title,
+      confirmButton: styles.btnConfirm,
+      cancelButton: styles.btnCancel
+    }
+  });
+
+  return result;
+};

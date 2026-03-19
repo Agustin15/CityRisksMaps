@@ -343,7 +343,7 @@ GO
 
 CREATE OR ALTER PROCEDURE DepartmentsOffset @offset INT AS
 BEGIN
-select * from Departments ORDER BY name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY
+select * from Departments ORDER BY idDepartment OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY
 END
 GO
 

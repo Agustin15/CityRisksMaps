@@ -18,7 +18,7 @@ export class DepartmentDAL {
         );
 
       if (result.returnValue == -2)
-        throw new Error("Ya hay registrado un departmento con esta nombre", {
+        throw new Error("Ya hay registrado un departmento con este nombre", {
           cause: { code: 409 }
         });
       else if (result.returnValue == -3)

@@ -1,17 +1,17 @@
 import styles from "../LoginAdmin.module.css";
 import iconHidePassword from "../../../assets/img/hidePassword.png";
 import { handleViewPassword, submitForm } from "./functions.js";
-import { redirect } from "react-router";
+import { useNavigate } from "react-router";
 import { useRef, useState } from "react";
-import { useAuth } from "../../../contexts/adminContext/AuthContext.jsx";
-const localhostFrontend = import.meta.env.VITE_LOCALHOST_FRONTEND;
+import { useCookies } from "react-cookie";
 
 export const LoginForm = () => {
   const inputPasswordRef = useRef();
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const { setUser } = useAuth();
+  const [cookies, setCookie] = useCookies();
+  let navigate = useNavigate();
 
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -38,8 +38,11 @@ export const LoginForm = () => {
     setLoading(true);
     const userFound = await submitForm(values, errors, setErrors);
     if (userFound) {
-      setUser(userFound);
-      return redirect(localhostFrontend + "/admin/departamentos");
+      setCookie("nameAndLastname", {
+        name: userFound.name,
+        lastname: userFound.lastname
+      });
+      navigate("/admin/departamentos");
     }
     setLoading(false);
   };

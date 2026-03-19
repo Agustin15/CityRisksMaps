@@ -1,32 +1,56 @@
 import styles from "./Departments.module.css";
+import iconAdd from "../../../assets/img/add.png";
 import { MenuSide } from "../MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
-import { CrudProvider } from "../../../contexts/adminContext/CrudContext";
-import { redirect, useNavigate } from "react-router";
-import { useAuth } from "../../../contexts/adminContext/AuthContext";
-import { useEffect } from "react";
+import { Add } from "./containTable/add/Add";
+import { Modal } from "../modal/Modal";
+import { createPortal } from "react-dom";
+import { useNavigate } from "react-router";
+import { useCrud } from "../../../contexts/adminContext/CrudContext";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 export const Departments = () => {
-  const { user } = useAuth();
+  const [cookies] = useCookies();
   let navigate = useNavigate();
+  const [addForm, setAddForm] = useState(false);
+  const { searcher } = useCrud();
 
   useEffect(() => {
-    navigate("/admin/login");
+    if (cookies.nameAndLastname) return;
+    if (!cookies.nameAndLastname) navigate("/admin/login");
   }, []);
+
   return (
     <>
-      {user && (
-        <CrudProvider>
-          <div className={styles.departments}>
-            <MenuSide />
-            <div className={styles.body}>
-              <div className={styles.title}>
-                <h3>Lista de departamentos</h3>
+      {cookies.nameAndLastname && (
+        <div className={styles.departments}>
+          <MenuSide />
+          <div className={styles.body}>
+            <div className={styles.header}>
+              <h3>Lista de departamentos</h3>
+              <div className={styles.controls}>
+                <button onClick={() => setAddForm(true)}>
+                  <span>Agregar</span>
+                  <img src={iconAdd}></img>
+                </button>
+                <input
+                  onChange={(event) => searcher(event.target.value)}
+                  type="text"
+                  placeholder="Buscar..."
+                ></input>
               </div>
-              <ContainTable />
             </div>
+            {addForm &&
+              createPortal(
+                <Modal>
+                  <Add setAddForm={setAddForm} />
+                </Modal>,
+                document.body
+              )}
+            <ContainTable />
           </div>
-        </CrudProvider>
+        </div>
       )}
     </>
   );

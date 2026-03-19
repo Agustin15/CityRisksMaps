@@ -1,29 +1,39 @@
-import styles from "./Edit.module.css";
+import styles from "./add.module.css";
 import iconAdd from "../../../../../assets/img/add.png";
 import { useState } from "react";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
 
-export const Edit = ({ department, setEditDepartment }) => {
-  const [values, setValues] = useState({ ...department });
+export const Add = ({ setAddForm }) => {
+  const [name, setName] = useState("");
   const [errorForm, setErrorForm] = useState();
   const [loading, setLoading] = useState(false);
-  const { fetchPostOrPut, fetchGet, index, setRegisters } = useCrud();
+  const {
+    fetchPostOrPut,
+    fetchGet,
+    index,
+    setRegisters,
+    registers,
+    setPages,
+    pages
+  } = useCrud();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (values.name.length == 0) {
+    if (name.length == 0) {
       setErrorForm("*Debe ingresar un nombre");
       return;
     }
     setErrorForm();
 
-    let url = "/departments/" + values.idDepartment;
-    const result = await fetchPostOrPut(url, "PUT", setLoading, values);
+    let url = "/departments/";
+    const result = await fetchPostOrPut(url, "POST", setLoading, {
+      name: name
+    });
 
     if (result) {
-      alertSwalSuccess("¡Departamento actualizado exitosamente!");
+      alertSwalSuccess("¡Departamento agregado exitosamente!");
       let url =
         "/departments/" +
         JSON.stringify({
@@ -31,19 +41,22 @@ export const Edit = ({ department, setEditDepartment }) => {
           offset: index * 10
         });
 
-      setRegisters(await fetchGet(url));
+      let departments = await fetchGet(url);
+      if (departments) {
+        if (registers.length == 10) setPages(pages + 1);
+        setRegisters(departments);
+      }
     }
     return;
   };
 
   return (
-    <div className={styles.containEdit}>
-      <button onClick={() => setEditDepartment(null)} className={styles.close}>
+    <div className={styles.containAdd}>
+      <button onClick={() => setAddForm(false)} className={styles.close}>
         Cerrar
       </button>
       <div className={styles.title}>
-        <h3>Editar departamento {department.idDepartment}</h3>
-
+        <h3>Agregar departamento</h3>
         <div className={styles.backgroundIcon}>
           <img src={iconAdd}></img>
         </div>
@@ -54,18 +67,16 @@ export const Edit = ({ department, setEditDepartment }) => {
           <input
             autoComplete="off"
             name="name"
-            onChange={(event) =>
-              setValues({ ...values, [event.target.name]: event.target.value })
-            }
+            onChange={(event) => setName(event.target.value)}
             maxLength={30}
             type="text"
-            value={values.name}
+            value={name}
           ></input>
           {errorForm && <p>{errorForm}</p>}
         </div>
 
-        <button disabled={loading} className={styles.save} type="submit">
-          {loading ? "Actualizando..." : "Actualizar"}
+        <button disabled={loading} className={styles.add} type="submit">
+          {loading ? "Agregando..." : "Agregar"}
         </button>
       </form>
     </div>

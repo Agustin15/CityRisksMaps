@@ -39,7 +39,7 @@ export const getDepartmentsOffset = async (req, res) => {
 
 export const getDepartmentById = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).id)
+    if (!JSON.parse(req.params.paramsGet).idDepartment)
       throw new Error("Debe indicar un id");
 
     const idDepartment = JSON.parse(req.params.paramsGet).idDepartment;
@@ -60,8 +60,8 @@ export const getDepartmentById = async (req, res) => {
 export const add = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
-    const { name } = JSON.parse(req.body);
-
+    const { name } = req.body;
+    
     const department = new Department();
     department.name = name;
 
@@ -76,15 +76,13 @@ export const add = async (req, res) => {
 export const update = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
+    if (req.params.idDepartment == null) throw new Error("Debe indicar un id");
 
-    if (!JSON.parse(req.params.paramsGet).id)
-      throw new Error("Debe indicar un id");
-
-    const idDepartment = JSON.parse(req.params.paramsGet).idDepartment;
-    const { name } = JSON.parse(req.body);
+    const idDepartment = req.params.idDepartment;
+    const { name } = req.body;
 
     const department = new Department();
-    department.idDepartment = idDepartment;
+    department.idDepartment = parseInt(idDepartment);
     department.name = name;
 
     await DepartmentService.update(department);
@@ -97,10 +95,9 @@ export const update = async (req, res) => {
 
 export const deleteById = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).id)
-      throw new Error("Debe indicar un id");
+    if (req.params.idDepartment == null) throw new Error("Debe indicar un id");
 
-    const idDepartment = JSON.parse(req.params.paramsGet).id;
+    const idDepartment = parseInt(req.params.idDepartment);
 
     await DepartmentService.delete(idDepartment);
 

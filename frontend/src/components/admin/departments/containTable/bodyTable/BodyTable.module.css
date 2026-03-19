@@ -2,13 +2,8 @@ tbody td {
     padding: 0.5rem;
     font-size: 15px;
 }
-tbody .trGray{
+tbody .trGray {
     background: rgb(236, 236, 236);
-}
-
-tbody .loading,
-tbody .noData {
-    font-size: 14px;
 }
 
 tbody .options {

@@ -1,0 +1,5 @@
+tfoot .elementNotFound,
+tfoot .loading,
+tfoot .noData {
+    font-size: 15px;
+}

@@ -1,44 +1,26 @@
-const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 import styles from "./ContainTable.module.css";
-import iconAdd from "../../../../assets/img/add.png";
-import { useState } from "react";
 import { LoadData } from "./LoadData";
 import { BodyTable } from "./bodyTable/bodyTable";
-import { useCrudContext } from "../../../../contexts/adminContext/CrudContext";
+import { FooterTable } from "./footerTable/FooterTable";
+import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 
 export const ContainTable = () => {
-  const { fetchGet } = useCrudContext();
-  const [loading, setLoading] = useState(false);
-  const [departments, setDepartments] = useState();
-  const [pages, setPages] = useState();
-  const [index, setIndex] = useState(0);
-  const [error, setError] = useState();
+  const { fetchGet, pages, index, setIndex } = useCrud();
 
   const handleClickPage = (page) => {
     setIndex(page);
-    let url = localhostBackend + "/departments/";
-    let params = JSON.stringify({
-      option: "getDepartmentsOffset",
-      offset: page * 10
-    });
-    fetchGet(url + params, "GET", setLoading);
+    let url =
+      "/departments/" +
+      JSON.stringify({
+        option: "getDepartmentsOffset",
+        offset: page * 10
+      });
+    fetchGet(url + params, "GET");
   };
 
   return (
     <div className={styles.containTable}>
-      <LoadData
-        setDepartments={setDepartments}
-        setPages={setPages}
-        setError={setError}
-        setLoading={setLoading}
-      />
-      <div className={styles.controls}>
-        <button>
-          <span>Agregar</span>
-          <img src={iconAdd}></img>
-        </button>
-        <input type="text" placeholder="Buscar..."></input>
-      </div>
+      <LoadData />
       <table>
         <thead>
           <tr>
@@ -47,7 +29,8 @@ export const ContainTable = () => {
             <th>Opciones</th>
           </tr>
         </thead>
-        <BodyTable loading={loading} error={error} departments={departments} />
+        <BodyTable />
+        <FooterTable />
       </table>
 
       <div className={styles.pagination}>
