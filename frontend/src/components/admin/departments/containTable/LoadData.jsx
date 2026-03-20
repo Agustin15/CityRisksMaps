@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 
-export const LoadData = () => {
+export const LoadData = ({ route, controller, controllerOffset }) => {
   const { fetchGet, setRegisters, setPages } = useCrud();
 
   useEffect(() => {
@@ -9,22 +9,22 @@ export const LoadData = () => {
   }, []);
 
   const load = async () => {
-    let url = "/departments/" + JSON.stringify({ option: "getDepartments" });
+    let url = route + JSON.stringify({ option: controller });
 
-    const departments = await fetchGet(url, "GET");
+    const registers = await fetchGet(url, "GET");
 
-    if (departments) {
-      setPages(Math.ceil(departments.length / 10));
+    if (registers) {
+      setPages(Math.ceil(registers.length / 10));
 
       let url =
-        "/departments/" +
+        route +
         JSON.stringify({
-          option: "getDepartmentsOffset",
+          option: controllerOffset,
           offset: 0
         });
 
-      const departmentsOffset = await fetchGet(url, "GET");
-      if (departmentsOffset) setRegisters(departments);
+      const registersOffset = await fetchGet(url, "GET");
+      if (registersOffset) setRegisters(registersOffset);
     }
   };
 };

@@ -27,15 +27,16 @@ export const Add = ({ setAddForm }) => {
     }
     setErrorForm();
 
-    let url = "/departments/";
+    let url = "/department/";
     const result = await fetchPostOrPut(url, "POST", setLoading, {
       name: name
     });
 
     if (result) {
       alertSwalSuccess("¡Departamento agregado exitosamente!");
+
       let url =
-        "/departments/" +
+        "/department/" +
         JSON.stringify({
           option: "getDepartmentsOffset",
           offset: index * 10
@@ -69,6 +70,7 @@ export const Add = ({ setAddForm }) => {
             name="name"
             onChange={(event) => setName(event.target.value)}
             maxLength={30}
+            placeholder="Ingrese nombre"
             type="text"
             value={name}
           ></input>

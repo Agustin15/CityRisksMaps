@@ -5,7 +5,7 @@ import {
   alertSwalSuccess
 } from "../../../../sweetAlert/sweetAlert";
 
-export const Delete = ({ department, setDeleteDepartment }) => {
+export const Delete = ({ neighborhood, setDeleteNeighborhood }) => {
   const {
     fetchDelete,
     fetchGet,
@@ -22,16 +22,19 @@ export const Delete = ({ department, setDeleteDepartment }) => {
 
   const handleDelete = async () => {
     const result = await alertSwalConfirmDelete(
-      "¿Desea eliminar el registro " + department.name + "?"
+      "¿Desea eliminar el registro del barrio " +
+        neighborhood.nameNeighborhood +
+        "?"
     );
 
     if (result.isDismissed) {
-      setDeleteDepartment(null);
+      setDeleteNeighborhood(null);
     } else if (result.isConfirmed) {
-      let url = "/department/" + department.idDepartment;
+      let url = "/neighborhood/" + neighborhood.nameNeighborhood;
       const result = await fetchDelete(url);
+
       if (result) {
-        alertSwalSuccess("¡Departamento eliminado exitosamente!");
+        alertSwalSuccess("¡Barrio eliminado exitosamente!");
         reloadRegisters();
       }
     }
@@ -39,20 +42,21 @@ export const Delete = ({ department, setDeleteDepartment }) => {
 
   const reloadRegisters = async () => {
     if (registers.length == 1 && index > 0) {
-      setPages(page - 1);
       url =
-        "/department/" +
+        "/neighborhood/" +
         JSON.stringify({
-          option: "getDepartmentsOffset",
+          option: "getNeighborhoodsOffset",
           offset: (index - 1) * 10
         });
 
+      setPages(page - 1);
       setRegisters(await fetchGet(url));
     } else {
+     
       let url =
-        "/department/" +
+        "/neighborhood/" +
         JSON.stringify({
-          option: "getDepartmentsOffset",
+          option: "getNeighborhoodsOffset",
           offset: index * 10
         });
       setRegisters(await fetchGet(url));

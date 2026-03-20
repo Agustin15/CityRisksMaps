@@ -50,19 +50,27 @@ export const MenuSide = () => {
           }
         >
           <img src={iconDepartaments}></img>
-          <a href="/Departamentos">Departamentos</a>
+          <a href={LOCALHOST_FRONTEND + "/admin/departamentos"}>
+            Departamentos
+          </a>
         </li>
-        <li>
+        <li
+          className={
+            location.href.toLowerCase().indexOf("barrios") > -1
+              ? styles.selected
+              : ""
+          }
+        >
           <img src={iconNeighborhoods}></img>
-          <a href="/Barrios">Barrios</a>
+          <a href={LOCALHOST_FRONTEND + "/admin/barrios"}>Barrios</a>
         </li>
         <li>
           <img src={iconPopulation}></img>
-          <a href="/Poblaciones"> Poblaciones</a>
+          <a href="/poblaciones"> Poblaciones</a>
         </li>
         <li>
           <img src={iconCrimes}></img>
-          <a href="/TipoDelitos"> Tipos de delitos</a>
+          <a href="/tipoDelitos"> Tipos de delitos</a>
         </li>
         {/* <li>
           <img src={iconCrimes}></img>

@@ -65,13 +65,10 @@ export const alertSwalErrorAdmin = (title, error) => {
     }
   });
 };
-export const alertSwalConfirmDelete = async (title, msj) => {
+export const alertSwalConfirmDelete = async (title) => {
   const result = await Swal.fire({
     icon: "question",
     title: title,
-    html: `
-    <p class=${styles.customMsj}>${msj}</p>
-    `,
     showCancelButton:true,
     cancelButtonText:"Cancelar",
     confirmButtonText:"Confimar",

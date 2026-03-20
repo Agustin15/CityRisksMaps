@@ -1,0 +1,40 @@
+.columnInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.columnInput label {
+    font-weight: bold;
+    font-size: 15px;
+    width: 16rem;
+    text-align: start;
+}
+
+.columnInput p {
+    color: red;
+    position: absolute;
+    top: 3rem;
+    font-size: 14px;
+}
+
+.columnInput .loading,
+.columnInput .errorLoad {
+    font-size: 16px;
+    width: 16rem;
+    color: black;
+    margin: 0;
+    padding: 0;
+    position: static;
+}
+
+.columnInput select {
+    height: 2rem;
+    width: 16rem;
+    border-radius: 3px;
+    border: 1px solid gray;
+    font-size: 15px;
+    outline: none;
+}

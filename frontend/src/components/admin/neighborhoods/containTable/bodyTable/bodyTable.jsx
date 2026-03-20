@@ -10,29 +10,33 @@ import { Edit } from "../edit/Edit";
 import { Delete } from "../delete/Delete";
 
 export const BodyTable = () => {
-  const [editDepartment, setEditDepartment] = useState(null);
-  const [deleteDepartment, setDeleteDepartment] = useState(null);
+  const [editNeighborhood, setEditNeighborhood] = useState(null);
+  const [deleteNeighborhood, setDeleteNeighborhood] = useState(null);
   const { loading, registers } = useCrud();
 
   return (
     <tbody>
       {registers &&
         loading == false &&
-        registers.map((department, index) => (
+        registers.map((neighborhood, index) => (
           <tr key={index} className={index % 2 == 0 ? styles.trGray : ""}>
-            <td>{department.idDepartment}</td>
-            <td>{department.name}</td>
+            <td>{neighborhood.nameNeighborhood}</td>
+            <td>{neighborhood.nameDepartment}</td>
             <td>
               <div className={styles.options}>
                 <button
-                  onClick={() => setDeleteDepartment(department)}
+                  onClick={() =>
+                    setDeleteNeighborhood(neighborhood.nameNeighborhood)
+                  }
                   className={styles.delete}
                 >
                   <img src={iconDelete}></img>
                 </button>
 
                 <button
-                  onClick={() => setEditDepartment(department)}
+                  onClick={() =>
+                    setEditNeighborhood(neighborhood.nameNeighborhood)
+                  }
                   className={styles.edit}
                 >
                   <img src={iconEdit}></img>
@@ -42,7 +46,7 @@ export const BodyTable = () => {
                 </button>
               </div>
             </td>
-            {editDepartment == department &&
+            {/* {editDepartment == department &&
               createPortal(
                 <Modal>
                   <Edit
@@ -51,13 +55,13 @@ export const BodyTable = () => {
                   />
                 </Modal>,
                 document.body
-              )}
-            {deleteDepartment == department &&
+              )} */}
+            {deleteNeighborhood == neighborhood.nameNeighborhood &&
               createPortal(
                 <Modal>
                   <Delete
-                    department={department}
-                    setDeleteDepartment={setDeleteDepartment}
+                    neighborhood={neighborhood}
+                    setDeleteNeighborhood={setDeleteNeighborhood}
                   />
                 </Modal>,
                 document.body

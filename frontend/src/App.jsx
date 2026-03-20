@@ -7,6 +7,7 @@ import { LoginAdmin } from "./components/loginAdmin/LoginAdmin.jsx";
 import { Departments } from "./components/admin/departments/Departments.jsx";
 import { CookiesProvider } from "react-cookie";
 import { CrudProvider } from "./contexts/adminContext/CrudContext.jsx";
+import { Neighborhoods } from "./components/admin/neighborhoods/Neighborhoods.jsx";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
               <Route
                 path="/admin/departamentos"
                 element={<Departments />}
+              ></Route>
+               <Route
+                path="/admin/barrios"
+                element={<Neighborhoods/>}
               ></Route>
             </Routes>
           </BrowserRouter>

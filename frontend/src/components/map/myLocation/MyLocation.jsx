@@ -1,5 +1,4 @@
 import styles from "./MyLocation.module.css";
-import iconNavigation from "../../../assets/img/currentNavigation.png";
 import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 
 export const MyLocation = () => {
@@ -18,7 +17,7 @@ export const MyLocation = () => {
           <div className={styles.content}></div>
         </div>
       ) : (
-        <img src={iconNavigation}></img>
+        <div className={styles.myLocationNavigate}></div>
       )}
     </div>
   );

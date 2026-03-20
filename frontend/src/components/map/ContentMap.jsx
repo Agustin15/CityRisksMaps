@@ -27,7 +27,7 @@ export const ContentMap = ({ polygonSelected }) => {
   return (
     <>
       <AdvancedMarker position={userLocation ? userLocation : null}>
-        <MyLocation />
+        <MyLocation position={userLocation} />
       </AdvancedMarker>
 
       {!routeNavigation && (

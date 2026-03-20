@@ -3,16 +3,10 @@ import { Department } from "./department.js";
 export class Neighborhood {
   #name;
   #department;
-  #anualPopulations;
 
-  constructor(
-    name = "desconocido",
-    department = new Department(),
-    anualPopulations = []
-  ) {
+  constructor(name = "desconocido", department = new Department()) {
     this.name = name;
     this.department = department;
-    this.anualPopulations = anualPopulations;
   }
 
   set name(value) {
@@ -40,17 +34,5 @@ export class Neighborhood {
 
   get department() {
     return this.#department;
-  }
-
-  set anualPopulations(value) {
-    if (typeof value != "object")
-      throw new Error("Poblaciones debe ser una lista", {
-        cause: { code: 400 }
-      });
-    this.#anualPopulations = value;
-  }
-
-  get anualPopulations() {
-    return this.#anualPopulations;
   }
 }

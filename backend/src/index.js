@@ -47,7 +47,7 @@ try {
 
 app.use("/login/", RoutesLogin);
 app.use("/logout/", RoutesLogout);
-app.use("/crimes/", RoutesCrime);
+app.use("/crime/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
-app.use("/departments/", RoutesDepartment);
+app.use("/department/", RoutesDepartment);

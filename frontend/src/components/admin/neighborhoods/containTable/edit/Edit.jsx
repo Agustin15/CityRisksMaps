@@ -19,13 +19,13 @@ export const Edit = ({ department, setEditDepartment }) => {
     }
     setErrorForm();
 
-    let url = "/department/" + values.idDepartment;
+    let url = "/departments/" + values.idDepartment;
     const result = await fetchPostOrPut(url, "PUT", setLoading, values);
 
     if (result) {
       alertSwalSuccess("¡Departamento actualizado exitosamente!");
       let url =
-        "/department/" +
+        "/departments/" +
         JSON.stringify({
           option: "getDepartmentsOffset",
           offset: index * 10

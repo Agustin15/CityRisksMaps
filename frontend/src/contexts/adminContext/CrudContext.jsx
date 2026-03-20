@@ -2,6 +2,7 @@ const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import { createContext, useContext, useState } from "react";
 import { alertSwalErrorAdmin } from "../../components/sweetAlert/sweetAlert.js";
+import { useCookies } from "react-cookie";
 
 const CrudContext = createContext();
 
@@ -12,6 +13,7 @@ export const CrudProvider = ({ children }) => {
   const [pages, setPages] = useState();
   const [index, setIndex] = useState(0);
   const [error, setError] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const fetchGet = async (url) => {
     setError();
@@ -28,9 +30,7 @@ export const CrudProvider = ({ children }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        if (response.status == 401)
-          location.href = LOCALHOST_FRONTEND + "/admin/login";
-        else throw new Error(result.messageError);
+        failedResponse(response, result);
       }
 
       return result;
@@ -56,17 +56,16 @@ export const CrudProvider = ({ children }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        if (response.status == 401)
-          location.href = LOCALHOST_FRONTEND + "/admin/login";
-        else throw new Error(result.messageError);
+        failedResponse(response, result);
       }
 
       return result;
     } catch (error) {
       alertSwalErrorAdmin(
-        "Ups,hubo un error al" + methodFetch == "PUT"
-          ? "actualizar"
-          : "dar de alta",
+        "Ups,hubo un error al " +
+          (methodFetch == "PUT"
+            ? "actualizar el registro"
+            : "dar de alta el registro"),
         error.message
       );
     } finally {
@@ -88,9 +87,7 @@ export const CrudProvider = ({ children }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        if (response.status == 401)
-          location.href = LOCALHOST_FRONTEND + "/admin/login";
-        else throw new Error(result.messageError);
+        failedResponse(response, result);
       }
 
       return result;
@@ -102,6 +99,13 @@ export const CrudProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const failedResponse = (response, result) => {
+    if (response.status == 401) {
+      removeCookie("nameAndLastname");
+      location.href = LOCALHOST_FRONTEND + "/admin/login";
+    } else throw new Error(result.messageError);
   };
 
   const searcher = (value) => {

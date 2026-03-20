@@ -1,4 +1,4 @@
-.containAdd {
+.containEdit {
     width: 38%;
     height: 41%;
     background: white;
@@ -9,7 +9,7 @@
     flex-direction: column;
     align-items: center;
 }
-.containAdd .close {
+.containEdit .close {
     position: absolute;
     right: 0;
     width: 3.6rem;
@@ -21,7 +21,7 @@
     box-shadow: none;
     margin: 0;
 }
-.containAdd .title {
+.containEdit .title {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,23 +30,23 @@
     margin-top: 1.5rem;
 }
 
-.containAdd .backgroundIcon {
+.containEdit .backgroundIcon {
     width: 2.7rem;
     height: 2.7rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 99px;
-    background: rgb(48, 214, 48);
+    background: rgb(35, 157, 187);
 }
 
-.containAdd .title img {
+.containEdit .title img {
     width: 31px;
     height: 31px;
     margin: 0;
 }
 
-.containAdd form {
+.containEdit form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,7 +54,7 @@
     margin-top: 0.5rem;
 }
 
-.containAdd form .columnInput {
+.containEdit form .columnInput {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -62,36 +62,35 @@
     position: relative;
 }
 
-.containAdd form input {
+.containEdit form input {
     height: 1.8rem;
-    width: 15.5rem;
-    padding-left: 0.5rem;
+    width: 16rem;
     border-radius: 3px;
     border: 1px solid gray;
     font-size: 15px;
     outline: none;
 }
 
-.containAdd form label {
+.containEdit form label {
     font-weight: bold;
     font-size: 15px;
     width: 16rem;
     text-align: start;
 }
-.containAdd form p {
+.containEdit form p {
     color: red;
     position: absolute;
     top: 3rem;
     font-size: 14px;
 }
 
-.containAdd form input[type="number"] {
+.containEdit form input[type="number"] {
     background: rgba(216, 216, 216, 0.562);
     width: 3rem;
 }
 
-.containAdd form .add {
-    background: rgb(34, 207, 63);
+.containEdit form .save {
+    background: rgb(34, 152, 207);
     border-radius: 5px;
     box-shadow: none;
     width: 16rem;
@@ -102,6 +101,6 @@
     font-weight: bold;
 }
 
-.containAdd form .add:hover {
-    background: rgb(41, 167, 25);
+.containEdit form .save:hover {
+    background: rgb(13, 90, 134);
 }

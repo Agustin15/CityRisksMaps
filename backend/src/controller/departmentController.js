@@ -61,7 +61,7 @@ export const add = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
     const { name } = req.body;
-    
+
     const department = new Department();
     department.name = name;
 

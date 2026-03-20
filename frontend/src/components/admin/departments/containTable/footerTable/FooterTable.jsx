@@ -1,7 +1,7 @@
 import styles from "./FooterTable.module.css";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 
-export const FooterTable = () => {
+export const FooterTable = ({msj}) => {
   const { registers, error, elementNotFound, loading } = useCrud();
 
   return (
@@ -16,7 +16,7 @@ export const FooterTable = () => {
       {loading == true && (
         <tr>
           <td className={styles.loading} rowSpan={3} colSpan={3}>
-            <h3>Cargando departamentos...</h3>
+            <h3>{msj}</h3>
           </td>
         </tr>
       )}

@@ -1,15 +1,15 @@
-import styles from "./Departments.module.css";
+import styles from "./Neighborhoods.module.css";
 import { MenuSide } from "../MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
-import { Add } from "./containTable/add/Add";
 import { Modal } from "../modal/Modal";
-import { Header } from "../header/Header";
+import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { Header } from "../header/Header";
 
-export const Departments = () => {
+export const Neighborhoods = () => {
   const [cookies] = useCookies();
   let navigate = useNavigate();
   const [addForm, setAddForm] = useState(false);
@@ -22,10 +22,10 @@ export const Departments = () => {
   return (
     <>
       {cookies.nameAndLastname && (
-        <div className={styles.departments}>
+        <div className={styles.neighborhoods}>
           <MenuSide />
           <div className={styles.body}>
-            <Header title={"Lista de departamentos"} setAddForm={setAddForm} />
+            <Header title={"Lista de barrios"} setAddForm={setAddForm} />
             {addForm &&
               createPortal(
                 <Modal>

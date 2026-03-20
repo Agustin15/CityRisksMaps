@@ -1,21 +1,36 @@
 import express from "express";
-import { getNeighborhoodsWithoutQuizByYear } from "../controller/neighborhoodController.js";
+import {
+  getNeighborhoods,
+  getNeighborhoodsOffset,
+  add,
+  update,
+  deleteByName
+} from "../controller/neighborhoodController.js";
+import { verifyAuthToken } from "../controller/authentication.js";
+
 
 export const RoutesNeighbordhood = express.Router();
 
-RoutesNeighbordhood.get("/:optionGet", (req, res) => {
-  if (!req.params) {
-    res.status(400).send("Parametros no definidos");
-  } else if (!JSON.parse(req.params.optionGet)) {
-    res.status(400).send("optionGet no definido");
-  }
+RoutesNeighbordhood.use(verifyAuthToken);
 
-  const { option } = JSON.parse(req.params.optionGet);
+RoutesNeighbordhood.get("/:paramsGet", (req, res) => {
+  if (!req.params) res.status(400).send("Parametros de solicitud no definidos");
+
+  if (!JSON.parse(req.params.paramsGet))
+    res.status(400).send("paramsGet no definido");
+
+  const { option } = JSON.parse(req.params.paramsGet);
 
   if (!option) res.status(400).send("option no definido");
 
   switch (option) {
-    case "getNeighborhoodsWithoutQuizByYear":
-      return getNeighborhoodsWithoutQuizByYear(req, res);
+    case "getNeighborhoods":
+      return getNeighborhoods(req, res);
+    case "getNeighborhoodsOffset":
+      return getNeighborhoodsOffset(req, res);
   }
 });
+
+RoutesNeighbordhood.post("/",add);
+RoutesNeighbordhood.put("/:name",update);
+RoutesNeighbordhood.delete("/:name",deleteByName);

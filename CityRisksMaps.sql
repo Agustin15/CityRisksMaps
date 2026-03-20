@@ -488,7 +488,7 @@ RETURN -1
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
 RETURN -2
 
-UPDATE Neighborhoods set department=@idDepartment where name=@name;
+UPDATE Neighborhoods set name=@name,department=@idDepartment where name=@name;
 
 IF(@@ERROR<>0)
 RETURN -3
@@ -498,13 +498,13 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE DeleteNeighborhood @neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE DeleteNeighborhood @name VARCHAR(30) AS
 BEGIN
 
-IF NOT EXISTS(select * from Neighborhood where name=@neighborhood)
+IF NOT EXISTS(select * from Neighborhoods where name=@name)
 RETURN -1
 
-DELETE from Neighborhood where name=@neighborhood;
+DELETE from Neighborhoods where name=@name;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -522,7 +522,8 @@ GO
 
 CREATE OR ALTER PROCEDURE NeighborhoodsOffset @offset INT AS
 BEGIN
-select * from Neighborhoods ORDER BY name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+select N.name as 'nameNeighborhood',D.name as 'nameDepartment', D.idDepartment 
+from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment ORDER BY N.name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 

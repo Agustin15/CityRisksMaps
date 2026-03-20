@@ -1,0 +1,30 @@
+.pagination {
+    width: 99%;
+    border-top: 1px solid rgb(207, 207, 207);
+    background: white;
+    padding: 0.5rem 0 0.5rem 0;
+}
+.pagination ul {
+    margin: 0.3rem 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.pagination ul li button {
+    width: 1.8rem;
+    height: 1.8rem;
+    background: rgb(27, 88, 146);
+    color: white;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px gray;
+}
+.pagination ul li .disabled {
+    opacity: 76%;
+}
+
+.pagination ul li button:hover,
+.pagination ul li .disabled {
+    box-shadow: none;
+}

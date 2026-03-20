@@ -7,9 +7,8 @@ import {
 export const RoutesCrime = express.Router();
 
 RoutesCrime.get("/:optionGet", (req, res) => {
-  if (!req.params) {
-    res.status(400).send("Parametros no definidos");
-  }
+  if (!req.params) res.status(400).send("Parametros de solicitud no definidos");
+
   if (!JSON.parse(req.params.optionGet)) {
     res.status(400).send("optionGet no definido");
   }

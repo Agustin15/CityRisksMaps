@@ -14,9 +14,14 @@ export const RoutesDepartment = express.Router();
 RoutesDepartment.use(verifyAuthToken);
 
 RoutesDepartment.get("/:paramsGet", (req, res) => {
-  if (!req.params) throw new Error("Parametros de solicitud no definidos");
+  if (!req.params) res.status(400).send("Parametros de solicitud no definidos");
+
+  if (!JSON.parse(req.params.paramsGet))
+    res.status(400).send("paramsGet no definido");
 
   const { option } = JSON.parse(req.params.paramsGet);
+
+  if (!option) res.status(400).send("option no definido");
 
   switch (option) {
     case "getDepartments":

@@ -49,7 +49,7 @@ export const NavigationProvider = ({ children }) => {
       zoomControl: false,
       streetViewControl: false,
       center: userLocation,
-      zoom: 20
+      zoom: 18
     });
 
     const startLocation = routeFound.legs[0].steps[0].startLocation.latLng;
@@ -60,7 +60,7 @@ export const NavigationProvider = ({ children }) => {
       { lat: endLocation.latitude, lng: endLocation.longitude }
     );
 
-    map.setTilt(100);
+    map.setTilt(70);
     map.setHeading(heading);
 
     setPolylines();
