@@ -150,6 +150,14 @@ SELECT * FROM Rols;
 END
 GO
 
+CREATE OR ALTER PROCEDURE RolById @idRol INT AS
+BEGIN
+
+SELECT * FROM Rols where idRol=@idRol;
+
+END
+GO
+
 --------------------------------------------------------------------------------------------------------------
 --Users PROCEDURES
 
@@ -520,9 +528,9 @@ select * from Neighborhoods;
 END
 GO
 
-CREATE OR ALTER PROCEDURE AllNeighborhoodsByIdDepartment @idDepartment INT AS
+CREATE OR ALTER PROCEDURE AllNeighborhoodsByNameDepartment @name VARCHAR(30) AS
 BEGIN
-select * from Neighborhoods where department=@idDepartment;
+select * from Neighborhoods N  INNER JOIN Departments D ON N.department=D.idDepartment where D.name=@name;
 END
 GO
 
@@ -534,10 +542,10 @@ OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
-CREATE OR ALTER PROCEDURE NeighborhoodsByIdDepartmentOffset @idDepartment INT,@offset INT AS
+CREATE OR ALTER PROCEDURE NeighborhoodsByNameDepartmentOffset @name VARCHAR(30),@offset INT AS
 BEGIN
 select idNeighborhood,N.name as 'nameNeighborhood',D.name as 'nameDepartment', D.idDepartment 
-from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment where department=@idDepartment ORDER BY N.idNeighborhood 
+from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment where D.name=@name ORDER BY N.idNeighborhood 
 OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
@@ -672,19 +680,19 @@ where P.year=@year ORDER BY P.idPopulation OFFSET @offset ROWS FETCH NEXT 10 ROW
 END
 GO
 
-CREATE OR ALTER PROCEDURE PopulationsByNeighborhood @idNeighborhood INT AS
+CREATE OR ALTER PROCEDURE PopulationsByNameNeighborhood @name VARCHAR(30) AS
 BEGIN
 
-select * from Population P where P.neighborhood=@idNeighborhood
+select * from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood where N.name=@name;
 
 END
 GO
 
-CREATE OR ALTER PROCEDURE PopulationsOffsetByNeighborhood @idNeighborhood INT,@offset INT AS
+CREATE OR ALTER PROCEDURE PopulationsOffsetByNameNeighborhood @name VARCHAR(30),@offset INT AS
 BEGIN
 
 select P.* ,name as 'nameNeighborhood' from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood 
-where P.neighborhood=@idNeighborhood ORDER BY P.year OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+where N.name=@name ORDER BY P.year OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 
 END
 GO

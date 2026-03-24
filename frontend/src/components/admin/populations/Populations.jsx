@@ -4,30 +4,37 @@ import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { Header } from "../header/Header";
+import { useParams } from "react-router";
 
 export const Populations = () => {
-  const [cookies] = useCookies();
-  let navigate = useNavigate();
+  const { loadingProfile, user, getProfile } = useAuth();
   const [addForm, setAddForm] = useState(false);
+  const params = useParams();
 
   useEffect(() => {
-    if (cookies.nameAndLastname) return;
-    if (!cookies.nameAndLastname) navigate("/admin/login");
+    if (!user) {
+      getProfile();
+    }
   }, []);
+
+  let title =
+    "Lista de poblaciones" +
+    (!params.name ? " en barrios" : " de " + params.name);
 
   return (
     <>
-      {cookies.nameAndLastname && (
+      {user && !loadingProfile && (
         <div className={styles.populations}>
           <MenuSide />
           <div className={styles.body}>
             <Header
-              title={"Lista de poblaciones en barrios"}
+              title={title}
               setAddForm={setAddForm}
+              route={"/population/"}
+              controller={"getPopulationsOffsetByYear"}
             />
             {addForm &&
               createPortal(

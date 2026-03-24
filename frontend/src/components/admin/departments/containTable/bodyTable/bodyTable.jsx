@@ -19,8 +19,8 @@ export const BodyTable = () => {
   const handleNeighborhoods = (department) => {
     navigate(
       "/admin/barrios/departamento/" +
-        "getNeighborhoodsByIdDepartmentOffset/" +
-        department.idDepartment
+        "getNeighborhoodsByDepartmentOffset/" +
+        department.name
     );
   };
 

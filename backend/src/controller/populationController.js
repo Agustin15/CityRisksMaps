@@ -140,13 +140,13 @@ export const getPopulationsOffsetByNeighborhood = async (req, res) => {
     if (JSON.parse(req.params.paramsGet).offset == null)
       throw new Error("Offset no definido");
 
-    if (JSON.parse(req.params.paramsGet).id == null)
+    if (JSON.parse(req.params.paramsGet).name == null)
       throw new Error("Barrio no definido");
 
-    const { offset, id } = JSON.parse(req.params.paramsGet);
+    const { offset, name } = JSON.parse(req.params.paramsGet);
 
     const populations =
-      await PopulationService.getPopulationsByNeighborhood(id);
+      await PopulationService.getPopulationsByNameNeighborhood(name);
 
     if (populations.length == 0)
       throw new Error(
@@ -154,7 +154,7 @@ export const getPopulationsOffsetByNeighborhood = async (req, res) => {
       );
 
     const populationsOffset =
-      await PopulationService.getPopulationsOffsetByNeighborhood(id, offset);
+      await PopulationService.getPopulationsOffsetByNameNeighborhood(name, offset);
 
     if (populationsOffset.length == 0)
       throw new Error(

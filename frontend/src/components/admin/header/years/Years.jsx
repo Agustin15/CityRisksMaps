@@ -1,4 +1,4 @@
-import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
+import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 import styles from "./Years.module.css";
 
 export const Years = ({ years, route, controller }) => {
@@ -11,7 +11,7 @@ export const Years = ({ years, route, controller }) => {
     setYearSelected
   } = useCrud();
 
-  const handleClick = async (year) => {
+  const handleChange = async (year) => {
     setYearSelected(year);
 
     let url =
@@ -30,16 +30,17 @@ export const Years = ({ years, route, controller }) => {
     }
   };
   return (
-    <ul className={styles.years}>
-      {years.map((year, index) => (
-        <li
-          key={index}
-          onClick={() => handleClick(year)}
-          className={yearSelected == year ? styles.selected : ""}
-        >
-          {year}
-        </li>
-      ))}
-    </ul>
+    <div className={styles.years}>
+      <select
+        defaultValue={yearSelected}
+        onChange={(event) => handleChange(event.target.value)}
+      >
+        {years.map((year, index) => (
+          <option key={index} value={year}>
+            {year}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };

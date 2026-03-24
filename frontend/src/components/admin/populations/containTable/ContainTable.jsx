@@ -3,7 +3,6 @@ import { LoadData } from "../../departments/containTable/LoadData";
 import { BodyTable } from "./bodyTable/bodyTable";
 import { Pagination } from "../../departments/containTable/pagination/Pagination";
 import { FooterTable } from "../../departments/containTable/footerTable/FooterTable";
-import { Years } from "./years/Years";
 import { useParams } from "react-router";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 import { useEffect } from "react";
@@ -23,10 +22,6 @@ export const ContainTable = () => {
 
   return (
     <div className={styles.containTable}>
-      
-      {years && (
-        <Years years={years} route={"/population/"} controller={controller} />
-      )}
       {(yearSelected || controller == "getPopulationsOffsetByNeighborhood") && (
         <LoadData route={"/population/"} controller={controller} />
       )}

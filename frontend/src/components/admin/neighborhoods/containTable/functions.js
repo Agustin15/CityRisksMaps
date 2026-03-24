@@ -7,10 +7,7 @@ export const defineEndpointToRefreshDataAfterChanges = (index, params) => {
     "/neighborhood/" +
     JSON.stringify({
       option: controller,
-      offset: index * 10,
-      ...(params.id && {
-        id: params.id
-      })
+      offset: index * 10
     })
   );
 };

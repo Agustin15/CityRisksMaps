@@ -10,6 +10,7 @@ import { RoutesLogin } from "./route/routeLogin.js";
 import { RoutesLogout } from "./route/routeLogout.js";
 import { RoutesDepartment } from "./route/routeDepartment.js";
 import { RoutesPopulation } from "./route/routePopulation.js";
+import { RoutesProfile } from "./route/routeProfile.js";
 
 const limiterOptions = {
   windowMs: 15 * 60 * 1000,
@@ -46,6 +47,7 @@ try {
 }
 
 app.use("/login/", RoutesLogin);
+app.use("/profile/", RoutesProfile);
 app.use("/logout/", RoutesLogout);
 app.use("/crime/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);

@@ -1,10 +1,6 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const getDataChart = async (
-  idNeighborhood,
-  setErrorChart,
-  removeCookie
-) => {
+export const getDataChart = async (idNeighborhood, setErrorChart, setUser) => {
   let params = JSON.stringify({
     option: "getDatapointsNeighborhoodPopulationsYears",
     idNeighborhood: idNeighborhood
@@ -21,7 +17,7 @@ export const getDataChart = async (
 
     if (!response.ok) {
       if (response.status == 401) {
-        removeCookie("nameAndLastname");
+        setUser();
         location.href = LOCALHOST_FRONTEND + "/admin/login";
       } else throw new Error(result.messageError);
     }

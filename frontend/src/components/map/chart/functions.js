@@ -5,7 +5,6 @@ export const getDataChart = async (
   idNeighborhood,
   setErrorDataChart
 ) => {
-  
   let optionGET = JSON.stringify({
     option: "getCategoryCrimeInNeighborhood",
     idNeighborhood: idNeighborhood,
@@ -31,13 +30,11 @@ export const getDataChart = async (
   }
 };
 
-export const setOptionsChart = (dataChart, categoryCrime, nameNeighborhood) => {
+export const setOptionsChart = (dataChart, categoryCrime) => {
   return {
     backgroundColor: "",
     title: {
-      text: categoryCrime
-        ? `Crecimiento de las denuncias de ${categoryCrime}s`
-        : `Porcentajes de percepcion seguridad en ${nameNeighborhood}`,
+      text: `Crecimiento de denuncias de ${categoryCrime}s`,
       fontSize: 14,
       fontFamily: "arial",
       fontWeight: "bold",

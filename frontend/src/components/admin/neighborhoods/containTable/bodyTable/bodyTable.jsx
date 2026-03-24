@@ -20,7 +20,7 @@ export const BodyTable = () => {
   const handleClick = (neighborhood) => {
     navigate(
       "/admin/poblaciones/barrio/getPopulationsOffsetByNeighborhood/" +
-        neighborhood.idNeighborhood
+        neighborhood.nameNeighborhood
     );
   };
 

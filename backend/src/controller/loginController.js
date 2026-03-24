@@ -1,5 +1,6 @@
 import { User } from "../entity/user.js";
 import { UserService } from "../service/userService.js";
+import { RolService } from "../service/rolService.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -19,7 +20,7 @@ export const login = async (req, res) => {
 
     const userFound = await UserService.getUserByEmail(user.email);
 
-    if (!userFound) throw new Error("Usuario no encontrado");
+    if (!userFound) throw new Error("Usuario no encontrado  en el sistema");
 
     if (userFound.password.length == 60) {
       const match = await bcrypt.compare(user.password, userFound.password);
@@ -28,8 +29,13 @@ export const login = async (req, res) => {
       throw new Error("Usuario o contraseña incorrectas");
     }
 
+    const rolFound = await RolService.getRolById(userFound.rol);
+
+    if (!rolFound)
+      throw new Error("No se encontro un rol con este ID en el sistema");
+
     const authenticacionToken = jwt.sign(
-      { idUser: userFound.idUser, idRol: userFound.rol },
+      { idUser: userFound.idUser, rol: rolFound.name },
       process.env.SECRET_KEY_TOKEN,
       {
         expiresIn: "1h"
@@ -37,7 +43,7 @@ export const login = async (req, res) => {
     );
 
     const authenticacionRefreshToken = jwt.sign(
-      { idUser: userFound.idUser, idRol: userFound.idRol },
+      { idUser: userFound.idUser, rol: rolFound.name },
       process.env.SECRET_KEY_REFRESH_TOKEN,
       {
         expiresIn: "24h"
@@ -56,7 +62,12 @@ export const login = async (req, res) => {
       sameSite: "lax"
     });
 
-    res.status(200).json(userFound);
+    res.status(200).json({
+      name: userFound.name,
+      lastname: userFound.lastname,
+      email: userFound.email,
+      rol: rolFound.name
+    });
   } catch (error) {
     res.status(401).json({ messageError: error.message });
   }

@@ -94,20 +94,19 @@ export class PopulationService {
     }
   }
 
-  static async getPopulationsByNeighborhood(idNeighborhood) {
+  static async getPopulationsByNameNeighborhood(name) {
     try {
-      const result =
-        await PopulationDAL.getPopulationsByNeighborhood(idNeighborhood);
+      const result = await PopulationDAL.getPopulationsByNameNeighborhood(name);
       return result;
     } catch (error) {
       throw error;
     }
   }
 
-  static async getPopulationsOffsetByNeighborhood(idNeighborhood, offset) {
+  static async getPopulationsOffsetByNameNeighborhood(name, offset) {
     try {
-      const result = await PopulationDAL.getPopulationsOffsetByNeighborhood(
-        idNeighborhood,
+      const result = await PopulationDAL.getPopulationsOffsetByNameNeighborhood(
+        name,
         offset
       );
       return result;

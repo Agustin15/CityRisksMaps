@@ -5,23 +5,22 @@ import { Add } from "./containTable/add/Add";
 import { Modal } from "../modal/Modal";
 import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
 
 export const Departments = () => {
-  const [cookies] = useCookies();
-  let navigate = useNavigate();
+  const { loadingProfile, user, getProfile } = useAuth();
   const [addForm, setAddForm] = useState(false);
 
   useEffect(() => {
-    if (cookies.nameAndLastname) return;
-    if (!cookies.nameAndLastname) navigate("/admin/login");
+    if (!user) {
+      getProfile();
+    }
   }, []);
 
   return (
     <>
-      {cookies.nameAndLastname && (
+      {user && !loadingProfile && (
         <div className={styles.departments}>
           <MenuSide />
           <div className={styles.body}>

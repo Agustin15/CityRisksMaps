@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getNeighborhoodsByIdDepartmentOffset,
+  getNeighborhoodsByDepartmentOffset,
   getNeighborhoodsOffset,
   getNeighborhoods,
   add,
@@ -28,8 +28,8 @@ RoutesNeighbordhood.get("/:paramsGet", (req, res) => {
       return getNeighborhoods(req, res);
     case "getNeighborhoodsOffset":
       return getNeighborhoodsOffset(req, res);
-    case "getNeighborhoodsByIdDepartmentOffset":
-      return getNeighborhoodsByIdDepartmentOffset(req, res);
+    case "getNeighborhoodsByDepartmentOffset":
+      return getNeighborhoodsByDepartmentOffset(req, res);
   }
 });
 

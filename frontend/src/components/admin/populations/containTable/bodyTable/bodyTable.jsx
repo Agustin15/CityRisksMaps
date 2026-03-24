@@ -16,6 +16,7 @@ export const BodyTable = () => {
   const [deletePopulation, setDeletePopulation] = useState(null);
   const [chartPopulation, setChartPopulation] = useState(null);
   const { loading, registers } = useCrud();
+
   const params = useParams();
 
   return (

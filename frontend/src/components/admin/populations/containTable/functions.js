@@ -12,7 +12,7 @@ export const defineEndpointToRefreshDataAfterChanges = (
     JSON.stringify({
       option: controller,
       offset: index * 10,
-      year:yearSelected
+      year: yearSelected
     })
   );
 };

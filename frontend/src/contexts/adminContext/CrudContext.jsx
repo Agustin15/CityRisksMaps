@@ -2,7 +2,7 @@ const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import { createContext, useContext, useState } from "react";
 import { alertSwalErrorAdmin } from "../../components/sweetAlert/sweetAlert.js";
-import { useCookies } from "react-cookie";
+import { useAuth } from "./AuthContext.jsx";
 
 const CrudContext = createContext();
 
@@ -16,7 +16,7 @@ export const CrudProvider = ({ children }) => {
   const [index, setIndex] = useState(0);
   const [yearSelected, setYearSelected] = useState();
   const [error, setError] = useState();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const { setUser } = useAuth();
 
   const fetchGet = async (url, setLoadingYears) => {
     setError();
@@ -113,7 +113,7 @@ export const CrudProvider = ({ children }) => {
 
   const failedResponse = (response, result) => {
     if (response.status == 401) {
-      removeCookie("nameAndLastname");
+      setUser();
       location.href = LOCALHOST_FRONTEND + "/admin/login";
     } else throw new Error(result.messageError);
   };

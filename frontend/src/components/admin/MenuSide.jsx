@@ -4,10 +4,10 @@ import styles from "./MenuSide.module.css";
 import iconLogo from "../../assets/img/logo.png";
 import iconLogout from "../../assets/img/logout.png";
 import { matchPath, useLocation, useNavigate } from "react-router";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../contexts/adminContext/AuthContext";
 
 export const MenuSide = () => {
-  const [cookies] = useCookies();
+  const { setUser, user } = useAuth();
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -21,8 +21,8 @@ export const MenuSide = () => {
 
       if (!response.ok) throw new Error(result.messageError);
       if (result) {
+        setUser();
         navigate("/admin/login");
-        removeCookie("nameAndLastname");
       }
     } catch (error) {
       console.log(error);
@@ -112,17 +112,12 @@ export const MenuSide = () => {
             <a href="/Usuarios"> Usuarios</a>
           </li>
         </ul>
+
         <div className={styles.avatar}>
           <div>
-            {cookies.nameAndLastname.name.substring(0, 1) +
-              "" +
-              cookies.nameAndLastname.lastname.substring(0, 1)}
+            {user.name.substring(0, 1) + "" + user.lastname.substring(0, 1)}
           </div>
-          <span>
-            {cookies.nameAndLastname.name +
-              " " +
-              cookies.nameAndLastname.lastname}
-          </span>
+          <span>{user.name + " " + user.lastname}</span>
           <button onClick={() => handleLogout()}>
             <img src={iconLogout}></img>
           </button>

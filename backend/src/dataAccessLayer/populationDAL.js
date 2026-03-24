@@ -201,12 +201,12 @@ export class PopulationDAL {
     }
   }
 
-  static async getPopulationsByNeighborhood(idNeighborhood, offset) {
+  static async getPopulationsByNameNeighborhood(name) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idNeighborhood", sql.Int, idNeighborhood);
+      request.input("name", sql.VarChar(30), name);
 
-      const result = await request.execute("PopulationsByNeighborhood");
+      const result = await request.execute("PopulationsByNameNeighborhood");
 
       return result.recordset;
     } catch (error) {
@@ -214,13 +214,13 @@ export class PopulationDAL {
     }
   }
 
-  static async getPopulationsOffsetByNeighborhood(idNeighborhood, offset) {
+  static async getPopulationsOffsetByNameNeighborhood(name, offset) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idNeighborhood", sql.Int, idNeighborhood);
+      request.input("name", sql.VarChar(30), name);
       request.input("offset", sql.Int, offset);
 
-      const result = await request.execute("PopulationsOffsetByNeighborhood");
+      const result = await request.execute("PopulationsOffsetByNameNeighborhood");
 
       return result.recordset;
     } catch (error) {

@@ -1,8 +1,8 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import styles from "./LoadDepartaments.module.css";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
 
 export const LoadDepartaments = ({
   errors,
@@ -14,7 +14,7 @@ export const LoadDepartaments = ({
   const [loadingDepartments, setLoadingDepartments] = useState(true);
   const [errorLoad, setErrorLoad] = useState(false);
   let navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const { setUser } = useAuth();
 
   useEffect(() => {
     load();
@@ -39,7 +39,7 @@ export const LoadDepartaments = ({
 
       if (!response.ok) {
         if (response.status == 401) {
-          removeCookie("nameAndLastname");
+          setUser();
           navigate("/admin/login");
         } else throw new Error(result.messageError);
       }

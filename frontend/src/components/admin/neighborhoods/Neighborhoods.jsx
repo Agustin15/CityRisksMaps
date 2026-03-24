@@ -4,28 +4,31 @@ import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { Header } from "../header/Header";
+import { useParams } from "react-router";
 
 export const Neighborhoods = () => {
-  const [cookies] = useCookies();
-  let navigate = useNavigate();
+  const { loadingProfile, user, getProfile } = useAuth();
   const [addForm, setAddForm] = useState(false);
+  const params = useParams();
 
   useEffect(() => {
-    if (cookies.nameAndLastname) return;
-    if (!cookies.nameAndLastname) navigate("/admin/login");
+    if (!user) {
+      getProfile();
+    }
   }, []);
+
+  let title = "Lista de barrios" + (!params.name ? "" : " de " + params.name);
 
   return (
     <>
-      {cookies.nameAndLastname && (
+      {user && !loadingProfile && (
         <div className={styles.neighborhoods}>
           <MenuSide />
           <div className={styles.body}>
-            <Header title={"Lista de barrios"} setAddForm={setAddForm} />
+            <Header title={title} setAddForm={setAddForm} />
             {addForm &&
               createPortal(
                 <Modal>

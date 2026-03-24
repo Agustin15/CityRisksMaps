@@ -39,12 +39,13 @@ export class NeighborhoodService {
     }
   }
 
-  static async getNeighborhoodsByIdDepartment(idDepartment) {
+  static async getNeighborhoodByName(name) {
     try {
-      const result =
-        await NeighborhoodDAL.getNeighborhoodsByIdDepartment(idDepartment);
+      const result = await NeighborhoodDAL.getNeighborhoodByName(name);
 
-      return result;
+      if (result.length > 0) {
+        return result[0];
+      } else null;
     } catch (error) {
       throw error;
     }
@@ -60,25 +61,23 @@ export class NeighborhoodService {
     }
   }
 
-  static async getNeighborhoodsByIdDepartmentOffset(idDepartment, offset) {
+  static async getNeighborhoodsByDepartment(name) {
     try {
-      const result = await NeighborhoodDAL.getNeighborhoodsByIdDepartmentOffset(
-        idDepartment,
-        offset
-      );
+      const result = await NeighborhoodDAL.getNeighborhoodsByDepartment(name);
 
       return result;
     } catch (error) {
       throw error;
     }
   }
-  static async getNeighborhoodByName(name) {
+  static async getNeighborhoodsByDepartmentOffset(name, offset) {
     try {
-      const result = await NeighborhoodDAL.getNeighborhoodByName(name);
+      const result = await NeighborhoodDAL.getNeighborhoodsByDepartmentOffset(
+        name,
+        offset
+      );
 
-      if (result.length > 0) {
-        return result[0];
-      } else null;
+      return result;
     } catch (error) {
       throw error;
     }

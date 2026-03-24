@@ -19,8 +19,8 @@ export const LoadData = ({ route, controller }) => {
         ...(yearSelected && {
           year: yearSelected
         }),
-        ...(params && {
-          id: params.id
+        ...(params.name && {
+          name: params.name
         })
       });
 

@@ -3,14 +3,14 @@ import iconHidePassword from "../../../assets/img/hidePassword.png";
 import { handleViewPassword, submitForm } from "./functions.js";
 import { useNavigate } from "react-router";
 import { useRef, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../../contexts/adminContext/AuthContext.jsx";
 
 export const LoginForm = () => {
   const inputPasswordRef = useRef();
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies();
+  const { setUser } = useAuth();
   let navigate = useNavigate();
 
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -38,10 +38,7 @@ export const LoginForm = () => {
     setLoading(true);
     const userFound = await submitForm(values, errors, setErrors);
     if (userFound) {
-      setCookie("nameAndLastname", {
-        name: userFound.name,
-        lastname: userFound.lastname
-      });
+      setUser(userFound);
       navigate("/admin/departamentos");
     }
     setLoading(false);

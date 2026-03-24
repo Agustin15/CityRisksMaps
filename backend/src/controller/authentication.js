@@ -17,6 +17,9 @@ export const verifyAuthToken = (req, res, next) => {
     if (!tokenDecoded)
       throw new Error("Autenticacion fallida, token no valido");
 
+    req.idUser = tokenDecoded.idUser;
+    req.rol = tokenDecoded.rol;
+
     next();
   } catch (error) {
     if (error.message == "jwt expired")
@@ -47,7 +50,7 @@ const refreshAuthToken = (res, req) => {
       );
 
     const authenticacionToken = jwt.sign(
-      { idUser: tokenDecoded.idUser, idRol: tokenDecoded.idUser },
+      { idUser: tokenDecoded.idUser, rol: tokenDecoded.rol },
       process.env.SECRET_KEY_TOKEN,
       { expiresIn: "1h" }
     );
@@ -58,6 +61,9 @@ const refreshAuthToken = (res, req) => {
       sameSite: "none",
       secure: true
     });
+
+    req.idUser = tokenDecoded.idUser;
+    req.rol = tokenDecoded.rol;
 
     return true;
   } catch (error) {

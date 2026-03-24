@@ -21,9 +21,14 @@
     width: 27px;
     height: 27px;
 }
-.menuOptions .btnEditRoute img {
+.menuOptions .btnEditRoute img,
+.menuOptions .btnEditRouteActive img {
     width: 35px;
     height: 35px;
+}
+
+.menuOptions .btnEditRouteActive {
+    border: 3px solid rgb(9, 212, 9);
 }
 
 @media (width<=650px) {

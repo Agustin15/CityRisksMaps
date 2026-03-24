@@ -33,11 +33,7 @@ export const Chart = ({ categoryCrime, neighborhoodCrime }) => {
       {loading && <span className={styles.loading}>Cargando datos...</span>}
       {!loading && dataChart && (
         <CanvasJSChart
-          options={setOptionsChart(
-            dataChart,
-            categoryCrime,
-            neighborhoodCrime.name
-          )}
+          options={setOptionsChart(dataChart, categoryCrime)}
         ></CanvasJSChart>
       )}
       {!loading && !dataChart && (

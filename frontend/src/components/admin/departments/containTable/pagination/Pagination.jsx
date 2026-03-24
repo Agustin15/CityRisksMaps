@@ -13,12 +13,12 @@ export const Pagination = ({ route, controller }) => {
       route +
       JSON.stringify({
         option: controller,
+        offset: page * 10,
         ...(yearSelected && {
           year: yearSelected
         }),
-        offset: page * 10,
-        ...(params.id && {
-          id: params.id
+        ...(params.name && {
+          name: params.name
         })
       });
 

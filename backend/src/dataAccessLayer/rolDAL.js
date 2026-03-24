@@ -99,4 +99,15 @@ export class RolDAL {
       throw error;
     }
   }
+  static async getRolById(idRol) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idRol", sql.Int, idRol);
+      const result = await request.execute("RolById");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

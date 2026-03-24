@@ -3,7 +3,7 @@ import iconNoData from "../../../../../../assets/img/notData.png";
 import { loadOptions, getDataChart } from "./functions.js";
 import CanvasJSReact from "@canvasjs/react-charts";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../../../../../../contexts/adminContext/AuthContext.jsx";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -11,18 +11,14 @@ export const Chart = ({ idNeighborhood, setChartPopulation }) => {
   const [errorChart, setErrorChart] = useState();
   const [loading, setLoading] = useState(true);
   const [dataChart, setDataChart] = useState();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const { setUser } = useAuth();
 
   useEffect(() => {
     loadDataChart();
   }, []);
 
   const loadDataChart = async () => {
-    const result = await getDataChart(
-      idNeighborhood,
-      setErrorChart,
-      removeCookie
-    );
+    const result = await getDataChart(idNeighborhood, setErrorChart, setUser);
     setDataChart(result);
     setLoading(false);
   };
