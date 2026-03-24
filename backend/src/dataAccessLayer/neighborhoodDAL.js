@@ -40,6 +40,7 @@ export class NeighborhoodDAL {
   static async update(neighbordhood) {
     try {
       const request = new sql.Request(connection.pool);
+      request.input("idNeighborhood", sql.Int, neighbordhood.idNeighborhood);
       request.input("name", sql.VarChar(30), neighbordhood.name);
       request.input(
         "idDepartment",
@@ -69,10 +70,10 @@ export class NeighborhoodDAL {
     }
   }
 
-  static async delete(name) {
+  static async delete(idNeighborhood) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("name", sql.VarChar(30), name);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
 
       const result = await request.execute("DeleteNeighborhood");
 
@@ -101,12 +102,40 @@ export class NeighborhoodDAL {
     }
   }
 
+  static async getNeighborhoodsByIdDepartment(idDepartment) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idDepartment", sql.Int, idDepartment);
+
+      const result = await request.execute("AllNeighborhoodsByIdDepartment");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async getNeighborhoodsOffset(offset) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("offset", sql.Int, offset);
 
       const result = await request.execute("NeighborhoodsOffset");
+
+      return result.recordset;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async getNeighborhoodsByIdDepartmentOffset(idDepartment, offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idDepartment", sql.Int, idDepartment);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("NeighborhoodsByIdDepartmentOffset");
 
       return result.recordset;
     } catch (error) {

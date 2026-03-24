@@ -8,15 +8,8 @@ export const Add = ({ setAddForm }) => {
   const [name, setName] = useState("");
   const [errorForm, setErrorForm] = useState();
   const [loading, setLoading] = useState(false);
-  const {
-    fetchPostOrPut,
-    fetchGet,
-    index,
-    setRegisters,
-    registers,
-    setPages,
-    pages
-  } = useCrud();
+  const { fetchPostOrPut, fetchGet, index, setRegisters, pages, setPages } =
+    useCrud();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,7 +26,7 @@ export const Add = ({ setAddForm }) => {
     });
 
     if (result) {
-      alertSwalSuccess("¡Departamento agregado exitosamente!");
+      alertSwalSuccess("¡Registro de departamento agregado exitosamente!");
 
       let url =
         "/department/" +
@@ -43,10 +36,9 @@ export const Add = ({ setAddForm }) => {
         });
 
       let departments = await fetchGet(url);
-      if (departments) {
-        if (registers.length == 10) setPages(pages + 1);
-        setRegisters(departments);
-      }
+      setRegisters(departments.registersOffset);
+      if (departments.pages != pages) setPages(neighborhoods.pages);
+      setName("");
     }
     return;
   };
@@ -68,7 +60,7 @@ export const Add = ({ setAddForm }) => {
           <input
             autoComplete="off"
             name="name"
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => setName(event.target.value.trim())}
             maxLength={30}
             placeholder="Ingrese nombre"
             type="text"

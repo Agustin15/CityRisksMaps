@@ -5,8 +5,8 @@ import {
   deleteById,
   update,
   getDepartmentById,
-  getDepartments,
-  getDepartmentsOffset
+  getDepartmentsOffset,
+  getDepartments
 } from "../controller/departmentController.js";
 
 export const RoutesDepartment = express.Router();

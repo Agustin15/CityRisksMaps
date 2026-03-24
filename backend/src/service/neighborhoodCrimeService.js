@@ -22,9 +22,9 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async delete(category, name, year) {
+  static async delete(category, idNeighborhood, year) {
     try {
-      await NeighborhoodCrimeDAL.delete(category, name, year);
+      await NeighborhoodCrimeDAL.delete(category, idNeighborhood, year);
     } catch (error) {
       throw error;
     }
@@ -85,11 +85,11 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getCategoryCrimeInNeighborhood(category, nameNeighborhood) {
+  static async getCategoryCrimeInNeighborhood(category, idNeighborhood) {
     try {
       const result = await NeighborhoodCrimeDAL.getCategoryCrimeInNeighborhood(
         category,
-        nameNeighborhood
+        idNeighborhood
       );
 
       return result;

@@ -55,7 +55,7 @@ export class PopulationDAL {
       request.input("quantity", sql.Int, population.quantity);
       request.input("year", sql.Int, population.year);
       request.input(
-        "neighbordhood",
+        "neighborhood",
         sql.VarChar(30),
         population.neighborhood.name
       );
@@ -76,7 +76,7 @@ export class PopulationDAL {
             cause: { code: 404 }
           });
         case -4:
-          throw new Error("No hay registro de un barrio con nombre", {
+          throw new Error("No hay registro de un barrio con este nombre", {
             cause: { code: 404 }
           });
 
@@ -125,7 +125,7 @@ export class PopulationDAL {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("@idPopulation", sql.Int, idPopulation);
+      request.input("idPopulation", sql.Int, idPopulation);
 
       const result = await request.execute("PopulationById");
 
@@ -135,12 +135,12 @@ export class PopulationDAL {
     }
   }
 
-  static async getPopulationByNeighborhoodAndYear(name, year) {
+  static async getPopulationByNeighborhoodAndYear(idNeighborhood, year) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("@neighborhood", sql.VarChar, name);
-      request.input("@year", sql.Int, year);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute("PopulationByNeighborhoodAndYear");
 
@@ -162,12 +162,11 @@ export class PopulationDAL {
     }
   }
 
-  static async getPopulationsOffset() {
+  static async getPopulationsYears() {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("offset", sql.Int, offset);
 
-      const result = await request.execute("PopulationsOffset");
+      const result = await request.execute("PopulationsYears");
 
       return result.recordset;
     } catch (error) {
@@ -175,12 +174,53 @@ export class PopulationDAL {
     }
   }
 
-  static async getPopulationsByNeighborhood(neighborhood) {
+  static async getPopulationsByYear(year) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("neighborhood", sql.VarChar(30), neighborhood);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("AllPopulationsByYear");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsOffsetByYear(offset, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("offset", sql.Int, offset);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("PopulationsOffsetByYear");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsByNeighborhood(idNeighborhood, offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
 
       const result = await request.execute("PopulationsByNeighborhood");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsOffsetByNeighborhood(idNeighborhood, offset) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
+      request.input("offset", sql.Int, offset);
+
+      const result = await request.execute("PopulationsOffsetByNeighborhood");
 
       return result.recordset;
     } catch (error) {

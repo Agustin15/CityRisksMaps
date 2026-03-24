@@ -67,9 +67,9 @@ export class NeighborhoodCrimeDAL {
       const request = new sql.Request(connection.pool);
 
       request.input(
-        "neighborhood",
-        sql.VarChar(30),
-        neighborhoodCrime.neighborhood.name
+        "idNeighborhood",
+        sql.Int,
+        neighborhoodCrime.neighborhood.idNeighborhood
       );
 
       request.input("crime", sql.VarChar(20), neighborhoodCrime.crime.category);
@@ -113,12 +113,12 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  static async delete(category, nameNeighborhood, year) {
+  static async delete(category, idNeighborhood, year) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input("crime", sql.VarChar(20), category);
-      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
       request.input("year", sql.Int, year);
 
       const result = await request.execute("DeleteNeighborhoodCrime");
@@ -167,11 +167,11 @@ export class NeighborhoodCrimeDAL {
       throw error;
     }
   }
-  static async getCategoryCrimeInNeighborhood(category, nameNeighborhood) {
+  static async getCategoryCrimeInNeighborhood(category, idNeighborhood) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input("neighborhood", sql.VarChar(30), nameNeighborhood);
+      request.input("idNeighborhood", sql.Int,idNeighborhood);
       request.input("crime", sql.VarChar(20), category);
 
       const result = await request.execute(

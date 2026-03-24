@@ -7,9 +7,9 @@ import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
 import { RoutesLogin } from "./route/routeLogin.js";
-import { RoutesLogout} from "./route/routeLogout.js";
+import { RoutesLogout } from "./route/routeLogout.js";
 import { RoutesDepartment } from "./route/routeDepartment.js";
-
+import { RoutesPopulation } from "./route/routePopulation.js";
 
 const limiterOptions = {
   windowMs: 15 * 60 * 1000,
@@ -51,3 +51,4 @@ app.use("/crime/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
 app.use("/department/", RoutesDepartment);
+app.use("/population/", RoutesPopulation);

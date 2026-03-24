@@ -8,7 +8,7 @@ export class Zone {
   #neighborhoods;
 
   constructor(
-    idZone,
+    idZone = 0,
     description = "desconocida",
     coordinates = [],
     expiration,
@@ -24,6 +24,10 @@ export class Zone {
   }
 
   get idZone() {
+    if (typeof value != "number")
+      throw new Error("Id zona debe ser un numero", {
+        cause: { code: 400 }
+      });
     return this.#idZone;
   }
 

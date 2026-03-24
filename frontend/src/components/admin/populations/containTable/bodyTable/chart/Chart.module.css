@@ -1,0 +1,90 @@
+.containChart {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(185, 185, 185);
+    position: relative;
+    width: 45%;
+    height: 47%;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.containChart h3 {
+    padding: 0;
+    margin: 0.5rem;
+}
+
+.containChart .close {
+    position: absolute;
+    margin: 0;
+    right: 0.1rem;
+    box-shadow: none;
+    background: none;
+    color: white;
+    width: auto;
+    height: auto;
+    font-size: 18px;
+}
+.containChart .chart p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.containChart .chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 96%;
+    height: 79%;
+    padding: 2%;
+    background: linear-gradient(345deg, #a3c7e4, #bbd9eb);
+    overflow: hidden;
+    position: relative;
+}
+
+.containChart .noData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    gap: 0;
+    color: white;
+}
+
+.containChart .noData img {
+    width: 72px;
+    height: 72px;
+    margin: 0;
+}
+
+.reflex,
+.reflexTwo,
+.reflexThree {
+    position: absolute;
+    top: -6rem;
+    left: 38%;
+    height: 180%;
+    width: 3%;
+    background: rgba(255, 255, 255, 0.116);
+    transform: rotate(46deg);
+}
+
+.reflexTwo {
+    left: 51%;
+    width: 5%;
+}
+
+.reflexThree {
+    width: 15%;
+    left: 65%;
+}

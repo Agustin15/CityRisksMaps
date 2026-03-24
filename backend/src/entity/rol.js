@@ -2,12 +2,16 @@ export class Rol {
   #idRol;
   #name;
 
-  constructor(idRol, name = "desconocido") {
+  constructor(idRol = 0, name = "desconocido") {
     this.idRol = idRol;
     this.name = name;
   }
 
   set idRol(value) {
+    if (typeof value != "number")
+      throw new Error("Id rol debe ser un numero", {
+        cause: { code: 400 }
+      });
     this.#idRol = value;
   }
 

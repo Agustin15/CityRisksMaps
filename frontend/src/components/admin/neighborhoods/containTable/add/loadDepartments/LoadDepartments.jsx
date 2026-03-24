@@ -44,7 +44,7 @@ export const LoadDepartaments = ({
         } else throw new Error(result.messageError);
       }
 
-      result.unshift({ name: "Seleccionar", idDepartment: null });
+      result.unshift({ idDepartment: 0, name: "Seleccionar" });
       setDepartments(result);
     } catch (error) {
       setErrorLoad(error.message);
@@ -65,13 +65,16 @@ export const LoadDepartaments = ({
 
       {loadingDepartments == false && departments && (
         <select
+          defaultValue={values.idDepartment}
           onChange={(event) =>
             setValues({ ...values, ["idDepartment"]: event.target.value })
           }
           name="idDepartment"
         >
-          {departments.map((department) => (
-            <option value={department.idDepartment}>{department.name}</option>
+          {departments.map((department, index) => (
+            <option key={index} value={department.idDepartment}>
+              {department.name}
+            </option>
           ))}
         </select>
       )}

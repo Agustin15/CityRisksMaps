@@ -26,12 +26,8 @@ export class ZoneDAL {
           throw new Error("Error inesperado al agregar zona", {
             cause: { code: 502 }
           });
-
-        case -4:
-          throw new Error("Error inesperado al agregar zona de barrio", {
-            cause: { code: 502 }
-          });
       }
+      return result.returnValue;
     } catch (error) {
       throw error;
     }

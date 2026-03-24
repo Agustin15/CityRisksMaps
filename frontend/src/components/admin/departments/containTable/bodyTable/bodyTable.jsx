@@ -4,6 +4,7 @@ import iconEdit from "../../../../../assets/img/edit.png";
 import iconNeighborhoods from "../../../../../assets/img/neighborhoods.png";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { createPortal } from "react-dom";
 import { Modal } from "../../../modal/Modal";
 import { Edit } from "../edit/Edit";
@@ -13,6 +14,15 @@ export const BodyTable = () => {
   const [editDepartment, setEditDepartment] = useState(null);
   const [deleteDepartment, setDeleteDepartment] = useState(null);
   const { loading, registers } = useCrud();
+  let navigate = useNavigate();
+
+  const handleNeighborhoods = (department) => {
+    navigate(
+      "/admin/barrios/departamento/" +
+        "getNeighborhoodsByIdDepartmentOffset/" +
+        department.idDepartment
+    );
+  };
 
   return (
     <tbody>
@@ -25,24 +35,27 @@ export const BodyTable = () => {
             <td>
               <div className={styles.options}>
                 <button
-                  onClick={() => setDeleteDepartment(department)}
+                  onClick={() => setDeleteDepartment(department.name)}
                   className={styles.delete}
                 >
                   <img src={iconDelete}></img>
                 </button>
 
                 <button
-                  onClick={() => setEditDepartment(department)}
+                  onClick={() => setEditDepartment(department.name)}
                   className={styles.edit}
                 >
                   <img src={iconEdit}></img>
                 </button>
-                <button className={styles.neighborhoods}>
+                <button
+                  onClick={() => handleNeighborhoods(department)}
+                  className={styles.neighborhoods}
+                >
                   <img src={iconNeighborhoods}></img>
                 </button>
               </div>
             </td>
-            {editDepartment == department &&
+            {editDepartment == department.name &&
               createPortal(
                 <Modal>
                   <Edit
@@ -52,7 +65,7 @@ export const BodyTable = () => {
                 </Modal>,
                 document.body
               )}
-            {deleteDepartment == department &&
+            {deleteDepartment == department.name &&
               createPortal(
                 <Modal>
                   <Delete

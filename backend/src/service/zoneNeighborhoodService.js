@@ -1,20 +1,18 @@
 import { ZoneNeighborhoodDAL } from "../dataAccessLayer/zoneNeighborhoodDAL.js";
 
 export class ZoneNeighborhoodService {
-  static async delete(idZone, neighborhood) {
+  static async delete(idZone, idNeighborhood) {
     try {
-      await ZoneNeighborhoodDAL.delete(idZone, neighborhood);
+      await ZoneNeighborhoodDAL.delete(idZone, idNeighborhood);
     } catch (error) {
       throw error;
     }
   }
 
-  static async getZonesByNeighborhood(neighborhood) {
+  static async getZonesByNeighborhood(idNeighborhood) {
     try {
       const result =
-        await ZoneNeighborhoodDAL.getZonesByNeighborhood(
-          neighborhood
-        );
+        await ZoneNeighborhoodDAL.getZonesByNeighborhood(idNeighborhood);
 
       return result;
     } catch (error) {
@@ -23,8 +21,7 @@ export class ZoneNeighborhoodService {
   }
   static async getNeighborhoodsInZone(idZone) {
     try {
-      const result =
-        await ZoneNeighborhoodDAL.getNeighborhoodsInZone(idZone);
+      const result = await ZoneNeighborhoodDAL.getNeighborhoodsInZone(idZone);
 
       return result;
     } catch (error) {

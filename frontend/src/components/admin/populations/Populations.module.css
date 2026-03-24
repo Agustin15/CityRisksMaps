@@ -1,0 +1,20 @@
+.populations {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(247, 247, 247);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap:0.1rem;
+    width: 85%;
+    height: 100vh;
+    background-repeat: no-repeat;
+}

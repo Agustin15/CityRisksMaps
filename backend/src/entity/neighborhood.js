@@ -1,14 +1,31 @@
 import { Department } from "./department.js";
 
 export class Neighborhood {
+  #idNeighborhood;
   #name;
   #department;
 
-  constructor(name = "desconocido", department = new Department()) {
+  constructor(
+    idNeighborhood = 0,
+    name = "desconocido",
+    department = new Department()
+  ) {
+    this.idNeighborhood = idNeighborhood;
     this.name = name;
     this.department = department;
   }
 
+  set idNeighborhood(value) {
+    if (typeof value != "number")
+      throw new Error("Id barrio debe ser un numero", {
+        cause: { code: 400 }
+      });
+    this.#idNeighborhood = value;
+  }
+
+  get idNeighborhood() {
+    return this.#idNeighborhood;
+  }
   set name(value) {
     if (!value || value.trim().length == 0)
       throw new Error("Nombre no puede estar vacio", { cause: { code: 400 } });

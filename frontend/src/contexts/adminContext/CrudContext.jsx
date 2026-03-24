@@ -8,16 +8,22 @@ const CrudContext = createContext();
 
 export const CrudProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
+  const [loadingYears, setLoadingYears] = useState(false);
   const [registers, setRegisters] = useState();
+  const [years, setYears] = useState();
   const [elementNotFound, setElementNotFound] = useState(false);
   const [pages, setPages] = useState();
   const [index, setIndex] = useState(0);
+  const [yearSelected, setYearSelected] = useState();
   const [error, setError] = useState();
   const [cookies, setCookie, removeCookie] = useCookies();
 
-  const fetchGet = async (url) => {
+  const fetchGet = async (url, setLoadingYears) => {
     setError();
-    setLoading(true);
+
+    if (!setLoadingYears) setLoading(true);
+    else setLoadingYears(true);
+
     try {
       const response = await fetch(LOCALHOST_BACKEND + url, {
         method: "GET",
@@ -37,7 +43,8 @@ export const CrudProvider = ({ children }) => {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      if (!setLoadingYears) setLoading(false);
+      else setLoadingYears(false);
     }
   };
 
@@ -62,10 +69,13 @@ export const CrudProvider = ({ children }) => {
       return result;
     } catch (error) {
       alertSwalErrorAdmin(
-        "Ups,hubo un error al " +
-          (methodFetch == "PUT"
-            ? "actualizar el registro"
-            : "dar de alta el registro"),
+        `
+        Ups,hubo un error al
+          ${
+            methodFetch == "PUT"
+              ? "actualizar el registro"
+              : "dar de alta el registro"
+          }`,
         error.message
       );
     } finally {
@@ -108,6 +118,19 @@ export const CrudProvider = ({ children }) => {
     } else throw new Error(result.messageError);
   };
 
+  const loadYears = async (route, controller) => {
+    let url = route + JSON.stringify({ option: controller });
+
+    const yearsFound = await fetchGet(url, setLoadingYears);
+    if (yearsFound) {
+      let yearsFormatted = yearsFound.map((year) => Object.values(year));
+      setYearSelected(yearSelected ? yearSelected : yearsFormatted[0]);
+      setYears(yearsFormatted);
+
+      return yearsFormatted;
+    }
+  };
+
   const searcher = (value) => {
     const table = document.querySelector("table");
     if (!table) return;
@@ -135,7 +158,9 @@ export const CrudProvider = ({ children }) => {
         fetchGet,
         fetchPostOrPut,
         fetchDelete,
+        loadYears,
         searcher,
+        loadingYears,
         loading,
         registers,
         setRegisters,
@@ -143,6 +168,9 @@ export const CrudProvider = ({ children }) => {
         setIndex,
         pages,
         setPages,
+        yearSelected,
+        setYearSelected,
+        years,
         error,
         elementNotFound
       }}

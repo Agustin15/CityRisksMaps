@@ -48,18 +48,18 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
 
 export const getCategoryCrimeInNeighborhood = async (req, res) => {
   try {
-    const { categoryCrime, neighborhood } = JSON.parse(req.params.optionGet);
+    const { categoryCrime, idNeighborhood } = JSON.parse(req.params.optionGet);
 
     if (!categoryCrime)
       throw new Error("Debe ingresar un categoria de crimen para la busqueda");
 
-    if (!neighborhood)
+    if (!idNeighborhood)
       throw new Error("Debe ingresar un barrio para la busqueda");
 
     const categoryCrimeInNeighborhood =
       await NeighborhoodCrimeService.getCategoryCrimeInNeighborhood(
         categoryCrime,
-        neighborhood
+        idNeighborhood
       );
 
     if (!categoryCrimeInNeighborhood || categoryCrimeInNeighborhood.length == 0)

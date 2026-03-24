@@ -9,11 +9,11 @@ export const Delete = ({ department, setDeleteDepartment }) => {
   const {
     fetchDelete,
     fetchGet,
+    setIndex,
     index,
     setRegisters,
-    registers,
     setPages,
-    page
+    pages
   } = useCrud();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const Delete = ({ department, setDeleteDepartment }) => {
 
   const handleDelete = async () => {
     const result = await alertSwalConfirmDelete(
-      "¿Desea eliminar el registro " + department.name + "?"
+      `¿Desea eliminar el registro ${department.name }?`
     );
 
     if (result.isDismissed) {
@@ -36,26 +36,21 @@ export const Delete = ({ department, setDeleteDepartment }) => {
       }
     }
   };
-
   const reloadRegisters = async () => {
-    if (registers.length == 1 && index > 0) {
-      setPages(page - 1);
-      url =
-        "/department/" +
-        JSON.stringify({
-          option: "getDepartmentsOffset",
-          offset: (index - 1) * 10
-        });
+    let url =
+      "/department/" +
+      JSON.stringify({
+        option: "getDepartmentsOffset",
+        offset: index * 10
+      });
 
-      setRegisters(await fetchGet(url));
-    } else {
-      let url =
-        "/department/" +
-        JSON.stringify({
-          option: "getDepartmentsOffset",
-          offset: index * 10
-        });
-      setRegisters(await fetchGet(url));
+    let departments = await fetchGet(url);
+    if (departments) {
+      setRegisters(departments.registersOffset);
+      if (departments.pages < pages) {
+        setPages(departments.pages);
+        setIndex(index - 1);
+      }
     }
   };
 };

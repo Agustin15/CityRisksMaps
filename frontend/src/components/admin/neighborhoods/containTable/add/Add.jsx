@@ -1,58 +1,43 @@
 import styles from "./add.module.css";
 import iconAdd from "../../../../../assets/img/add.png";
 import { useState } from "react";
+import { useParams } from "react-router";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
 import { LoadDepartaments } from "./loadDepartments/LoadDepartments";
+import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
+import { validationForm } from "../functions.js";
 
 export const Add = ({ setAddForm }) => {
-  const [values, setValues] = useState({ name: "", idDepartment: null });
+  const [values, setValues] = useState({ name: "", idDepartment: 0 });
   const [errors, setErrors] = useState({ name: "", idDepartment: "" });
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState();
-  const {
-    fetchPostOrPut,
-    fetchGet,
-    index,
-    setRegisters,
-    registers,
-    setPages,
-    pages
-  } = useCrud();
+  const { fetchPostOrPut, fetchGet, index, setRegisters, pages, setPages } =
+    useCrud();
+  const params = useParams();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrors({ name: "", idDepartment: "" });
 
-    if (values.name.length == 0) {
-      setErrors({ ...errors, ["name"]: "*Debe ingresar un nombre" });
-      return;
-    }
-    if (values.idDepartment == null) {
-      setErrors({
-        ...errors,
-        ["idDepartment"]: "*Debe seleccionar un departamento"
-      });
-      return;
-    }
+    const errorsValues = validationForm(values);
+    setErrors(errorsValues);
+    if (Object.values(errorsValues).find((value) => value.length > 0)) return;
 
     let url = "/neighborhood/";
     const result = await fetchPostOrPut(url, "POST", setLoading, values);
 
     if (result) {
-      alertSwalSuccess("¡Barrio agregado exitosamente!");
+      alertSwalSuccess("¡Registro de barrio agregado exitosamente!");
 
-      let url =
-        "/neighborhood/" +
-        JSON.stringify({
-          option: "getNeighborhoodsOffset",
-          offset: index * 10
-        });
+      let url = defineEndpointToRefreshDataAfterChanges(index, params);
 
       let neighborhoods = await fetchGet(url);
       if (neighborhoods) {
-        if (registers.length == 10) setPages(pages + 1);
-        setRegisters(neighborhoods);
+        setRegisters(neighborhoods.registersOffset);
+        if (neighborhoods.pages != pages) setPages(neighborhoods.pages);
+
+        setValues({ name: "", idDepartment: 0 });
       }
     }
     return;
@@ -77,7 +62,10 @@ export const Add = ({ setAddForm }) => {
             placeholder="Ingrese nombre"
             name="name"
             onChange={(event) =>
-              setValues({ ...values, [event.target.name]: event.target.value })
+              setValues({
+                ...values,
+                [event.target.name]: event.target.value.trim()
+              })
             }
             maxLength={30}
             type="text"
@@ -96,7 +84,7 @@ export const Add = ({ setAddForm }) => {
 
         <button
           disabled={loading || !departments}
-          className={styles.add}
+          className={loading || !departments ? styles.addDisabled : styles.add}
           type="submit"
         >
           {loading ? "Agregando..." : "Agregar"}

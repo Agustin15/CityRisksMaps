@@ -41,10 +41,10 @@ export class PopulationService {
     }
   }
 
-  static async getPopulationByNeighborhoodAndYear(name, year) {
+  static async getPopulationByNeighborhoodAndYear(idNeighborhood, year) {
     try {
       const result = await PopulationDAL.getPopulationByNeighborhoodAndYear(
-        name,
+        idNeighborhood,
         year
       );
 
@@ -64,19 +64,52 @@ export class PopulationService {
       throw error;
     }
   }
-  static async getPopulationsOffset(offset) {
+
+  static async getPopulationsYears() {
     try {
-      const result = await PopulationDAL.getPopulationsOffset(offset);
+      const result = await PopulationDAL.getPopulationsYears();
       return result;
     } catch (error) {
       throw error;
     }
   }
 
-  static async getPopulationsByNeighborhood(neighborhood) {
+  static async getPopulationsByYear(year) {
+    try {
+      const result = await PopulationDAL.getPopulationsByYear(year);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getPopulationsOffsetByYear(offset, year) {
+    try {
+      const result = await PopulationDAL.getPopulationsOffsetByYear(
+        offset,
+        year
+      );
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsByNeighborhood(idNeighborhood) {
     try {
       const result =
-        await PopulationDAL.getPopulationsByNeighborhood(neighborhood);
+        await PopulationDAL.getPopulationsByNeighborhood(idNeighborhood);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPopulationsOffsetByNeighborhood(idNeighborhood, offset) {
+    try {
+      const result = await PopulationDAL.getPopulationsOffsetByNeighborhood(
+        idNeighborhood,
+        offset
+      );
       return result;
     } catch (error) {
       throw error;

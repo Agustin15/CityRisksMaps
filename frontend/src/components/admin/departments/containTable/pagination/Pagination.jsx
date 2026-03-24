@@ -1,8 +1,11 @@
 import styles from "./Pagination.module.css";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
+import { useParams } from "react-router";
 
 export const Pagination = ({ route, controller }) => {
-  const { fetchGet, pages, index, setIndex, setRegisters } = useCrud();
+  const { fetchGet, pages, index, setIndex, setRegisters, yearSelected } =
+    useCrud();
+  let params = useParams();
 
   const handleClickPage = async (page) => {
     setIndex(page);
@@ -10,9 +13,17 @@ export const Pagination = ({ route, controller }) => {
       route +
       JSON.stringify({
         option: controller,
-        offset: page * 10
+        ...(yearSelected && {
+          year: yearSelected
+        }),
+        offset: page * 10,
+        ...(params.id && {
+          id: params.id
+        })
       });
-    setRegisters(await fetchGet(url, "GET"));
+
+    let result = await fetchGet(url);
+    setRegisters(result.registersOffset);
   };
 
   return (

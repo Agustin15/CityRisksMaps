@@ -7,11 +7,7 @@ import { Pagination } from "./pagination/Pagination";
 export const ContainTable = () => {
   return (
     <div className={styles.containTable}>
-      <LoadData
-        route={"/department/"}
-        controller={"getDepartments"}
-        controllerOffset={"getDepartmentsOffset"}
-      />
+      <LoadData route={"/department/"} controller={"getDepartmentsOffset"} />
       <div className={styles.scrollTable}>
         <table>
           <thead>
@@ -22,13 +18,10 @@ export const ContainTable = () => {
             </tr>
           </thead>
           <BodyTable />
-          <FooterTable msj={"Cargando departamentos..."} />
+          <FooterTable msj={"Cargando departamentos..."} colSpan={3} />
         </table>
       </div>
-      <Pagination
-        endpoint={"/department/"}
-        controller={"getDepartmentsOffset"}
-      />
+      <Pagination route={"/department/"} controller={"getDepartmentsOffset"} />
     </div>
   );
 };

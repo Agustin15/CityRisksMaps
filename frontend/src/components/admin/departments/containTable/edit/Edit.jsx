@@ -5,7 +5,7 @@ import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
 
 export const Edit = ({ department, setEditDepartment }) => {
-  const [values, setValues] = useState({ ...department });
+  const [name, setName] = useState(department.name);
   const [errorForm, setErrorForm] = useState();
   const [loading, setLoading] = useState(false);
   const { fetchPostOrPut, fetchGet, index, setRegisters } = useCrud();
@@ -13,17 +13,18 @@ export const Edit = ({ department, setEditDepartment }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (values.name.length == 0) {
+    setErrorForm();
+
+    if (name.length == 0) {
       setErrorForm("*Debe ingresar un nombre");
       return;
     }
-    setErrorForm();
 
-    let url = "/department/" + values.idDepartment;
-    const result = await fetchPostOrPut(url, "PUT", setLoading, values);
+    let url = "/department/" + department.idDepartment;
+    const result = await fetchPostOrPut(url, "PUT", setLoading, { name: name });
 
     if (result) {
-      alertSwalSuccess("¡Departamento actualizado exitosamente!");
+      alertSwalSuccess("¡Registro de departamento actualizado exitosamente!");
       let url =
         "/department/" +
         JSON.stringify({
@@ -31,7 +32,10 @@ export const Edit = ({ department, setEditDepartment }) => {
           offset: index * 10
         });
 
-      setRegisters(await fetchGet(url));
+      let departments = await fetchGet(url);
+      if (departments) {
+        setRegisters(departments.registersOffset);
+      }
     }
     return;
   };
@@ -42,7 +46,7 @@ export const Edit = ({ department, setEditDepartment }) => {
         Cerrar
       </button>
       <div className={styles.title}>
-        <h3>Editar departamento {department.idDepartment}</h3>
+        <h3>Editar departamento {department.name}</h3>
 
         <div className={styles.backgroundIcon}>
           <img src={iconAdd}></img>
@@ -54,12 +58,10 @@ export const Edit = ({ department, setEditDepartment }) => {
           <input
             autoComplete="off"
             name="name"
-            onChange={(event) =>
-              setValues({ ...values, [event.target.name]: event.target.value })
-            }
+            onChange={(event) => setName(event.target.value.trim())}
             maxLength={30}
             type="text"
-            value={values.name}
+            value={name}
           ></input>
           {errorForm && <p>{errorForm}</p>}
         </div>

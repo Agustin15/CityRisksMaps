@@ -1,6 +1,7 @@
 .containAdd {
     width: 38%;
-    height: 52%;
+    height: auto;
+    padding-bottom: 1rem;
     background: white;
     border-radius: 4px;
     font-family: Arial, Helvetica, sans-serif;
@@ -85,7 +86,8 @@
     font-size: 14px;
 }
 
-.containAdd form .add {
+.containAdd form .add,
+.containAdd form .addDisabled {
     background: rgb(34, 207, 63);
     border-radius: 5px;
     box-shadow: none;
@@ -95,8 +97,16 @@
     margin: 1rem 0 0 0;
     font-size: 15px;
     font-weight: bold;
+    cursor: pointer;
 }
-
+.containAdd form .addDisabled {
+    opacity: 84%;
+    cursor: alias;
+}
 .containAdd form .add:hover {
     background: rgb(41, 167, 25);
+}
+
+.containAdd form .addDisabled:hover {
+    background: rgb(34, 207, 63);
 }

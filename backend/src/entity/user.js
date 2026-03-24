@@ -11,7 +11,7 @@ export class User {
   #rol;
 
   constructor(
-    idUser,
+    idUser = 0,
     name = "desconocido",
     lastname = "desconocido",
     email = "email@gmail.com",
@@ -31,6 +31,11 @@ export class User {
   }
 
   set idUser(value) {
+    if (typeof value != "number")
+      throw new Error("Id usuario debe ser un numero", {
+        cause: { code: 400 }
+      });
+
     this.#idUser = value;
   }
   get idUser() {

@@ -31,14 +31,15 @@ name VARCHAR(30) NOT NULL UNIQUE,
 );
 
 CREATE TABLE Neighborhoods(
-name VARCHAR(30) Primary key,
+idNeighborhood INT IDENTITY(1,1) Primary key, 
+name VARCHAR(30),
 department INT NOT NULL FOREIGN KEY REFERENCES Departments(idDepartment) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
 CREATE TABLE Population (
 idPopulation INT IDENTITY (1,1) Primary key,
-neighborhood VARCHAR(30) NOT NULL FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
+neighborhood INT NOT NULL FOREIGN KEY REFERENCES Neighborhoods(idNeighborhood) ON UPDATE CASCADE ON DELETE CASCADE,
 quantity INT NOT NULL CHECK(quantity>=0),
 year INT NOT NULL CHECK(year<=YEAR(GETDATE()))
 );
@@ -51,7 +52,7 @@ description VARCHAR(700) NOT NULL
 
 
 CREATE TABLE Neighborhoods_Crimes(
-neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE,
+neighborhood INT FOREIGN KEY REFERENCES Neighborhoods(idNeighborhood) ON UPDATE CASCADE ON DELETE CASCADE,
 crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON DELETE CASCADE,
 quantity INT CHECK(quantity>=0),
 increase DECIMAL(5,1),
@@ -73,7 +74,7 @@ enable bit NOT NULL
 
 CREATE TABLE Zones_Neighborhoods(
 zone INT FOREIGN KEY REFERENCES Zones(idZone)ON UPDATE CASCADE ON DELETE CASCADE,
-neighborhood VARCHAR(30) FOREIGN KEY REFERENCES Neighborhoods(name) ON UPDATE CASCADE ON DELETE CASCADE 
+neighborhood INT FOREIGN KEY REFERENCES Neighborhoods(idNeighborhood) ON UPDATE CASCADE ON DELETE CASCADE 
 Primary key(zone,neighborhood)
 );
 
@@ -478,9 +479,8 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE UpdateNeighborhood @name VARCHAR(30),@idDepartment INT AS
+CREATE OR ALTER PROCEDURE UpdateNeighborhood @idNeighborhood INT, @name VARCHAR(30),@idDepartment INT AS
 BEGIN
-
 
 IF (LEN(@name)>30)
 RETURN -1
@@ -488,7 +488,7 @@ RETURN -1
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
 RETURN -2
 
-UPDATE Neighborhoods set name=@name,department=@idDepartment where name=@name;
+UPDATE Neighborhoods set name=@name,department=@idDepartment where idNeighborhood=@idNeighborhood;
 
 IF(@@ERROR<>0)
 RETURN -3
@@ -498,13 +498,13 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE DeleteNeighborhood @name VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE DeleteNeighborhood @idNeighborhood INT AS
 BEGIN
 
-IF NOT EXISTS(select * from Neighborhoods where name=@name)
+IF NOT EXISTS(select * from Neighborhoods where idNeighborhood=@idNeighborhood )
 RETURN -1
 
-DELETE from Neighborhoods where name=@name;
+DELETE from Neighborhoods where idNeighborhood=@idNeighborhood ;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -520,10 +520,25 @@ select * from Neighborhoods;
 END
 GO
 
+CREATE OR ALTER PROCEDURE AllNeighborhoodsByIdDepartment @idDepartment INT AS
+BEGIN
+select * from Neighborhoods where department=@idDepartment;
+END
+GO
+
 CREATE OR ALTER PROCEDURE NeighborhoodsOffset @offset INT AS
 BEGIN
-select N.name as 'nameNeighborhood',D.name as 'nameDepartment', D.idDepartment 
-from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment ORDER BY N.name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+select idNeighborhood,N.name as 'nameNeighborhood',D.name as 'nameDepartment', D.idDepartment 
+from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment ORDER BY N.idNeighborhood 
+OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+GO
+
+CREATE OR ALTER PROCEDURE NeighborhoodsByIdDepartmentOffset @idDepartment INT,@offset INT AS
+BEGIN
+select idNeighborhood,N.name as 'nameNeighborhood',D.name as 'nameDepartment', D.idDepartment 
+from Neighborhoods N INNER JOIN Departments D ON N.department=D.idDepartment where department=@idDepartment ORDER BY N.idNeighborhood 
+OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
@@ -542,6 +557,8 @@ CREATE OR ALTER PROCEDURE AddPopulation @neighbordhood VARCHAR(30), @quantity IN
 
 BEGIN
 
+DECLARE @idNeighborhood INT;
+
 IF(@quantity<0)
 RETURN -1
 
@@ -551,10 +568,12 @@ RETURN -2
 IF NOT EXISTS (select * from Neighborhoods where name=@neighbordhood) 
 RETURN -3
 
-IF EXISTS (select * from Population where neighborhood=@neighbordhood and year=@year) 
+SELECT @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighbordhood
+
+IF EXISTS (select * from Population where neighborhood=@idNeighborhood and year=@year) 
 RETURN -4
 
-INSERT INTO Population VALUES(@neighbordhood,@quantity,@year);
+INSERT INTO Population VALUES(@idNeighborhood,@quantity,@year);
 
 IF(@@ERROR<>0)
 RETURN -5
@@ -569,6 +588,8 @@ GO
 CREATE OR ALTER PROCEDURE UpdatePopulation @idPopulation INT,@quantity INT,@year INT, @neighborhood VARCHAR(30) AS
 BEGIN
 
+DECLARE @idNeighborhood INT;
+
 IF (@quantity<0)
 RETURN -1
 
@@ -581,10 +602,12 @@ RETURN -3
 IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
 RETURN -4
 
-IF EXISTS (select * from Population where neighborhood=@neighborhood and year=@year and idPopulation!=@idPopulation)
+SELECT @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighborhood
+
+IF EXISTS (select * from Population where neighborhood=@idNeighborhood and year=@year and idPopulation!=@idPopulation)
 RETURN -5
 
-UPDATE Population set quantity=@quantity,year=@year,neighborhood=@neighborhood where @idPopulation=idPopulation;
+UPDATE Population set quantity=@quantity,year=@year,neighborhood=@idNeighborhood where @idPopulation=idPopulation;
 
 IF(@@ERROR<>0)
 RETURN -6
@@ -625,22 +648,50 @@ select * from Population;
 END
 GO
 
-CREATE OR ALTER PROCEDURE PopulationsOffset @offset INT AS
+CREATE OR ALTER PROCEDURE PopulationsYears AS
 BEGIN
 
-select * from Population ORDER BY neighborhood OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+select DISTINCT year from Population;
 END
 GO
 
-CREATE OR ALTER PROCEDURE PopulationsByNeighborhood @neighborhood VARCHAR(30) AS
+
+CREATE OR ALTER PROCEDURE AllPopulationsByYear @year INT AS
 BEGIN
-select * from population where neighborhood=@neighborhood;
+
+select * from Population where year=@year;
 END
 GO
 
-CREATE OR ALTER PROCEDURE PopulationByNeighborhoodAndYear @neighborhood VARCHAR(30),@year INT AS
+
+CREATE OR ALTER PROCEDURE PopulationsOffsetByYear @offset INT,@year INT AS
 BEGIN
-select * from population where neighborhood=@neighborhood and year=@year;
+
+select P.* ,name as 'nameNeighborhood' from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood 
+where P.year=@year ORDER BY P.idPopulation OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+GO
+
+CREATE OR ALTER PROCEDURE PopulationsByNeighborhood @idNeighborhood INT AS
+BEGIN
+
+select * from Population P where P.neighborhood=@idNeighborhood
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE PopulationsOffsetByNeighborhood @idNeighborhood INT,@offset INT AS
+BEGIN
+
+select P.* ,name as 'nameNeighborhood' from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood 
+where P.neighborhood=@idNeighborhood ORDER BY P.year OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE PopulationByNeighborhoodAndYear @idNeighborhood INT,@year INT AS
+BEGIN
+select * from population where neighborhood=@idNeighborhood and year=@year;
 END
 GO
 
@@ -652,6 +703,7 @@ CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@crime 
 
 BEGIN
 
+DECLARE @idNeighborhood INT;
 DECLARE @population INT;
 DECLARE @increase DECIMAL(5,1);
 DECLARE @rate DECIMAL(6,1);
@@ -669,17 +721,19 @@ RETURN -3
 IF NOT EXISTS (select * from Crimes where category=@crime)
 RETURN -4
 
-IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year)
+SELECT @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighborhood
+
+IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime and year=@year)
 RETURN -5
 
-select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where N.name=@neighborhood and
-(CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
+select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood where N.idNeighborhood=@idNeighborhood 
+and (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
 (select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population) 
 
 IF(@population IS NULL) 
 RETURN -6
 
-select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year-1;
+select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime and year=@year-1;
 
 IF(@quantity IS NOT NULL) SET @rate=(CAST(@quantity as decimal)/@population)*100000
 
@@ -698,7 +752,7 @@ END
 END
 
 
-INSERT INTO Neighborhoods_Crimes VALUES(@neighborhood,@crime,@quantity,@increase,@rate,@year)
+INSERT INTO Neighborhoods_Crimes VALUES(@idNeighborhood,@crime,@quantity,@increase,@rate,@year)
 
 IF(@@ERROR<>0)
 RETURN -7
@@ -707,7 +761,7 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @neighborhood VARCHAR(30),@crime VARCHAR(20),@quantity INT,@year INT AS
+CREATE OR ALTER PROCEDURE UpdateNeighborhoodCrime @idNeighborhood INT,@crime VARCHAR(20),@quantity INT,@year INT AS
 
 BEGIN
 
@@ -722,17 +776,17 @@ RETURN -1
 IF @year>YEAR(GETDATE())
 RETURN -2
 
-IF NOT EXISTS (select * from Neighborhoods_Crimes  where neighborhood=@neighborhood and crime=@crime and year=@year)
+IF NOT EXISTS (select * from Neighborhoods_Crimes  where neighborhood=@idNeighborhood and crime=@crime and year=@year)
 RETURN -3
 
-select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where N.name=@neighborhood and 
-(CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
+select @population=P.quantity from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood where 
+N.idNeighborhood=@idNeighborhood and (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END)=
 (select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population)
 
 IF(@population IS NULL) 
 RETURN -4
 
-select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime and year=@year-1;
+select @quantityCrimesPrevYear=quantity from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime and year=@year-1;
 
 IF(@quantity IS NOT NULL) SET @rate=(CAST(@quantity as decimal)/@population)*100000
 
@@ -749,7 +803,7 @@ END
 )
 END
 
-UPDATE Neighborhoods_Crimes set quantity=@quantity,increase=@increase,rate=@rate where neighborhood=@neighborhood and crime=@crime and year=@year
+UPDATE Neighborhoods_Crimes set quantity=@quantity,increase=@increase,rate=@rate where neighborhood=@idNeighborhood and crime=@crime and year=@year
 
 IF(@@ERROR<>0)
 RETURN -5
@@ -760,13 +814,13 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@neighborhood VARCHAR(30),@year INT AS
+CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@idNeighborhood INT,@year INT AS
 BEGIN
 
-IF NOT EXISTS(select * from Neighborhoods_Crimes where crime=@crime and neighborhood=@neighborhood and @year=year)
+IF NOT EXISTS(select * from Neighborhoods_Crimes where crime=@crime and neighborhood=@idNeighborhood and @year=year)
 RETURN -1
 
-DELETE from Neighborhoods_Crimes where crime=@crime and neighborhood=@neighborhood and @year=year;
+DELETE from Neighborhoods_Crimes where crime=@crime and neighborhood=@idNeighborhood and @year=year;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -789,21 +843,21 @@ BEGIN
 
 DECLARE @populationYear INT
 
-select @populationYear=P.year from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.name where(CASE when @year>=year THEN (@year-year)WHEN year>=@year 
+select @populationYear=P.year from Population P INNER JOIN Neighborhoods N ON P.neighborhood=N.idNeighborhood where(CASE when @year>=year THEN (@year-year)WHEN year>=@year 
 THEN(year-@year)END)=(select TOP 1 (CASE when @year>=year THEN (@year-year)WHEN year>=@year THEN(year-@year)END) as 'diferencia' from Population)
 
-select name,P.quantity as 'quantityPopulation',P.year as 'yearPopulation',NC.quantity as 'quantityCrime',NC.year as 'yearCrime',
-increase,rate from  Neighborhoods_Crimes NC INNER JOIN  Neighborhoods N on N.name=NC.neighborhood INNER JOIN
-Population P ON P.neighborhood=N.name where crime=@crime and NC.year=@year and P.year=@populationYear ORDER BY rate desc;
+select N.idNeighborhood,N.name,P.quantity as 'quantityPopulation',P.year as 'yearPopulation',NC.quantity as 'quantityCrime',NC.year as 'yearCrime',
+increase,rate from  Neighborhoods_Crimes NC INNER JOIN  Neighborhoods N on N.idNeighborhood=NC.neighborhood INNER JOIN
+Population P ON P.neighborhood=N.idNeighborhood where crime=@crime and NC.year=@year and P.year=@populationYear ORDER BY rate desc;
 
 END
 
 GO
 
-CREATE OR ALTER PROCEDURE QuantityCategoryCrimeInNeighborhood @neighborhood VARCHAR(30),@crime VARCHAR(20) AS
+CREATE OR ALTER PROCEDURE QuantityCategoryCrimeInNeighborhood @idNeighborhood INT,@crime VARCHAR(20) AS
 BEGIN 
 
-select * from Neighborhoods_Crimes where neighborhood=@neighborhood and crime=@crime ORDER BY YEAR;
+select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime ORDER BY YEAR;
 END
 
 GO
@@ -828,31 +882,20 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit,
-@neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit AS
 BEGIN 
 
 IF(LEN(@description)>250)
 RETURN -1
 
-
 IF(@enable!=0 or @enable!=1)
 RETURN -2
-
-BEGIN TRANSACTION
 
 INSERT INTO Zones(description,coordinates,enable) VALUES(@description,@coordinates,@enable);
 IF(@@ERROR<>0)
 RETURN -3
 
-INSERT INTO Zones_Neighborhoods VALUES(IDENT_CURRENT('zones'),@neighborhood);
-IF(@@ERROR<>0)
-BEGIN
-ROLLBACK TRANSACTION
-RETURN -4
-END
-
-COMMIT TRANSACTION
+RETURN IDENT_CURRENT('Zones');
 
 END
 
@@ -920,13 +963,34 @@ GO
 
 
 
-CREATE OR ALTER PROCEDURE DeleteZoneNeighborhood @idZone INT,@neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE AddZoneNeighborhood @idZone INT,@idNeighborhood INT AS
 BEGIN 
 
-IF NOT EXISTS(select * from Zones_Neighborhoods where zone=@idZone and neighborhood=@neighborhood)
+IF NOT EXISTS(select * from Neighborhoods where idNeighborhood=@idNeighborhood)
 RETURN -1
 
-DELETE FROM Zones_Neighborhoods where zone=@idZone and neighborhood=@neighborhood;
+IF NOT EXISTS(select * from Zones where idZone=@idZone)
+RETURN -2
+
+IF EXISTS(select * from Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood)
+RETURN -3
+
+INSERT INTO Zones_Neighborhoods VALUES (@idZone,@idNeighborhood);
+
+IF(@@ERROR<>0)
+RETURN -4
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE DeleteZoneNeighborhood @idZone INT,@idNeighborhood INT AS
+BEGIN 
+
+IF NOT EXISTS(select * from Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood)
+RETURN -1
+
+DELETE FROM Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood;
 
 IF(@@ERROR<>0)
 RETURN -2
@@ -935,10 +999,10 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE ZonesByNeighborhood @neighborhood VARCHAR(30) AS
+CREATE OR ALTER PROCEDURE ZonesByNeighborhood @idNeighborhood INT AS
 BEGIN 
 
-select * from Zones_Neighborhoods ZN INNER JOIN Zones Z ON ZN.zone=Z.idZone where neighborhood=@neighborhood;
+select * from Zones_Neighborhoods ZN INNER JOIN Zones Z ON ZN.zone=Z.idZone where neighborhood=@idNeighborhood;
 END
 
 GO
@@ -946,7 +1010,7 @@ GO
 CREATE OR ALTER PROCEDURE NeighborhoodInZone @idZone INT AS
 BEGIN 
 
-select * from Zones_Neighborhoods ZN INNER JOIN Neighborhoods N ON ZN.neighborhood=N.name where zone=@idZone;
+select * from Zones_Neighborhoods ZN INNER JOIN Neighborhoods N ON ZN.neighborhood=N.idNeighborhood where zone=@idZone;
 END
 
 GO
@@ -1184,6 +1248,8 @@ EXEC AddPopulation 'Unión',37488,2023;
 EXEC AddPopulation 'Villa Española',20792,2023;
 EXEC AddPopulation 'Villa García, Manga Rural',31166,2023;
 EXEC AddPopulation 'Villa Muñoz, Retiro',13095,2023;
+
+GO
 
 EXEC AddCrime 'Homicidio','Por homicidio se entiende la muerte infligida a una persona en forma intencional e ilegal por otra u otras. Se excluyen las muertes causadas por negligencia, suicidio o accidente, así como los decesos que son fruto de actos de funcionarios policiales en cumplimiento de la ley o de acciones realizadas por civiles en legítima defensa.';
 
@@ -1455,6 +1521,7 @@ EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',7,2023;
 EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Homicidio',8,2023;
 EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Homicidio',0,2023;
 
+GO
 -- Hurtos 2023
 EXEC AddNeighborhoodCrime 'Aguada','Hurto',1194,2023
 EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',544,2023
@@ -1519,6 +1586,7 @@ EXEC AddNeighborhoodCrime 'Villa Española','Hurto',784,2023
 EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',666,2023
 EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',542,2023
 
+GO
 -- Rapiñas 2023
 EXEC AddNeighborhoodCrime 'Aguada','Rapiña',172,2023
 EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',161,2023

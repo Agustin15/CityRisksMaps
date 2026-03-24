@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  getNeighborhoods,
+  getNeighborhoodsByIdDepartmentOffset,
   getNeighborhoodsOffset,
+  getNeighborhoods,
   add,
   update,
-  deleteByName
+  deleteById
 } from "../controller/neighborhoodController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
-
 
 export const RoutesNeighbordhood = express.Router();
 
@@ -28,9 +28,11 @@ RoutesNeighbordhood.get("/:paramsGet", (req, res) => {
       return getNeighborhoods(req, res);
     case "getNeighborhoodsOffset":
       return getNeighborhoodsOffset(req, res);
+    case "getNeighborhoodsByIdDepartmentOffset":
+      return getNeighborhoodsByIdDepartmentOffset(req, res);
   }
 });
 
-RoutesNeighbordhood.post("/",add);
-RoutesNeighbordhood.put("/:name",update);
-RoutesNeighbordhood.delete("/:name",deleteByName);
+RoutesNeighbordhood.post("/", add);
+RoutesNeighbordhood.put("/:idNeighborhood", update);
+RoutesNeighbordhood.delete("/:idNeighborhood", deleteById);

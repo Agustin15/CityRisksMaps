@@ -7,7 +7,7 @@ import { setOptionsChart, getDataChart } from "./functions";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-export const Chart = ({ categoryCrime, nameNeighborhood }) => {
+export const Chart = ({ categoryCrime, neighborhoodCrime }) => {
   const [dataChart, setDataChart] = useState();
   const [loading, setLoading] = useState(false);
   const [errorDataChart, setErrorDataChart] = useState();
@@ -21,7 +21,7 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
     setLoading(true);
     const result = await getDataChart(
       categoryCrime,
-      nameNeighborhood,
+      neighborhoodCrime.idNeighborhood,
       setErrorDataChart
     );
     if (result) setDataChart(result);
@@ -33,7 +33,11 @@ export const Chart = ({ categoryCrime, nameNeighborhood }) => {
       {loading && <span className={styles.loading}>Cargando datos...</span>}
       {!loading && dataChart && (
         <CanvasJSChart
-          options={setOptionsChart(dataChart, categoryCrime, nameNeighborhood)}
+          options={setOptionsChart(
+            dataChart,
+            categoryCrime,
+            neighborhoodCrime.name
+          )}
         ></CanvasJSChart>
       )}
       {!loading && !dataChart && (

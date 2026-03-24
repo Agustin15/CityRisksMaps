@@ -11,7 +11,7 @@ export const DetailsRow = ({ neighborhoodCrime, crime }) => {
         neighborhoodCrime={neighborhoodCrime}
         categoryCrime={crime}
       />
-      <Chart categoryCrime={crime} nameNeighborhood={neighborhoodCrime.name} />
+      <Chart categoryCrime={crime} neighborhoodCrime={neighborhoodCrime} />
     </div>
   );
 };

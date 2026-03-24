@@ -2,12 +2,13 @@ const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getDataChart = async (
   categoryCrime,
-  nameNeighborhood,
+  idNeighborhood,
   setErrorDataChart
 ) => {
+  
   let optionGET = JSON.stringify({
     option: "getCategoryCrimeInNeighborhood",
-    neighborhood: nameNeighborhood,
+    idNeighborhood: idNeighborhood,
     categoryCrime: categoryCrime
   });
 
@@ -68,21 +69,12 @@ export const setOptionsChart = (dataChart, categoryCrime, nameNeighborhood) => {
         lineColor: "white",
         dataPoints:
           dataChart &&
-          (categoryCrime
-            ? dataChart.map((neighborhoodCrime) => {
-                return {
-                  x: neighborhoodCrime.year,
-                  y: neighborhoodCrime.quantity
-                };
-              })
-            : dataChart.map((quizSecurity) => {
-                return {
-                  x: quizSecurity.year,
-                  y: quizSecurity.securityPercentage,
-                  toolTipContent: `<span style="color:#178ed3ff;">${quizSecurity.year}</span>:
-                   ${quizSecurity.securityPercentage}%`
-                };
-              }))
+          dataChart.map((neighborhoodCrime) => {
+            return {
+              x: neighborhoodCrime.year,
+              y: neighborhoodCrime.quantity
+            };
+          })
       }
     ]
   };

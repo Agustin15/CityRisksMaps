@@ -6,7 +6,7 @@ export const getCrimes = async (loadingMenu, setLoadingMenu, setErrorLoad) => {
   if (!loadingMenu) setLoadingMenu(true);
 
   try {
-    const response = await fetch(localhostBackend + "/crimes/" + optionGET, {
+    const response = await fetch(localhostBackend + "/crime/" + optionGET, {
       method: "GET",
       headers: { "Content-type": "application/json" }
     });

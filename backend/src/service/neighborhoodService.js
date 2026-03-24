@@ -21,9 +21,9 @@ export class NeighborhoodService {
     }
   }
 
-  static async delete(name) {
+  static async delete(idNeighborhood) {
     try {
-      await NeighborhoodDAL.delete(name);
+      await NeighborhoodDAL.delete(idNeighborhood);
     } catch (error) {
       throw error;
     }
@@ -39,9 +39,33 @@ export class NeighborhoodService {
     }
   }
 
+  static async getNeighborhoodsByIdDepartment(idDepartment) {
+    try {
+      const result =
+        await NeighborhoodDAL.getNeighborhoodsByIdDepartment(idDepartment);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getNeighborhoodsOffset(offset) {
     try {
       const result = await NeighborhoodDAL.getNeighborhoodsOffset(offset);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getNeighborhoodsByIdDepartmentOffset(idDepartment, offset) {
+    try {
+      const result = await NeighborhoodDAL.getNeighborhoodsByIdDepartmentOffset(
+        idDepartment,
+        offset
+      );
 
       return result;
     } catch (error) {

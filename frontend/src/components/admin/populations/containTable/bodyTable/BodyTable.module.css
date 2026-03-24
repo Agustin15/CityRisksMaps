@@ -1,0 +1,43 @@
+tbody td {
+    padding: 0.3rem;
+    font-size: 15px;
+}
+tbody .trGray {
+    background: rgb(236, 236, 236);
+}
+
+tbody .options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+tbody .options button {
+    width: 2.8rem;
+    height: 2.4rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+tbody .options button img {
+    width: 23px;
+    height: 23px;
+}
+tbody .options .delete {
+    background: rgb(216, 10, 10);
+}
+
+tbody .options .edit {
+    background: rgb(10, 123, 216);
+}
+
+tbody .options .chart{
+    background: rgb(10, 178, 190);
+}
+tbody .options .chart img {
+    width: 31px;
+    height: 31px;
+}
