@@ -1,12 +1,11 @@
-## City risks map 🗺
+## City risks map  ![](/frontend/src/assets/img/logo.png)
 
 ### Descripcion
 
-Aplicacion web que marca los barrios de Montevideo,Uruguay con zonas rojas segun la frecuencia de un delito,actualmente cuenta con llamadas a la api de google maps place para que el usuario busque e indique al lugar donde desea ir,incluira navegacion con gps para verificar las rutas mas seguras dependiendo 
-por cuales barrios crucen estas. 
+Aplicacion web que marca los barrios de Montevideo,Uruguay con zonas de color segun la frecuencia de denuncias de un delito,actualmente cuenta con llamadas a la API de Google Maps, para que el usuario busque e indique al lugar donde desea ir,tambien incluira navegacion con gps,en la cual el usuario podra visualizar por donde pasaran las rutas que se calcularon para llegar a su destino,y al elegir una de estas tendra la opcion de editarla para desviarla de 
+barrio con altos indices de denuncias de un determinado delito. 
 
-Los datos de los crimenes fueron obtenidos de documentos del Ministerio del interior.
-
+Los datos de las cantidad de denuncias fueron obtenidos de [datos abiertos del Ministerio del interior.](https://catalogodatos.gub.uy/dataset/?tags=Homicidios+dolosos+consumados)
 
 ### Desarrollado con
 
@@ -46,7 +45,6 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 
 * [canvasjs/react-charts](https://canvasjs.com/react-charts/)
 * [vis.gl/react-google-maps](https://visgl.github.io/react-google-maps/)
-* [react-cookie](https://github.com/bendotcodes/cookies)
 * [react-switch](https://github.com/markusenglund/react-switch)
 * [sweetalert2](https://github.com/sweetalert2/sweetalert2-react-content)
  
@@ -91,6 +89,7 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
      EMAIL_FROM=<TRANSMITTER EMAIL FOR NODEMAILER>
      APP_PASSWORD=<PASSWORD APP EMAIL FOR NODEMAILER>
      SECRET_KEY_TOKEN=<SECRET KEY FOR JSONWEBTOKEN>
+     SECRET_KEY_REFRESH_TOKEN=<SECRET REFRESH KEY FOR JSONWEBTOKEN>
 
 
   ![](/frontend/src/assets/Captures/screenApp1.PNG)
@@ -106,6 +105,9 @@ Los datos de los crimenes fueron obtenidos de documentos del Ministerio del inte
 
 
   ![](/frontend/src/assets/Captures/screenApp5.PNG)
+
+  
+  ![](/frontend/src/assets/Captures/screenApp6.PNG)
 
 
 
