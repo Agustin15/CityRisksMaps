@@ -1,11 +1,11 @@
-## City risks map  ![](/frontend/src/assets/img/logo.png)
+## Indice Delitos Montevideo ![](/frontend/src/assets/img/logo.png =90x90)
 
 ### Descripcion
 
 Aplicacion web que marca los barrios de Montevideo,Uruguay con zonas de color segun la frecuencia de denuncias de un delito,actualmente cuenta con llamadas a la API de Google Maps, para que el usuario busque e indique al lugar donde desea ir,tambien incluira navegacion con gps,en la cual el usuario podra visualizar por donde pasaran las rutas que se calcularon para llegar a su destino,y al elegir una de estas tendra la opcion de editarla para desviarla de 
 barrio con altos indices de denuncias de un determinado delito. 
 
-Los datos de las cantidad de denuncias fueron obtenidos de [datos abiertos del Ministerio del interior.](https://catalogodatos.gub.uy/dataset/?tags=Homicidios+dolosos+consumados)
+Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del Ministerio del interior.](https://catalogodatos.gub.uy/dataset/?tags=Homicidios+dolosos+consumados)
 
 ### Desarrollado con
 
