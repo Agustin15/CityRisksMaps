@@ -1,4 +1,4 @@
-## Indice Delitos Montevideo ![](/frontend/src/assets/img/logo.png =90x90)
+## Indice Delitos Montevideo  <img src="https://i.postimg.cc/ZR5nq6Pt/logo.png" style="width:50px; height:50px;">
 
 ### Descripcion
 
