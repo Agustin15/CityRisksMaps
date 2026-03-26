@@ -1,4 +1,4 @@
-import { LoginAdmin } from "../loginAdmin/LoginAdmin";
+import { LoginAdmin } from "../components/loginAdmin/LoginAdmin";
 
 export const LoginAdminPage = () => {
   return <LoginAdmin />;

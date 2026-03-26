@@ -1,10 +1,10 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { MapPage } from "./components/Pages/MapPage.jsx";
+import { MapPage } from "./Pages/MapPage.jsx";
 import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";
 import { CrudProvider } from "./contexts/adminContext/CrudContext.jsx";
 import { AuthProvider } from "./contexts/adminContext/AuthContext.jsx";
-import { NotFoundPage } from "./components/pages/notFoundPage.jsx";
+import { NotFoundPage } from "./pages/notFoundPage.jsx";
 import { LoginAdmin } from "./components/loginAdmin/LoginAdmin.jsx";
 import { Departments } from "./components/admin/departments/Departments.jsx";
 import { Neighborhoods } from "./components/admin/neighborhoods/Neighborhoods.jsx";

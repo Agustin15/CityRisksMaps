@@ -21,7 +21,7 @@ export const ContentMap = ({ polygonSelected }) => {
   const { userLocation } = useMapControls();
   const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
   const { originLocation, destinationLocation } = useRoutes();
-  const { routeNavigation } = useNavigation();
+  const { routeNavigation, currentStep } = useNavigation();
   const { windowWidth } = useWindowResize();
 
   return (
@@ -72,7 +72,7 @@ export const ContentMap = ({ polygonSelected }) => {
         </AdvancedMarker>
       )}
 
-      {routeNavigation && (
+      {routeNavigation && currentStep && (
         <MapControl position={ControlPosition.RIGHT_CENTER}>
           <Navigation />
         </MapControl>

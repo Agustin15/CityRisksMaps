@@ -4,19 +4,28 @@ import { useWindowResize } from "../../../contexts/WindowResizeContext.jsx";
 import { useEffect } from "react";
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { HandleUserLocation } from "./HandleUserLocation.jsx";
-import { activateNavigationVoice, getImageManeuver } from "./functions.js";
 import { OptionsIndication } from "./optionsIndication/OptionsIndication.jsx";
+import { getImageManeuver } from "./functions.js";
+import { useNavigationStep } from "../../../contexts/navigationContext/NavigationStepContext.jsx";
 
 export const Navigation = () => {
-  const { destinationArrived, warning, currentStep, activeNavigationVoice } =
-    useNavigation();
+  const {
+    destinationArrived,
+    currentStep,
+    activeNavigationVoice,
+    activateNavigationVoice
+  } = useNavigation();
+
+  const { warning } = useNavigationStep();
 
   const { windowWidth } = useWindowResize();
 
   useEffect(() => {
     if (!currentStep || !activeNavigationVoice) return;
-    let text = currentStep.navigationInstruction.instructions;
-    if (destinationArrived == true) text = "¡Ha llegado a su destino!";
+    let text =
+      destinationArrived == true
+        ? "¡Ha llegado a su destino!"
+        : currentStep.navigationInstruction.instructions;
 
     activateNavigationVoice(text);
   }, [currentStep]);

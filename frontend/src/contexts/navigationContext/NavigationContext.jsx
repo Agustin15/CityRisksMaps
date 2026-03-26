@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import { useMapControls } from "../MapContext";
-import { getNewRoute, getUserStep } from "./functions.js";
+import { getNewRoute } from "./functionsNavigation.js";
 
 const NavigationContext = createContext();
 
@@ -16,17 +16,11 @@ export const NavigationProvider = ({ children }) => {
   const [destinationArrived, setDestinationArrived] = useState(false);
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
   const [editRoute, setEditRoute] = useState(false);
-  const [warning, setWarning] = useState({
-    rateLevel: "",
-    rateColor: "",
-    neighborhood: ""
-  });
 
   const { userLocation } = useMapControls();
   const {
     routes,
-    routeSelected,
-    setRouteSelected,
+    setIndexRouteSelected,
     setRoutes,
     polylines,
     setPolylines,
@@ -35,13 +29,23 @@ export const NavigationProvider = ({ children }) => {
     transportSelected
   } = useRoutes();
 
-  const handleNavigation = () => {
-    const polylineFound = polylines.filter((polyline, index) => {
-      if (index != routeSelected) polyline.setMap(null);
-      else return polyline;
+  const handleNavigation = (indexRouteSelected) => {
+    let polylineFound;
+
+    polylines.map((polyline, index) => {
+      if (index != indexRouteSelected) polyline.setMap(null);
+      else {
+        polyline.setOptions({
+          strokeOpacity: 1.0,
+          zIndex: 1
+        });
+        polylineFound = polyline;
+      }
     });
 
-    const routeFound = routes.find((route, index) => index == routeSelected);
+    const routeFound = routes.find(
+      (route, index) => index == indexRouteSelected
+    );
 
     map.setOptions({
       disableDefaultUI: true,
@@ -52,26 +56,14 @@ export const NavigationProvider = ({ children }) => {
       zoom: 18
     });
 
-    const startLocation = routeFound.legs[0].steps[0].startLocation.latLng;
-    const endLocation = routeFound.legs[0].steps[0].endLocation.latLng;
-
-    const heading = google.maps.geometry.spherical.computeHeading(
-      { lat: startLocation.latitude, lng: startLocation.longitude },
-      { lat: endLocation.latitude, lng: endLocation.longitude }
-    );
-
     map.setTilt(70);
-    map.setHeading(heading);
 
     setPolylines();
     setRoutes();
-    setRouteSelected();
+    setIndexRouteSelected();
     setShowMenuRoutes(false);
-
-    setPolylineNavigation(polylineFound[0]);
+    setPolylineNavigation(polylineFound);
     setRouteNavigation(routeFound);
-    setCurrentStep(routeFound.legs[0].steps[0]);
-    setIndexStep(0);
   };
 
   const handleCloseNavigation = () => {
@@ -125,58 +117,23 @@ export const NavigationProvider = ({ children }) => {
     }
   };
 
-  const redrawRouteWhenUserMove = (indexLatLng) => {
-    const newPolylinePath = polylineNavigation
-      .getPath()
-      .mh.filter((latLng, index) => {
-        if (index >= indexLatLng) return latLng;
-      });
-
-    polylineNavigation.setOptions({ path: newPolylinePath });
-
-    setPolylineNavigation(polylineNavigation);
-
-    calculateUserStep();
+  const handleOptionVoice = () => {
+    if (!activeNavigationVoice) {
+      setActiveNavigationVoice(true);
+      activateNavigationVoice(currentStep.navigationInstruction.instructions);
+    } else setActiveNavigationVoice(false);
   };
 
-  const calculateUserStep = () => {
-    let userStepFound = getUserStep(
-      routeNavigation,
-      userLocation,
-      transportSelected
-    );
+  const activateNavigationVoice = (text) => {
+    const synth = window.speechSynthesis;
 
-    if (userStepFound.stepFound && userStepFound.indexStepFound != indexStep) {
-      let startLocation = userStepFound.stepFound.startLocation.latLng;
-      let endLocation = userStepFound.stepFound.endLocation.latLng;
+    const utterance = new SpeechSynthesisUtterance(text);
 
-      const heading = google.maps.geometry.spherical.computeHeading(
-        {
-          lat: startLocation.latitude,
-          lng: startLocation.longitude
-        },
-        {
-          lat: endLocation.latitude,
-          lng: endLocation.longitude
-        }
-      );
+    utterance.voice = synth.getVoices()[4];
+    utterance.lang = "es-MX";
+    utterance.volume = 0.5;
 
-      if (
-        routeNavigation.legs[0].steps.length ==
-        userStepFound.indexStepFound + 1
-      ) {
-        if (
-          google.maps.geometry.spherical.computeDistanceBetween(
-            userLocation,
-            endLocation
-          ) < (transportSelected == "Walk" ? 15 : 10)
-        )
-          setDestinationArrived(true);
-        else if (destinationArrived == true) setDestinationArrived(false);
-      }
-
-      map.setHeading(heading);
-    }
+    synth.speak(utterance);
   };
 
   return (
@@ -185,18 +142,18 @@ export const NavigationProvider = ({ children }) => {
         routeNavigation,
         polylineNavigation,
         currentStep,
-        setPolylineNavigation,
-        recalculateRoute,
-        redrawRouteWhenUserMove,
-        handleNavigation,
+        setCurrentStep,
+        indexStep,
         activeNavigationVoice,
-        setActiveNavigationVoice,
+        setIndexStep,
+        setPolylineNavigation,
         destinationArrived,
-        warning,
-        setWarning,
         editRoute,
         setEditRoute,
-        handleCloseNavigation
+        handleCloseNavigation,
+        handleNavigation,
+        handleOptionVoice,
+        recalculateRoute
       }}
     >
       {children}

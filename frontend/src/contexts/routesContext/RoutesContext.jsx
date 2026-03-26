@@ -16,7 +16,7 @@ export const RoutesProvider = ({ children }) => {
   const [transportSelected, setTransportSelected] = useState();
   const [loadingRoutes, setLoadingRoutes] = useState(false);
   const [routes, setRoutes] = useState();
-  const [routeSelected, setRouteSelected] = useState();
+  const [indexRouteSelected, setIndexRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
 
   const map = useMap();
@@ -72,7 +72,7 @@ export const RoutesProvider = ({ children }) => {
       if (resultDataRoutes) {
         setRoutes(resultDataRoutes.routes);
         setPolylines(resultDataRoutes.polylines);
-        setRouteSelected(0);
+        setIndexRouteSelected(0);
       }
     } catch (error) {
       alertSwalError(
@@ -94,7 +94,7 @@ export const RoutesProvider = ({ children }) => {
     setDestinationLocation();
     setRoutes();
     setTransportSelected();
-    setRouteSelected();
+    setIndexRouteSelected();
     setShowMenuRoutes(false);
     setLoadingRoutes(false);
   };
@@ -130,8 +130,8 @@ export const RoutesProvider = ({ children }) => {
         routes,
         setRoutes,
         showRoutes,
-        routeSelected,
-        setRouteSelected,
+        indexRouteSelected,
+        setIndexRouteSelected,
         handleClose
       }}
     >

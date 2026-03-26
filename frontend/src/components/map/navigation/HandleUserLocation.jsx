@@ -1,29 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
-import { useZoneCrimes } from "../../../contexts/zoneCrimesContext/ZoneCrimesContext";
 import { useMapControls } from "../../../contexts/MapContext";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext";
-import {
-  verifyUserDistanceToCurrentStep,
-  verifyUserLocationInPolygon
-} from "./functions.js";
+import { useNavigationStep } from "../../../contexts/navigationContext/NavigationStepContext";
 
 export const HandleUserLocation = () => {
   const [lastCheck, setLastCheck] = useState(
     new Date().setSeconds(new Date().getSeconds() - 16)
   );
 
-  const {
-    recalculateRoute,
-    currentStep,
-    redrawRouteWhenUserMove,
-    warning,
-    setWarning
-  } = useNavigation();
-  
+  const { verifyUserDistanceToCurrentStep, verifyUserLocationInPolygon } =
+    useNavigationStep();
+
   const { transportSelected } = useRoutes();
   const { userLocation } = useMapControls();
-  const { polygons } = useZoneCrimes();
 
   useEffect(() => {
     switch (true) {
@@ -42,18 +31,7 @@ export const HandleUserLocation = () => {
 
   const userLocationChanged = () => {
     setLastCheck(new Date());
-    verifyUserLocationInPolygon(userLocation, polygons, setWarning, warning);
-
-    const latLngIndex = verifyUserDistanceToCurrentStep(
-      currentStep,
-      userLocation,
-      transportSelected
-    );
-
-    if (latLngIndex == null) {
-      recalculateRoute();
-    } else {
-      redrawRouteWhenUserMove(latLngIndex);
-    }
+    verifyUserLocationInPolygon();
+    verifyUserDistanceToCurrentStep();
   };
 };

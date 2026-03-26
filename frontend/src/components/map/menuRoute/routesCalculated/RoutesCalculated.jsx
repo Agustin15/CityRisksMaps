@@ -17,7 +17,7 @@ export const RoutesCalculated = ({
   showDetails,
   setShowDetails
 }) => {
-  const { routeSelected, setRouteSelected, polylines, setPolylines } =
+  const { indexRouteSelected, setIndexRouteSelected, polylines, setPolylines } =
     useRoutes();
   const { windowWidth } = useWindowResize();
 
@@ -29,8 +29,8 @@ export const RoutesCalculated = ({
   ];
 
   const handleClick = (index) => {
-    if (routeSelected != index) {
-      setRouteSelected(index);
+    if (indexRouteSelected != index) {
+      setIndexRouteSelected(index);
       changeRoute(index, polylines, setPolylines);
     }
   };
@@ -41,7 +41,7 @@ export const RoutesCalculated = ({
         <li
           onClick={() => handleClick(index)}
           key={index}
-          className={routeSelected == index ? styles.routeSelected : ""}
+          className={indexRouteSelected == index ? styles.routeSelected : ""}
         >
           <div className={styles.mainRow}>
             <div className={styles.row}>
@@ -65,7 +65,7 @@ export const RoutesCalculated = ({
                 {route.routeRangesDanger && <RouteRangesDanger route={route} />}
 
                 <Options
-                  index={index}
+                  indexRoute={index}
                   showDetails={showDetails}
                   setShowDetails={setShowDetails}
                 />

@@ -1,47 +1,6 @@
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 
-export const getUserStep = (
-  routeNavigation,
-  userLocation,
-  transportSelected
-) => {
-  let toleranceGrades, indexCurrentStepFound;
-
-  const stepCurrentFound = routeNavigation.legs[0].steps.find((step, index) => {
-    const polylineStep = new google.maps.Polyline({
-      path: google.maps.geometry.encoding.decodePath(
-        step.polyline.encodedPolyline
-      )
-    });
-
-    ///1 grado longitud equivale 111319 metros
-    if (
-      transportSelected == "Drive" ||
-      transportSelected == "Transit" ||
-      transportSelected == "Two_wheeler"
-    )
-      toleranceGrades = 30 / 111319;
-    else toleranceGrades = 15 / 111319;
-
-    const userInStep = google.maps.geometry.poly.isLocationOnEdge(
-      userLocation,
-      polylineStep,
-      toleranceGrades
-    );
-
-    if (userInStep == true) {
-      indexCurrentStepFound = index;
-      return step;
-    }
-  });
-
-  return {
-    stepFound: stepCurrentFound,
-    indexStepFound: indexCurrentStepFound
-  };
-};
-
 export const getNewRoute = async (
   newOriginLocation,
   destinationLocation,
@@ -68,7 +27,8 @@ export const getNewRoute = async (
           destination: {
             location: { latLng: destinationLocation }
           },
-          intermediates: intermediates ? intermediates : [],
+          intermediates:
+            intermediates && intermediates.length > 0 ? intermediates : [],
           travelMode: transportSelected,
           computeAlternativeRoutes: false,
           routeModifiers: {

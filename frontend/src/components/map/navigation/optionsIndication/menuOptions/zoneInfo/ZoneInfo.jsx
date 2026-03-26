@@ -1,11 +1,11 @@
 import styles from "./zoneInfo.module.css";
 import { SvgWarning } from "./svgWarning/SvgWarning";
 import { useState } from "react";
-import { useNavigation } from "../../../../../../contexts/navigationContext/NavigationContext";
+import { useNavigationStep } from "../../../../../../contexts/navigationContext/NavigationStepContext";
 
 export const ZoneInfo = ({ svgWarningRef }) => {
   const [showDetailsWarning, setShowDetailsWarning] = useState(false);
-  const { warning } = useNavigation();
+  const { warning } = useNavigationStep();
 
   const handleClick = () => {
     if (showDetailsWarning) setShowDetailsWarning(false);

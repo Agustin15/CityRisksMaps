@@ -4,6 +4,7 @@ const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
 
 import { useState } from "react";
+import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
 import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
@@ -16,7 +17,8 @@ export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useZoneCrimes();
   const { handleClickOnMap } = useSearchPlace();
-  const { routeNavigation } = useNavigation();
+  const { routeNavigation, editRoute } = useNavigation();
+  const { windowWidth } = useWindowResize();
   const [polygonSelected, setPolygonSelected] = useState();
 
   return (
@@ -43,12 +45,17 @@ export const ContainMap = () => {
           if (event.detail.placeId && !routeNavigation) {
             event.stop();
             handleClickOnMap(event);
-          } else if (!routeNavigation)
+          }
+          if (windowWidth > 1200 && !editRoute)
             handleMouseNeighborhoohdPolygon(
               event,
               polygons,
               setPolygonSelected
             );
+        }}
+        onMousemove={(event) => {
+          if (windowWidth < 1200 || editRoute) return;
+          handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected);
         }}
         onDblclick={(event) => {
           if (routeNavigation) return;
