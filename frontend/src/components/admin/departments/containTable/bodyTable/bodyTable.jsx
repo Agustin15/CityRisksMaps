@@ -9,19 +9,17 @@ import { createPortal } from "react-dom";
 import { Modal } from "../../../modal/Modal";
 import { Edit } from "../edit/Edit";
 import { Delete } from "../delete/Delete";
+import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 
 export const BodyTable = () => {
   const [editDepartment, setEditDepartment] = useState(null);
   const [deleteDepartment, setDeleteDepartment] = useState(null);
   const { loading, registers } = useCrud();
+  const { user } = useAuth();
   let navigate = useNavigate();
 
   const handleNeighborhoods = (department) => {
-    navigate(
-      "/admin/barrios/departamento/" +
-        "getNeighborhoodsByDepartmentOffset/" +
-        department.name
-    );
+    navigate("/admin/barrios/departamento/" + department.name);
   };
 
   return (
@@ -34,19 +32,23 @@ export const BodyTable = () => {
             <td>{department.name}</td>
             <td>
               <div className={styles.options}>
-                <button
-                  onClick={() => setDeleteDepartment(department.name)}
-                  className={styles.delete}
-                >
-                  <img src={iconDelete}></img>
-                </button>
+                {user.rol == "Admin" && (
+                  <>
+                    <button
+                      onClick={() => setDeleteDepartment(department.name)}
+                      className={styles.delete}
+                    >
+                      <img src={iconDelete}></img>
+                    </button>
 
-                <button
-                  onClick={() => setEditDepartment(department.name)}
-                  className={styles.edit}
-                >
-                  <img src={iconEdit}></img>
-                </button>
+                    <button
+                      onClick={() => setEditDepartment(department.name)}
+                      className={styles.edit}
+                    >
+                      <img src={iconEdit}></img>
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={() => handleNeighborhoods(department)}
                   className={styles.neighborhoods}

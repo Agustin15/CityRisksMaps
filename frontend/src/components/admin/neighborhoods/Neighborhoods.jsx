@@ -1,5 +1,5 @@
 import styles from "./Neighborhoods.module.css";
-import { MenuSide } from "../MenuSide";
+import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
@@ -20,7 +20,9 @@ export const Neighborhoods = () => {
     }
   }, []);
 
-  let title = "Lista de barrios" + (!params.name ? "" : " de " + params.name);
+  let title =
+    "Lista de barrios" +
+    (!params.departmentName ? "" : " de " + params.departmentName);
 
   return (
     <>

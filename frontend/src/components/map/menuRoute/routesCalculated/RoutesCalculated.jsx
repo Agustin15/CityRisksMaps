@@ -2,7 +2,6 @@ import styles from "./RoutesCalculated.module.css";
 import iconCar from "../../../../assets/img/car.png";
 import iconWalk from "../../../../assets/img/walk.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
-import iconTrain from "../../../../assets/img/train.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { RouteRangesDanger } from "./routeRangesDanger/RouteRangesDanger.jsx";
 import { DetailsRoute } from "./detailsRoute/DetailsRoute.jsx";
@@ -25,7 +24,6 @@ export const RoutesCalculated = ({
     { transport: "Drive", icon: iconCar },
     { transport: "Walk", icon: iconWalk },
     { transport: "Two_wheeler", icon: iconMotorBike },
-    { transport: "Transit", icon: iconTrain }
   ];
 
   const handleClick = (index) => {

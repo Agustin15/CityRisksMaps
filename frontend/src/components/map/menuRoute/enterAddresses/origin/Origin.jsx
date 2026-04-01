@@ -1,5 +1,4 @@
 import styles from "./Origin.module.css";
-import iconOrigin from "../../../../../assets/img/origin.png";
 import iconSearch from "../../../../../assets/img/search.png";
 import { useRoutes } from "../../../../../contexts/routesContext/RoutesContext";
 
@@ -10,9 +9,8 @@ export const Origin = ({ handleChange, handleSearchSuggestions, loading }) => {
     <div className={styles.origin}>
       <label>Origen:</label>
       <div className={styles.row}>
-        <img src={iconOrigin}></img>
         <div className={styles.containInput}>
-          <input
+          <input placeholder="Ingrese direccion de origen"
             value={origin}
             onChange={(event) => handleChange(event.target.value)}
             type="text"

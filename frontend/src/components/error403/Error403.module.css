@@ -1,0 +1,130 @@
+.forbidden {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    font-family: Arial, Helvetica, sans-serif;
+    gap: 1rem;
+    overflow-x: hidden;
+}
+
+.wave {
+    background: url("../../../assets/img/backgroundForbidden.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 55vh;
+    width: 100vw;
+    padding-bottom: 1rem;
+}
+
+.msj {
+    display: flex;
+    position: absolute;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75%;
+}
+
+.msj img {
+    width: 11rem;
+    height: 11rem;
+}
+.msj h3 {
+    margin-top: 0.5rem;
+    font-size: 26px;
+}
+.msj p {
+    margin: 0;
+    font-size: 18px;
+    color: rgb(77, 77, 77);
+    text-align: center;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 1rem;
+    gap: 0.7rem;
+    font-size: 16px;
+    color: rgb(133, 133, 133);
+    width: 100%;
+}
+
+.footer img {
+    width: 42px;
+    height: 42px;
+}
+
+@media (width<=650px) {
+    .forbidden {
+        height: 100vh;
+    }
+    .wave {
+        background-size: cover;
+    }
+    .msj {
+        height: 99%;
+    }
+    .msj h3 {
+        margin-top: 0.5rem;
+        font-size: 23px;
+    }
+    .msj p {
+        font-size: 16px;
+        width: 92%;
+    }
+    .msj img {
+        width: 9rem;
+        height: 9rem;
+    }
+    .footer {
+        position: absolute;
+        bottom: 1rem;
+        gap: 0.7rem;
+        font-size: 16px;
+        color: rgb(133, 133, 133);
+        width: 100%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .forbidden{
+        height: 100vh;
+    }
+    .wave {
+        background-size: cover;
+    }
+    .msj {
+        height: 80%;
+    }
+    .msj h3 {
+        margin-top: 0.5rem;
+        font-size: 22px;
+    }
+    .msj p {
+        font-size: 16px;
+    }
+    .msj img {
+        width: 9rem;
+        height: 9rem;
+    }
+
+    .footer {
+        font-size: 15px;
+        bottom: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .footer img {
+        width: 36px;
+        height: 36px;
+    }
+}

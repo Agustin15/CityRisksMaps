@@ -1,5 +1,6 @@
 import express from "express";
 import { verifyAuthToken } from "../controller/authentication.js";
+import { verifyAuthorization } from "../controller/authorization.js";
 import {
   add,
   deleteById,
@@ -13,26 +14,10 @@ export const RoutesDepartment = express.Router();
 
 RoutesDepartment.use(verifyAuthToken);
 
-RoutesDepartment.get("/:paramsGet", (req, res) => {
-  if (!req.params) res.status(400).send("Parametros de solicitud no definidos");
+RoutesDepartment.get("/allDepartments", getDepartments);
+RoutesDepartment.get("/departmentsOffset/:offset", getDepartmentsOffset);
+RoutesDepartment.get("/departmentById/:id", getDepartmentById);
 
-  if (!JSON.parse(req.params.paramsGet))
-    res.status(400).send("paramsGet no definido");
-
-  const { option } = JSON.parse(req.params.paramsGet);
-
-  if (!option) res.status(400).send("option no definido");
-
-  switch (option) {
-    case "getDepartments":
-      return getDepartments(req, res);
-    case "getDepartmentsOffset":
-      return getDepartmentsOffset(req, res);
-    case "getDepartmentsById":
-      return getDepartmentById(req, res);
-  }
-});
-
-RoutesDepartment.post("/", add);
-RoutesDepartment.put("/:idDepartment", update);
-RoutesDepartment.delete("/:idDepartment", deleteById);
+RoutesDepartment.post("/", verifyAuthorization, add);
+RoutesDepartment.put("/:idDepartment", verifyAuthorization, update);
+RoutesDepartment.delete("/:idDepartment", verifyAuthorization, deleteById);

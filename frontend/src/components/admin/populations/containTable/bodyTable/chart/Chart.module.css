@@ -22,10 +22,10 @@
     right: 0.1rem;
     box-shadow: none;
     background: none;
-    color: white;
+    color: rgb(31, 31, 31);
     width: auto;
     height: auto;
-    font-size: 18px;
+    font-size: 14px;
 }
 .containChart .chart p {
     display: flex;
@@ -46,7 +46,7 @@
     width: 96%;
     height: 79%;
     padding: 2%;
-    background: linear-gradient(345deg, #a3c7e4, #bbd9eb);
+    background: linear-gradient(345deg, #94e0d6, #90e6da);
     overflow: hidden;
     position: relative;
 }

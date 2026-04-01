@@ -1,17 +1,21 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const getDataChart = async (idNeighborhood, setErrorChart, setUser) => {
-  let params = JSON.stringify({
-    option: "getDatapointsNeighborhoodPopulationsYears",
-    idNeighborhood: idNeighborhood
-  });
-
+export const getDataChart = async (
+  nameNeighborhood,
+  setErrorChart,
+  setUser
+) => {
   try {
-    const response = await fetch(LOCALHOST_BACKEND + "/population/" + params, {
-      method: "GET",
-      credentials: "include",
-      headers: { "Content-type": "application/json" }
-    });
+    const response = await fetch(
+      LOCALHOST_BACKEND +
+        "/population/datapointsNeighborhoodPopulationsYears/" +
+        nameNeighborhood,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-type": "application/json" }
+      }
+    );
 
     const result = await response.json();
 

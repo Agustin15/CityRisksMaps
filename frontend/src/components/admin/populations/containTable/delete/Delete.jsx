@@ -5,7 +5,6 @@ import {
   alertSwalConfirmDelete,
   alertSwalSuccess
 } from "../../../../sweetAlert/sweetAlert";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 
 export const Delete = ({ population, setDeletePopulation }) => {
   const {
@@ -50,21 +49,23 @@ export const Delete = ({ population, setDeletePopulation }) => {
 
   const reloadRegisters = async () => {
     let url;
-    if (index == 0 && registers.length == 1) {
-      const yearsLoaded = await loadYears(
-        "/population/",
-        "getPopulationsYears"
-      );
 
-      const yearToSelect = Math.max(...yearsLoaded);
-      setYearSelected(yearToSelect);
-      url = defineEndpointToRefreshDataAfterChanges(0, params, yearToSelect);
+    if (registers.length == 1) {
+      if (index == 0) {
+        const yearsLoaded = await loadYears("/population/populationsYears");
+        const yearToSelect = Math.max(...yearsLoaded);
+        setYearSelected(yearToSelect);
+        url = "/population/populationsOffsetYear//" + yearToSelect + "/" + 0;
+      } else {
+        url =
+          "/population/populationsOffsetYear/" +
+          yearSelected +
+          "/" +
+          (index - 1) * 10;
+      }
     } else {
-      url = defineEndpointToRefreshDataAfterChanges(
-        index,
-        params,
-        yearSelected
-      );
+      url =
+        "/population/populationsOffsetYear/" + yearSelected + "/" + index * 10;
     }
 
     let populations = await fetchGet(url);

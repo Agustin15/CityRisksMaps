@@ -8,13 +8,16 @@ import { useParams } from "react-router";
 export const ContainTable = () => {
   const params = useParams();
 
-  let controller = !params.controller
-    ? "getNeighborhoodsOffset"
-    : params.controller;
+  let route =
+    "/neighborhood/" +
+    (!params.departmentName
+      ? "neighborhoodsOffset"
+      : "neighborhoodsOffsetDepartment/" +
+        encodeURIComponent(params.departmentName));
 
   return (
     <div className={styles.containTable}>
-      <LoadData route={"/neighborhood/"} controller={controller} />
+      <LoadData route={route} offset={0} />
 
       <div className={styles.scrollTable}>
         <table>
@@ -31,7 +34,7 @@ export const ContainTable = () => {
         </table>
       </div>
 
-      <Pagination route={"/neighborhood/"} controller={controller} />
+      <Pagination route={route} />
     </div>
   );
 };

@@ -7,24 +7,17 @@ import {
 
 export const RoutesNeighborhoodCrime = express.Router();
 
-RoutesNeighborhoodCrime.get("/:optionGet", (req, res) => {
-  if (!req.params) {
-    res.status(400).send("Parametros no definidos");
-  }
-  if (!JSON.parse(req.params.optionGet)) {
-    res.status(400).send("optionGet no definido");
-  }
+RoutesNeighborhoodCrime.get(
+  "/neighborhoodsCrimesByYear/:categoryCrime/:year",
+  getNeighborhoodsCrimeByYear
+);
 
-  const { option } = JSON.parse(req.params.optionGet);
+RoutesNeighborhoodCrime.get(
+  "/yearsNeighborhoodsCrime/:categoryCrime",
+  getYearsNeighborhoodsCrime
+);
 
-  if (!option) res.status(400).send("option no definido");
-
-  switch (option) {
-    case "getNeighborhoodsCrimeByYear":
-      return getNeighborhoodsCrimeByYear(req, res);
-    case "getYearsNeighborhoodsCrime":
-      return getYearsNeighborhoodsCrime(req, res);
-    case "getCategoryCrimeInNeighborhood":
-      return getCategoryCrimeInNeighborhood(req, res);
-  }
-});
+RoutesNeighborhoodCrime.get(
+  "/categoryCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
+  getCategoryCrimeInNeighborhood
+);

@@ -69,10 +69,9 @@ export const getDepartments = async (req, res) => {
 
 export const getDepartmentsOffset = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).offset == null)
-      throw new Error("Debe indicar un offset");
+    if (req.params.offset == null) throw new Error("Debe indicar un offset");
 
-    const offset = JSON.parse(req.params.paramsGet).offset;
+    const offset = parseInt(req.params.offset);
 
     const departments = await DepartmentService.getDepartments();
 
@@ -100,10 +99,9 @@ export const getDepartmentsOffset = async (req, res) => {
 
 export const getDepartmentById = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).idDepartment)
-      throw new Error("Debe indicar un id");
+    if (req.params.idDepartment == null) throw new Error("Debe indicar un id");
 
-    const idDepartment = JSON.parse(req.params.paramsGet).idDepartment;
+    const idDepartment = parseInt(req.params.idDepartment);
 
     const department = await DepartmentService.getDepartmentById(idDepartment);
 

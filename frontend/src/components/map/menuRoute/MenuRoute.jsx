@@ -1,5 +1,4 @@
 import styles from "./MenuRoutes.module.css";
-import iconNotRoutes from "../../../assets/img/detailsRoute.png";
 import { useRoutes } from "../../../contexts/routesContext/RoutesContext.jsx";
 import { useMapControls } from "../../../contexts/MapContext.jsx";
 import { useState } from "react";
@@ -70,13 +69,6 @@ export const MenuRoute = () => {
           showDetails={showDetails}
           setShowDetails={setShowDetails}
         />
-      )}
-
-      {!loadingRoutes && !origin && (
-        <div className={styles.notRoutes}>
-          <span>Seleccione un origen para mostrarle las rutas</span>
-          <img src={iconNotRoutes}></img>
-        </div>
       )}
     </div>
   );

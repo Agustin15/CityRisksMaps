@@ -6,8 +6,6 @@ export class User {
   #lastname;
   #email;
   #password;
-  #created;
-  #lastModified;
   #rol;
 
   constructor(
@@ -16,8 +14,6 @@ export class User {
     lastname = "desconocido",
     email = "email@gmail.com",
     password = "D98932B1kfo#m.l",
-    created,
-    lastModified,
     rol = new Rol()
   ) {
     this.idUser = idUser;
@@ -25,8 +21,6 @@ export class User {
     this.lastname = lastname;
     this.email = email;
     this.password = password;
-    this.created = created;
-    this.lastModified = lastModified;
     this.rol = rol;
   }
 
@@ -96,21 +90,6 @@ export class User {
 
   get password() {
     return this.#password;
-  }
-
-  set created(value) {
-    this.#created = value;
-  }
-
-  get created() {
-    return this.#created;
-  }
-  set lastModified(value) {
-    this.#lastModified = value;
-  }
-
-  get lastModified() {
-    return this.#lastModified;
   }
 
   set rol(value) {

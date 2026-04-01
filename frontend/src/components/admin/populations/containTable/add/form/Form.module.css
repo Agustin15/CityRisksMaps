@@ -3,7 +3,7 @@ form {
     flex-direction: column;
     align-items: center;
     gap: 1.8rem;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
 }
 
 form .columnInput {

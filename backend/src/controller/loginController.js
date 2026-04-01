@@ -18,9 +18,9 @@ export const login = async (req, res) => {
     user.email = email;
     user.password = password;
 
-    const userFound = await UserService.getUserByEmail(user.email);
+    const userFound = await UserService.getUserActivatedByEmail(user.email);
 
-    if (!userFound) throw new Error("Usuario no encontrado  en el sistema");
+    if (!userFound) throw new Error("Usuario no encontrado en el sistema");
 
     if (userFound.password.length == 60) {
       const match = await bcrypt.compare(user.password, userFound.password);

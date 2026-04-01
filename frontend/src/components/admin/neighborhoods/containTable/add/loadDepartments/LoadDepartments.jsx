@@ -21,11 +21,9 @@ export const LoadDepartaments = ({
   }, []);
 
   const load = async () => {
-    let params = JSON.stringify({ option: "getDepartments" });
-
     try {
       const response = await fetch(
-        LOCALHOST_BACKEND + "/department/" + params,
+        LOCALHOST_BACKEND + "/department/allDepartments",
         {
           method: "GET",
           credentials: "include",

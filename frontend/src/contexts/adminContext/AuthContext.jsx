@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }) => {
         if (response.status == 401) {
           setUser();
           location.href = LOCALHOST_FRONTEND + "/admin/login";
-        }
+        } else if (response.status == 403)
+          location.href = LOCALHOST_FRONTEND + "/admin/permiso-denegado/";
       }
 
       setUser(result);

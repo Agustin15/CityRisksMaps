@@ -5,15 +5,13 @@ export const getDataChart = async (
   idNeighborhood,
   setErrorDataChart
 ) => {
-  let optionGET = JSON.stringify({
-    option: "getCategoryCrimeInNeighborhood",
-    idNeighborhood: idNeighborhood,
-    categoryCrime: categoryCrime
-  });
-
   try {
     const response = await fetch(
-      localhostBackend + "/neighborhoodCrime/" + optionGET,
+      localhostBackend +
+        "/neighborhoodCrime/categoryCrimeInNeighborhood" +
+        categoryCrime +
+        "/" +
+        idNeighborhood,
       {
         method: "GET",
         credentials: "include",

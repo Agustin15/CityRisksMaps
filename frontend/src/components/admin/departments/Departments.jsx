@@ -1,5 +1,5 @@
 import styles from "./Departments.module.css";
-import { MenuSide } from "../MenuSide";
+import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Add } from "./containTable/add/Add";
 import { Modal } from "../modal/Modal";

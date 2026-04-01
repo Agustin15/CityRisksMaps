@@ -36,9 +36,20 @@ export class RolService {
       throw error;
     }
   }
-  static async getRolById() {
+  static async getRolById(idRol) {
     try {
-      const result = await RolDAL.getAllRols();
+      const result = await RolDAL.getRolById(idRol);
+
+      if (result.length > 0) {
+        return result[0];
+      } else null;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getRolByName(rolName) {
+    try {
+      const result = await RolDAL.getRolByName(rolName);
 
       if (result.length > 0) {
         return result[0];

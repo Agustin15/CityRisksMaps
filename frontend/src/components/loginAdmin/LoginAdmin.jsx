@@ -1,6 +1,5 @@
 import styles from "./LoginAdmin.module.css";
 import iconLogo from "../../assets/img/logo.png";
-import iconLogin from "../../assets/img/login.png";
 import iconAdmin from "../../assets/img/admin.png";
 import { LoginForm } from "./loginForm/LoginForm";
 
@@ -10,20 +9,19 @@ export const LoginAdmin = () => {
       <div className={styles.login}>
         <div className={styles.welcome}>
           <img src={iconAdmin}></img>
-          <h3>Administracion del sistema</h3>
+          <h2>Bienvenido al panel de administración</h2>
+          <span>Inicia sesión para administrar el sistema</span>
         </div>
         <div className={styles.containForm}>
           <div className={styles.title}>
-            <img src={iconLogin}></img>
-            <h3>Iniciar sesion</h3>
+            <img src={iconLogo}></img>
+            <div className={styles.titleText}>
+              <h3>IndiceDelitosMontevideo</h3>
+              <span>Iniciar sesión</span>
+            </div>
           </div>
 
           <LoginForm />
-
-          <div className={styles.footer}>
-            <img src={iconLogo}></img>
-            <span>IndiceDelitosMontevideo</span>
-          </div>
         </div>
       </div>
     </div>

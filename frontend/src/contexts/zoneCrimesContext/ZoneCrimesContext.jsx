@@ -49,23 +49,20 @@ export const ZoneCrimesProvider = ({ children }) => {
   };
 
   const getNeighborhoodsCrimeByYear = async (year, categoryCrime) => {
-    let optionGET = JSON.stringify({
-      option: "getNeighborhoodsCrimeByYear",
-      year: year,
-      categoryCrime: categoryCrime
-    });
-
-    const url = localhostBackend + "/neighborhoodCrime/" + optionGET;
+    const url =
+      localhostBackend +
+      "/neighborhoodCrime/neighborhoodsCrimesByYear/" +
+      categoryCrime +
+      "/" +
+      year;
     return await fetchEndpoint(url, setLoadingNeighborhoodsCrime);
   };
 
   const getYearsNeighborhoodsCrime = async (categoryCrime) => {
-    let optionGET = JSON.stringify({
-      option: "getYearsNeighborhoodsCrime",
-      categoryCrime: categoryCrime
-    });
-
-    const url = localhostBackend + "/neighborhoodCrime/" + optionGET;
+    const url =
+      localhostBackend +
+      "/neighborhoodCrime/yearsNeighborhoodsCrime/" +
+      categoryCrime;
     return await fetchEndpoint(url, setLoadingYears);
   };
 

@@ -1,22 +1,3 @@
-export const defineEndpointToRefreshDataAfterChanges = (
-  index,
-  params,
-  yearSelected
-) => {
-  let controller = !params.controller
-    ? "getPopulationsOffsetByYear"
-    : params.controller;
-
-  return (
-    "/population/" +
-    JSON.stringify({
-      option: controller,
-      offset: index * 10,
-      year: yearSelected
-    })
-  );
-};
-
 export const validationForm = (values) => {
   const errorsValues = {
     nameNeighborhood: "",

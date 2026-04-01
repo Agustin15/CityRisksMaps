@@ -78,13 +78,15 @@ export const getPopulationsYears = async (req, res) => {
 
 export const getDatapointsNeighborhoodPopulationsYears = async (req, res) => {
   try {
-    if (JSON.parse(req.params.paramsGet).idNeighborhood == null)
+    if (req.params.nameNeighborhood == null)
       throw new Error("Barrio no definido");
 
-    const idNeighborhood = JSON.parse(req.params.paramsGet).idNeighborhood;
+    const nameNeighborhood = decodeURIComponent(req.params.nameNeighborhood);
 
     const populations =
-      await PopulationService.getPopulationsByNeighborhood(idNeighborhood);
+      await PopulationService.getPopulationsByNameNeighborhood(
+        nameNeighborhood
+      );
 
     if (populations.length == 0)
       throw new Error(
@@ -103,13 +105,12 @@ export const getDatapointsNeighborhoodPopulationsYears = async (req, res) => {
 
 export const getPopulationsOffsetByYear = async (req, res) => {
   try {
-    if (JSON.parse(req.params.paramsGet).offset == null)
-      throw new Error("Offset no definido");
+    if (req.params.offset == null) throw new Error("Offset no definido");
 
-    if (JSON.parse(req.params.paramsGet).year == null)
-      throw new Error("Año no definido");
+    if (req.params.year == null) throw new Error("Año no definido");
 
-    const { offset, year } = JSON.parse(req.params.paramsGet);
+    const offset = parseInt(req.params.offset);
+    const year = parseInt(req.params.year);
 
     const populations = await PopulationService.getPopulationsByYear(year);
 
@@ -137,13 +138,13 @@ export const getPopulationsOffsetByYear = async (req, res) => {
 
 export const getPopulationsOffsetByNeighborhood = async (req, res) => {
   try {
-    if (JSON.parse(req.params.paramsGet).offset == null)
-      throw new Error("Offset no definido");
+    if (req.params.offset == null) throw new Error("Offset no definido");
 
-    if (JSON.parse(req.params.paramsGet).name == null)
+    if (req.params.nameNeighborhood == null)
       throw new Error("Barrio no definido");
 
-    const { offset, name } = JSON.parse(req.params.paramsGet);
+    const offset = parseInt(req.params.offset);
+    const name = decodeURIComponent(req.params.nameNeighborhood);
 
     const populations =
       await PopulationService.getPopulationsByNameNeighborhood(name);
@@ -154,7 +155,10 @@ export const getPopulationsOffsetByNeighborhood = async (req, res) => {
       );
 
     const populationsOffset =
-      await PopulationService.getPopulationsOffsetByNameNeighborhood(name, offset);
+      await PopulationService.getPopulationsOffsetByNameNeighborhood(
+        name,
+        offset
+      );
 
     if (populationsOffset.length == 0)
       throw new Error(

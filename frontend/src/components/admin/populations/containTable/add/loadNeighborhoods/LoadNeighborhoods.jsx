@@ -21,11 +21,9 @@ export const LoadNeighborhoods = ({
   }, []);
 
   const load = async () => {
-    let params = JSON.stringify({ option: "getNeighborhoods" });
-
     try {
       const response = await fetch(
-        LOCALHOST_BACKEND + "/neighborhood/" + params,
+        LOCALHOST_BACKEND + "/neighborhood/allNeighborhoods",
         {
           method: "GET",
           credentials: "include",

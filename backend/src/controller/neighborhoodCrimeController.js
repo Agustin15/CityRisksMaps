@@ -2,7 +2,8 @@ import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js
 
 export const getNeighborhoodsCrimeByYear = async (req, res) => {
   try {
-    const { year, categoryCrime } = JSON.parse(req.params.optionGet);
+    const year = req.params.year;
+    const categoryCrime = req.params.categoryCrime;
 
     if (!year) throw new Error("Debe ingresar un año para la busqueda");
     if (!categoryCrime)
@@ -27,7 +28,7 @@ export const getNeighborhoodsCrimeByYear = async (req, res) => {
 
 export const getYearsNeighborhoodsCrime = async (req, res) => {
   try {
-    const { categoryCrime } = JSON.parse(req.params.optionGet);
+    const categoryCrime = req.params.categoryCrime;
 
     if (!categoryCrime)
       throw new Error("Debe ingresar un categoria de crimen para la busqueda");
@@ -48,7 +49,8 @@ export const getYearsNeighborhoodsCrime = async (req, res) => {
 
 export const getCategoryCrimeInNeighborhood = async (req, res) => {
   try {
-    const { categoryCrime, idNeighborhood } = JSON.parse(req.params.optionGet);
+    const categoryCrime = req.params.categoryCrime;
+    const idNeighborhood = req.params.idNeighborhood;
 
     if (!categoryCrime)
       throw new Error("Debe ingresar un categoria de crimen para la busqueda");

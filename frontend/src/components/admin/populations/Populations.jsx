@@ -1,5 +1,5 @@
 import styles from "./Populations.module.css";
-import { MenuSide } from "../MenuSide";
+import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
@@ -22,7 +22,7 @@ export const Populations = () => {
 
   let title =
     "Lista de poblaciones" +
-    (!params.name ? " en barrios" : " de " + params.name);
+    (!params.neighborhoodName ? " en barrios" : " de " + params.neighborhoodName);
 
   return (
     <>

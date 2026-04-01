@@ -12,6 +12,7 @@ export const Delete = ({ department, setDeleteDepartment }) => {
     setIndex,
     index,
     setRegisters,
+    registers,
     setPages,
     pages
   } = useCrud();
@@ -22,7 +23,7 @@ export const Delete = ({ department, setDeleteDepartment }) => {
 
   const handleDelete = async () => {
     const result = await alertSwalConfirmDelete(
-      `¿Desea eliminar el registro ${department.name }?`
+      `¿Desea eliminar el registro ${department.name}?`
     );
 
     if (result.isDismissed) {
@@ -37,12 +38,12 @@ export const Delete = ({ department, setDeleteDepartment }) => {
     }
   };
   const reloadRegisters = async () => {
-    let url =
-      "/department/" +
-      JSON.stringify({
-        option: "getDepartmentsOffset",
-        offset: index * 10
-      });
+    let url;
+    if (registers.length == 1 && index > 0) {
+      url = "/department/departmentsOffset/" + (index - 1) * 10;
+    } else {
+      url = "/department/departmentsOffset/" + index * 10;
+    }
 
     let departments = await fetchGet(url);
     if (departments) {

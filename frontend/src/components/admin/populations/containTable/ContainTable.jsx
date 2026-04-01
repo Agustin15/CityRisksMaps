@@ -11,19 +11,22 @@ export const ContainTable = () => {
   const params = useParams();
   const { yearSelected, loadYears, years } = useCrud();
 
-  let controller = !params.controller
-    ? "getPopulationsOffsetByYear"
-    : params.controller;
-
   useEffect(() => {
-    if (years || controller == "getPopulationsOffsetByNeighborhood") return;
-    loadYears("/population/", "getPopulationsYears");
+    if (years || params.neighborhoodName) return;
+    loadYears("/population/populationsYears");
   }, []);
+
+  let route =
+    "/population/" +
+    (!params.neighborhoodName
+      ? "populationsOffsetYear"
+      : "populationsOffsetNeighborhood/" +
+        encodeURIComponent(params.neighborhoodName));
 
   return (
     <div className={styles.containTable}>
-      {(yearSelected || controller == "getPopulationsOffsetByNeighborhood") && (
-        <LoadData route={"/population/"} controller={controller} />
+      {(yearSelected || params.neighborhoodName) && (
+        <LoadData route={route} offset={0} />
       )}
 
       <div className={styles.scrollTable}>
@@ -45,7 +48,7 @@ export const ContainTable = () => {
         </table>
       </div>
 
-      <Pagination route={"/population/"} controller={controller} />
+      <Pagination route={route} />
     </div>
   );
 };

@@ -1,0 +1,22 @@
+.save,.saveDisabled {
+    border-radius: 5px;
+    box-shadow: none;
+    width: 16rem;
+    height: 2rem;
+    color: white;
+    margin: 1.3rem 0 0 0;
+    font-size: 15px;
+    font-weight: bold;
+    background: rgb(21, 109, 160);
+}
+
+.saveDisabled {
+    opacity: 86%;
+}
+.saveDisabled:hover {
+    background: rgb(21, 109, 160);
+}
+
+.save:hover {
+    background: rgb(13, 90, 134);
+}

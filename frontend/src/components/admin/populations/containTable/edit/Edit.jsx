@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { Form } from "./form/Form.jsx";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 import { validationForm } from "../functions.js";
 
 export const Edit = ({ population, setEditPopulation }) => {
@@ -51,15 +50,11 @@ export const Edit = ({ population, setEditPopulation }) => {
       alertSwalSuccess("¡Registro de poblacion actualizado exitosamente!");
 
       if (!years.find((year) => year == parseInt(values.year))) {
-        await loadYears("/population/", "getPopulationsYears");
-        url = defineEndpointToRefreshDataAfterChanges(0, params, values.year);
+        await loadYears("/population/populationsYears");
+        url = "/population/populationsOffsetYear/" + values.year + "/" + 0;
         setYearSelected(values.year);
       } else {
-        url = defineEndpointToRefreshDataAfterChanges(
-          index,
-          params,
-          yearSelected
-        );
+        url = "/population/populationsOffsetYear/" + yearSelected + "/" + index * 10;
       }
 
       let populations = await fetchGet(url);
@@ -71,17 +66,19 @@ export const Edit = ({ population, setEditPopulation }) => {
 
   return (
     <div className={styles.containEdit}>
-      <button onClick={() => setEditPopulation(null)} className={styles.close}>
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconEdit}></img>
         <h3>
           Editar poblacion de{" "}
           {population.nameNeighborhood + " " + population.year}
         </h3>
-        <div className={styles.backgroundIcon}>
-          <img src={iconEdit}></img>
-        </div>
+
+        <button
+          onClick={() => setEditPopulation(null)}
+          className={styles.close}
+        >
+          Cerrar
+        </button>
       </div>
 
       <Form

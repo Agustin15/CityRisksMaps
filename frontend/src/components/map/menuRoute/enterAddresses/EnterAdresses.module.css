@@ -38,7 +38,7 @@
 }
 
 .enterAdresses label {
-    margin: 0.5rem 0 0 2.2rem;
+    margin: 0.5rem 0 0 0.5rem;
     color: white;
 }
 
@@ -46,7 +46,13 @@
     width: 99%;
     height: 2.4rem;
     border-radius: 5px;
-    padding-left: 1rem;
+    padding: 0 1rem 0 2.2rem;
+    background: url("../../../../assets/img/destinationAddress.png");
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-size: 22px;
+    background-position-y: 0.5rem;
+    background-position-x: 0.4rem;
     font-size: 15px;
     border: 1px solid rgb(182, 182, 182);
     outline: none;
@@ -137,12 +143,12 @@
         color: black;
     }
     .enterAdresses label {
-        margin: 0.5rem 0 0 2.2rem;
+        margin: 0.5rem 0 0 0.5rem;
         color: rgb(2, 2, 2);
     }
 
     .enterAdresses input {
-        background: rgb(243, 243, 243);
+        background-color: rgb(243, 243, 243);
     }
 
     .destination {
@@ -188,14 +194,13 @@
     }
 
     .enterAdresses input {
-        background: rgb(243, 243, 243);
+        background-color: rgb(243, 243, 243);
+        background-size: 23px;
+        height: 2.6rem;
     }
     .enterAdresses label {
-        margin: 0.5rem 0 0 2.2rem;
+        margin: 0.5rem 0 0 0.5rem;
         color: rgb(2, 2, 2);
-    }
-    .enterAdresses.row input {
-        height: 2.6rem;
     }
 
     .destination {
@@ -229,6 +234,6 @@
         color: rgb(2, 2, 2);
     }
     .enterAdresses input {
-        background: rgb(241, 241, 241);
+        background-color: rgb(248, 248, 248);
     }
 }

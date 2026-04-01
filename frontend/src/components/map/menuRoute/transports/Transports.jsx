@@ -1,7 +1,6 @@
 import styles from "./Transports.module.css";
 import iconWalk from "../../../../assets/img/walk.png";
 import iconCar from "../../../../assets/img/car.png";
-import iconTrain from "../../../../assets/img/train.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
@@ -42,12 +41,7 @@ export const Transports = () => {
       >
         <img src={iconMotorBike}></img>
       </li>
-      <li
-        onClick={() => handleClick("Transit")}
-        className={transportSelected == "Transit" ? styles.selected : ""}
-      >
-        <img src={iconTrain}></img>
-      </li>
+
       <li
         onClick={() => handleClick("Walk")}
         className={transportSelected == "Walk" ? styles.selected : ""}

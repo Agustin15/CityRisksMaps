@@ -13,8 +13,6 @@ export const FilterYears = ({ categoryCrime }) => {
     setIndexChartActive(null);
     if (categoryCrime) {
       getCrimesByYear(yearSelected);
-    } else {
-      loadQuizesDataNeighborhoodsByYear(yearSelected);
     }
   };
 

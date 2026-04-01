@@ -10,12 +10,14 @@ import { Modal } from "../../../modal/Modal";
 import { Edit } from "../edit/Edit";
 import { Delete } from "../delete/Delete";
 import { Chart } from "./chart/Chart";
+import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 
 export const BodyTable = () => {
   const [editPopulation, setEditPopulation] = useState(null);
   const [deletePopulation, setDeletePopulation] = useState(null);
   const [chartPopulation, setChartPopulation] = useState(null);
   const { loading, registers } = useCrud();
+  const { user } = useAuth();
 
   const params = useParams();
 
@@ -32,7 +34,7 @@ export const BodyTable = () => {
 
             <td>
               <div className={styles.options}>
-                {!params.controller && (
+                {user.rol == "Admin" && !params.neighborhoodName && (
                   <>
                     <button
                       onClick={() =>
@@ -84,7 +86,7 @@ export const BodyTable = () => {
               createPortal(
                 <Modal>
                   <Chart
-                    idNeighborhood={population.neighborhood}
+                    nameNeighborhood={population.nameNeighborhood}
                     setChartPopulation={setChartPopulation}
                   />
                 </Modal>,

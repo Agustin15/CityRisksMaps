@@ -1,0 +1,51 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    margin-top: 1rem;
+}
+
+form .columnInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+    position: relative;
+}
+
+form input {
+    height: 2rem;
+    width: 16rem;
+    padding-left: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid gray;
+    font-size: 15px;
+    outline: none;
+}
+
+form label {
+    font-weight: bold;
+    font-size: 15px;
+    width: 16rem;
+    text-align: start;
+}
+form p {
+    color: red;
+    position: absolute;
+    top: 3.2rem;
+    font-size: 13px;
+}
+
+form span {
+    font-size: 17px;
+}
+
+form .columnInput select {
+    width: 16.5rem;
+    height: 2.2rem;
+    border-radius: 3px;
+    border: 1px solid gray;
+    font-size: 15px;
+    outline: none;
+}

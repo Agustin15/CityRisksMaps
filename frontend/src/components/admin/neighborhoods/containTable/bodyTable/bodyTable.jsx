@@ -9,19 +9,18 @@ import { createPortal } from "react-dom";
 import { Modal } from "../../../modal/Modal";
 import { Edit } from "../edit/Edit";
 import { Delete } from "../delete/Delete";
+import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 
 export const BodyTable = () => {
   const [editNeighborhood, setEditNeighborhood] = useState(null);
   const [deleteNeighborhood, setDeleteNeighborhood] = useState(null);
   const { loading, registers } = useCrud();
+  const { user } = useAuth();
   let navigate = useNavigate();
   const params = useParams();
 
   const handleClick = (neighborhood) => {
-    navigate(
-      "/admin/poblaciones/barrio/getPopulationsOffsetByNeighborhood/" +
-        neighborhood.nameNeighborhood
-    );
+    navigate("/admin/poblaciones/barrio/" + neighborhood.nameNeighborhood);
   };
 
   return (
@@ -35,7 +34,7 @@ export const BodyTable = () => {
             <td>{neighborhood.nameDepartment}</td>
             <td>
               <div className={styles.options}>
-                {!params.controller && (
+                {user.rol == "Admin" && !params.departmentName && (
                   <>
                     <button
                       onClick={() =>

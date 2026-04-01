@@ -5,10 +5,16 @@ import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";
 import { CrudProvider } from "./contexts/adminContext/CrudContext.jsx";
 import { AuthProvider } from "./contexts/adminContext/AuthContext.jsx";
 import { NotFoundPage } from "./pages/notFoundPage.jsx";
+import { Forbidden } from "./pages/Forbidden.jsx";
+import { Unauthorized } from "./pages/Unauthorized.jsx";
 import { LoginAdmin } from "./components/loginAdmin/LoginAdmin.jsx";
 import { Departments } from "./components/admin/departments/Departments.jsx";
 import { Neighborhoods } from "./components/admin/neighborhoods/Neighborhoods.jsx";
 import { Populations } from "./components/admin/populations/Populations.jsx";
+import { CategoryCrimes } from "./components/admin/categoryCrimes/CategoryCrimes.jsx";
+import { Rols } from "./components/admin/rols/Rols.jsx";
+import { Users } from "./components/admin/users/Users.jsx";
+import { ActivateUser } from "./components/admin/activateUser/ActivateUser.jsx";
 
 function App() {
   return (
@@ -26,7 +32,7 @@ function App() {
               ></Route>
               <Route path="/admin/barrios" element={<Neighborhoods />}></Route>
               <Route
-                path="/admin/barrios/departamento/:controller/:name"
+                path="/admin/barrios/departamento/:departmentName"
                 element={<Neighborhoods />}
               ></Route>
 
@@ -35,8 +41,32 @@ function App() {
                 element={<Populations />}
               ></Route>
               <Route
-                path="/admin/poblaciones/barrio/:controller/:name"
+                path="/admin/poblaciones/barrio/:neighborhoodName"
                 element={<Populations />}
+              ></Route>
+
+              <Route
+                path="/admin/categorias-delitos/"
+                element={<CategoryCrimes />}
+              ></Route>
+
+              <Route path="/admin/roles/" element={<Rols />}></Route>
+              <Route path="/admin/usuarios/" element={<Users />}></Route>
+              <Route
+                path="/admin/usuarios/rol/:roleName"
+                element={<Users />}
+              ></Route>
+              <Route
+                path="/admin/permiso-denegado/"
+                element={<Forbidden />}
+              ></Route>
+              <Route
+                path="/admin/no-autorizado/"
+                element={<Unauthorized />}
+              ></Route>
+              <Route
+                path="/admin/activar-usuario/:token"
+                element={<ActivateUser />}
               ></Route>
             </Routes>
           </BrowserRouter>

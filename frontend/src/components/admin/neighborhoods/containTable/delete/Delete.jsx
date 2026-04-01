@@ -5,7 +5,6 @@ import {
   alertSwalConfirmDelete,
   alertSwalSuccess
 } from "../../../../sweetAlert/sweetAlert";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 
 export const Delete = ({ neighborhood, setDeleteNeighborhood }) => {
   const {
@@ -13,6 +12,7 @@ export const Delete = ({ neighborhood, setDeleteNeighborhood }) => {
     fetchGet,
     index,
     setIndex,
+    registers,
     setRegisters,
     setPages,
     pages
@@ -43,7 +43,12 @@ export const Delete = ({ neighborhood, setDeleteNeighborhood }) => {
   };
 
   const reloadRegisters = async () => {
-    let url = defineEndpointToRefreshDataAfterChanges(index, params);
+    let url;
+    if (registers.length == 1 && index > 0) {
+      url = "/neighborhood/neighborhoodsOffset/" + (index - 1) * 10;
+    } else {
+      url = "/neighborhood/neighborhoodsOffset/" + index * 10;
+    }
 
     let neighborhoods = await fetchGet(url);
     if (neighborhoods) {

@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
-import { useParams } from "react-router";
 
-export const LoadData = ({ route, controller }) => {
+export const LoadData = ({ route, offset }) => {
   const { fetchGet, setRegisters, setPages, yearSelected } = useCrud();
-  let params = useParams();
 
   useEffect(() => {
     load();
@@ -13,22 +11,16 @@ export const LoadData = ({ route, controller }) => {
   const load = async () => {
     let url =
       route +
-      JSON.stringify({
-        option: controller,
-        offset: 0,
-        ...(yearSelected && {
-          year: yearSelected
-        }),
-        ...(params.name && {
-          name: params.name
-        })
-      });
+      (yearSelected ? "/" + yearSelected : "") +
+      (offset >= 0 ? "/" + offset : "");
 
     const registers = await fetchGet(url);
 
     if (registers) {
-      setPages(registers.pages);
-      setRegisters(registers.registersOffset);
+      if (registers.pages) setPages(registers.pages);
+
+      if (registers.registersOffset) setRegisters(registers.registersOffset);
+      else setRegisters(registers);
     }
   };
 };

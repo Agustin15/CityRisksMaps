@@ -115,12 +115,12 @@ export const CrudProvider = ({ children }) => {
     if (response.status == 401) {
       setUser();
       location.href = LOCALHOST_FRONTEND + "/admin/login";
+    } else if (response.status == 403) {
+      location.href = LOCALHOST_FRONTEND + "/admin/permiso-denegado";
     } else throw new Error(result.messageError);
   };
 
-  const loadYears = async (route, controller) => {
-    let url = route + JSON.stringify({ option: controller });
-
+  const loadYears = async (url) => {
     const yearsFound = await fetchGet(url, setLoadingYears);
     if (yearsFound) {
       let yearsFormatted = yearsFound.map((year) => Object.values(year));

@@ -1,11 +1,10 @@
 import styles from "./Edit.module.css";
-import iconAdd from "../../../../../assets/img/add.png";
+import iconEdit from "../../../../../assets/img/edit.png";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
 import { LoadDepartaments } from "../add/loadDepartments/LoadDepartments";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 import { validationForm } from "../functions.js";
 
 export const Edit = ({ neighborhood, setEditNeighborhood }) => {
@@ -32,7 +31,7 @@ export const Edit = ({ neighborhood, setEditNeighborhood }) => {
     if (result) {
       alertSwalSuccess("¡Registro de barrio actualizado exitosamente!");
 
-      let url = defineEndpointToRefreshDataAfterChanges(index, params);
+      let url = "/neighborhood/neighborhoodsOffset/" + index * 10;
 
       let neighborhoods = await fetchGet(url);
       if (neighborhoods) {
@@ -44,17 +43,15 @@ export const Edit = ({ neighborhood, setEditNeighborhood }) => {
 
   return (
     <div className={styles.containEdit}>
-      <button
-        onClick={() => setEditNeighborhood(null)}
-        className={styles.close}
-      >
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconEdit}></img>
         <h3>Editar datos de {neighborhood.nameNeighborhood}</h3>
-        <div className={styles.backgroundIcon}>
-          <img src={iconAdd}></img>
-        </div>
+        <button
+          onClick={() => setEditNeighborhood(null)}
+          className={styles.close}
+        >
+          Cerrar
+        </button>
       </div>
       <form onSubmit={(event) => handleSubmit(event)}>
         <div className={styles.columnInput}>
@@ -64,7 +61,10 @@ export const Edit = ({ neighborhood, setEditNeighborhood }) => {
             placeholder="Ingrese nombre"
             name="name"
             onChange={(event) =>
-              setValues({ ...values, [event.target.name]: event.target.value.trim() })
+              setValues({
+                ...values,
+                [event.target.name]: event.target.value.trim()
+              })
             }
             maxLength={30}
             type="text"

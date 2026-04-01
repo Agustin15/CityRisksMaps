@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
 import { LoadDepartaments } from "./loadDepartments/LoadDepartments";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 import { validationForm } from "../functions.js";
 
 export const Add = ({ setAddForm }) => {
@@ -30,7 +29,7 @@ export const Add = ({ setAddForm }) => {
     if (result) {
       alertSwalSuccess("¡Registro de barrio agregado exitosamente!");
 
-      let url = defineEndpointToRefreshDataAfterChanges(index, params);
+      let url = "/neighborhood/neighborhoodsOffset/" + index * 10;
 
       let neighborhoods = await fetchGet(url);
       if (neighborhoods) {
@@ -45,14 +44,12 @@ export const Add = ({ setAddForm }) => {
 
   return (
     <div className={styles.containAdd}>
-      <button onClick={() => setAddForm(false)} className={styles.close}>
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconAdd}></img>
         <h3>Agregar barrio</h3>
-        <div className={styles.backgroundIcon}>
-          <img src={iconAdd}></img>
-        </div>
+        <button onClick={() => setAddForm(false)} className={styles.close}>
+          Cerrar
+        </button>
       </div>
       <form onSubmit={(event) => handleSubmit(event)}>
         <div className={styles.columnInput}>

@@ -1,12 +1,11 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getCrimes = async (loadingMenu, setLoadingMenu, setErrorLoad) => {
-  let optionGET = JSON.stringify({ option: "getCrimes" });
 
   if (!loadingMenu) setLoadingMenu(true);
 
   try {
-    const response = await fetch(localhostBackend + "/crime/" + optionGET, {
+    const response = await fetch(localhostBackend + "/crime/crimes", {
       method: "GET",
       headers: { "Content-type": "application/json" }
     });

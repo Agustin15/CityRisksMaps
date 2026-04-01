@@ -7,7 +7,7 @@ import { useAuth } from "../../../../../../contexts/adminContext/AuthContext.jsx
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-export const Chart = ({ idNeighborhood, setChartPopulation }) => {
+export const Chart = ({ nameNeighborhood, setChartPopulation }) => {
   const [errorChart, setErrorChart] = useState();
   const [loading, setLoading] = useState(true);
   const [dataChart, setDataChart] = useState();
@@ -18,7 +18,7 @@ export const Chart = ({ idNeighborhood, setChartPopulation }) => {
   }, []);
 
   const loadDataChart = async () => {
-    const result = await getDataChart(idNeighborhood, setErrorChart, setUser);
+    const result = await getDataChart(nameNeighborhood, setErrorChart, setUser);
     setDataChart(result);
     setLoading(false);
   };
@@ -28,7 +28,7 @@ export const Chart = ({ idNeighborhood, setChartPopulation }) => {
       <h3>Crecimiento poblacional</h3>
 
       <button onClick={() => setChartPopulation(null)} className={styles.close}>
-        X
+        Cerrar
       </button>
 
       <div className={styles.chart}>

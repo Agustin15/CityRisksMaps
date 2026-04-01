@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { Form } from "./form/Form.jsx";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
-import { defineEndpointToRefreshDataAfterChanges } from "../functions.js";
 import { validationForm } from "../functions.js";
 
 export const Add = ({ setAddForm }) => {
@@ -56,15 +55,10 @@ export const Add = ({ setAddForm }) => {
       alertSwalSuccess("¡Registro de poblacion agregado exitosamente!");
 
       if (!years.find((year) => year == parseInt(values.year))) {
-        await loadYears("/population/", "getPopulationsYears");
-        url = defineEndpointToRefreshDataAfterChanges(0, params, values.year);
+        url = "/population/populationsOffsetYear/" + values.year + "/" + 0;
         setYearSelected(values.year);
       } else {
-        url = defineEndpointToRefreshDataAfterChanges(
-          index,
-          params,
-          yearSelected
-        );
+        url = "/population/populationsOffsetYear/" + yearSelected + "/" + index * 10;
       }
 
       let populations = await fetchGet(url);
@@ -79,14 +73,12 @@ export const Add = ({ setAddForm }) => {
 
   return (
     <div className={styles.containAdd}>
-      <button onClick={() => setAddForm(false)} className={styles.close}>
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconAdd}></img>
         <h3>Agregar poblacion</h3>
-        <div className={styles.backgroundIcon}>
-          <img src={iconAdd}></img>
-        </div>
+        <button onClick={() => setAddForm(false)} className={styles.close}>
+          Cerrar
+        </button>
       </div>
 
       <Form

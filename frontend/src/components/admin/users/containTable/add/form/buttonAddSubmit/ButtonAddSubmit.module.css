@@ -1,0 +1,22 @@
+.add,
+.addDisabled {
+    background: rgb(34, 207, 63);
+    border-radius: 5px;
+    box-shadow: none;
+    width: 16rem;
+    height: 2rem;
+    color: white;
+    margin: 1.3rem 0 0 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+.add:hover {
+    background: rgb(30, 184, 55);
+}
+
+.addDisabled {
+    opacity: 86%;
+}
+.addDisabled:hover {
+    background: rgb(34, 207, 63);
+}

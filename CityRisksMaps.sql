@@ -4,17 +4,20 @@ USE CityRisksMap;
 
 CREATE TABLE Rols(
 idRol INT IDENTITY(1,1) Primary key,
-name VARCHAR(10) UNIQUE
+name VARCHAR(10) UNIQUE,
+created DATETIME NOT NULL DEFAULT GETDATE(),
+lastModified DATETIME,
 );
 
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
-email VARCHAR(50) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
+email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
 name VARCHAR(20) NOT NULL,
 lastname VARCHAR(20) NOT NULL,
-password VARCHAR(60) NOT NULL,
+password VARCHAR(60),
+activated BIT NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
-lastModified DATETIME NOT NULL DEFAULT GETDATE(),
+lastModified DATETIME,
 rol INT NOT NULL FOREIGN KEY REFERENCES Rols(idRol) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -47,7 +50,9 @@ year INT NOT NULL CHECK(year<=YEAR(GETDATE()))
 
 CREATE TABLE Crimes(
 category VARCHAR(20) Primary key,
-description VARCHAR(700) NOT NULL
+description VARCHAR(700) NOT NULL,
+created DATETIME NOT NULL DEFAULT GETDATE(),
+lastModified DATETIME
 );
 
 
@@ -67,7 +72,7 @@ idZone INT Primary key,
 description VARCHAR(250) NOT NULL,
 coordinates NVARCHAR(MAX) NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
-lastModified DATETIME DEFAULT GETDATE(),
+lastModified DATETIME,
 enable bit NOT NULL
 
 );
@@ -81,7 +86,6 @@ Primary key(zone,neighborhood)
 
 GO
 --------------------------------------------------------------------------------------------------------------
-
 --Rols PROCEDURES
 
 CREATE OR ALTER PROCEDURE AddRol @name VARCHAR(10)  AS
@@ -93,7 +97,7 @@ RETURN -1
 IF EXISTS (select * from Rols where name=@name)
 RETURN -2
 
-INSERT INTO Rols VALUES(@name);
+INSERT INTO Rols(name) VALUES(@name);
 
 IF(@@ERROR<>0)
 RETURN -3
@@ -158,11 +162,19 @@ SELECT * FROM Rols where idRol=@idRol;
 END
 GO
 
+CREATE OR ALTER PROCEDURE RolByName @name VARCHAR(10) AS
+BEGIN
+
+SELECT * FROM Rols where name=@name;
+
+END
+GO
+
 --------------------------------------------------------------------------------------------------------------
 --Users PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(50),@name VARCHAR(20),@lastname VARCHAR(20),@password VARCHAR(60),
-@rol INT AS
+CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(40),@name VARCHAR(20),@lastname VARCHAR(20),
+@rol INT,@activated BIT AS
 
 BEGIN
 
@@ -172,7 +184,7 @@ RETURN -1
 IF (LEN(@lastname)>20)
 RETURN -2
 
-IF (LEN(@email)>50)
+IF (LEN(@email)>40)
 RETURN -3
 
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
@@ -184,19 +196,18 @@ RETURN -5
 IF EXISTS (select * from Users where email=@email)
 RETURN -6
 
-INSERT INTO Users(email,name,lastname,password,rol) VALUES(@email,@name,@lastname,@password,@rol);
+INSERT INTO Users(email,name,lastname,activated,rol) VALUES(@email,@name,@lastname,@activated,@rol);
 
 IF(@@ERROR<>0)
 RETURN -7
 
-RETURN 1
+RETURN IDENT_CURRENT('Users');
 
 END
 GO
 
 
-CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(20),@name VARCHAR(20),@lastname VARCHAR(30),@password VARCHAR(60),
-@rol INT AS
+CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(40),@name VARCHAR(20),@lastname VARCHAR(20),@rol INT AS
 
 BEGIN
 
@@ -206,7 +217,7 @@ RETURN -1
 IF (LEN(@lastname)>20)
 RETURN -2
 
-IF (LEN(@email)>50)
+IF (LEN(@email)>40)
 RETURN -3
 
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
@@ -221,7 +232,7 @@ RETURN -6
 IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
 RETURN -7
 
-UPDATE Users set email=@email,name=@name,password=@password,lastname=@lastname,@rol=rol where idUser=@idUser;
+UPDATE Users set email=@email,name=@name,lastname=@lastname,@rol=rol where idUser=@idUser;
 
 IF(@@ERROR<>0)
 RETURN -8
@@ -229,6 +240,34 @@ RETURN -8
 RETURN 1
 
 END
+GO
+
+CREATE OR ALTER PROCEDURE UpdateUserPasswordByIdUser @idUser INT,@password VARCHAR(60) AS
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -1
+
+Update Users set password=@password where idUser=@idUser
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
+GO
+
+CREATE OR ALTER PROCEDURE activateUserByIdUser @idUser INT,@password VARCHAR(60) AS
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -1
+
+Update Users set password=@password,activated=1 where idUser=@idUser
+
+IF(@@ERROR<>0)
+RETURN -2
+
+RETURN 1
+
 GO
 
 CREATE OR ALTER PROCEDURE DeleteUser @idUser INT AS
@@ -248,6 +287,7 @@ RETURN 1
 END
 GO
 
+
 CREATE OR ALTER PROCEDURE AllUsers AS
 BEGIN
 SELECT * FROM Users;
@@ -256,15 +296,21 @@ GO
 
 CREATE OR ALTER PROCEDURE UsersOffset @offset INT AS
 BEGIN
-SELECT * FROM Users ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+SELECT U.*,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
-CREATE OR ALTER PROCEDURE UsersByRol @idRol INT AS
+CREATE OR ALTER PROCEDURE UsersByRole @idRol INT AS
 BEGIN
 SELECT * FROM Users where rol=@idRol;
 END
+GO
 
+CREATE OR ALTER PROCEDURE UsersByRoleOffset @idRol INT,@offset INT AS
+BEGIN
+SELECT U.*,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol where U.rol=@idRol 
+ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
 GO
 
 CREATE OR ALTER PROCEDURE UserById @idUser INT AS
@@ -274,12 +320,16 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE UserByEmail @email VARCHAR(50) AS
+CREATE OR ALTER PROCEDURE UserByEmail @email VARCHAR(40) AS
 BEGIN
 SELECT * FROM Users where email=@email;
 END
+GO
 
-
+CREATE OR ALTER PROCEDURE UserActivatedByEmail @email VARCHAR(40) AS
+BEGIN
+SELECT * FROM Users where email=@email and activated=1;
+END
 GO
 
 --------------------------------------------------------------------------------------------------------------
@@ -294,7 +344,7 @@ RETURN -1
 IF EXISTS (select * from Departments where name=@name)
 RETURN -2
 
-INSERT INTO Departments VALUES(@name);
+INSERT INTO Departments(name) VALUES(@name);
 
 IF(@@ERROR<>0)
 RETURN -3
@@ -385,7 +435,7 @@ RETURN -2
 IF EXISTS (select * from Crimes where category=@category)
 RETURN -3
 
-INSERT INTO Crimes VALUES(@category,@description);
+INSERT INTO Crimes(category,description) VALUES(@category,@description);
 
 IF(@@ERROR<>0)
 RETURN -4
@@ -400,20 +450,16 @@ CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(20),@description VARCHAR
 
 BEGIN
 
-
-IF (LEN(@category)>20)
+IF (LEN(@description)>700)
 RETURN -1
 
-IF (LEN(@description)>700)
-RETURN -2
-
 IF NOT EXISTS (select * from Crimes where category=@category)
-RETURN -3
+RETURN -2
 
 UPDATE Crimes set description=@description where category=@category;
 
 IF(@@ERROR<>0)
-RETURN -4
+RETURN -3
 
 RETURN 1
 
@@ -437,14 +483,7 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE CrimesTypeOptions AS
-BEGIN
-
-select * from Crimes where category ='Homicidio' or category ='Hurto' or category ='Rapiña';
-END
-GO
-
-CREATE OR ALTER PROCEDURE GetAllTypeCrimes AS
+CREATE OR ALTER PROCEDURE AllCrimes AS
 BEGIN
 
 select * from Crimes;
@@ -969,8 +1008,6 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --Zones_Neighborhoods PROCEDURES
 
-
-
 CREATE OR ALTER PROCEDURE AddZoneNeighborhood @idZone INT,@idNeighborhood INT AS
 BEGIN 
 
@@ -1126,6 +1163,54 @@ END
 GO
 
 ------------------------------------------------------------------------------------------------------------------
+---TRIGGERS---
+
+CREATE OR ALTER TRIGGER UpdateLastModifiedUsers ON Users AFTER Update
+AS
+BEGIN
+DECLARE @idUser INT;
+select @idUser=idUser from inserted;
+
+Update users set lastModified=GETDATE() where idUser=@idUser;
+END
+GO
+
+CREATE OR ALTER TRIGGER UpdateLastModifiedRols ON Rols AFTER Update
+AS
+BEGIN
+
+DECLARE @idRol INT;
+select @idRol=idRol from inserted;
+
+Update rols set lastModified=GETDATE() where idRol=@idRol;
+END
+
+GO
+
+CREATE OR ALTER TRIGGER UpdateLastModifiedCrimes ON Crimes AFTER Update
+AS
+BEGIN
+
+DECLARE @category VARCHAR(20);
+select @category=category from inserted;
+
+Update crimes set lastModified=GETDATE() where category=@category;
+END
+
+GO
+
+CREATE OR ALTER TRIGGER UpdateLastModifiedZones ON Zones AFTER Update
+AS
+BEGIN
+
+DECLARE @idZone INT;
+select @idZone=idZone from inserted;
+
+Update Zones set lastModified=GETDATE() where idZone=@idZone;
+END
+
+GO
+------------------------------------------------------------------------------------------------------------------
 EXEC AddRol 'Admin';
 
 EXEC AddDepartment 'Montevideo';
@@ -1264,8 +1349,6 @@ EXEC AddCrime 'Homicidio','Por homicidio se entiende la muerte infligida a una p
 EXEC AddCrime 'Hurto','Se entiende por hurto cualquier acto que implique sustraer, tomar o apartar ilegalmente cualquier propiedad o bien mueble de la posesión, control o custodia legítimos de cualquier persona. Incluye delitos como el hurto de vehículos de motor, hurto de piezas de vehículos, hurto de efectos depositados en el interior de viviendas y vehículos, hurto de artículos comerciales del interior de tiendas, el arrebato de carteras o teléfonos celulares, hurto de bicicletas, siempre que no impliquen violencia, amenaza de violencia o fraude.';
 
 EXEC AddCrime 'Rapiña','Se clasifican como rapiñas todos los incidentes en que se sustrajo o intentó sustraer, por medio de la fuerza o amenaza de uso de la fuerza, cualquier objeto o propiedad al cuidado o bajo la custodia de otra u otras personas.';
-
-EXEC AddCrime 'Tráfico de drogas','El delito de tráfico de drogas se define como un delito contra la salud pública que se comete al ejecutar actos de cultivo, elaboración o tráfico, o al promover, favorecer o facilitar el consumo ilegal de drogas tóxicas, estupefacientes o sustancias psicotrópicas, o cuando se poseen con dichos fines.';
 
 -- Homicidios 2022
 

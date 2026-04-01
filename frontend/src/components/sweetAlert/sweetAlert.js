@@ -69,9 +69,31 @@ export const alertSwalConfirmDelete = async (title) => {
   const result = await Swal.fire({
     icon: "question",
     title: title,
-    showCancelButton:true,
-    cancelButtonText:"Cancelar",
-    confirmButtonText:"Confimar",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Confimar",
+    customClass: {
+      popup: styles.popup,
+      image: styles.image,
+      title: styles.title,
+      confirmButton: styles.btnConfirm,
+      cancelButton: styles.btnCancel
+    }
+  });
+
+  return result;
+};
+
+export const alertSwalConfirmRedirectionToLogin = async (icon) => {
+  const result = await Swal.fire({
+    imageUrl: icon,
+    title: "¡Usuario activado exitosamente!",
+    html: `
+    <p class=${styles.customMsj}>¿Desea ser redirigido a la página de inicio de sesión?</p>
+    `,
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Confimar",
     customClass: {
       popup: styles.popup,
       image: styles.image,

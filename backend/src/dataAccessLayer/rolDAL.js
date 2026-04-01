@@ -15,7 +15,7 @@ export class RolDAL {
           throw new Error("Rol no debe tener mas de 10 caracteres", {
             cause: { code: 400 }
           });
-        case -1:
+        case -2:
           throw new Error("Ya existe un rol con este nombre en el sistema", {
             cause: { code: 409 }
           });
@@ -46,7 +46,7 @@ export class RolDAL {
           });
 
         case -2:
-          throw new Error("No se encontro un el rol indicado en el sistema", {
+          throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
@@ -104,6 +104,17 @@ export class RolDAL {
       const request = new sql.Request(connection.pool);
       request.input("idRol", sql.Int, idRol);
       const result = await request.execute("RolById");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getRolByName(rolName) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("name", sql.VarChar(10), rolName);
+      const result = await request.execute("RolByName");
 
       return result.recordset;
     } catch (error) {

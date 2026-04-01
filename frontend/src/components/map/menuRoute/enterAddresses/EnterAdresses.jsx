@@ -1,5 +1,4 @@
 import styles from "./EnterAdresses.module.css";
-import iconDestination from "../../../../assets/img/destinationAddress.png";
 import iconShow from "../../../../assets/img/showRoutes.png";
 import { Advice } from "../advice/Advice.jsx";
 import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
@@ -37,7 +36,6 @@ export const EnterAdresses = ({
         <div className={styles.destination}>
           <label>Destino:</label>
           <div className={styles.row}>
-            <img src={iconDestination}></img>
             <input readOnly type="text" value={destination}></input>
           </div>
         </div>

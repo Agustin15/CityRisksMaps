@@ -1,5 +1,5 @@
 import styles from "./Edit.module.css";
-import iconAdd from "../../../../../assets/img/add.png";
+import iconEdit from "../../../../../assets/img/edit.png";
 import { useState } from "react";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
@@ -25,12 +25,7 @@ export const Edit = ({ department, setEditDepartment }) => {
 
     if (result) {
       alertSwalSuccess("¡Registro de departamento actualizado exitosamente!");
-      let url =
-        "/department/" +
-        JSON.stringify({
-          option: "getDepartmentsOffset",
-          offset: index * 10
-        });
+      let url = "/department/departmentsOffset/" + index * 10;
 
       let departments = await fetchGet(url);
       if (departments) {
@@ -42,15 +37,15 @@ export const Edit = ({ department, setEditDepartment }) => {
 
   return (
     <div className={styles.containEdit}>
-      <button onClick={() => setEditDepartment(null)} className={styles.close}>
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconEdit}></img>
         <h3>Editar departamento {department.name}</h3>
-
-        <div className={styles.backgroundIcon}>
-          <img src={iconAdd}></img>
-        </div>
+        <button
+          onClick={() => setEditDepartment(false)}
+          className={styles.close}
+        >
+          Cerrar
+        </button>
       </div>
       <form onSubmit={(event) => handleSubmit(event)}>
         <div className={styles.columnInput}>

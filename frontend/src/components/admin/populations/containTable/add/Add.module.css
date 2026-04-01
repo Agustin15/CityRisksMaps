@@ -1,5 +1,5 @@
 .containAdd {
-    width: 38%;
+    width: 32%;
     height: auto;
     padding-bottom: 1rem;
     background: white;
@@ -10,39 +10,43 @@
     flex-direction: column;
     align-items: center;
 }
-.containAdd .close {
-    position: absolute;
-    right: 0;
-    width: 3.6rem;
-    height: 1.8rem;
-    background: rgb(189, 14, 14);
-    font-size: 13px;
-    font-weight: bold;
+.header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    gap: 0.5rem;
+    background: rgb(31, 44, 59);
+    position: relative;
     color: white;
+}
+
+.header h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 17px;
+}
+
+.header img {
+    width: 29px;
+    height: 29px;
+    margin-left: 1rem;
+}
+.header .close {
+    font-size: 14px;
+    background: none;
     box-shadow: none;
+    color: white;
+    opacity: 75%;
+    font-weight: bold;
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 0.5rem;
+    right: 0.2rem;
     margin: 0;
 }
-.containAdd .title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    font-size: 15px;
-    margin-top: 1.5rem;
-}
-
-.containAdd .backgroundIcon {
-    width: 2.7rem;
-    height: 2.7rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 99px;
-    background: rgb(48, 214, 48);
-}
-
-.containAdd .title img {
-    width: 31px;
-    height: 31px;
-    margin: 0;
+.header .close:hover {
+    opacity: 100%;
 }

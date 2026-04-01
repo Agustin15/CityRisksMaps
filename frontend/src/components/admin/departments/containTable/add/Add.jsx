@@ -28,12 +28,7 @@ export const Add = ({ setAddForm }) => {
     if (result) {
       alertSwalSuccess("¡Registro de departamento agregado exitosamente!");
 
-      let url =
-        "/department/" +
-        JSON.stringify({
-          option: "getDepartmentsOffset",
-          offset: index * 10
-        });
+      let url = "/department/departmentsOffset/" + index * 10;
 
       let departments = await fetchGet(url);
       setRegisters(departments.registersOffset);
@@ -45,15 +40,14 @@ export const Add = ({ setAddForm }) => {
 
   return (
     <div className={styles.containAdd}>
-      <button onClick={() => setAddForm(false)} className={styles.close}>
-        Cerrar
-      </button>
-      <div className={styles.title}>
+      <div className={styles.header}>
+        <img src={iconAdd}></img>
         <h3>Agregar departamento</h3>
-        <div className={styles.backgroundIcon}>
-          <img src={iconAdd}></img>
-        </div>
+        <button onClick={() => setAddForm(false)} className={styles.close}>
+          Cerrar
+        </button>
       </div>
+
       <form onSubmit={(event) => handleSubmit(event)}>
         <div className={styles.columnInput}>
           <label>Nombre:</label>

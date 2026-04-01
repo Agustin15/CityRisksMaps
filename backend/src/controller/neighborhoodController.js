@@ -69,10 +69,9 @@ export const getNeighborhoods = async (req, res) => {
 
 export const getNeighborhoodsOffset = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).offset == null)
-      throw new Error("Debe indicar un offset");
+    if (req.params.offset == null) throw new Error("Debe indicar un offset");
 
-    const offset = JSON.parse(req.params.paramsGet).offset;
+    const offset = parseInt(req.params.offset);
 
     const neighbordhoods = await NeighborhoodService.getNeighborhoods();
 
@@ -96,16 +95,16 @@ export const getNeighborhoodsOffset = async (req, res) => {
 
 export const getNeighborhoodsByDepartmentOffset = async (req, res) => {
   try {
-    if (!JSON.parse(req.params.paramsGet).offset == null)
-      throw new Error("Debe indicar un offset");
+    if (req.params.offset == null) throw new Error("Debe indicar un offset");
 
-    if (!JSON.parse(req.params.paramsGet).name == null)
+    if (req.params.nameDepartment == null)
       throw new Error("Debe indicar el departamento");
 
-    const { offset, name } = JSON.parse(req.params.paramsGet);
+    const offset = parseInt(req.params.offset);
+    const nameDepartment = decodeURIComponent(req.params.nameDepartment);
 
     const neighbordhoods =
-      await NeighborhoodService.getNeighborhoodsByDepartment(name);
+      await NeighborhoodService.getNeighborhoodsByDepartment(nameDepartment);
 
     if (neighbordhoods.length == 0)
       throw new Error(
@@ -114,7 +113,7 @@ export const getNeighborhoodsByDepartmentOffset = async (req, res) => {
 
     const neighbordhoodsOffset =
       await NeighborhoodService.getNeighborhoodsByDepartmentOffset(
-        name,
+        nameDepartment,
         offset
       );
 

@@ -49,16 +49,6 @@ export class CrimeService {
     }
   }
 
-  static async getCrimesTypeOptions() {
-    try {
-      const result = await CrimeDAL.getCrimesTypeOptions();
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   static async validAndMappingCrimes(crimes) {
     const crimesMapping = [];
 
