@@ -2,7 +2,7 @@ import styles from "./FooterTable.module.css";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 
 export const FooterTable = ({ msj, colSpan }) => {
-  const { registers, error, elementNotFound, loading, loadingYears } =
+  const { registers, error, elementNotFound, loading, loadingFilter } =
     useCrud();
 
   return (
@@ -14,14 +14,14 @@ export const FooterTable = ({ msj, colSpan }) => {
           </td>
         </tr>
       )}
-      {(loading == true || loadingYears == true) && (
+      {(loading == true || loadingFilter == true) && (
         <tr>
           <td className={styles.loading} colSpan={colSpan}>
             <h3>{msj}</h3>
           </td>
         </tr>
       )}
-      {loading == false && loadingYears == false && !registers && (
+      {loading == false && loadingFilter == false && !registers && (
         <tr>
           <td className={styles.noData} colSpan={colSpan}>
             <h3>{error}</h3>

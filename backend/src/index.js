@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
+import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
 import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
 import { RoutesLogin } from "./route/routeLogin.js";
 import { RoutesLogout } from "./route/routeLogout.js";
@@ -55,9 +56,9 @@ app.use("/logout/", RoutesLogout);
 app.use("/crime/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
+app.use("/neighborhoodCrimeAdmin/", RoutesNeighborhoodCrimeAdmin);
 app.use("/department/", RoutesDepartment);
 app.use("/population/", RoutesPopulation);
 app.use("/crimeAdmin/", RoutesCrimeAdmin);
 app.use("/role/", RoutesRol);
 app.use("/user/", RoutesUser);
-

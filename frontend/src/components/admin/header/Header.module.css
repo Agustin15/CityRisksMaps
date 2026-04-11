@@ -46,7 +46,7 @@
     box-shadow: none;
     font-weight: bold;
     background: rgb(43, 199, 103);
-    width: 8rem;
+    width: auto;
     height: 1.9rem;
     border-radius: 3px;
 }

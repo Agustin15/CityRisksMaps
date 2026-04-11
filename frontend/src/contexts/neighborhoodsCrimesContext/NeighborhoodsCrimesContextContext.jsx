@@ -8,9 +8,9 @@ import { useMapControls } from "../MapContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
-const ZoneCrimesContext = createContext();
+const NeighborhoodsCrimesContext = createContext();
 
-export const ZoneCrimesProvider = ({ children }) => {
+export const NeighborhoodsCrimesProvider = ({ children }) => {
   const [crimeSelected, setCrimeSelected] = useState();
   const [loadingYears, setLoadingYears] = useState(false);
   const [loadingNeighborhoodsCrime, setLoadingNeighborhoodsCrime] =
@@ -118,7 +118,7 @@ export const ZoneCrimesProvider = ({ children }) => {
   };
 
   return (
-    <ZoneCrimesContext.Provider
+    <NeighborhoodsCrimesContext.Provider
       value={{
         crimeSelected,
         setCrimeSelected,
@@ -147,8 +147,9 @@ export const ZoneCrimesProvider = ({ children }) => {
       }}
     >
       {children}
-    </ZoneCrimesContext.Provider>
+    </NeighborhoodsCrimesContext.Provider>
   );
 };
 
-export const useZoneCrimes = () => useContext(ZoneCrimesContext);
+export const useNeighborhoodsCrimes = () =>
+  useContext(NeighborhoodsCrimesContext);

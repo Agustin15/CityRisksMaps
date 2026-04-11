@@ -18,7 +18,7 @@
     background: rgb(27, 88, 146);
     color: white;
     border-radius: 3px;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 2px 2px 2px rgb(218, 218, 218);
 }
 .pagination ul li .disabled {
     opacity: 76%;

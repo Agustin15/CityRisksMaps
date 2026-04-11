@@ -1,15 +1,16 @@
 import styles from "../LoginAdmin.module.css";
 import iconHidePassword from "../../../assets/img/hidePassword.png";
-import { handleViewPassword, submitForm } from "./functions.js";
+import iconShowPassword from "../../../assets/img/showPassword.png";
+import { submitForm } from "./functions.js";
 import { useNavigate } from "react-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../../contexts/adminContext/AuthContext.jsx";
 
 export const LoginForm = () => {
-  const inputPasswordRef = useRef();
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useAuth();
   let navigate = useNavigate();
 
@@ -65,15 +66,17 @@ export const LoginForm = () => {
           autoComplete="off"
           name="password"
           value={values.password}
-          ref={inputPasswordRef}
           className={styles.password}
           placeholder="Ingrese contraseña"
-          type="password"
+          type={showPassword ? "text" : "password"}
           onChange={(event) => handleChange(event)}
         ></input>
         <img
-          onClick={(event) => handleViewPassword(event, inputPasswordRef)}
-          src={iconHidePassword}
+          onClick={() => {
+            if (showPassword) setShowPassword(false);
+            else setShowPassword(true);
+          }}
+          src={showPassword ? iconShowPassword : iconHidePassword}
         ></img>
         <p>{errors.password}</p>
       </div>

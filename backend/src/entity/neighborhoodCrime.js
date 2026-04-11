@@ -5,22 +5,30 @@ export class NeighborhoodCrime {
   #crime;
   #neighborhood;
   #quantity;
-  #increase;
-  #rate;
+  #month;
+  #dayMostActivity;
   #year;
+  #rate;
+  #increase;
 
   constructor(
     crime = new Crime(),
     neighbordhood = new Neighborhood(),
     quantity = 0,
-    increase = 0,
-    rate = 0,
-    year = new Date().getFullYear()
+    month = 1,
+    dayMostActivity = 1,
+    year = new Date().getFullYear(),
+    increase,
+    rate
   ) {
     this.crime = crime;
     this.neighborhood = neighbordhood;
-    this.propQuantity = quantity;
-    this.propYear = year;
+    this.quantity = quantity;
+    this.month = month;
+    this.dayMostActivity = dayMostActivity;
+    this.year = year;
+    this.increase = increase;
+    this.rate = rate;
   }
 
   set crime(value) {
@@ -44,6 +52,24 @@ export class NeighborhoodCrime {
   get neighborhood() {
     return this.#neighborhood;
   }
+
+  get quantity() {
+    return this.#quantity;
+  }
+  set quantity(value) {
+    if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
+    this.#quantity = value;
+  }
+  set month(value) {
+    if (value <= 0)
+      throw new Error("Numero de mes debe ser mayor a cero", {
+        cause: { code: 400 }
+      });
+    this.#month = value;
+  }
+  get month() {
+    return this.#month;
+  }
   set year(value) {
     if (!value || value > new Date().getFullYear())
       throw new Error("Año no puede ser mayor al año actual", {
@@ -55,12 +81,15 @@ export class NeighborhoodCrime {
     return this.#year;
   }
 
-  get quantity() {
-    return this.#quantity;
+  set dayMostActivity(value) {
+    if (value <= 0)
+      throw new Error("Dia de la semana debe ser mayor a cero", {
+        cause: { code: 400 }
+      });
+    this.#dayMostActivity = value;
   }
-  set quantity(value) {
-    if (value < 0) throw new Error("Cantidad no puede ser un numero negativo");
-    this.#quantity = value;
+  get dayMostActivity() {
+    return this.#dayMostActivity;
   }
   get increase() {
     return this.#increase;

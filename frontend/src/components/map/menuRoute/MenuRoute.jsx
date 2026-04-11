@@ -21,7 +21,6 @@ export const MenuRoute = () => {
     handleClose,
     setRoutes,
     routes,
-    loadingRoutes,
     setRouteSelected,
     transportSelected,
     cleanPolylines

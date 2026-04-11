@@ -14,15 +14,11 @@ export class ZoneDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Descripcion no debe tener mas de 250 caracteres", {
-            cause: { code: 400 }
-          });
-        case -2:
           throw new Error("Habilitar debe ser verdadero o falso", {
             cause: { code: 400 }
           });
 
-        case -3:
+        case -2:
           throw new Error("Error inesperado al agregar zona", {
             cause: { code: 502 }
           });
@@ -46,20 +42,16 @@ export class ZoneDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Descripcion no debe tener mas de 250 caracteres", {
-            cause: { code: 400 }
-          });
-        case -2:
           throw new Error("Habilitar debe ser verdadero o falso", {
             cause: { code: 400 }
           });
 
-        case -3:
+        case -2:
           throw new Error("No se encontro al zona indicada en el sistema", {
             cause: { code: 404 }
           });
 
-        case -4:
+        case -3:
           throw new Error("Error inesperado al actualizar zona", {
             cause: { code: 502 }
           });

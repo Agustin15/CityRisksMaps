@@ -1,8 +1,10 @@
+import { useInteractionNeighborhoodsPolygons } from "../../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext";
 import styles from "./InfoWindowNeighborhood.module.css";
 import { useRef } from "react";
 
-export const InfoWindowNeighborhood = ({ polygonSelected }) => {
+export const InfoWindowNeighborhood = () => {
   const window = useRef();
+  const { polygonSelected } = useInteractionNeighborhoodsPolygons();
 
   return (
     <div ref={window} className={styles.infoWindowPolygon}>

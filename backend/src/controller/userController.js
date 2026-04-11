@@ -34,7 +34,7 @@ export const add = async (req, res) => {
 
     transaction = new sql.Transaction(connection.pool);
 
-    await transaction.begin(sql.ISOLATION_LEVEL.SERIALIZABLE);
+    await transaction.begin(sql.ISOLATION_LEVEL.READ_COMMITTED);
 
     const idUserAdded = await UserService.add(user, transaction);
 

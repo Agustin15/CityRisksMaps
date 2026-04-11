@@ -7,7 +7,8 @@ export const verifyAuthToken = (req, res, next) => {
 
     if (!req.cookies.authenticacionToken) {
       const tokenRefreshed = refreshAuthToken(res, req);
-      if (tokenRefreshed) next();
+
+      if (tokenRefreshed) return next();
     }
 
     const token = req.cookies.authenticacionToken;
@@ -20,7 +21,7 @@ export const verifyAuthToken = (req, res, next) => {
     req.idUser = tokenDecoded.idUser;
     req.rol = tokenDecoded.rol;
 
-    next();
+    return next();
   } catch (error) {
     if (error.message == "jwt expired")
       error.message = "Autenticacion fallida,token expirado";

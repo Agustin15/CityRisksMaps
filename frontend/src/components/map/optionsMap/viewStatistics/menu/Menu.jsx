@@ -1,6 +1,6 @@
 import styles from "./Menu.module.css";
 import { useState, useEffect } from "react";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext.jsx";
 import { Item } from "./item/Item.jsx";
 import { AlertMenu } from "./AlertMenu/alertMenu.jsx";
@@ -17,7 +17,8 @@ export const Menu = ({
   const [closeAlert, setCloseAlert] = useState(true);
 
   const { windowWidth } = useWindowResize();
-  const { setCrimeSelected, loadCrimeDataNeighborhoods } = useZoneCrimes();
+  const { setCrimeSelected, loadCrimeDataNeighborhoods } =
+    useNeighborhoodsCrimes();
 
   useEffect(() => {
     if (!neighbordhoodsCoordinates) return;
@@ -55,18 +56,16 @@ export const Menu = ({
       )}
 
       <ul className={styles.menuOptionsCrimes}>
-        {loadingMenu == false && crimes && (
-          <>
-            {crimes.map((crime, index) => (
-              <Item
-                key={index}
-                crime={crime}
-                setShowViewStatistics={setShowViewStatistics}
-                showViewStatistics={showViewStatistics}
-              />
-            ))}
-          </>
-        )}
+        {loadingMenu == false &&
+          crimes &&
+          crimes.map((crime, index) => (
+            <Item
+              key={index}
+              crime={crime}
+              setShowViewStatistics={setShowViewStatistics}
+              showViewStatistics={showViewStatistics}
+            />
+          ))}
       </ul>
     </>
   );

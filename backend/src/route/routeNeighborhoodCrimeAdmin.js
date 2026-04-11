@@ -1,0 +1,41 @@
+import express from "express";
+import multer from "multer";
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 600000000 }
+});
+
+import {
+  addThroughtTable,
+  getCategoryCrimeInNeighborhood,
+  getNeighborhoodsCrimeByYearOffset,
+  getYearsNeighborhoodsCrime
+} from "../controller/neighborhoodCrimeController.js";
+import { verifyAuthToken } from "../controller/authentication.js";
+import { verifyAuthorization } from "../controller/authorization.js";
+
+export const RoutesNeighborhoodCrimeAdmin = express.Router();
+
+RoutesNeighborhoodCrimeAdmin.use(verifyAuthToken);
+
+RoutesNeighborhoodCrimeAdmin.get(
+  "/neighborhoodsCrimesByYearOffset/:categoryCrime/:year/:offset",
+  getNeighborhoodsCrimeByYearOffset
+);
+
+RoutesNeighborhoodCrimeAdmin.get(
+  "/yearsNeighborhoodsCrime/:categoryCrime",
+  getYearsNeighborhoodsCrime
+);
+
+RoutesNeighborhoodCrimeAdmin.get(
+  "/categoryCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
+  getCategoryCrimeInNeighborhood
+);
+
+RoutesNeighborhoodCrimeAdmin.post(
+  "/",
+  upload.single("file"),
+  verifyAuthorization,
+  addThroughtTable
+);

@@ -1,9 +1,9 @@
 import styles from "./RouteRangesDanger.module.css";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { colorReference } from "./functions";
 
 export const RouteRangesDanger = ({ route }) => {
-  const { crimeSelected } = useZoneCrimes();
+  const { crimeSelected } = useNeighborhoodsCrimes();
 
   return (
     <div className={styles.containRangesDanger}>

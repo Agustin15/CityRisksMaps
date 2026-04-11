@@ -2,13 +2,23 @@ import styles from "./Pagination.module.css";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 
 export const Pagination = ({ route }) => {
-  const { fetchGet, pages, index, setIndex, setRegisters, yearSelected } =
-    useCrud();
+  const {
+    fetchGet,
+    pages,
+    index,
+    setIndex,
+    setRegisters,
+    yearSelected,
+    crimeSelected
+  } = useCrud();
 
   const handleClickPage = async (page) => {
     setIndex(page);
     let url =
-      route + (yearSelected ? "/" + yearSelected : "") + ("/" + page * 10);
+      route +
+      (crimeSelected ? "/" + crimeSelected : "") +
+      (yearSelected ? "/" + yearSelected : "") +
+      ("/" + page * 10);
 
     let result = await fetchGet(url);
     setRegisters(result.registersOffset);

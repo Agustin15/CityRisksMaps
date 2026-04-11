@@ -1,29 +1,48 @@
 import styles from "./Header.module.css";
 import iconAdd from "../../../assets/img/add.png";
+import iconAddWithList from "../../../assets/img/addWithList.png";
 import { useCrud } from "../../../contexts/adminContext/CrudContext";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { useRef } from "react";
 import { Years } from "./years/Years";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 
-export const Header = ({ title, setAddForm, route, controller }) => {
+export const Header = ({
+  title,
+  setAddForm,
+  setAddWithListForm,
+  route,
+  controller
+}) => {
   const { searcher, years } = useCrud();
   const { user } = useAuth();
   const inputRef = useRef();
   const params = useParams();
+  const location = useLocation();
 
   return (
     <div className={styles.header}>
       <h3>{title}</h3>
 
       <div className={styles.row}>
-        {user.rol == "Admin" && (Object.keys(params).length == 0) && (
+        {user.rol == "Admin" && Object.keys(params).length == 0 && (
           <button onClick={() => setAddForm(true)}>
-            <span>Agregar</span>
+            <span>
+              Agregar
+              {location.pathname == "/admin/delitos-barrios"
+                ? " con archivo"
+                : ""}
+            </span>
             <img src={iconAdd}></img>
           </button>
         )}
 
+        {location.pathname == "/admin/delitos-barrios" && (
+          <button onClick={() => setAddWithListForm(true)}>
+            <span>Agregar con lista</span>
+            <img src={iconAddWithList}></img>
+          </button>
+        )}
         <input
           onChange={() => searcher(inputRef.current.value)}
           ref={inputRef}
@@ -31,7 +50,9 @@ export const Header = ({ title, setAddForm, route, controller }) => {
           placeholder="Buscar..."
         ></input>
 
-        {years && <Years years={years} route={route} controller={controller} />}
+        {location.pathname != "/admin/delitos-barrios" && years && (
+          <Years years={years} route={route} controller={controller} />
+        )}
       </div>
     </div>
   );

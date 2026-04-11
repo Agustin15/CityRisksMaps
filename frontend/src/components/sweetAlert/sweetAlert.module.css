@@ -10,6 +10,8 @@
 .customMsj {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 19px;
+    width: auto;
+    max-width: 25rem;
     margin: 0;
 }
 

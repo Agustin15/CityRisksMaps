@@ -1,12 +1,16 @@
 import { NeighborhoodCrimeDAL } from "../dataAccessLayer/neighborhoodCrimeDAL.js";
 
 export class NeighborhoodCrimeService {
-  static async add(neighbordhoodCrime) {
+  static async addThroughtTable(neighbordhoodsCrime, crime, year) {
     try {
-      if (neighbordhoodCrime == null)
-        throw new Error("Debe indicar un crimen de barrio para agregar");
+      if (neighbordhoodsCrime == null || neighbordhoodsCrime.length == 0)
+        throw new Error("Debe indicar crimenes de barrios para agregar");
 
-      await NeighborhoodCrimeDAL.add(neighbordhoodCrime);
+      await NeighborhoodCrimeDAL.addThroughtTable(
+        neighbordhoodsCrime,
+        crime,
+        year
+      );
     } catch (error) {
       throw error;
     }
@@ -52,6 +56,7 @@ export class NeighborhoodCrimeService {
       throw error;
     }
   }
+
   static async getNeighborhoodsCrimeByYearSecondVersion(category, year) {
     try {
       const result =
@@ -66,11 +71,7 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getNeighborhoodsCrimeByYearSecondVersion(
-    category,
-    year,
-    offset
-  ) {
+  static async getNeighborhoodsCrimeByYearOffset(category, year, offset) {
     try {
       const result =
         await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYearOffset(

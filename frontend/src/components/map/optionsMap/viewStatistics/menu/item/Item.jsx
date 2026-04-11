@@ -1,7 +1,7 @@
 import styles from "../Menu.module.css";
 import { alertSwalWarning } from "../../../../../sweetAlert/sweetAlert.js";
 import { useRoutes } from "../../../../../../contexts/routesContext/RoutesContext.jsx";
-import { useZoneCrimes } from "../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useNeighborhoodsCrimes } from "../../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext.jsx";
 import { useNavigation } from "../../../../../../contexts/navigationContext/NavigationContext.jsx";
 
 export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
@@ -10,7 +10,7 @@ export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
     crimeSelected,
     setCrimeSelected,
     handleClose
-  } = useZoneCrimes();
+  } = useNeighborhoodsCrimes();
 
   const { routes } = useRoutes();
   const { routeNavigation } = useNavigation();

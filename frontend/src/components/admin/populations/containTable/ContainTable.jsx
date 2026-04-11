@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 export const ContainTable = () => {
   const params = useParams();
-  const { yearSelected, loadYears, years } = useCrud();
+  const { yearSelected, loadYears, loadingFilter, years } = useCrud();
 
   useEffect(() => {
     if (years || params.neighborhoodName) return;
@@ -25,7 +25,7 @@ export const ContainTable = () => {
 
   return (
     <div className={styles.containTable}>
-      {(yearSelected || params.neighborhoodName) && (
+      {((yearSelected && !loadingFilter) || params.neighborhoodName) && (
         <LoadData route={route} offset={0} />
       )}
 

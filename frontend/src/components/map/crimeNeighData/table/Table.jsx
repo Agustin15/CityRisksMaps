@@ -1,30 +1,21 @@
 import styles from "./Table.module.css";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
-import { useMapControls } from "../../../../contexts/MapContext";
+import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext.jsx";
 import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { useMap } from "@vis.gl/react-google-maps";
 import { NotData } from "../../notData/NotData";
 import { Loading } from "../../loading/Loading";
 import { Rows } from "./rows/Rows";
 import { Tfoot } from "./tfoot/Tfoot.jsx";
-import { focusPolygon } from "./functions.js";
 
 export const Table = ({ crime, elementSearchedNotFound }) => {
-  const { neighbordhoodsCoordinates } = useMapControls();
   const { windowWidth } = useWindowResize();
-
   const {
-    polygons,
     neighborhoodsCrimeByYear,
     loadingNeighborhoodsCrime,
     loadingYears,
     tableRef
-  } = useZoneCrimes();
+  } = useNeighborhoodsCrimes();
   const map = useMap();
-
-  const handleClickNeighborhood = (neighborhood) => {
-    focusPolygon(neighbordhoodsCoordinates, neighborhood, polygons, map);
-  };
 
   return (
     <div className={styles.containTable}>
@@ -72,7 +63,6 @@ export const Table = ({ crime, elementSearchedNotFound }) => {
               <Rows
                 key={index}
                 neighborhoodCrime={neighborhoodCrime}
-                handleClickNeighborhood={handleClickNeighborhood}
                 crime={crime}
                 numberRow={index}
               />

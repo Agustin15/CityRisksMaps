@@ -3,23 +3,23 @@ import { Map, ControlPosition } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
 
-import { useState } from "react";
 import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
-import { useZoneCrimes } from "../../contexts/zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useInteractionNeighborhoodsPolygons } from "../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext.jsx";
+import { useNeighborhoodsCrimes } from "../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext.jsx";
 import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
 import { useNavigation } from "../../contexts/navigationContext/NavigationContext.jsx";
-import { handleMouseNeighborhoohdPolygon } from "./handleNeighborhhodPolygon/handleMouseNeighborhood.js";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
 
 export const ContainMap = () => {
   const { userLocation } = useMapControls();
-  const { polygons } = useZoneCrimes();
+  const { polygons } = useNeighborhoodsCrimes();
   const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation, editRoute } = useNavigation();
+  const { handleMouseNeighborhoohdPolygon, setPolygonSelected } =
+    useInteractionNeighborhoodsPolygons();
   const { windowWidth } = useWindowResize();
-  const [polygonSelected, setPolygonSelected] = useState();
 
   return (
     <>
@@ -62,7 +62,7 @@ export const ContainMap = () => {
           handleClickOnMap(event);
         }}
       >
-        <ContentMap polygonSelected={polygonSelected} />
+        <ContentMap />
       </Map>
 
       <OptionsMap />

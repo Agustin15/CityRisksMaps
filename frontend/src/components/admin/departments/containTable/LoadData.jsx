@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 
 export const LoadData = ({ route, offset }) => {
-  const { fetchGet, setRegisters, setPages, yearSelected } = useCrud();
+  const { fetchGet, setRegisters, setPages, yearSelected, crimeSelected } =
+    useCrud();
 
   useEffect(() => {
     load();
@@ -11,6 +12,7 @@ export const LoadData = ({ route, offset }) => {
   const load = async () => {
     let url =
       route +
+      (crimeSelected ? "/" + crimeSelected : "") +
       (yearSelected ? "/" + yearSelected : "") +
       (offset >= 0 ? "/" + offset : "");
 

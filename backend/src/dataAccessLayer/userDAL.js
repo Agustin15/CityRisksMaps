@@ -16,35 +16,21 @@ export class UserDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Nombre no debe tener mas de 20 caracteres", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("Apellido no debe tener mas de 20 caracteres", {
-            cause: { code: 400 }
-          });
-
-        case -3:
-          throw new Error("Correo no debe tener mas de 40 caracteres", {
-            cause: { code: 400 }
-          });
-        case -4:
           throw new Error("Ingrese un correo con formato valido", {
             cause: { code: 400 }
           });
 
-        case -5:
+        case -2:
           throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
-        case -6:
+        case -3:
           throw new Error("Correo ingresado ya en uso", {
             cause: { code: 409 }
           });
 
-        case -7:
+        case -4:
           throw new Error("Error inesperado al agregar usuario", {
             cause: { code: 502 }
           });
@@ -69,24 +55,10 @@ export class UserDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Nombre no debe tener mas de 20 caracteres", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("Apellido no debe tener mas de 20 caracteres", {
-            cause: { code: 400 }
-          });
-
-        case -3:
-          throw new Error("Correo no debe tener mas de 40 caracteres", {
-            cause: { code: 400 }
-          });
-        case -4:
           throw new Error("Ingrese un correo con formato valido", {
             cause: { code: 400 }
           });
-        case -5:
+        case -2:
           throw new Error(
             "No se encontro el el usuario indicado en el sistema",
             {
@@ -94,17 +66,17 @@ export class UserDAL {
             }
           );
 
-        case -6:
+        case -3:
           throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
-        case -7:
+        case -4:
           throw new Error("Correo ingresado ya en uso", {
             cause: { code: 409 }
           });
 
-        case -8:
+        case -5:
           throw new Error("Error inesperado al actualizar usuario", {
             cause: { code: 502 }
           });

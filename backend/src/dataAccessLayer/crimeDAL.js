@@ -13,18 +13,10 @@ export class CrimeDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Categoria no debe tener mas de 20 caracteres", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("Descripcion no debe tener mas de 700 caracteres", {
-            cause: { code: 400 }
-          });
-        case -3:
           throw new Error("Ya hay un crimen registrado con esta categoria", {
             cause: { code: 409 }
           });
-        case -4:
+        case -2:
           throw new Error("Error inesperado al agregar crimen", {
             cause: { code: 502 }
           });
@@ -45,15 +37,11 @@ export class CrimeDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Descripcion no debe tener mas de 700 caracteres", {
-            cause: { code: 400 }
-          });
-        case -2:
           throw new Error("No hay registrado un crimen con esta categoria", {
             cause: { code: 404 }
           });
 
-        case -3:
+        case -2:
           throw new Error("Error inesperado al actualizar crimen", {
             cause: { code: 502 }
           });

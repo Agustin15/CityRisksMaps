@@ -5,12 +5,12 @@ import iconSecurity from "../../../../../../../assets/img/security.png";
 import iconPopulation from "../../../../../../../assets/img/population.png";
 import { useEffect, useRef, useState } from "react";
 import { useMapControls } from "../../../../../../../contexts/MapContext";
-import { useZoneCrimes } from "../../../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { drawShape } from "./functions.js";
 
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
   const { neighbordhoodsCoordinates } = useMapControls();
-  const { getCrimeRange } = useZoneCrimes();
+  const { getCrimeRange } = useNeighborhoodsCrimes();
   const [drawn, setDrawn] = useState(false);
   const refCanvasPolygon = useRef();
 

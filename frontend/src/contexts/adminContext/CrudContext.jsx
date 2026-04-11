@@ -8,21 +8,23 @@ const CrudContext = createContext();
 
 export const CrudProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [loadingYears, setLoadingYears] = useState(false);
+  const [loadingFilter, setLoadingFilter] = useState(false);
   const [registers, setRegisters] = useState();
   const [years, setYears] = useState();
+  const [crimes, setCrimes] = useState();
   const [elementNotFound, setElementNotFound] = useState(false);
   const [pages, setPages] = useState();
   const [index, setIndex] = useState(0);
   const [yearSelected, setYearSelected] = useState();
+  const [crimeSelected, setCrimeSelected] = useState();
   const [error, setError] = useState();
   const { setUser } = useAuth();
 
-  const fetchGet = async (url, setLoadingYears) => {
+  const fetchGet = async (url, setLoadingFilter) => {
     setError();
 
-    if (!setLoadingYears) setLoading(true);
-    else setLoadingYears(true);
+    if (!setLoadingFilter) setLoading(true);
+    else setLoadingFilter(true);
 
     try {
       const response = await fetch(LOCALHOST_BACKEND + url, {
@@ -43,8 +45,8 @@ export const CrudProvider = ({ children }) => {
     } catch (error) {
       setError(error.message);
     } finally {
-      if (!setLoadingYears) setLoading(false);
-      else setLoadingYears(false);
+      if (!setLoadingFilter) setLoading(false);
+      else setLoadingFilter(false);
     }
   };
 
@@ -76,6 +78,32 @@ export const CrudProvider = ({ children }) => {
               ? "actualizar el registro"
               : "dar de alta el registro"
           }`,
+        error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPostWithFormData = async (url, setLoading, formData) => {
+    setLoading(true);
+    try {
+      const response = await fetch(LOCALHOST_BACKEND + url, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        failedResponse(response, result);
+      }
+
+      return result;
+    } catch (error) {
+      alertSwalErrorAdmin(
+        "Ups,hubo un error al dar de alta los registros",
         error.message
       );
     } finally {
@@ -121,13 +149,17 @@ export const CrudProvider = ({ children }) => {
   };
 
   const loadYears = async (url) => {
-    const yearsFound = await fetchGet(url, setLoadingYears);
+    const yearsFound = await fetchGet(url, setLoadingFilter);
     if (yearsFound) {
       let yearsFormatted = yearsFound.map((year) => Object.values(year));
+
       setYearSelected(yearSelected ? yearSelected : yearsFormatted[0]);
       setYears(yearsFormatted);
 
       return yearsFormatted;
+    } else {
+      setYears();
+      setYearSelected();
     }
   };
 
@@ -157,10 +189,12 @@ export const CrudProvider = ({ children }) => {
       value={{
         fetchGet,
         fetchPostOrPut,
+        fetchPostWithFormData,
         fetchDelete,
         loadYears,
         searcher,
-        loadingYears,
+        setLoadingFilter,
+        loadingFilter,
         loading,
         registers,
         setRegisters,
@@ -170,7 +204,11 @@ export const CrudProvider = ({ children }) => {
         setPages,
         yearSelected,
         setYearSelected,
+        crimes,
+        setCrimes,
         years,
+        crimeSelected,
+        setCrimeSelected,
         error,
         elementNotFound
       }}

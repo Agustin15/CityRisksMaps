@@ -25,7 +25,7 @@ export const Chart = ({ nameNeighborhood, setChartPopulation }) => {
 
   return (
     <div className={styles.containChart}>
-      <h3>Crecimiento poblacional</h3>
+      <h3>Crecimiento poblacional de {nameNeighborhood}</h3>
 
       <button onClick={() => setChartPopulation(null)} className={styles.close}>
         Cerrar

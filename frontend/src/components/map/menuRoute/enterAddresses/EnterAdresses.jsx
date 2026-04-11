@@ -1,8 +1,8 @@
 import styles from "./EnterAdresses.module.css";
 import iconShow from "../../../../assets/img/showRoutes.png";
-import { Advice } from "../advice/Advice.jsx";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
+import { Advice } from "../advice/Advice.jsx";
 import { Origin } from "./origin/Origin.jsx";
 
 export const EnterAdresses = ({
@@ -12,13 +12,13 @@ export const EnterAdresses = ({
 }) => {
   const { destination, originLocation, showRoutes, loadingRoutes } =
     useRoutes();
-  const { crimeSelected } = useZoneCrimes();
+  const { crimeSelected } = useNeighborhoodsCrimes();
 
   const handleClickShowRoutes = () => {
     if (
       destination.length > 0 &&
       originLocation &&
-      crimeSelected == "Homicidio"
+      (crimeSelected == "Homicidio" || crimeSelected == "Rapiña")
     )
       showRoutes("Drive");
     else return;
@@ -45,7 +45,7 @@ export const EnterAdresses = ({
           className={
             destination.length > 0 &&
             originLocation &&
-            crimeSelected == "Homicidio"
+            (crimeSelected == "Homicidio" || crimeSelected == "Rapiña")
               ? styles.btnEnabled
               : styles.btnDisabled
           }
@@ -55,7 +55,8 @@ export const EnterAdresses = ({
         </button>
       </div>
 
-      {crimeSelected != "Homicidio" && <Advice />}
+      {crimeSelected != "Homicidio" ||
+        (crimeSelected != "Rapiña" && <Advice />)}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>
           Cargando rutas

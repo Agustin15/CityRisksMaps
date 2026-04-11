@@ -1,9 +1,9 @@
 import styles from "./Searcher.module.css";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { InputSearcher } from "./inputSearcher";
 
 export const Searcher = ({ setElementSearchedNotFound }) => {
-  const { tableRef } = useZoneCrimes();
+  const { tableRef } = useNeighborhoodsCrimes();
 
   return (
     <div className={styles.containSearcher}>

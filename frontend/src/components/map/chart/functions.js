@@ -8,7 +8,7 @@ export const getDataChart = async (
   try {
     const response = await fetch(
       localhostBackend +
-        "/neighborhoodCrime/categoryCrimeInNeighborhood" +
+        "/neighborhoodCrime/categoryCrimeInNeighborhood/" +
         categoryCrime +
         "/" +
         idNeighborhood,
@@ -45,7 +45,9 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
       titleFontColor: "white",
       titleFontSize: 15,
       labelFontColor: "white",
+      labelFontSize:14,
       lineColor: "white",
+      valueFormatString: "#.###",
       interval: 1
     },
     axisY: {
@@ -62,12 +64,25 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
         markerColor: "#e04b4bff",
         type: "spline",
         lineColor: "white",
+        yValueFormatString: "#,###",
+        xValueFormatString: "#.###",
         dataPoints:
           dataChart &&
           dataChart.map((neighborhoodCrime) => {
             return {
               x: neighborhoodCrime.year,
-              y: neighborhoodCrime.quantity
+              y: neighborhoodCrime.quantity,
+              toolTipContent:
+                "Denuncias {x}:{y}" +
+                (neighborhoodCrime.increase !== null
+                  ? neighborhoodCrime.increase > 0
+                    ? "<span style='color:red'> (+" +
+                      neighborhoodCrime.increase +
+                      ")</span>"
+                    : "<span style='color:green'> (" +
+                      neighborhoodCrime.increase +
+                      "%)</span>"
+                  : "")
             };
           })
       }

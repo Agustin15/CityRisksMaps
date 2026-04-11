@@ -1,20 +1,19 @@
 import styles from "../Table.module.css";
 import iconDecrease from "../../../../../assets/img/decrease.png";
 import iconIncrease from "../../../../../assets/img/increase.png";
-import { useZoneCrimes } from "../../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext";
+import { useNavigation } from "../../../../../contexts/navigationContext/NavigationContext";
+import { useInteractionNeighborhoodsPolygons } from "../../../../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext";
 import { ColorRate } from "../colorRate/ColorRate";
 import { Activity } from "react";
 import { DetailsRow } from "./detailsRow/DetailsRow";
 
-export const Rows = ({
-  handleClickNeighborhood,
-  neighborhoodCrime,
-  crime,
-  numberRow
-}) => {
-  const { indexChartActive, setIndexChartActive } = useZoneCrimes();
+export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
+  const { indexChartActive, setIndexChartActive } = useNeighborhoodsCrimes();
   const { windowWidth } = useWindowResize();
+  const { routeNavigation } = useNavigation();
+  const { focusPolygon } = useInteractionNeighborhoodsPolygons();
 
   const handleClickRow = () => {
     if (indexChartActive == numberRow) {
@@ -23,7 +22,7 @@ export const Rows = ({
       setIndexChartActive(numberRow);
     }
 
-    handleClickNeighborhood(neighborhoodCrime.name);
+    if (!routeNavigation) focusPolygon(neighborhoodCrime.name);
   };
 
   return (

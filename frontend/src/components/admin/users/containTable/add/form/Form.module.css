@@ -46,6 +46,7 @@ form .columnInput select {
     height: 2.2rem;
     border-radius: 3px;
     border: 1px solid gray;
+    background: rgb(236, 236, 236);
     font-size: 15px;
     outline: none;
 }

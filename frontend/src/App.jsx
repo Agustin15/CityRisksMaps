@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { MapPage } from "./Pages/MapPage.jsx";
 import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";
+import { ActivateUserProvider } from "./contexts/adminContext/ActivateUserContext.jsx";
 import { CrudProvider } from "./contexts/adminContext/CrudContext.jsx";
 import { AuthProvider } from "./contexts/adminContext/AuthContext.jsx";
 import { NotFoundPage } from "./pages/notFoundPage.jsx";
@@ -15,6 +16,7 @@ import { CategoryCrimes } from "./components/admin/categoryCrimes/CategoryCrimes
 import { Rols } from "./components/admin/rols/Rols.jsx";
 import { Users } from "./components/admin/users/Users.jsx";
 import { ActivateUser } from "./components/admin/activateUser/ActivateUser.jsx";
+import { NeighborhoodsCrimes } from "./components/admin/neighborhoodsCrimes/NeighborhoodsCrimes.jsx";
 
 function App() {
   return (
@@ -50,6 +52,11 @@ function App() {
                 element={<CategoryCrimes />}
               ></Route>
 
+              <Route
+                path="/admin/delitos-barrios/"
+                element={<NeighborhoodsCrimes />}
+              ></Route>
+
               <Route path="/admin/roles/" element={<Rols />}></Route>
               <Route path="/admin/usuarios/" element={<Users />}></Route>
               <Route
@@ -66,7 +73,7 @@ function App() {
               ></Route>
               <Route
                 path="/admin/activar-usuario/:token"
-                element={<ActivateUser />}
+                element={<ActivateUserProvider><ActivateUser /></ActivateUserProvider>}
               ></Route>
             </Routes>
           </BrowserRouter>

@@ -1,7 +1,7 @@
 import styles from "./ViewStatistics.module.css";
 import { useState, useEffect, useId, Activity } from "react";
 import { useMapControls } from "../../../../contexts/MapContext";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { Menu } from "./menu/Menu.jsx";
 import { CrimeNeighbordhoods } from "../../crimeNeighData/CrimeNeighbordhoods.jsx";
@@ -13,7 +13,7 @@ export const ViewStatistics = () => {
 
   const viewStatisticsId = useId();
   const { windowWidth } = useWindowResize();
-  const { crimeSelected } = useZoneCrimes();
+  const { crimeSelected } = useNeighborhoodsCrimes();
   const { neighbordhoodsCoordinates } = useMapControls();
 
   useEffect(() => {

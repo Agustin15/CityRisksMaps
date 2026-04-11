@@ -74,9 +74,21 @@ export const Options = ({ user }) => {
         </a>
       </li>
 
-      <li>
+      <li
+        className={
+          matchPath(
+            {
+              path: "/admin/categorias-delitos-barrios",
+              caseSensitive: true
+            },
+            location.pathname
+          )
+            ? styles.selected
+            : ""
+        }
+      >
         <div className={styles.iconNeighborhoodsCrimes}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/categorias-delitos-barrios"}>
+        <a href={LOCALHOST_FRONTEND + "/admin/delitos-barrios"}>
           Indice delitos barrios
         </a>
       </li>

@@ -1,17 +1,5 @@
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
-import iconShowPassword from "../../../assets/img/showPassword.png";
-import iconHidePassword from "../../../assets/img/hidePassword.png";
 import { alertSwalErrorAdmin } from "../../sweetAlert/sweetAlert.js";
-
-export const handleViewPassword = (event, inputPasswordRef) => {
-  if (inputPasswordRef.current.type == "text") {
-    event.target.src = iconHidePassword;
-    inputPasswordRef.current.type = "password";
-  } else {
-    event.target.src = iconShowPassword;
-    inputPasswordRef.current.type = "text";
-  }
-};
 
 export const submitForm = async (values, errors, setErrors) => {
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

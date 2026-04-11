@@ -12,15 +12,11 @@ export class RolDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Rol no debe tener mas de 10 caracteres", {
-            cause: { code: 400 }
-          });
-        case -2:
           throw new Error("Ya existe un rol con este nombre en el sistema", {
             cause: { code: 409 }
           });
 
-        case -3:
+        case -2:
           throw new Error("Error inesperado al agregar rol", {
             cause: { code: 502 }
           });
@@ -41,21 +37,16 @@ export class RolDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error("Rol no debe tener mas de 10 caracteres", {
-            cause: { code: 400 }
-          });
-
-        case -2:
           throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
-        case -3:
+        case -2:
           throw new Error("Ya existe un rol con este nombre en el sistema", {
             cause: { code: 409 }
           });
 
-        case -4:
+        case -3:
           throw new Error("Error inesperado al actualizar rol", {
             cause: { code: 502 }
           });

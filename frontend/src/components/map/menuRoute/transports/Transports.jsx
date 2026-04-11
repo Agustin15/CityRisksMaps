@@ -3,7 +3,7 @@ import iconWalk from "../../../../assets/img/walk.png";
 import iconCar from "../../../../assets/img/car.png";
 import iconMotorBike from "../../../../assets/img/motorbike.png";
 import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
-import { useZoneCrimes } from "../../../../contexts/zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 
 export const Transports = () => {
   const {
@@ -14,7 +14,7 @@ export const Transports = () => {
     showRoutes
   } = useRoutes();
 
-  const { crimeSelected } = useZoneCrimes();
+  const { crimeSelected } = useNeighborhoodsCrimes();
 
   const handleClick = (transport) => {
     if (

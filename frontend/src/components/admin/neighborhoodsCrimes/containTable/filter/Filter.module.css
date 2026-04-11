@@ -1,0 +1,45 @@
+.filter {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 98%;
+    gap: 0.5rem;
+    margin: 1rem 0 0 0;
+}
+
+.filter .crimes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin: 0 0 0 0.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.filter .crimes button {
+    margin: 0;
+    width: 5.5rem;
+    height: 2rem;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgb(216, 216, 216);
+}
+
+.filter .crimes button:hover {
+    box-shadow: none;
+    background: rgb(240, 240, 240);
+}
+
+.filter .crimes .crimeBtn {
+    background: white;
+    border: 1px solid rgb(175, 175, 175);
+    color: black;
+}
+
+.filter .crimes .crimeBtnSelected,
+.filter .crimes .crimeBtnSelected:hover {
+    background: rgb(63, 97, 160);
+    color: white;
+    border: none;
+    box-shadow: none;
+}

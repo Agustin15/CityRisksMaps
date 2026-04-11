@@ -6,7 +6,7 @@ import {
 } from "./functionsNavigationStep.js";
 import { useNavigation } from "./NavigationContext";
 import { useMapControls } from "../MapContext";
-import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext";
+import { useNeighborhoodsCrimes } from "../neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 
@@ -21,7 +21,7 @@ export const NavigationStepProvider = ({ children }) => {
 
   const map = useMap();
   const { userLocation } = useMapControls();
-  const { polygons } = useZoneCrimes();
+  const { polygons } = useNeighborhoodsCrimes();
   const {
     recalculateRoute,
     routeNavigation,

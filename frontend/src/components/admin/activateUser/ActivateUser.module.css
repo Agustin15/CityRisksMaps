@@ -15,11 +15,11 @@
     align-items: center;
     gap: 1rem;
     width: 24rem;
-    height: 33rem;
+    height: auto;
     position: relative;
     background-color: #f9f9f9;
     border: #cecece solid 1px;
-    padding-bottom: 1rem;
+    padding-bottom: 6rem;
 }
 
 .containActivate h3 {
@@ -59,23 +59,6 @@
     width: 99%;
 }
 
-.btnPassword {
-    position: absolute;
-    background: none;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
-    width: auto;
-    height: auto;
-    margin: 0;
-    right: 1.8rem;
-    top: 1.9rem;
-}
-.btnPassword img {
-    width: 22px;
-    height: 22px;
-}
-
 .containActivate form input {
     width: 72%;
     height: 2rem;
@@ -92,10 +75,12 @@
     font-size: 15px;
 }
 
-.containActivate form p {
-    width: 85%;
+.columnInput p {
+    width: 82%;
     color: red;
-    font-size: 12px;
+    font-size: 13px;
+    margin: 1rem 0 0 0;
+    position: absolute;
 }
 
 .containActivate form .activate {

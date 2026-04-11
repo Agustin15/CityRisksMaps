@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useMap } from "@vis.gl/react-google-maps";
-import { useZoneCrimes } from "../zoneCrimesContext/ZoneCrimesContext.jsx";
+import { useNeighborhoodsCrimes } from "../neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext.jsx";
 import { createDataRoutes } from "./functions.js";
 
 const API_KEY = import.meta.env.VITE_MAPS_API_KEY;
@@ -20,7 +20,7 @@ export const RoutesProvider = ({ children }) => {
   const [polylines, setPolylines] = useState();
 
   const map = useMap();
-  const { polygons, crimeSelected } = useZoneCrimes();
+  const { polygons} = useNeighborhoodsCrimes();
 
   const handleClickRoute = (address, location) => {
     setShowMenuRoutes(true);

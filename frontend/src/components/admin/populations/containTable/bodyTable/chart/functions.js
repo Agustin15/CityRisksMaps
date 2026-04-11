@@ -65,8 +65,8 @@ export const loadOptions = (dataChart) => {
     data: [
       {
         type: "spline",
-        markerColor: "rgb(136, 51, 165)",
-        lineColor: "rgb(136, 51, 165)",
+        markerColor: "rgb(228, 74, 74)",
+        lineColor: "rgb(255, 255, 255)",
         yValueFormatString: "#,###",
         xValueFormatString: "Habitantes",
         type: "spline",

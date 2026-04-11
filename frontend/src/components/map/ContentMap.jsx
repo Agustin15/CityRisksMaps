@@ -3,9 +3,11 @@ import {
   ControlPosition,
   MapControl
 } from "@vis.gl/react-google-maps";
+
 import { useMapControls } from "../../contexts/MapContext";
 import { useNavigation } from "../../contexts/navigationContext/NavigationContext";
 import { useRoutes } from "../../contexts/routesContext/RoutesContext";
+import { useInteractionNeighborhoodsPolygons } from "../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext";
 import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
 import { useWindowResize } from "../../contexts/WindowResizeContext";
 import { InfoWindowNeighborhood } from "./InfoWindowNeighborhood/InfoWindowNeighborhood";
@@ -17,9 +19,10 @@ import { Navigation } from "./navigation/Navigation";
 import { SearchPlace } from "./searchPlace/SearchPlace";
 import { Geolocation } from "./geolocation/Geolocation";
 
-export const ContentMap = ({ polygonSelected }) => {
+export const ContentMap = () => {
   const { userLocation } = useMapControls();
   const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
+  const { polygonSelected } = useInteractionNeighborhoodsPolygons();
   const { originLocation, destinationLocation } = useRoutes();
   const { routeNavigation, currentStep } = useNavigation();
   const { windowWidth } = useWindowResize();
@@ -57,7 +60,7 @@ export const ContentMap = ({ polygonSelected }) => {
           clickable={true}
           position={polygonSelected ? polygonSelected.data.center : null}
         >
-          <InfoWindowNeighborhood polygonSelected={polygonSelected} />
+          <InfoWindowNeighborhood />
         </AdvancedMarker>
       )}
 
