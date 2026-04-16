@@ -1,4 +1,5 @@
-.containSvg {
+.containSvg,
+.containSvgRedimensioned {
     width: 3.1rem;
     height: 3.1rem;
     display: flex;
@@ -7,6 +8,10 @@
     align-items: center;
     font-size: 14px;
     cursor: pointer;
+}
+.containSvgRedimensioned {
+    width: 5.5rem;
+    height: 5.5rem;
 }
 .iconWarning {
     width: 58%;
@@ -17,6 +22,11 @@
     .containSvg {
         width: 3rem;
         height: 3rem;
+    }
+
+    .containSvgRedimensioned {
+        width: 5.5rem;
+        height: 5.5rem;
     }
     .iconWarning {
         width: 58%;

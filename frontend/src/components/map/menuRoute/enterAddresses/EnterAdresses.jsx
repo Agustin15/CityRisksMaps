@@ -23,6 +23,7 @@ export const EnterAdresses = ({
       showRoutes("Drive");
     else return;
   };
+  
 
   return (
     <div className={styles.columnShowRoutes}>
@@ -54,9 +55,10 @@ export const EnterAdresses = ({
           <img src={iconShow}></img>
         </button>
       </div>
-
-      {crimeSelected != "Homicidio" ||
-        (crimeSelected != "Rapiña" && <Advice />)}
+  
+      {(crimeSelected != "Homicidio" && crimeSelected != "Rapiña") && (
+        <Advice />
+      )}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>
           Cargando rutas

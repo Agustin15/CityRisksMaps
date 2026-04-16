@@ -1,15 +1,32 @@
 .zoneInfo {
     width: auto;
-    height: auto;
+    min-width: 3.4rem;
+    height: 3.4rem;
     display: flex;
-    flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
     padding: 0;
     font-size: 14px;
-    background: linear-gradient(#333f7c, #222c57);
-    color: white;
+    background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+    box-shadow: 2px 2px 2px gray;
     border-radius: 99px;
+    color: rgb(55, 59, 107);
+}
+.content {
+    width: 88%;
+    height: 88%;
+    border-radius: 99px;
+    background: linear-gradient(rgb(210, 238, 252), white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.zoneInfo:hover {
+    box-shadow:
+        0 0 5px #9fb4cc,
+        0 0 5px #8ea5c0,
+        0 0 5px #a6c1e0;
 }
 
 .zoneInfo .detailsWarning {
@@ -17,24 +34,58 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    text-wrap: nowrap;
     gap: 0.2rem;
+    padding-right: 1rem;
 }
 
 .zoneInfo .detailsWarning span {
     font-weight: bold;
-    padding-left: 1rem;
 }
 
 .zoneInfo .detailsWarning p {
     width: auto;
-    padding-left: 0.2rem;
+    padding: 0;
     margin: 0;
     text-align: center;
 }
 
 @media (width<=650px) {
+    .zoneInfo .detailsWarning {
+        text-wrap: wrap;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
     .zoneInfo {
-        background: linear-gradient(#4659b9, #202c5e);
+        width: auto;
+        min-width: 3.4rem;
+        height: 3.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        font-size: 14px;
+        background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+        box-shadow: 2px 2px 2px gray;
+        border-radius: 99px;
+        color: rgb(55, 59, 107);
+    }
+    .content {
+        width: 88%;
+        height: 88%;
+        border-radius: 99px;
+        background: linear-gradient(rgb(210, 238, 252), white);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .zoneInfo:hover {
+        box-shadow:
+            0 0 5px #9fb4cc,
+            0 0 5px #8ea5c0,
+            0 0 5px #a6c1e0;
     }
 
     .zoneInfo .detailsWarning {
@@ -42,34 +93,19 @@
         display: flex;
         justify-content: start;
         align-items: center;
+        text-wrap: nowrap;
         gap: 0.2rem;
+        padding-right: 1rem;
     }
 
     .zoneInfo .detailsWarning span {
         font-weight: bold;
-        padding-left: 1rem;
     }
 
     .zoneInfo .detailsWarning p {
         width: auto;
-        padding-left: 0.2rem;
+        padding: 0;
         margin: 0;
         text-align: center;
-    }
-}
-
-@media (width>650px) and (width<1200px) {
-    .zoneInfo {
-        width: auto;
-        height: auto;
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        font-size: 14px;
-        background: linear-gradient(#4659b9, #202c5e);
-        color: white;
-        border-radius: 99px;
     }
 }

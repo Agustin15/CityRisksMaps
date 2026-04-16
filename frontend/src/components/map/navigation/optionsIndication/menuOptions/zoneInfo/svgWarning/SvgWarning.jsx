@@ -1,8 +1,20 @@
 import styles from "./SvgWarning.module.css";
+import { useNavigationStep } from "../../../../../../../contexts/navigationContext/NavigationStepContext.jsx";
 
-export const SvgWarning = ({ warning, handleClick, svgWarningRef }) => {
+export const SvgWarning = ({
+  showDetailsWarning,
+  handleClick,
+  svgWarningRef
+}) => {
+  const { warning } = useNavigationStep();
+
   return (
-    <div onClick={handleClick} className={styles.containSvg}>
+    <div
+      onClick={handleClick}
+      className={
+        !showDetailsWarning ? styles.containSvg : styles.containSvgRedimensioned
+      }
+    >
       <svg
         ref={svgWarningRef}
         className={styles.iconWarning}

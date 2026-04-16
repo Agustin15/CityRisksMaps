@@ -14,23 +14,25 @@ export const ZoneInfo = ({ svgWarningRef }) => {
 
   return (
     <div className={styles.zoneInfo}>
-      <SvgWarning
-        warning={warning}
-        handleClick={handleClick}
-        svgWarningRef={svgWarningRef}
-      />
+      <div className={styles.content}>
+        <SvgWarning
+          showDetailsWarning={showDetailsWarning}
+          handleClick={handleClick}
+          svgWarningRef={svgWarningRef}
+        />
 
-      {showDetailsWarning && (
-        <div className={styles.detailsWarning}>
-          <span>Tasa de homicidios {warning.neighborhood + ":"}</span>
+        {showDetailsWarning && (
+          <div className={styles.detailsWarning}>
+            <span>Tasa de homicidios {warning.neighborhood + ":"}</span>
 
-          <p>
-            {warning.rateLevel.length > 0
-              ? warning.rateLevel
-              : "barrio sin datos"}
-          </p>
-        </div>
-      )}
+            <p>
+              {warning.rateLevel.length > 0
+                ? warning.rateLevel
+                : "barrio sin datos"}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

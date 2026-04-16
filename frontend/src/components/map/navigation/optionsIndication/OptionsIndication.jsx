@@ -10,7 +10,7 @@ export const OptionsIndication = () => {
     <div>
       <MenuOptions />
       
-      <MapControl position={ControlPosition.BOTTOM_CENTER}>
+      <MapControl position={ControlPosition.LEFT_BOTTOM}>
         <DetailsIndication currentStep={currentStep} />
       </MapControl>
     </div>
