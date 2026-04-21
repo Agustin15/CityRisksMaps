@@ -9,6 +9,7 @@ created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
 );
 
+
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
 email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 

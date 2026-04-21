@@ -88,6 +88,7 @@ export const CrudProvider = ({ children }) => {
   const fetchPostWithFormData = async (url, setLoading, formData) => {
     setLoading(true);
     try {
+      
       const response = await fetch(LOCALHOST_BACKEND + url, {
         method: "POST",
         credentials: "include",

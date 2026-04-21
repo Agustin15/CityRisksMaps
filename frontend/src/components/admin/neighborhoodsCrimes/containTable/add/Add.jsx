@@ -80,11 +80,11 @@ export const Add = ({ setAddForm }) => {
         } else {
           url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
         }
-      }
+        let nhCrimes = await fetchGet(url);
 
-      let nhCrimes = await fetchGet(url);
+        setRegisters(nhCrimes);
+      }
       document.querySelector("form").reset();
-      setRegisters(nhCrimes);
       setValues({
         file: null,
         crime: "",

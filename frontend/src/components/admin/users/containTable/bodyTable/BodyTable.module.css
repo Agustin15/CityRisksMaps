@@ -29,13 +29,28 @@ tbody .options .delete {
     background: rgb(216, 10, 10);
 }
 
+tbody .options .deleteDisabled {
+    cursor: auto;
+    background: rgb(167, 23, 23);
+}
+
 tbody .options .edit {
     background: rgb(10, 123, 216);
+}
+tbody .options .editDisabled {
+    cursor: auto;
+    background: rgb(21, 98, 161);
 }
 
 tbody .options .details {
     background: rgb(10, 178, 190);
 }
+
+tbody .options .detailsDisabled {
+    cursor: auto;
+    background: rgb(17, 122, 129);
+}
+
 tbody .options .details img {
     width: 23px;
     height: 23px;

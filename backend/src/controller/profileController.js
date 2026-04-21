@@ -110,8 +110,18 @@ export const sendConfirmEmail = async (req, res) => {
     if (!process.env.SECRET_KEY_CONFIRM_EMAIL_TOKEN)
       throw new Error("SECRET_KEY_CONFIRM_EMAIL_TOKEN no declarada");
 
+    if (!process.env.ALGORITM_ENCRYPT_JWE_PAYLOAD)
+      throw new Error("ALGORITM_ENCRYPT_JWE_PAYLOAD no declarado");
+
+    if (!process.env.ALGORITM_ENCRYPT_JWE_IV)
+      throw new Error("ALGORITM_ENCRYPT_JWE_IV no declarado");
+
     const secretKeyConfirmEmailToken =
       process.env.SECRET_KEY_CONFIRM_EMAIL_TOKEN;
+
+    const algoritmIV = process.env.ALGORITM_ENCRYPT_JWE_IV;
+
+    const algoritmPayload = process.env.ALGORITM_ENCRYPT_JWE_PAYLOAD;
 
     const userFound = await UserService.getUserById(idUser);
 
@@ -132,7 +142,7 @@ export const sendConfirmEmail = async (req, res) => {
       idUser: idUser,
       newEmail: newEmail
     })
-      .setProtectedHeader({ alg: "A256GCMKW", enc: "A128CBC-HS256" })
+      .setProtectedHeader({ alg: algoritmIV, enc: algoritmPayload })
       .setExpirationTime("2h")
       .encrypt(new TextEncoder().encode(secretKeyConfirmEmailToken));
 

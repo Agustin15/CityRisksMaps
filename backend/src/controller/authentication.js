@@ -6,13 +6,13 @@ export const verifyAuthToken = (req, res, next) => {
     if (!process.env.SECRET_KEY_TOKEN)
       throw new Error("SECRET_KEY_TOKEN no declarada");
 
-    if (!req.cookies.authenticacionToken) {
+    if (!req.cookies.authenticationToken) {
       const jwtTokenRefreshed = refreshAuthToken(res, req);
 
       if (jwtTokenRefreshed) return next();
     }
 
-    const jwtToken = req.cookies.authenticacionToken;
+    const jwtToken = req.cookies.authenticationToken;
 
     const jwtTokenDecoded = jwt.verify(jwtToken, process.env.SECRET_KEY_TOKEN);
 
@@ -32,7 +32,7 @@ export const verifyAuthToken = (req, res, next) => {
 
 const refreshAuthToken = (res, req) => {
   try {
-    if (!req.cookies.authenticacionRefreshToken)
+    if (!req.cookies.authenticationRefreshToken)
       throw new Error(
         "Autenticacion fallida, token de actualizacion no encontrado"
       );
@@ -41,7 +41,7 @@ const refreshAuthToken = (res, req) => {
       throw new Error("SECRET_KEY_REFRESH_TOKEN no declarada");
 
     const jwtTokenDecoded = jwt.verify(
-      req.cookies.authenticacionRefreshToken,
+      req.cookies.authenticationRefreshToken,
       process.env.SECRET_KEY_REFRESH_TOKEN
     );
 
@@ -50,16 +50,16 @@ const refreshAuthToken = (res, req) => {
         "Autenticacion fallida, token de actualizacion no valido"
       );
 
-    const authenticacionToken = jwt.sign(
+    const authenticationToken = jwt.sign(
       { idUser: jwtTokenDecoded.idUser, rol: jwtTokenDecoded.rol },
       process.env.SECRET_KEY_TOKEN,
       { expiresIn: "1h" }
     );
 
-    res.cookie("authenticacionToken", authenticacionToken, {
+    res.cookie("authenticationToken", authenticationToken, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       secure: true
     });
 

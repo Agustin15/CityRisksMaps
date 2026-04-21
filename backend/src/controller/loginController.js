@@ -34,7 +34,7 @@ export const login = async (req, res) => {
     if (!rolFound)
       throw new Error("No se encontro un rol con este ID en el sistema");
 
-    const authenticacionToken = jwt.sign(
+    const authenticationToken = jwt.sign(
       { idUser: userFound.idUser, rol: rolFound.name },
       process.env.SECRET_KEY_TOKEN,
       {
@@ -42,7 +42,7 @@ export const login = async (req, res) => {
       }
     );
 
-    const authenticacionRefreshToken = jwt.sign(
+    const authenticationRefreshToken = jwt.sign(
       { idUser: userFound.idUser, rol: rolFound.name },
       process.env.SECRET_KEY_REFRESH_TOKEN,
       {
@@ -50,16 +50,18 @@ export const login = async (req, res) => {
       }
     );
 
-    res.cookie("authenticacionToken", authenticacionToken, {
+    res.cookie("authenticationToken", authenticationToken, {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
-      sameSite: "lax"
+      sameSite: "lax",
+      secure: true
     });
 
-    res.cookie("authenticacionRefreshToken", authenticacionRefreshToken, {
+    res.cookie("authenticationRefreshToken", authenticationRefreshToken, {
       maxAge: 60 * 60 * 1000 * 24,
       httpOnly: true,
-      sameSite: "lax"
+      sameSite: "lax",
+      secure: true
     });
 
     res.status(200).json({

@@ -11,6 +11,7 @@ import { Delete } from "../delete/Delete";
 import { Details } from "../details/Details.jsx";
 import { formatDate } from "../../../functions.js";
 import { useParams } from "react-router";
+import { useAuth } from "../../../../../contexts/adminContext/AuthContext.jsx";
 
 export const BodyTable = () => {
   const [editUser, setEditUser] = useState(null);
@@ -18,20 +19,21 @@ export const BodyTable = () => {
   const [detailsUser, setDetailsUser] = useState(null);
   const { loading, registers } = useCrud();
   const { roleName } = useParams();
+  const { user } = useAuth();
 
   return (
     <tbody>
       {registers &&
         loading == false &&
-        registers.map((user, index) => (
+        registers.map((userRegister, index) => (
           <tr key={index} className={index % 2 == 0 ? styles.trGray : ""}>
-            <td>{user.idUser}</td>
-            <td>{user.name}</td>
-            <td>{user.lastname}</td>
-            <td>{formatDate(new Date(user.created))}</td>
+            <td>{userRegister.idUser}</td>
+            <td>{userRegister.name}</td>
+            <td>{userRegister.lastname}</td>
+            <td>{formatDate(new Date(userRegister.created))}</td>
             <td>
-              {user.lastModified
-                ? formatDate(new Date(user.lastModified))
+              {userRegister.lastModified
+                ? formatDate(new Date(userRegister.lastModified))
                 : "Sin modificaciones"}
             </td>
             <td>
@@ -39,46 +41,64 @@ export const BodyTable = () => {
                 {!roleName && (
                   <>
                     <button
-                      onClick={() => setDeleteUser(user.idUser)}
-                      className={styles.delete}
+                      disabled={userRegister.idUser == user.idUser}
+                      onClick={() => setDeleteUser(userRegister.idUser)}
+                      className={
+                        userRegister.idUser == user.idUser
+                          ? styles.deleteDisabled
+                          : styles.delete
+                      }
                     >
                       <img src={iconDelete}></img>
                     </button>
 
                     <button
-                      onClick={() => setEditUser(user.idUser)}
-                      className={styles.edit}
+                      disabled={userRegister.idUser == user.idUser}
+                      onClick={() => setEditUser(userRegister.idUser)}
+                      className={
+                        userRegister.idUser == user.idUser
+                          ? styles.editDisabled
+                          : styles.edit
+                      }
                     >
                       <img src={iconEdit}></img>
                     </button>
                   </>
                 )}
                 <button
-                  className={styles.details}
-                  onClick={() => setDetailsUser(user.idUser)}
+                  disabled={userRegister.idUser == user.idUser}
+                  className={
+                    userRegister.idUser == user.idUser
+                      ? styles.detailsDisabled
+                      : styles.details
+                  }
+                  onClick={() => setDetailsUser(userRegister.idUser)}
                 >
                   <img src={iconInfo}></img>
                 </button>
               </div>
             </td>
-            {editUser == user.idUser &&
+            {editUser == userRegister.idUser &&
               createPortal(
                 <Modal>
-                  <Edit user={user} setEditUser={setEditUser} />
+                  <Edit user={userRegister} setEditUser={setEditUser} />
                 </Modal>,
                 document.body
               )}
-            {deleteUser == user.idUser &&
+            {deleteUser == userRegister.idUser &&
               createPortal(
                 <Modal>
-                  <Delete user={user} setDeleteUser={setDeleteUser} />
+                  <Delete user={userRegister} setDeleteUser={setDeleteUser} />
                 </Modal>,
                 document.body
               )}
-            {detailsUser == user.idUser &&
+            {detailsUser == userRegister.idUser &&
               createPortal(
                 <Modal>
-                  <Details user={user} setDetailsUser={setDetailsUser} />
+                  <Details
+                    user={userRegister}
+                    setDetailsUser={setDetailsUser}
+                  />
                 </Modal>,
                 document.body
               )}

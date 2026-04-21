@@ -13,7 +13,8 @@ export const MenuSide = () => {
   const handleLogout = async () => {
     try {
       const response = await fetch(LOCALHOST_BACKEND + "/logout/", {
-        method: "POST"
+        method: "POST",
+        credentials: "include"
       });
 
       const result = await response.json();

@@ -61,22 +61,23 @@ export const AddWithList = ({ setAddWithListForm }) => {
         } else {
           url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
         }
-
         let nhCrimes = await fetchGet(url);
-        document.querySelector("form").reset();
         setRegisters(nhCrimes);
-        setValues({
-          neighborhoodsCrime: values.neighborhoodsCrime.map(
-            (neighborhoodCrime) => ({
-              ...neighborhoodCrime,
-              amount: null
-            })
-          ),
-          crime: "",
-          year: ""
-        });
       }
+      
+      document.querySelector("form").reset();
+      setValues({
+        neighborhoodsCrime: values.neighborhoodsCrime.map(
+          (neighborhoodCrime) => ({
+            ...neighborhoodCrime,
+            amount: null
+          })
+        ),
+        crime: "",
+        year: ""
+      });
     }
+
     return;
   };
 

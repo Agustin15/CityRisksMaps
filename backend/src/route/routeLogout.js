@@ -1,6 +1,12 @@
 import express from "express";
-import { logout } from "../controller/logoutController.js";
 
 export const RoutesLogout = express.Router();
 
-RoutesLogout.post("/", logout);
+RoutesLogout.post("/", (req, res) => {
+  try {
+    res.clearCookie("authenticationToken");
+    res.clearCookie("authenticationRefreshToken");
+  } catch (error) {
+    res.status(502).json({ messageError: error.message });
+  }
+});

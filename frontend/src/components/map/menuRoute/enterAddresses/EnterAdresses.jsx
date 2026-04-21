@@ -18,12 +18,11 @@ export const EnterAdresses = ({
     if (
       destination.length > 0 &&
       originLocation &&
-      (crimeSelected == "Homicidio" || crimeSelected == "Rapiña")
+      crimeSelected == "Homicidio"
     )
       showRoutes("Drive");
     else return;
   };
-  
 
   return (
     <div className={styles.columnShowRoutes}>
@@ -46,7 +45,7 @@ export const EnterAdresses = ({
           className={
             destination.length > 0 &&
             originLocation &&
-            (crimeSelected == "Homicidio" || crimeSelected == "Rapiña")
+            crimeSelected == "Homicidio"
               ? styles.btnEnabled
               : styles.btnDisabled
           }
@@ -55,10 +54,8 @@ export const EnterAdresses = ({
           <img src={iconShow}></img>
         </button>
       </div>
-  
-      {(crimeSelected != "Homicidio" && crimeSelected != "Rapiña") && (
-        <Advice />
-      )}
+
+      {crimeSelected != "Homicidio" && <Advice />}
       {loadingRoutes && (
         <div className={styles.containLoaderRoutes}>
           Cargando rutas

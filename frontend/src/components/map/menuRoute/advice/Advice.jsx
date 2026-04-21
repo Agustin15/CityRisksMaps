@@ -6,7 +6,7 @@ export const Advice = () => {
     <div className={styles.advice}>
       <img src={iconWarning}></img>
       <p>
-        Debe seleccionar la opcion de mostrar denuncias de homicidios o rapiñaas
+        Debe seleccionar la opcion de mostrar denuncias de homicidios
         por barrio para que podamos calificar las rutas
       </p>
     </div>

@@ -64,3 +64,6 @@ app.use("/population/", RoutesPopulation);
 app.use("/crimeAdmin/", RoutesCrimeAdmin);
 app.use("/role/", RoutesRol);
 app.use("/user/", RoutesUser);
+app.use("/", (req, res) => {
+  res.status(200).send("Servidor corriendo");
+});

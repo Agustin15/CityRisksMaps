@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(rgb(240, 240, 240), rgb(229, 240, 255));
+    background: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));
 }
 .login {
     width: 45rem;
@@ -15,14 +15,15 @@
     align-items: center;
     border: 1px solid #cecece;
     box-shadow: 4px 4px 4px gray;
+    background: url("../../assets/img/waveLogin.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .login h3 {
     margin: 0;
 }
 
 .welcome {
-    background: url("../../assets/img/wavesLogin.png");
-    background-size: cover;
     width: 50%;
     height: 100%;
     display: flex;
@@ -49,7 +50,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    background-color: #ffffff;
+    background: none;
     border-top: 1px solid rgb(209, 209, 209);
     font-size: 16px;
     position: relative;
@@ -153,9 +154,11 @@
     top: 3.5rem;
 }
 .containForm button {
-    width: 17rem;
-    height: 2rem;
+    width: 12rem;
+    height: 2.2rem;
     padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 15px;
     color: white;
     background-color: #4e90c5;
     font-weight: bold;
