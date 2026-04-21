@@ -16,11 +16,11 @@ form .columnInput {
 
 form input,
 form textarea {
-    height: 1.8rem;
+    height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid rgb(201, 201, 201);
     font-size: 15px;
     outline: none;
 }

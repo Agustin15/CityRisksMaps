@@ -1,0 +1,39 @@
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.3rem;
+}
+.options button {
+    min-width: 7rem;
+    width: auto;
+    height: auto;
+    padding: 0.4rem 1rem 0.4rem 1rem;
+    border-radius: 3px;
+    color: white;
+    gap: 0.3rem;
+    margin: 0;
+}
+
+.options button img {
+    width: 18px;
+    height: 18px;
+}
+
+.options .save {
+    background-color: rgb(47, 212, 82);
+}
+.options .saveDisabled {
+    background-color: rgb(47, 212, 82);
+    opacity: 82%;
+    cursor: auto;
+}
+.options .clean {
+    background-color: rgb(209, 48, 48);
+}
+.options .save:hover {
+    background-color: rgb(44, 192, 76);
+}
+.options .clean:hover {
+    background-color: rgb(194, 45, 45);
+}

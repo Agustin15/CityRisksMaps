@@ -25,6 +25,11 @@
     outline: none;
 }
 
+.containSearcher input:hover {
+    box-shadow: none;
+    border: none;
+}
+
 @media (width<=650px) {
     .containSearcher {
         width: 99%;
@@ -32,6 +37,10 @@
     .containSearcher input {
         background: #e0e0e0;
         color: rgb(36, 36, 36);
+    }
+    .containSearcher input:hover {
+        box-shadow: none;
+        border: none;
     }
 }
 
@@ -43,5 +52,9 @@
     .containSearcher input {
         background: #e0e0e0;
         color: rgb(36, 36, 36);
+    }
+    .containSearcher input:hover {
+        box-shadow: none;
+        border: none;
     }
 }

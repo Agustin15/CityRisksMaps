@@ -64,7 +64,7 @@ export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
       </div>
 
       <button disabled={loading} className={styles.add} type="submit">
-        {loading ? "Cargando..." : "Cargar informacion"}
+        {loading ? "Cargando,puede tardar unos minutos..." : "Cargar informacion"}
       </button>
     </form>
   );

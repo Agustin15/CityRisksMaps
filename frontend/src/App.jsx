@@ -16,7 +16,9 @@ import { CategoryCrimes } from "./components/admin/categoryCrimes/CategoryCrimes
 import { Rols } from "./components/admin/rols/Rols.jsx";
 import { Users } from "./components/admin/users/Users.jsx";
 import { ActivateUser } from "./components/admin/activateUser/ActivateUser.jsx";
+import { EmailConfirmedPage } from "./pages/EmailConfirmedPage.jsx";
 import { NeighborhoodsCrimes } from "./components/admin/neighborhoodsCrimes/NeighborhoodsCrimes.jsx";
+import { EditProfile } from "./components/admin/editProfile/EditProfile.jsx";
 
 function App() {
   return (
@@ -72,8 +74,20 @@ function App() {
                 element={<Unauthorized />}
               ></Route>
               <Route
+                path="/admin/editar-perfil/"
+                element={<EditProfile />}
+              ></Route>
+              <Route
                 path="/admin/activar-usuario/:token"
-                element={<ActivateUserProvider><ActivateUser /></ActivateUserProvider>}
+                element={
+                  <ActivateUserProvider>
+                    <ActivateUser />
+                  </ActivateUserProvider>
+                }
+              ></Route>
+              <Route
+                path="/admin/confirmar-correo/:token"
+                element={<EmailConfirmedPage />}
               ></Route>
             </Routes>
           </BrowserRouter>

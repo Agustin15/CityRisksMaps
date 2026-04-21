@@ -19,6 +19,11 @@ export class ZoneDAL {
           });
 
         case -2:
+          throw new Error("La descripcion no puede estar vacia", {
+            cause: { code: 400 }
+          });
+
+        case -3:
           throw new Error("Error inesperado al agregar zona", {
             cause: { code: 502 }
           });
@@ -47,11 +52,16 @@ export class ZoneDAL {
           });
 
         case -2:
+          throw new Error("La descripcion no puede estar vacia", {
+            cause: { code: 400 }
+          });
+
+        case -3:
           throw new Error("No se encontro al zona indicada en el sistema", {
             cause: { code: 404 }
           });
 
-        case -3:
+        case -4:
           throw new Error("Error inesperado al actualizar zona", {
             cause: { code: 502 }
           });

@@ -15,6 +15,7 @@ import { RoutesCrimeAdmin } from "./route/routeCrimeAdmin.js";
 import { RoutesProfile } from "./route/routeProfile.js";
 import { RoutesRol } from "./route/routeRol.js";
 import { RoutesUser } from "./route/routeUser.js";
+import { RoutesConfirmEmail } from "./route/routeConfirmEmail.js";
 
 const limiterOptions = {
   windowMs: 15 * 60 * 1000,
@@ -53,6 +54,7 @@ try {
 app.use("/login/", RoutesLogin);
 app.use("/profile/", RoutesProfile);
 app.use("/logout/", RoutesLogout);
+app.use("/confirmEmail/", RoutesConfirmEmail);
 app.use("/crime/", RoutesCrime);
 app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);

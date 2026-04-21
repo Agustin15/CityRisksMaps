@@ -1,0 +1,57 @@
+.editProfile {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(247, 247, 247);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    width: 85%;
+    height: 100vh;
+    background-repeat: no-repeat;
+}
+
+.header {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    width: 100%;
+    height: 3rem;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    background: rgb(255, 255, 255);
+    padding: 0.5rem 0 0.5rem 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.7rem;
+    color: rgb(59, 59, 59);
+}
+
+.header h3 {
+    font-size: 22px;
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.header img {
+    width: 41px;
+    height: 41px;
+}
+
+.row {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 0;
+    background-color: white;
+    border-radius: 15px;
+    width: 85%;
+    height: 85%;
+    padding-left: 1rem;
+}

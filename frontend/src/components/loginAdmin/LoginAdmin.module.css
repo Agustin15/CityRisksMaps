@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-    background: rgb(255, 255, 255);
+    background: linear-gradient(rgb(240, 240, 240), rgb(229, 240, 255));
 }
 .login {
     width: 45rem;
@@ -14,14 +14,15 @@
     justify-content: center;
     align-items: center;
     border: 1px solid #cecece;
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: 4px 4px 4px gray;
 }
 .login h3 {
     margin: 0;
 }
 
 .welcome {
-    background: #124a77;
+    background: url("../../assets/img/wavesLogin.png");
+    background-size: cover;
     width: 50%;
     height: 100%;
     display: flex;
@@ -48,7 +49,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     border-top: 1px solid rgb(209, 209, 209);
     font-size: 16px;
     position: relative;
@@ -120,7 +121,7 @@
 .containForm .columnInput input {
     font-size: 15px;
     width: 89%;
-    height: 2.2rem;
+    height: 2.4rem;
     border: 1px solid #ccc;
     background: white;
     border-radius: 6px;
@@ -133,9 +134,13 @@
     background-size: 18px;
 }
 
+.containForm .columnInput input:hover {
+    border-color: rgba(82, 168, 236, 0.8);
+}
+
 .containForm .columnInput .password {
     padding: 0 11% 0 11%;
-    height: 2.3rem;
+    height: 2.5rem;
     width: 78%;
     background-image: url("../../assets/img/password.png");
 }
@@ -152,12 +157,12 @@
     height: 2rem;
     padding: 0.5rem;
     color: white;
-    background-color: #134772;
+    background-color: #4e90c5;
     font-weight: bold;
     margin-top: 0.3rem;
 }
 .containForm button:hover {
-    background-color: #113e63;
+    background-color: #2f6da0;
 }
 
 .footer {

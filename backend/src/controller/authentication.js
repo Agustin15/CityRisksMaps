@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import * as jose from "jose";
 
 export const verifyAuthToken = (req, res, next) => {
   try {
@@ -6,25 +7,24 @@ export const verifyAuthToken = (req, res, next) => {
       throw new Error("SECRET_KEY_TOKEN no declarada");
 
     if (!req.cookies.authenticacionToken) {
-      const tokenRefreshed = refreshAuthToken(res, req);
+      const jwtTokenRefreshed = refreshAuthToken(res, req);
 
-      if (tokenRefreshed) return next();
+      if (jwtTokenRefreshed) return next();
     }
 
-    const token = req.cookies.authenticacionToken;
+    const jwtToken = req.cookies.authenticacionToken;
 
-    const tokenDecoded = jwt.verify(token, process.env.SECRET_KEY_TOKEN);
+    const jwtTokenDecoded = jwt.verify(jwtToken, process.env.SECRET_KEY_TOKEN);
 
-    if (!tokenDecoded)
-      throw new Error("Autenticacion fallida, token no valido");
-
-    req.idUser = tokenDecoded.idUser;
-    req.rol = tokenDecoded.rol;
+    req.idUser = jwtTokenDecoded.idUser;
+    req.rol = jwtTokenDecoded.rol;
 
     return next();
   } catch (error) {
-    if (error.message == "jwt expired")
+    if (error.message === "TokenExpiredError")
       error.message = "Autenticacion fallida,token expirado";
+    else if (error.name === "JsonWebTokenError")
+      error.message = "Autenticacion fallida,token invalido";
 
     res.status(401).json({ messageError: error.message });
   }
@@ -40,18 +40,18 @@ const refreshAuthToken = (res, req) => {
     if (!process.env.SECRET_KEY_REFRESH_TOKEN)
       throw new Error("SECRET_KEY_REFRESH_TOKEN no declarada");
 
-    const tokenDecoded = jwt.verify(
+    const jwtTokenDecoded = jwt.verify(
       req.cookies.authenticacionRefreshToken,
       process.env.SECRET_KEY_REFRESH_TOKEN
     );
 
-    if (!tokenDecoded)
+    if (!jwtTokenDecoded)
       throw new Error(
         "Autenticacion fallida, token de actualizacion no valido"
       );
 
     const authenticacionToken = jwt.sign(
-      { idUser: tokenDecoded.idUser, rol: tokenDecoded.rol },
+      { idUser: jwtTokenDecoded.idUser, rol: jwtTokenDecoded.rol },
       process.env.SECRET_KEY_TOKEN,
       { expiresIn: "1h" }
     );
@@ -63,8 +63,8 @@ const refreshAuthToken = (res, req) => {
       secure: true
     });
 
-    req.idUser = tokenDecoded.idUser;
-    req.rol = tokenDecoded.rol;
+    req.idUser = jwtTokenDecoded.idUser;
+    req.rol = jwtTokenDecoded.rol;
 
     return true;
   } catch (error) {
@@ -84,30 +84,57 @@ export const verifyActivateUserToken = (req, res) => {
         "Token de acceso para activar el usuario no proporcionado"
       );
 
-    const token = authHeader.startsWith("Bearer ")
+    const jwtToken = authHeader.startsWith("Bearer ")
       ? authHeader.slice(7)
       : authHeader;
 
-    const decoded = jwt.verify(
-      token,
+    const jwtTokenDecoded = jwt.verify(
+      jwtToken,
       process.env.SECRET_KEY_GENERATE_PASSWORD_TOKEN
     );
 
-    if (!decoded.idUser)
-      throw new Error("El token de acceso para activar el usuario es invalido");
-
-    return decoded.idUser;
+    return jwtTokenDecoded.idUser;
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      res.status(401).json({
-        messageError: "El token de acceso para activar el usuario ha expirado"
-      });
+      error.message = "El token de acceso para activar el usuario ha expirado";
     } else if (error.name === "JsonWebTokenError") {
-      res.status(401).json({
-        messageError: "El token de acceso para activar usuario es invalido"
-      });
-    } else {
-      res.status(401).json({ messageError: error.message });
+      error.message = "El token de acceso para activar usuario es invalido";
     }
+    res.status(401).json({ messageError: error.message });
+  }
+};
+
+export const verifyConfirmEmailToken = async (req, res) => {
+  try {
+    if (!process.env.SECRET_KEY_CONFIRM_EMAIL_TOKEN)
+      throw new Error("SECRET_KEY_CONFIRM_EMAIL_TOKEN no declarada");
+
+    const secretKeyConfirmEmailToken =
+      process.env.SECRET_KEY_CONFIRM_EMAIL_TOKEN;
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader)
+      throw new Error("Acceso para confirmar el correo electronico no valido");
+
+    const jwtToken = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : authHeader;
+
+    const { payload, protectedHeader } = await jose.jwtDecrypt(
+      jwtToken,
+      new TextEncoder().encode(secretKeyConfirmEmailToken)
+    );
+
+    return payload;
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      error.message =
+        "El acceso para confirmar el correo electronico ha expirado";
+    } else if (error.name === "JsonWebTokenError") {
+      error.message =
+        "El acceso para confirmar el correo electronico no es valido";
+    }
+    res.status(401).json({ messageError: error.message });
   }
 };

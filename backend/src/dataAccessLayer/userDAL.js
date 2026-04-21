@@ -21,16 +21,24 @@ export class UserDAL {
           });
 
         case -2:
+          throw new Error("Nombre no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -3:
+          throw new Error("Apellido no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -4:
           throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
-        case -3:
+        case -5:
           throw new Error("Correo ingresado ya en uso", {
             cause: { code: 409 }
           });
 
-        case -4:
+        case -6:
           throw new Error("Error inesperado al agregar usuario", {
             cause: { code: 502 }
           });
@@ -59,6 +67,14 @@ export class UserDAL {
             cause: { code: 400 }
           });
         case -2:
+          throw new Error("Nombre no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -3:
+          throw new Error("Apellido no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -4:
           throw new Error(
             "No se encontro el el usuario indicado en el sistema",
             {
@@ -66,17 +82,17 @@ export class UserDAL {
             }
           );
 
-        case -3:
+        case -5:
           throw new Error("No se encontro el rol indicado en el sistema", {
             cause: { code: 404 }
           });
 
-        case -4:
+        case -6:
           throw new Error("Correo ingresado ya en uso", {
             cause: { code: 409 }
           });
 
-        case -5:
+        case -7:
           throw new Error("Error inesperado al actualizar usuario", {
             cause: { code: 502 }
           });
@@ -96,6 +112,10 @@ export class UserDAL {
 
       switch (result.returnValue) {
         case -1:
+          throw new Error("Contraseña no puede estar vacia", {
+            cause: { code: 400 }
+          });
+        case -2:
           throw new Error(
             "No se encontro el el usuario indicado en el sistema",
             {
@@ -103,8 +123,50 @@ export class UserDAL {
             }
           );
 
-        case -2:
+        case -3:
           throw new Error("Error inesperado al activar el usuario", {
+            cause: { code: 502 }
+          });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateEmailByIdUser(idUser, email) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idUser", sql.Int, idUser);
+      request.input("email", sql.VarChar(40), email);
+
+      const result = await request.execute("UpdateEmailByIdUser");
+
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("Formato de correo electronico no valido", {
+            cause: { code: 404 }
+          });
+
+        case -2:
+          throw new Error("No se encontro el usuario indicado en el sistema", {
+            cause: { code: 404 }
+          });
+
+        case -3:
+          throw new Error("La verificacion de este correo ya se ha realizado", {
+            cause: { code: 409 }
+          });
+
+        case -4:
+          throw new Error(
+            "Ya existe un usuario con este correo en el sistema",
+            {
+              cause: { code: 409 }
+            }
+          );
+        case -5:
+          throw new Error("Error inesperado al actualizar correo electronico", {
             cause: { code: 502 }
           });
       }
@@ -124,14 +186,15 @@ export class UserDAL {
 
       switch (result.returnValue) {
         case -1:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-
+          throw new Error("Contraseña no puede estar vacia", {
+            cause: { code: 400 }
+          });
         case -2:
+          throw new Error("No se encontro el usuario indicado en el sistema", {
+            cause: { code: 404 }
+          });
+
+        case -3:
           throw new Error(
             "Error inesperado al actualizar contraseña del usuario",
             {
@@ -143,6 +206,72 @@ export class UserDAL {
       throw error;
     }
   }
+
+  static async updateCompleteNameByIdUser(idUser, name, lastname) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idUser", sql.Int, idUser);
+      request.input("name", sql.VarChar(20), name);
+      request.input("lastname", sql.VarChar(20), lastname);
+
+      const result = await request.execute("UpdateCompleteNameByIdUser");
+
+      switch (result.returnValue) {
+        case -1:
+          throw new Error("Nombre no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -2:
+          throw new Error("Apellido no puede estar vacio", {
+            cause: { code: 400 }
+          });
+
+        case -3:
+          throw new Error(
+            "No se encontro el el usuario indicado en el sistema",
+            {
+              cause: { code: 404 }
+            }
+          );
+        case -4:
+          throw new Error("Error inesperado al actualizar  usuario", {
+            cause: { code: 502 }
+          });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateAvatarByIdUser(idUser, avatar) {
+    try {
+      const request = new sql.Request(connection.pool);
+
+      request.input("idUser", sql.Int, idUser);
+      request.input("avatar", sql.VarBinary(sql.MAX), avatar);
+
+      const result = await request.execute("UpdateAvatarById");
+
+      switch (result.returnValue) {
+        case -1:
+          throw new Error(
+            "No se encontro el el usuario indicado en el sistema",
+            {
+              cause: { code: 404 }
+            }
+          );
+
+        case -2:
+          throw new Error("Error inesperado al actualizar avatar del usuario", {
+            cause: { code: 502 }
+          });
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async delete(idUser) {
     try {
       const request = new sql.Request(connection.pool);

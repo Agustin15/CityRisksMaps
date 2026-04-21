@@ -29,9 +29,33 @@ export class UserService {
     }
   }
 
+  static async updateEmailByIdUser(idUser, email) {
+    try {
+      await UserDAL.updateEmailByIdUser(idUser, email);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateAvatarByIdUser(idUser, email) {
+    try {
+      await UserDAL.updateAvatarByIdUser(idUser, email);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async updateUserPasswordByIdUser(idUser, password) {
     try {
       await UserDAL.updateUserPasswordByIdUser(idUser, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateCompleteNameByIdUser(idUser, name, lastname) {
+    try {
+      await UserDAL.updateCompleteNameByIdUser(idUser, name, lastname);
     } catch (error) {
       throw error;
     }

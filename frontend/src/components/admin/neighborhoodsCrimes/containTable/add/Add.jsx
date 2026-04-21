@@ -69,11 +69,17 @@ export const Add = ({ setAddForm }) => {
       alertSwalSuccess("¡Registros de denuncias agregados exitosamente!");
 
       let url;
-      if (values.year != yearSelected) {
-        await loadYears("/neighborhoodCrimeAdmin/yearsNeighborhoodsCrimes");
-        url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + values.year;
-      } else {
-        url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
+
+      if (crimeSelected == values.crime) {
+        if (values.year != yearSelected) {
+          await loadYears(
+            "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
+          );
+
+          url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + values.year;
+        } else {
+          url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
+        }
       }
 
       let nhCrimes = await fetchGet(url);

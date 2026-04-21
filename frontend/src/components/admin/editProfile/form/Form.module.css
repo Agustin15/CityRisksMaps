@@ -1,0 +1,88 @@
+.containForm {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 63%;
+    margin-top: 1rem;
+}
+
+.containForm .tab {
+    width: 4rem;
+    height: 2rem;
+    border: 1px solid rgb(207, 207, 207);
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containForm form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    border-top: 1px solid rgb(219, 219, 219);
+    padding-top: 1rem;
+}
+
+.containForm form label {
+    width: 100%;
+}
+
+.columnInputPassword,
+.columnInputEmail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: 51%;
+    position: relative;
+}
+
+.columnInputPassword input,
+.columnInputEmail input {
+    background: rgb(235, 235, 235);
+    border: 1px solid rgb(228, 227, 227);
+    width: 100%;
+    height: 2.3rem;
+}
+
+.columnInputPassword input:hover,
+.columnInputEmail input:hover {
+    border: 1px solid rgb(228, 227, 227);
+    box-shadow: none;
+    transition: none;
+}
+
+.columnInputPassword button,
+.columnInputEmail button {
+    flex-direction: row-reverse;
+    border-radius: 3px;
+    box-shadow: none;
+    color: white;
+    background: rgb(49, 155, 204);
+    box-shadow: 1px 1px 1px rgb(202, 202, 202);
+    font-size: 13px;
+    gap: 0.4rem;
+    position: absolute;
+    top: 1.8rem;
+    left: 105%;
+    width: 7rem;
+    height: 2rem;
+    margin: 0;
+}
+.columnInputPassword button:hover,
+.columnInputEmail button:hover {
+    background: rgb(45, 141, 170);
+}
+.columnInputPassword button img {
+    width: 23px;
+    height: 23px;
+}
+.columnInputEmail button img {
+    width: 22px;
+    height: 22px;
+}

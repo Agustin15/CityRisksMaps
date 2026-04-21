@@ -54,7 +54,9 @@ export const AddWithList = ({ setAddWithListForm }) => {
 
       if (values.crime == crimeSelected) {
         if (values.year != yearSelected) {
-          await loadYears("/neighborhoodCrimeAdmin/yearsNeighborhoodsCrimes");
+          await loadYears(
+            "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
+          );
           url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + values.year;
         } else {
           url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;

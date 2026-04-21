@@ -4,18 +4,18 @@ USE CityRisksMap;
 
 CREATE TABLE Rols(
 idRol INT IDENTITY(1,1) Primary key,
-name VARCHAR(10) UNIQUE,
+name VARCHAR(10) UNIQUE NOT NULL CHECK(LEN(name)>0),
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
 );
 
-
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
 email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
-name VARCHAR(20) NOT NULL,
-lastname VARCHAR(20) NOT NULL,
+name VARCHAR(20) NOT NULL CHECK(LEN(name)>0),
+lastname VARCHAR(20) NOT NULL CHECK(LEN(lastname)>0),
 password VARCHAR(60),
+avatar VARBINARY(MAX),
 activated BIT NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
@@ -31,12 +31,12 @@ idUser INT NOT NULL FOREIGN KEY REFERENCES Users(idUser) ON UPDATE CASCADE ON DE
 
 CREATE TABLE Departments(
 idDepartment INT IDENTITY(1,1) Primary key, 
-name VARCHAR(30) NOT NULL UNIQUE,
+name VARCHAR(30) NOT NULL UNIQUE CHECK(LEN(name)>0),
 );
 
 CREATE TABLE Neighborhoods(
 idNeighborhood INT IDENTITY(1,1) Primary key, 
-name VARCHAR(30),
+name VARCHAR(30) CHECK(LEN(name)>0),
 department INT NOT NULL FOREIGN KEY REFERENCES Departments(idDepartment) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -70,7 +70,7 @@ Primary key(neighborhood,crime,year)
 
 CREATE TABLE Zones(
 idZone INT Primary key,
-description VARCHAR(250) NOT NULL,
+description VARCHAR(250) NOT NULL CHECK(LEN(description)>0),
 coordinates GEOGRAPHY NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
@@ -92,13 +92,16 @@ GO
 CREATE OR ALTER PROCEDURE AddRol @name VARCHAR(10)  AS
 BEGIN
 
-IF EXISTS (select * from Rols where name=@name)
+IF (LEN(@name)=0)
 RETURN -1
+
+IF EXISTS (select * from Rols where name=@name)
+RETURN -2
 
 INSERT INTO Rols(name) VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -108,16 +111,19 @@ GO
 CREATE OR ALTER PROCEDURE UpdateRol @idRol INT,@name VARCHAR(10) AS
 BEGIN
 
-IF NOT EXISTS (select * from Rols where idRol=@idRol)
+IF (LEN(@name)=0)
 RETURN -1
 
-IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
+IF NOT EXISTS (select * from Rols where idRol=@idRol)
 RETURN -2
+
+IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
+RETURN -3
 
 UPDATE Rols set name=@name where idRol=@idRol;
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -176,18 +182,24 @@ BEGIN
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
 RETURN -1
 
-IF NOT EXISTS (select * from Rols where idRol=@rol)
+IF (LEN(@name)=0)
 RETURN -2
 
-IF EXISTS (select * from Users where email=@email)
+IF (LEN(@lastname)=0)
 RETURN -3
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -4
+
+IF EXISTS (select * from Users where email=@email)
+RETURN -5
 
 INSERT INTO Users(email,name,lastname,activated,rol) VALUES(@email,@name,@lastname,@activated,@rol);
 
 IF(@@ERROR<>0)
-RETURN -4
+RETURN -6
 
-RETURN IDENT_CURRENT('Users');
+RETURN scope_identity();
 
 END
 GO
@@ -200,16 +212,49 @@ BEGIN
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
 RETURN -1
 
+IF (LEN(@name)=0)
+RETURN -2
+
+IF (LEN(@lastname)=0)
+RETURN -3
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -4
+
+IF NOT EXISTS (select * from Rols where idRol=@rol)
+RETURN -5
+
+IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
+RETURN -6
+
+UPDATE Users set email=@email,name=@name,lastname=@lastname,@rol=rol where idUser=@idUser;
+
+IF(@@ERROR<>0)
+RETURN -7
+
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE UpdateEmailByIdUser @idUser INT,@email VARCHAR(40) AS
+
+BEGIN
+
+IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
+RETURN -1
+
 IF NOT EXISTS (select * from Users where idUser=@idUser)
 RETURN -2
 
-IF NOT EXISTS (select * from Rols where idRol=@rol)
+IF EXISTS (select * from Users where idUser=@idUser and email=@email)
 RETURN -3
 
 IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
 RETURN -4
 
-UPDATE Users set email=@email,name=@name,lastname=@lastname,@rol=rol where idUser=@idUser;
+UPDATE Users set email=@email where idUser=@idUser;
 
 IF(@@ERROR<>0)
 RETURN -5
@@ -219,15 +264,57 @@ RETURN 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE UpdateUserPasswordByIdUser @idUser INT,@password VARCHAR(60) AS
+
+CREATE OR ALTER PROCEDURE UpdateAvatarByIdUser @idUser INT,@avatar VARBINARY(max) AS
+
+BEGIN
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
 RETURN -1
 
-Update Users set password=@password where idUser=@idUser
+UPDATE Users set avatar=@avatar where idUser=@idUser;
 
 IF(@@ERROR<>0)
 RETURN -2
+
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE UpdateUserPasswordByIdUser @idUser INT,@password VARCHAR(60) AS
+
+IF(LEN(@password)=0)
+RETURN -1
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -2
+
+Update Users set password=@password where idUser=@idUser
+
+IF(@@ERROR<>0)
+RETURN -3
+
+RETURN 1
+
+GO
+
+
+CREATE OR ALTER PROCEDURE UpdateCompleteNameByIdUser @idUser INT,@name VARCHAR(20),@lastname VARCHAR(20) AS
+
+IF(LEN(@name)=0)
+RETURN -1
+
+IF(LEN(@lastname)=0)
+RETURN -2
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -3
+
+Update Users set name=@name,lastname=@lastname where idUser=@idUser
+
+IF(@@ERROR<>0)
+RETURN -4
 
 RETURN 1
 
@@ -235,13 +322,16 @@ GO
 
 CREATE OR ALTER PROCEDURE ActivateUserByIdUser @idUser INT,@password VARCHAR(60) AS
 
-IF NOT EXISTS (select * from Users where idUser=@idUser)
+IF(LEN(@password)=0)
 RETURN -1
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -2
 
 Update Users set password=@password,activated=1 where idUser=@idUser
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -315,13 +405,16 @@ GO
 CREATE OR ALTER PROCEDURE AddDepartment @name VARCHAR(30) AS
 BEGIN
 
-IF EXISTS (select * from Departments where name=@name)
+IF(LEN(@name)=0)
 RETURN -1
+
+IF EXISTS (select * from Departments where name=@name)
+RETURN -2
 
 INSERT INTO Departments(name) VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -331,16 +424,19 @@ GO
 CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
 BEGIN
 
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+IF(LEN(@name)=0)
 RETURN -1
 
-IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
 RETURN -2
+
+IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
+RETURN -3
 
 UPDATE Departments set name=@name where idDepartment=@idDepartment;
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -467,16 +563,19 @@ CREATE OR ALTER PROCEDURE AddNeighborhood @name VARCHAR(30), @idDepartment INT A
 
 BEGIN
 
-IF EXISTS (select * from Neighborhoods where name=@name)
+IF (LEN(@name)=0)
 RETURN -1
 
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+IF EXISTS (select * from Neighborhoods where name=@name)
 RETURN -2
+
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+RETURN -3
 
 INSERT INTO Neighborhoods VALUES(@name,@idDepartment);
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 RETURN 1
 
@@ -487,13 +586,16 @@ GO
 CREATE OR ALTER PROCEDURE UpdateNeighborhood @idNeighborhood INT, @name VARCHAR(30),@idDepartment INT AS
 BEGIN
 
-IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+IF (LEN(@name)=0)
 RETURN -1
+
+IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
+RETURN -2
 
 UPDATE Neighborhoods set name=@name,department=@idDepartment where idNeighborhood=@idNeighborhood;
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -912,9 +1014,12 @@ BEGIN
 IF(@enable!=0 or @enable!=1)
 RETURN -1
 
+IF (LEN(@description)=0)
+RETURN -2
+
 INSERT INTO Zones(description,coordinates,enable) VALUES(@description,@coordinates,@enable);
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN IDENT_CURRENT('Zones');
 
@@ -942,13 +1047,16 @@ BEGIN
 IF(@enable!=0 or @enable!=1)
 RETURN -1
 
-IF NOT EXISTS(select * from Zones where idZone=@idZone)
+IF (LEN(@description)=0)
 RETURN -2
+
+IF NOT EXISTS(select * from Zones where idZone=@idZone)
+RETURN -3
 
 Update Zones set description=@description,coordinates=@coordinates,enable=@enable where idZone=@idZone
 
 IF(@@ERROR<>0)
-RETURN -3
+RETURN -4
 
 END
 
@@ -1323,10 +1431,70 @@ EXEC AddCrime 'Rapiña','Se clasifican como rapiñas todos los incidentes en que
 
 GO
 
-DECLARE @valor INT;
 
-EXEC @valor=AddNeighborhoodCrime 'Aguada','Homicidio',1,2023;
-print @valor
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',6,2022;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Homicidio',11,2022;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',13,2022;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Cerro','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2022;
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2022;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',5,2022;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2022;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Homicidio',12,2022;
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',10,2022;
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',4,2022;
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',5,2022;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',7,2022;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Homicidio',4,2022;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',5,2022;
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',2,2022;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Homicidio',21,2022;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2022;
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Homicidio',4,2022;
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2022;
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',3,2022;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',1,2022;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Homicidio',11,2022;
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2022;
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2022;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Homicidio',15,2022;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Homicidio',2,2022;
+GO
 
 EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2023;
 EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',3,2023;
@@ -1390,3 +1558,68 @@ EXEC AddNeighborhoodCrime 'Unión','Homicidio',6,2023;
 EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',7,2023;
 EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Homicidio',8,2023;
 EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Homicidio',0,2023;
+
+GO
+
+EXEC AddNeighborhoodCrime 'Aguada','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Homicidio',12,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Homicidio',22,2024;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Centro','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Cerro','Homicidio',12,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Homicidio',5,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Homicidio',6,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Homicidio',8,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Homicidio',36,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Manga','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Homicidio',6,2024;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Homicidio',9,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Homicidio',1,2024;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Homicidio',2,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Homicidio',3,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Homicidio',7,2024;
+EXEC AddNeighborhoodCrime 'Reducto','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Sayago','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Homicidio',0,2024;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2024;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Homicidio',9,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Homicidio',3,2024;

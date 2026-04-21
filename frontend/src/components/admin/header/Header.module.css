@@ -46,6 +46,7 @@
     box-shadow: none;
     font-weight: bold;
     background: rgb(43, 199, 103);
+    min-width: 7rem;
     width: auto;
     height: 1.9rem;
     border-radius: 3px;

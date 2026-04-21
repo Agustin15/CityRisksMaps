@@ -105,10 +105,10 @@
 }
 
 .containEdit form input {
-    height: 1.8rem;
+    height: 2.1rem;
+    border: 1px solid rgb(207, 207, 207);
     width: 16rem;
     border-radius: 3px;
-    border: 1px solid gray;
     font-size: 15px;
     outline: none;
 }

@@ -16,11 +16,11 @@ form .columnInput {
 
 form input,
 form select {
-    height: 2rem;
+    height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid rgb(204, 204, 204);
     font-size: 15px;
     outline: none;
 }
@@ -32,7 +32,8 @@ form input[type="file"] {
 form select {
     height: 2.2rem;
     width: 16.5rem;
-    background: linear-gradient(rgb(179, 179, 179),rgb(230, 229, 229));
+    border: 1px solid rgb(199, 199, 199);
+    background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
 }
 
 form .btnUpload {
@@ -72,7 +73,10 @@ form .add {
     background: rgb(34, 207, 63);
     border-radius: 5px;
     box-shadow: none;
-    width: 16rem;
+    min-width: 16rem;
+    width: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     height: 2rem;
     color: white;
     margin: 2rem 0 0 0;

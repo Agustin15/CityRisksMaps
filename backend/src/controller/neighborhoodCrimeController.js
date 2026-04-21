@@ -1,5 +1,6 @@
 import fs from "fs";
 import iconv from "iconv-lite";
+import csv from "csvtojson";
 import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js";
 import { NeighborhoodService } from "../service/neighborhoodService.js";
 
@@ -8,7 +9,7 @@ export const addThroughtTable = async (req, res) => {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
     if (!req.params) throw new Error("Parametros de solicitud no definidos");
 
-    let { year, crime, neighborhoodsCrime, department } = req.body;
+    let { year, crime, neighborhoodsCrime, department, optionAdd } = req.body;
 
     if (!crime || crime.length == 0)
       throw new Error("Debe indicar una categoria de delito");
@@ -17,7 +18,7 @@ export const addThroughtTable = async (req, res) => {
     if (year > new Date().getFullYear())
       throw new Error("Año debe ser menor al año actual");
 
-    if (req.params.optionAdd == "addThroughtFile") {
+    if (optionAdd == "addThroughtFile") {
       if (!department || department.length == 0)
         throw new Error("Debe indicar departamento del delito");
 
@@ -51,8 +52,6 @@ export const addThroughtTable = async (req, res) => {
       crime,
       year
     );
-
-    
 
     return res.status(200).json(true);
   } catch (error) {

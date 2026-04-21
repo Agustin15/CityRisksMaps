@@ -37,9 +37,9 @@ export const MenuSide = () => {
           </div>
           <div className={styles.avatarInfo}>
             <span className={styles.avatarRole}>{user.rol}</span>
-            <span className={styles.avatarName}>
+            <a href="/admin/editar-perfil" className={styles.avatarName}>
               {user.name + " " + user.lastname}
-            </span>
+            </a>
           </div>
         </div>
         <Options user={user} />

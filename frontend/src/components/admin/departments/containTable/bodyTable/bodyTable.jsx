@@ -14,11 +14,12 @@ import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 export const BodyTable = () => {
   const [editDepartment, setEditDepartment] = useState(null);
   const [deleteDepartment, setDeleteDepartment] = useState(null);
-  const { loading, registers } = useCrud();
+  const { loading, registers, setRegisters } = useCrud();
   const { user } = useAuth();
   let navigate = useNavigate();
 
   const handleNeighborhoods = (department) => {
+    setRegisters();
     navigate("/admin/barrios/departamento/" + department.name);
   };
 

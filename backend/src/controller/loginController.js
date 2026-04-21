@@ -20,7 +20,7 @@ export const login = async (req, res) => {
 
     const userFound = await UserService.getUserActivatedByEmail(user.email);
 
-    if (!userFound) throw new Error("Usuario no encontrado en el sistema");
+    if (!userFound) throw new Error("Usuario o contraseña incorrectas");
 
     if (userFound.password.length == 60) {
       const match = await bcrypt.compare(user.password, userFound.password);
@@ -63,6 +63,7 @@ export const login = async (req, res) => {
     });
 
     res.status(200).json({
+      idUser: userFound.idUser,
       name: userFound.name,
       lastname: userFound.lastname,
       email: userFound.email,

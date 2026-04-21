@@ -16,14 +16,19 @@ export class NeighborhoodDAL {
 
       switch (result.returnValue) {
         case -1:
+          throw new Error("Nombre no puede estar vacio", {
+            cause: { code: 400 }
+          });
+
+        case -2:
           throw new Error("Ya hay un barrio registrado con este nombre", {
             cause: { code: 409 }
           });
-        case -2:
+        case -3:
           throw new Error("No hay un departamento registrado con este ID", {
             cause: { code: 404 }
           });
-        case -3:
+        case -4:
           throw new Error("Error inesperado al agregar barrio", {
             cause: { code: 502 }
           });
@@ -48,10 +53,14 @@ export class NeighborhoodDAL {
 
       switch (result.returnValue) {
         case -1:
+          throw new Error("Nombre no puede estar vacio", {
+            cause: { code: 400 }
+          });
+        case -2:
           throw new Error("No hay un departamento registrado con este ID", {
             cause: { code: 404 }
           });
-        case -2:
+        case -3:
           throw new Error("Error inesperado al agregar barrio", {
             cause: { code: 502 }
           });

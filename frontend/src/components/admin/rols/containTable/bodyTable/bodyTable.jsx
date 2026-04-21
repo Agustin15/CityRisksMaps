@@ -15,7 +15,7 @@ export const BodyTable = () => {
   let navigate = useNavigate();
   const [editRole, setEditRole] = useState(null);
   const [deleteRole, setDeleteRole] = useState(null);
-  const { loading, registers } = useCrud();
+  const { loading, registers, setRegisters } = useCrud();
 
   return (
     <tbody>
@@ -48,6 +48,7 @@ export const BodyTable = () => {
                 </button>
                 <button
                   onClick={() => {
+                    setRegisters();
                     navigate(`/admin/usuarios/rol/${role.name}`);
                   }}
                   className={styles.users}

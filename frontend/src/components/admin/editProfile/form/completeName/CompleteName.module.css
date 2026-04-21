@@ -1,0 +1,21 @@
+.columnInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: 51%;
+    position: relative;
+}
+
+.columnInput p {
+    width: 99%;
+    font-size: 12px;
+    position: absolute;
+    top: 3.4rem;
+}
+
+.columnInput input {
+    width: 100%;
+    height: 2.3rem;
+    border: 1px solid rgb(228, 227, 227);
+}

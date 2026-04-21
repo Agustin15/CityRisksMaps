@@ -1,0 +1,85 @@
+.containDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 36%;
+}
+.avatar {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(207, 207, 207);
+}
+.avatar .avatarImg {
+    font-size: 45px;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 100%;
+    background: rgb(189, 206, 214);
+    color: rgba(13, 52, 73, 0.856);
+}
+
+.avatar img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.avatar .containTable {
+    border-radius: 5px;
+    width: 21rem;
+    border: 1px solid rgb(197, 197, 197);
+    border-bottom: 0;
+}
+.avatar table {
+    border: none;
+    width: 100%;
+}
+
+.avatar table thead {
+    background: rgb(245, 245, 245);
+    border: 1px solid rgb(219, 219, 219);
+    font-size: 15px;
+}
+
+.avatar table thead th {
+    padding: 0.4rem 0 0.4rem 0;
+}
+
+.avatar table td:last-child,
+.avatar table td:first-child,
+.avatar table th:last-child {
+    border-bottom: 1px solid rgb(214, 214, 214);
+}
+
+.avatar table thead th h3 {
+    font-weight: 100;
+    font-size: 16px;
+    text-align: start;
+    color: rgb(68, 68, 68);
+    width: 99%;
+    margin: 0 0 0 1rem;
+}
+
+.avatar table tbody tr {
+    border: 1px solid rgb(219, 219, 219);
+}
+
+.avatar table tbody tr td {
+    text-align: start;
+    padding: 0.5rem 0.4rem 0.5rem 0.4rem;
+}
+.avatar table tbody .value {
+    text-align: end;
+}

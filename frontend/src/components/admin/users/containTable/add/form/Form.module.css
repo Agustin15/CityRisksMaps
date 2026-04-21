@@ -15,11 +15,11 @@ form .columnInput {
 }
 
 form input {
-    height: 2rem;
+    height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid rgb(209, 209, 209);
     font-size: 15px;
     outline: none;
 }
@@ -43,10 +43,10 @@ form span {
 
 form .columnInput select {
     width: 16.5rem;
-    height: 2.2rem;
+    height: 2.3rem;
     border-radius: 3px;
-    border: 1px solid gray;
-    background: rgb(236, 236, 236);
+    border: 1px solid rgb(209, 209, 209);
+    background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
     font-size: 15px;
     outline: none;
 }

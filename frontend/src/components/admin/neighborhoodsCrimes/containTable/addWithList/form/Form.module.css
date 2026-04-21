@@ -29,11 +29,11 @@
 
 .form input,
 .form select {
-    height: 2rem;
+    height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid rgb(218, 218, 218);
     font-size: 15px;
     outline: none;
 }
@@ -43,9 +43,9 @@
 }
 
 .form select {
-    height: 2.2rem;
+    height: 2.3rem;
     width: 16.5rem;
-     background: linear-gradient(rgb(216, 216, 216), rgb(230, 229, 229));
+    background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
 }
 
 .form label,
@@ -57,11 +57,11 @@
 }
 
 .form .lblNeighborhoodsCrime {
-   background: white;
-   position: absolute;
-   top: -0.5rem;
-   left: 3rem;
-   padding-left: 0.3rem;
+    background: white;
+    position: absolute;
+    top: -0.5rem;
+    left: 3rem;
+    padding-left: 0.3rem;
 }
 
 .form p,
@@ -90,7 +90,7 @@
 }
 .form .add:hover {
     background: rgb(30, 184, 55);
-}   
+}
 
 .form .addDisabled {
     opacity: 85%;

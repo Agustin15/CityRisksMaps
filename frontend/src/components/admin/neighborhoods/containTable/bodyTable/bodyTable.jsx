@@ -14,12 +14,13 @@ import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 export const BodyTable = () => {
   const [editNeighborhood, setEditNeighborhood] = useState(null);
   const [deleteNeighborhood, setDeleteNeighborhood] = useState(null);
-  const { loading, registers } = useCrud();
+  const { loading, registers, setRegisters } = useCrud();
   const { user } = useAuth();
   let navigate = useNavigate();
   const params = useParams();
 
   const handleClick = (neighborhood) => {
+    setRegisters();
     navigate("/admin/poblaciones/barrio/" + neighborhood.nameNeighborhood);
   };
 
