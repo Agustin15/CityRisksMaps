@@ -249,7 +249,7 @@ export class UserDAL {
       const request = new sql.Request(connection.pool);
 
       request.input("idUser", sql.Int, idUser);
-      request.input("avatar", sql.VarBinary(sql.MAX), avatar);
+      request.input("avatar", sql.Varchar(100), avatar);
 
       const result = await request.execute("UpdateAvatarById");
 
