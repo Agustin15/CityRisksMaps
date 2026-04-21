@@ -73,7 +73,11 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
 * [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit)
 * [cookie-parser](https://github.com/expressjs/cookie-parser)
 * [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
+* [jose](https://github.com/panva/jose)
 * [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+* [multer](https://github.com/expressjs/multer)
+* [csvtojson](https://github.com/Keyang/node-csvtojson)
+* [iconv-lite](https://github.com/pillarjs/iconv-lite)
 * [mssql](https://tediousjs.github.io/node-mssql/)
 * [nodemailer](https://nodemailer.com/)
 
@@ -90,6 +94,10 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
      APP_PASSWORD=<PASSWORD APP EMAIL FOR NODEMAILER>
      SECRET_KEY_TOKEN=<SECRET KEY FOR JSONWEBTOKEN>
      SECRET_KEY_REFRESH_TOKEN=<SECRET REFRESH KEY FOR JSONWEBTOKEN>
+     SECRET_KEY_GENERATE_PASSWORD_TOKEN=<SECRET GENERATE PASSWORD KEY FOR JSONWEBTOKEN>
+     SECRET_KEY_CONFIRM_EMAIL_TOKEN=<SECRET CONFIRM EMAIL KEY FOR JSONWEBTOKEN ENCRYPT>
+     ALGORITM_ENCRYPT_JWE_PAYLOAD=<ALGORITM OF ENCRYPT THE JSONWEBTOKEN JWE PAYLOAD (FOR SIMETRIC KEY)>
+     ALGORITM_ENCRYPT_JWE_IV=<ALGORITM OF ENCRYPT THE IV JSONWEBTOKEN JWE (FOR SIMETRIC KEY)>
 
 
   ![](/frontend/src/assets/Captures/screenApp1.PNG)
