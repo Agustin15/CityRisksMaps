@@ -887,6 +887,7 @@ T.nameNeighborhood=(select name from Neighborhoods where
 name=T.nameNeighborhood))
 RETURN -5;
 
+select * from Neighborhoods_Crimes where crime='Rapiña';
 
 BEGIN TRANSACTION
 
@@ -941,6 +942,46 @@ dbo.CalculateRate(@idNeighborhood,@quantity,@year),@year)
 IF(@@ERROR<>0)
 RETURN -7
 
+RETURN 1
+
+END
+GO
+
+CREATE OR ALTER PROCEDURE UpdateNeighborhoodsCrime @table dbo.NeighborhoodsCrimeTableType READONLY,@categoryCrime VARCHAR(30),@year INT AS
+
+BEGIN
+
+IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.nameNeighborhood=N.name where N.name IS NULL)
+RETURN -1;
+
+IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
+RETURN -2;
+
+IF EXISTS (select * from @table where quantity<0)
+RETURN -3;
+
+IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
+RETURN -4;
+
+IF EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and
+T.nameNeighborhood=(select name from Neighborhoods where 
+name=T.nameNeighborhood))
+RETURN -5;
+
+BEGIN TRANSACTION
+
+INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,dateOfLastCrime,year)
+select N.idNeighborhood,@categoryCrime,T.quantity,dbo.CalculateIncrease(N.idNeighborhood,@categoryCrime,T.quantity,T.year),
+dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.dateOfLastCrime,T.year from @table T INNER JOIN Neighborhoods N 
+ON N.name=T.nameNeighborhood
+
+IF(@@ERROR<>0)
+BEGIN
+ROLLBACK TRANSACTION
+RETURN -6
+END
+
+COMMIT TRANSACTION
 RETURN 1
 
 END
