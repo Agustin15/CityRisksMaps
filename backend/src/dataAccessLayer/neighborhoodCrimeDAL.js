@@ -69,50 +69,65 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  static async update(neighborhoodCrime) {
+  static async updateThroughtTable(neighborhoodsCrime, categoryCrime, year) {
     try {
       const request = new sql.Request(connection.pool);
 
-      request.input(
-        "idNeighborhood",
-        sql.Int,
-        neighborhoodCrime.neighborhood.idNeighborhood
-      );
+      const table = new sql.Table("NeighborhoodsCrimeTableType");
 
-      request.input("crime", sql.VarChar(20), neighborhoodCrime.crime.category);
-      request.input("quantity", sql.Int, neighborhoodCrime.quantity);
-      request.input("year", sql.Int, neighborhoodCrime.year);
+      table.columns.add("nameNeighborhood", sql.VarChar(30));
+      table.columns.add("crime", sql.VarChar(30));
+      table.columns.add("quantity", sql.Int);
+      table.columns.add("dateOfLastCrime", sql.Date);
+      table.columns.add("year", sql.Int);
 
-      const result = await request.execute("UpdateNeighborhoodCrime");
+      neighborhoodsCrime.forEach((neighborhoodCrime) => {
+        table.rows.add(
+          neighborhoodCrime.nameNeighborhood,
+          categoryCrime,
+          neighborhoodCrime.amount,
+          neighborhoodCrime.dateOfLastCrime
+            ? neighborhoodCrime.dateOfLastCrime
+            : null,
+          year
+        );
+      });
+
+      request.input("table", sql.TVP, table);
+      request.input("categoryCrime", sql.VarChar(30), categoryCrime);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute("AddNeighborhoodsCrime");
 
       switch (result.returnValue) {
         case -1:
+          throw new Error("No hay registro de un barrio con este nombre", {
+            cause: { code: 404 }
+          });
+        case -2:
+          throw new Error("No hay registro de un crimen con esta categoria", {
+            cause: { code: 404 }
+          });
+        case -3:
           throw new Error("Cantidad de denuncias debe ser mayor a cero", {
             cause: { code: 400 }
           });
 
-        case -2:
-          throw new Error("Dia de la semana debe ser mayor a cero", {
+        case -4:
+          throw new Error("Año debe ser menor al año actual", {
             cause: { code: 400 }
           });
 
-        case -3:
+        case -5:
           throw new Error(
-            "No hay registrado un crimen en este barrio y este año",
-            {
-              cause: { code: 404 }
-            }
-          );
-        case -4:
-          throw new Error(
-            "No se pudo encontrar la poblacion mas cercana a este año del barrio indicado",
+            "No existe un registro en con el barrio,mes,año y crimen indicado",
             {
               cause: { code: 404 }
             }
           );
 
-        case -5:
-          throw new Error("Error inesperado al actualizar crimen en barrio", {
+        case -6:
+          throw new Error("Error inesperado al actualizar crimenes en barrios", {
             cause: { code: 502 }
           });
       }

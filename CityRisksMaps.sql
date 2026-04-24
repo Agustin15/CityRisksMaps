@@ -929,7 +929,7 @@ RETURN -5;
 
 BEGIN TRANSACTION
 
-UPDATE Neighborhoods_Crimes SET quantity=T.quantity,dateOfLastCrime=T.dateOfLastCrime FROM Neighborhoods_Crimes NC 
+UPDATE Neighborhoods_Crimes SET quantity=(NC.quantity+T.quantity),dateOfLastCrime=T.dateOfLastCrime FROM Neighborhoods_Crimes NC 
 INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and
 NC.neighborhood=(select idNeighborhood from Neighborhoods where name=T.nameNeighborhood)
 

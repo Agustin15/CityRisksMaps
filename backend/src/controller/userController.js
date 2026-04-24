@@ -4,10 +4,11 @@ import { UserService } from "../service/userService.js";
 import { RolService } from "../service/rolService.js";
 import { Rol } from "../entity/rol.js";
 import { sendActivateUserMail } from "./sendMail.js";
+import { verifyActivateUserToken } from "./authentication.js";
+import { CloudinaryService } from "../service/cloudinaryService.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import sql from "mssql";
-import { verifyActivateUserToken } from "./authentication.js";
 
 export const add = async (req, res) => {
   let transaction;
@@ -34,7 +35,7 @@ export const add = async (req, res) => {
 
     transaction = new sql.Transaction(connection.pool);
 
-    await transaction.begin(sql.ISOLATION_LEVEL.READ_COMMITTED);
+    await transaction.begin();
 
     const idUserAdded = await UserService.add(user, transaction);
 
@@ -89,14 +90,30 @@ export const update = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
+  let transaction = null;
   try {
     if (!req.params.idUser) throw new Error("Usuario no indicado");
     const idUser = req.params.idUser;
 
-    await UserService.delete(idUser);
+    const userFound = await UserService.getUserById(idUser);
+    if (!userFound)
+      throw new Error("No se encontro un usuario con este ID en el sistema");
+
+    if (!userFound.avatar) {
+      await UserService.deleteById(idUser);
+    } else {
+      transaction = new sql.Transaction(connection.pool);
+
+      await UserService.deleteById(idUser);
+      await CloudinaryService.deleteAvatar(userFound.avatar);
+
+      await transaction.commit();
+    }
 
     res.status(200).json(true);
   } catch (error) {
+    if (transaction) await transaction.rollback();
+
     res.status(404).json({ messageError: error.message });
   }
 };
