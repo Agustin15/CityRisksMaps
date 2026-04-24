@@ -80,6 +80,7 @@ export const Add = ({ setAddForm }) => {
         } else {
           url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
         }
+
         let nhCrimes = await fetchGet(url);
 
         setRegisters(nhCrimes);

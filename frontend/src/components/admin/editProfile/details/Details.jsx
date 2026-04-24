@@ -4,11 +4,16 @@ import { formatDate } from "../../functions.js";
 import { UploadAvatar } from "./uploadAvatar/UploadAvatar.jsx";
 
 export const Details = ({ user }) => {
-  const refContainAvatar = useRef();
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
   return (
     <div className={styles.containDetails}>
       <div className={styles.avatar}>
-        <div ref={refContainAvatar} className={styles.avatarImg}>
+        <div className={styles.avatarImg}>
+          {(loadingDelete || loadingUpdate) && (
+            <span className={styles.loading}></span>
+          )}
           {user.avatarUrl ? (
             <img src={user.avatarUrl}></img>
           ) : (
@@ -16,7 +21,12 @@ export const Details = ({ user }) => {
           )}
         </div>
 
-        <UploadAvatar refContainAvatar={refContainAvatar} />
+        <UploadAvatar
+          loadingUpdate={loadingUpdate}
+          setLoadingUpdate={setLoadingUpdate}
+          loadingDelete={loadingDelete}
+          setLoadingDelete={setLoadingDelete}
+        />
         <div className={styles.containTable}>
           <table>
             <thead>

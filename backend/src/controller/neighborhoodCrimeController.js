@@ -28,7 +28,7 @@ export const addThroughtTable = async (req, res) => {
       if (req.file.mimetype != "text/csv")
         throw new Error("Debe indicar un archivo formato CSV");
 
-      if (req.file.size > 110000000)
+      if (req.file.size > 120000000)
         throw new Error("Tamaño del archivo excede el limite de 110MB");
 
       const json = await readerFile(req.file);
@@ -94,6 +94,11 @@ const filterFile = (department, crime, neighborhoods, year, json) => {
     );
   });
 
+  if (filteredByCrimeYearDepartment.length == 0)
+    throw new Error(
+      "No se encontraron registros de este tipo de delito en el archivo subido"
+    );
+
   let neighborhoodsCrime = [];
 
   filteredByCrimeYearDepartment.forEach((item) => {
@@ -122,14 +127,24 @@ const filterFile = (department, crime, neighborhoods, year, json) => {
         nameNeighborhood: neighborhoodFound.name,
         crime: crime,
         amount: 1,
+        dateOfLastCrime: formatDate(item.FECHA),
         year: year
       });
     } else {
       found.amount++;
+      if (new Date(formatDate(item.FECHA)) > new Date(found.dateOfLastCrime)) {
+        found.dateOfLastCrime = formatDate(item.FECHA);
+      }
     }
   });
 
   return neighborhoodsCrime;
+};
+
+const formatDate = (dateString) => {
+  const partsDate = dateString.split(".");
+
+  return partsDate[2] + "-" + partsDate[1] + "-" + partsDate[0];
 };
 
 export const getNeighborhoodsCrimeByYear = async (req, res) => {

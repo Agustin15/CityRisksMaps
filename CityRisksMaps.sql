@@ -9,7 +9,6 @@ created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
 );
 
-
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
 email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
@@ -64,6 +63,7 @@ crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON D
 quantity INT CHECK(quantity>=0),
 increase DECIMAL(5,1),
 rate DECIMAL(6,1) CHECK(rate>=0),
+dateOfLastCrime DATE,
 year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
@@ -813,6 +813,7 @@ CREATE TYPE NeighborhoodsCrimeTableType AS TABLE(
 nameNeighborhood VARCHAR(30) NOT NULL,
 crime VARCHAR(30) NOT NULL,
 quantity INT NOT NULL,
+dateOfLastCrime DATE,
 year INT NOT NULL
 );
 
@@ -889,9 +890,9 @@ RETURN -5;
 
 BEGIN TRANSACTION
 
-INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,year)
+INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,dateOfLastCrime,year)
 select N.idNeighborhood,@categoryCrime,T.quantity,dbo.CalculateIncrease(N.idNeighborhood,@categoryCrime,T.quantity,T.year),
-dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.year from @table T INNER JOIN Neighborhoods N 
+dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.dateOfLastCrime,T.year from @table T INNER JOIN Neighborhoods N 
 ON N.name=T.nameNeighborhood
 
 IF(@@ERROR<>0)

@@ -9,17 +9,12 @@ export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
       <div className={styles.columnInput}>
         <label htmlFor="file">Datos a partir de archivo CSV:</label>
 
-        <label htmlFor="file">
-          <button
-            type="button"
-            accept=".csv, text/csv"
-            className={styles.btnUpload}
-          >
-            {values.file ? "Archivo " + values.file.name : "Subir"}
-            <img src={iconUpload}></img>
-          </button>
+        <label className={styles.btnUpload} htmlFor="file">
+          {values.file ? "Archivo " + values.file.name : "Subir (Max:110MB)"}
+          <img src={iconUpload}></img>
         </label>
         <input
+          accept=".csv, text/csv"
           id="file"
           autoComplete="off"
           name="file"
@@ -56,15 +51,23 @@ export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
           }
           name="crime"
         >
-          {crimes.map((crime,index) => (
-            <option key={index} value={crime.category}>{crime.category}</option>
+          {crimes.map((crime, index) => (
+            <option key={index} value={crime.category}>
+              {crime.category}
+            </option>
           ))}
         </select>
         {errors.crime && <p>{errors.crime}</p>}
       </div>
 
-      <button disabled={loading} className={styles.add} type="submit">
-        {loading ? "Cargando,puede tardar unos minutos..." : "Cargar informacion"}
+      <button
+        disabled={loading}
+        className={!loading ? styles.add : styles.addDisabled}
+        type="submit"
+      >
+        {loading
+          ? "Cargando,puede tardar unos minutos..."
+          : "Cargar informacion"}
       </button>
     </form>
   );

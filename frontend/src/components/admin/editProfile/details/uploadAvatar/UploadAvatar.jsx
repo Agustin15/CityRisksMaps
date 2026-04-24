@@ -9,10 +9,13 @@ import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
 import { fetchDelete, fetchUpdate } from "./functions.js";
 import { createPortal } from "react-dom";
 
-export const UploadAvatar = ({ refContainAvatar }) => {
+export const UploadAvatar = ({
+  loadingUpdate,
+  setLoadingUpdate,
+  loadingDelete,
+  setLoadingDelete
+}) => {
   const [avatar, setAvatar] = useState(null);
-  const [loadingUpdate, setLoadingUpdate] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
   const refInputFile = useRef();
   const { setUser, user } = useAuth();
 
@@ -68,40 +71,32 @@ export const UploadAvatar = ({ refContainAvatar }) => {
   const notifySuccess = () => toast.success("¡Imagen de perfil actualizada!");
 
   return (
-    <>
-      <div className={styles.uploadFile}>
-        <div className={styles.row}>
-          <label htmlFor="file">
-            {!loadingUpdate ? "Actualizar" : "Actualizando..."}
-            <img src={iconChangeAvatar}></img>
-          </label>
+    <div className={styles.uploadFile}>
+      <div className={styles.row}>
+        <label htmlFor="file">
+          {!loadingUpdate ? "Actualizar" : "Actualizando..."}
+          <img src={iconChangeAvatar}></img>
+        </label>
 
-          <button
-            className={!user.avatar ? styles.deleteDisabled : ""}
-            onClick={() => handleDelete()}
-            disabled={loadingDelete || !user.avatar}
-          >
-            {!loadingDelete ? "Eliminar" : "Eliminando..."}
-            <img src={iconDeleteAvatar}></img>
-          </button>
-        </div>
-
-        <Toaster position="top-center" />
-        <input
-          ref={refInputFile}
-          disabled={loadingUpdate}
-          onChange={(event) => handleChange(event)}
-          accept="image/png, image/jpeg"
-          id="file"
-          type="file"
-        ></input>
+        <button
+          className={!user.avatar ? styles.deleteDisabled : ""}
+          onClick={() => handleDelete()}
+          disabled={loadingDelete || !user.avatar}
+        >
+          {!loadingDelete ? "Eliminar" : "Eliminando..."}
+          <img src={iconDeleteAvatar}></img>
+        </button>
       </div>
 
-      {(loadingDelete || loadingUpdate) &&
-        createPortal(
-          <span className={styles.loading}></span>,
-          refContainAvatar.current
-        )}
-    </>
+      <Toaster position="top-center" />
+      <input
+        ref={refInputFile}
+        disabled={loadingUpdate}
+        onChange={(event) => handleChange(event)}
+        accept="image/png, image/jpeg"
+        id="file"
+        type="file"
+      ></input>
+    </div>
   );
 };

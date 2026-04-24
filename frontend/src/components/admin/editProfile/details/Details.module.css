@@ -19,14 +19,14 @@
 }
 .avatar .avatarImg {
     position: relative;
-    font-size: 51px;
+    font-size: 61px;
     text-align: center;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 12rem;
-    height: 12rem;
+    width: 11rem;
+    height: 11rem;
     border-radius: 100%;
     background: rgb(189, 206, 214);
     color: rgba(13, 52, 73, 0.856);
@@ -85,4 +85,26 @@
 }
 .avatar table tbody .value {
     text-align: end;
+}
+
+.avatarImg .loading {
+    position: absolute;
+    margin: 0;
+    width: 44px;
+    height: 44px;
+    border: 3px solid #0f0f0f;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
