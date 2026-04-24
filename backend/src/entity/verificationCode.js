@@ -13,7 +13,7 @@ export class VerificationCode {
   }
 
   set code(value) {
-    this.#code = value;
+    this.#code = value.trim();
   }
 
   get code() {

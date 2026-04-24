@@ -58,7 +58,7 @@ export class Zone {
         cause: { code: 400 }
       });
 
-    this.#coordinates = value.trim();
+    this.#coordinates = value;
   }
 
   get coordinates() {
@@ -98,7 +98,7 @@ export class Zone {
         cause: { code: 400 }
       });
 
-    this.#neighborhoods = value.trim();
+    this.#neighborhoods = value;
   }
 
   get neighborhoods() {

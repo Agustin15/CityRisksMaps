@@ -1,13 +1,22 @@
 import styles from "./Details.module.css";
+import { useRef, useState } from "react";
 import { formatDate } from "../../functions.js";
+import { UploadAvatar } from "./uploadAvatar/UploadAvatar.jsx";
 
 export const Details = ({ user }) => {
+  const refContainAvatar = useRef();
   return (
     <div className={styles.containDetails}>
       <div className={styles.avatar}>
-        <div className={styles.avatarImg}>
-          {user.name.substring(0, 1) + "" + user.lastname.substring(0, 1)}
+        <div ref={refContainAvatar} className={styles.avatarImg}>
+          {user.avatarUrl ? (
+            <img src={user.avatarUrl}></img>
+          ) : (
+            user.name.substring(0, 1) + "" + user.lastname.substring(0, 1)
+          )}
         </div>
+
+        <UploadAvatar refContainAvatar={refContainAvatar} />
         <div className={styles.containTable}>
           <table>
             <thead>

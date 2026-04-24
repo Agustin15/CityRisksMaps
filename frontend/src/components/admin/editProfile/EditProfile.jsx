@@ -27,8 +27,11 @@ export const EditProfile = () => {
             </div>
 
             <div className={styles.row}>
+              <div className={styles.headerDetails}>
+                <h3>Panel de detalles usuario</h3>
+              </div>
               <Details user={user} />
-              <Form user={user}/>
+              <Form user={user} />
             </div>
           </div>
         </div>

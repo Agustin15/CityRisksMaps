@@ -9,7 +9,7 @@ import { Modal } from "../../modal/Modal";
 import { Options } from "./options/Options.jsx";
 import { CompleteName } from "./completeName/CompleteName";
 import { UpdateEmail } from "./updateEmail/UpdateEmail.jsx";
-import { alertSwalSuccess } from "../../../sweetAlert/sweetAlert";
+import toast, { Toaster } from "react-hot-toast";
 import { fetchUpdateCompleteName } from "./functions.js";
 
 export const Form = ({ user }) => {
@@ -19,38 +19,47 @@ export const Form = ({ user }) => {
   });
 
   const [errors, setErrors] = useState({
-    name: values.name.length > 0 ? "" : "Nombre no puede estar vacio",
-    lastname: values.lastname.length > 0 ? "" : "Apellido no puede estar vacio"
+    name: "",
+    lastname: ""
   });
   const [loading, setLoading] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const [changeEmail, setChangeEmail] = useState(false);
   const { setUser } = useAuth();
 
+  const notifySuccess = () =>
+    toast.success("¡Usuario actualizado exitosamente!");
+
+  const notifyError = (error) =>
+    toast.success("Ups, no se pudo actualizar el usuario. " + error);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (Object.values(errors).some((error) => error.length > 0)) return;
 
-    const result = await fetchUpdateCompleteName(
-      setLoading,
-      setUser,
-      values,
-      user.idUser
-    );
+    try {
+      const result = await fetchUpdateCompleteName(
+        setLoading,
+        setUser,
+        values,
+        user.idUser
+      );
 
-    if (result) {
-      alertSwalSuccess("¡Usuario actualizado exitosamente!");
-      setUser({ ...user, name: values.name, lastname: values.lastname });
+      if (result) {
+        notifySuccess();
+        setUser({ ...user, name: values.name, lastname: values.lastname });
+      }
+    } catch (error) {
+      notifyError(error.message);
     }
   };
 
   return (
     <>
       <div className={styles.containForm}>
-        <div className={styles.tab}>
-          <span>Editar</span>
-        </div>
+        <Toaster position="top-center" />
+
         <form onSubmit={(event) => handleSubmit(event)}>
           <CompleteName
             errors={errors}

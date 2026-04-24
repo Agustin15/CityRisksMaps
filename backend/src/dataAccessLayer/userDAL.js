@@ -244,25 +244,26 @@ export class UserDAL {
     }
   }
 
-  static async updateAvatarByIdUser(idUser, avatar) {
+  static async updateAvatarByIdUser(idUser, avatarURL) {
     try {
       const request = new sql.Request(connection.pool);
-
       request.input("idUser", sql.Int, idUser);
-      request.input("avatar", sql.Varchar(100), avatar);
 
-      const result = await request.execute("UpdateAvatarById");
+      request.input("avatar", sql.VarChar(100), avatarURL);
+
+      const result = await request.execute("UpdateAvatarByIdUser");
 
       switch (result.returnValue) {
         case -1:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-
+          throw new Error("Debe subir una imagen ", {
+            cause: { code: 400 }
+          });
         case -2:
+          throw new Error("No se encontro el usuario indicado en el sistema", {
+            cause: { code: 404 }
+          });
+
+        case -3:
           throw new Error("Error inesperado al actualizar avatar del usuario", {
             cause: { code: 502 }
           });

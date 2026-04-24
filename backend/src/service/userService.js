@@ -37,9 +37,9 @@ export class UserService {
     }
   }
 
-  static async updateAvatarByIdUser(idUser, email) {
+  static async updateAvatarByIdUser(idUser, avatarURL) {
     try {
-      await UserDAL.updateAvatarByIdUser(idUser, email);
+      await UserDAL.updateAvatarByIdUser(idUser, avatarURL);
     } catch (error) {
       throw error;
     }

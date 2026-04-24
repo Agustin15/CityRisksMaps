@@ -46,7 +46,7 @@ export const ContainMap = () => {
             event.stop();
             handleClickOnMap(event);
           }
-          if (windowWidth > 1200 && !editRoute)
+          if (windowWidth < 1200 && !editRoute)
             handleMouseNeighborhoohdPolygon(
               event,
               polygons,

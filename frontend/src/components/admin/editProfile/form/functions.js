@@ -1,5 +1,4 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
-import { alertSwalErrorAdmin } from "../../../sweetAlert/sweetAlert.js";
 
 export const fetchUpdateCompleteName = async (
   setLoading,
@@ -33,10 +32,7 @@ export const fetchUpdateCompleteName = async (
 
     return true;
   } catch (error) {
-    alertSwalErrorAdmin(
-      "Ups, no se pudieron actualizar los datos del usuario",
-      error.message
-    );
+    throw error;
   } finally {
     setLoading(false);
   }

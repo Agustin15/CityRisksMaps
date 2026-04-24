@@ -16,7 +16,7 @@ email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
 name VARCHAR(20) NOT NULL CHECK(LEN(name)>0),
 lastname VARCHAR(20) NOT NULL CHECK(LEN(lastname)>0),
 password VARCHAR(60),
-avatar VARBINARY(MAX),
+avatar VARCHAR(100),
 activated BIT NOT NULL,
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
@@ -78,6 +78,7 @@ lastModified DATETIME,
 enable bit NOT NULL
 
 );
+
 
 CREATE TABLE Zones_Neighborhoods(
 zone INT FOREIGN KEY REFERENCES Zones(idZone)ON UPDATE CASCADE ON DELETE CASCADE,
@@ -265,18 +266,20 @@ RETURN 1
 END
 GO
 
-
-CREATE OR ALTER PROCEDURE UpdateAvatarByIdUser @idUser INT,@avatar VARBINARY(max) AS
+CREATE OR ALTER PROCEDURE UpdateAvatarByIdUser @idUser INT,@avatar VARCHAR(100) AS
 
 BEGIN
 
-IF NOT EXISTS (select * from Users where idUser=@idUser)
+IF (LEN(@avatar)=0)
 RETURN -1
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+RETURN -2
 
 UPDATE Users set avatar=@avatar where idUser=@idUser;
 
 IF(@@ERROR<>0)
-RETURN -2
+RETURN -3
 
 RETURN 1
 
@@ -358,25 +361,27 @@ GO
 
 CREATE OR ALTER PROCEDURE AllUsers AS
 BEGIN
-SELECT * FROM Users;
+SELECT idUser,name,lastname,email,activated,avatar,created,lastModified,rol FROM Users;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersOffset @offset INT AS
 BEGIN
-SELECT U.*,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.avatar,U.created,U.lastModified,U.rol,
+R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersByRole @idRol INT AS
 BEGIN
-SELECT * FROM Users where rol=@idRol;
+SELECT idUser,name,lastname,email,activated,avatar,created,lastModified,rol FROM Users where rol=@idRol;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersByRoleOffset @idRol INT,@offset INT AS
 BEGIN
-SELECT U.*,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol where U.rol=@idRol 
+SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.avatar,U.created,U.lastModified,U.rol
+,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol where U.rol=@idRol 
 ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO

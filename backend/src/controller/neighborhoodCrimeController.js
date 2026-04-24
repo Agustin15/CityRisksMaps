@@ -28,6 +28,9 @@ export const addThroughtTable = async (req, res) => {
       if (req.file.mimetype != "text/csv")
         throw new Error("Debe indicar un archivo formato CSV");
 
+      if (req.file.size > 110000000)
+        throw new Error("Tamaño del archivo excede el limite de 110MB");
+
       const json = await readerFile(req.file);
 
       const neighborhoods = await NeighborhoodService.getNeighborhoods();
