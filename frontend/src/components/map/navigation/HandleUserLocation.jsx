@@ -5,7 +5,7 @@ import { useNavigationStep } from "../../../contexts/navigationContext/Navigatio
 
 export const HandleUserLocation = () => {
   const [lastCheck, setLastCheck] = useState(
-    new Date().setSeconds(new Date().getSeconds() - 16)
+    new Date().setSeconds(new Date().getSeconds() - 6)
   );
 
   const { verifyUserDistanceToCurrentStep, verifyUserLocationInPolygon } =
@@ -15,22 +15,12 @@ export const HandleUserLocation = () => {
   const { userLocation } = useMapControls();
 
   useEffect(() => {
-    switch (true) {
-      case (transportSelected == "Drive" ||
-        transportSelected == "Two_wheeler" ||
-        transportSelected == "Transit") &&
-        (new Date() - lastCheck) / 1000 > 4:
-        userLocationChanged();
-        break;
+    if ((new Date() - lastCheck) / 1000 < 4) return;
 
-      case transportSelected == "Walk" && (new Date() - lastCheck) / 1000 > 15:
-        userLocationChanged();
-        break;
-    }
+    userLocationChanged();
   }, [userLocation]);
 
   const userLocationChanged = () => {
-    setLastCheck(new Date());
     verifyUserLocationInPolygon();
     verifyUserDistanceToCurrentStep();
   };

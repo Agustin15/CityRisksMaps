@@ -33,9 +33,8 @@ export const Navigation = () => {
   useEffect(() => {
     if (warning.neighborhood.length == 0 || !activeNavigationVoice) return;
 
-    let text = `Entrando a barrio ${warning.neighborhood} el cual tiene una
-        ${warning.type == "crime" ? " tasa de homicidio " : " percepcion de seguridad "}
-        ${warning.rateLevel}`;
+    let text = `Entrando a barrio ${warning.neighborhood} el cual tiene un tasa de homicidio
+     ${warning.rateLevel}`;
 
     activateNavigationVoice(text);
   }, [warning]);
@@ -48,7 +47,7 @@ export const Navigation = () => {
         position={
           windowWidth <= 650 || windowWidth > 1200
             ? ControlPosition.TOP_RIGHT
-            :  ControlPosition.TOP_LEFT
+            : ControlPosition.TOP_LEFT
         }
       >
         <div className={styles.indication}>

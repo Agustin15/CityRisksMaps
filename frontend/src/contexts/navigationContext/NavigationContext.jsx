@@ -17,7 +17,7 @@ export const NavigationProvider = ({ children }) => {
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
   const [editRoute, setEditRoute] = useState(false);
 
-  const { userLocation } = useMapControls();
+  const { userLocation, setUserLocation } = useMapControls();
   const {
     routes,
     setIndexRouteSelected,
@@ -57,6 +57,15 @@ export const NavigationProvider = ({ children }) => {
     });
 
     map.setTilt(70);
+
+    const pathFirstStep = google.maps.geometry.encoding.decodePath(
+      routeFound.legs[0].steps[0].polyline.encodedPolyline
+    );
+
+    setUserLocation({
+      lat: pathFirstStep[0].lat(),
+      lng: pathFirstStep[0].lng()
+    });
 
     setPolylines();
     setRoutes();
@@ -145,6 +154,7 @@ export const NavigationProvider = ({ children }) => {
         setCurrentStep,
         indexStep,
         activeNavigationVoice,
+        activateNavigationVoice,
         setIndexStep,
         setPolylineNavigation,
         destinationArrived,

@@ -34,7 +34,6 @@ export const SvgWarning = ({
         ></g>
         <g id="SVGRepo_iconCarrier">
           {" "}
-          <title>warning-filled</title>{" "}
           <g id="Page-1" strokeWidth="0.00512" fill="none" fillRule="evenodd">
             {" "}
             <g

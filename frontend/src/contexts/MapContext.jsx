@@ -169,6 +169,7 @@ export const MapProvider = ({ children }) => {
       value={{
         handleMyLocation,
         userLocation,
+        setUserLocation,
         loadingMyLocation,
         neighbordhoodsCoordinates
       }}

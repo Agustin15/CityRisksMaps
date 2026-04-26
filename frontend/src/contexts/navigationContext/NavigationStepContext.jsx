@@ -113,6 +113,8 @@ export const NavigationStepProvider = ({ children }) => {
       transportSelected
     );
 
+    if (!userStepFound) return;
+
     if (
       userStepFound.step &&
       (userStepFound.index != indexStep || userStepFound.index == 0)
@@ -135,12 +137,13 @@ export const NavigationStepProvider = ({ children }) => {
       );
 
       if (routeNavigation.legs[0].steps.length == userStepFound.index + 1) {
-        if (
-          google.maps.geometry.spherical.computeDistanceBetween(
-            userLocation,
-            endLocation
-          ) < (transportSelected == "Walk" ? 15 : 10)
-        )
+        const distanceToDestination =
+          google.maps.geometry.spherical.computeDistanceBetween(userLocation, {
+            lat: endLocation.latitude,
+            lng: endLocation.longitude
+          });
+
+        if (distanceToDestination < (transportSelected == "Walk" ? 15 : 10))
           setDestinationArrived(true);
         else if (destinationArrived == true) setDestinationArrived(false);
       }

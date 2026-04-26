@@ -1,12 +1,25 @@
 import styles from "./Form.module.css";
-import { LoadNeighborhoods } from "../loadNeighborhoods/LoadNeighborhoods";
 import { useCrud } from "../../../../../../contexts/adminContext/CrudContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UploadFile } from "../uploadFile/UploadFile";
+import { LoadNeighborhoods } from "../loadNeighborhoods/LoadNeighborhoods";
+import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
 
-export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
-  const { crimes } = useCrud();
+export const Form = () => {
   const [neighborhoods, setNeighborhoods] = useState([]);
+  const [neighborhoodsSelected, setNeighborhoodsSelected] = useState([]);
+  const { crimes } = useCrud();
+  const { handleSubmit, errors, values, setValues, loading } =
+    useAddNeighborhoodCrime();
 
+  useEffect(() => {
+    if (neighborhoods.length == 0) return;
+
+    values.neighborhoodsSelected = neighborhoods.map((neighborhood) => {
+      return { neighborhood: neighborhood.name, checked: false };
+    });
+  }, [neighborhoods]);
+  
   return (
     <form className={styles.form} onSubmit={(event) => handleSubmit(event)}>
       <div className={styles.columnNeighborhoods}>
@@ -15,8 +28,6 @@ export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
         </label>
 
         <LoadNeighborhoods
-          values={values}
-          setValues={setValues}
           neighborhoods={neighborhoods}
           setNeighborhoods={setNeighborhoods}
         />
@@ -60,6 +71,8 @@ export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
           </select>
           {errors.crime && <p>{errors.crime}</p>}
         </div>
+
+        <UploadFile values={values} setValues={setValues} errors={errors} />
 
         <button
           disabled={loading || neighborhoods.length == 0}

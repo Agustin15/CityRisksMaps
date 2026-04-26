@@ -66,17 +66,24 @@ export const getPlacesByText = async (inputValue, userLocation) => {
   }
 };
 
-export const getReverseGeocodification = async (
+export const getGeocodification = async (
   latLng,
+  address,
   setValueInput,
   setStreetSelected
 ) => {
   try {
     const geocoder = new google.maps.Geocoder();
 
-    const resultGeocodification = await geocoder.geocode({
-      location: latLng
-    });
+    const request = latLng
+      ? {
+          location: latLng
+        }
+      : {
+          address: address
+        };
+
+    const resultGeocodification = await geocoder.geocode(request);
 
     if (
       resultGeocodification.results &&

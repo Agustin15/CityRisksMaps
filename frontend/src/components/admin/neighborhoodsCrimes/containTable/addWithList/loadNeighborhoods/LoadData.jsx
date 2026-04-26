@@ -1,0 +1,60 @@
+const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { useCrud } from "../../../../../../contexts/adminContext/CrudContext";
+import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
+import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
+
+export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
+  const { setUser } = useAuth();
+  const { values, setValues, setNeighborhoodsSelected } =
+    useAddNeighborhoodCrime();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchGetNeighborhoods = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          LOCALHOST_BACKEND + "/neighborhood/allNeighborhoods",
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-type": "application/json"
+            }
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          if (response.status == 401) {
+            setUser();
+            Navigate("/admin/login");
+          } else throw new Error(result.messageError);
+        }
+
+        values.neighborhoodsCrime = result.map((neighborhood) => {
+          return {
+            nameNeighborhood: neighborhood.name,
+            amount: null
+          };
+        });
+        setNeighborhoods(result);
+
+        setNeighborhoodsSelected(
+          result.map((neighborhood) => {
+            return { neighborhood: neighborhood.name, checked: false };
+          })
+        );
+      } catch (error) {
+        setErrorLoad(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGetNeighborhoods();
+  }, []);
+};

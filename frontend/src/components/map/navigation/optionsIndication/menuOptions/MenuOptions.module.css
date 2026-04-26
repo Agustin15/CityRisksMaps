@@ -8,7 +8,7 @@
 
 .menuOptions .containBtn,
 .menuOptions .containBtnEditRoute {
-    background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+    background: linear-gradient(rgb(240, 240, 240), rgb(207, 207, 207));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,21 +20,21 @@
 
 .menuOptions .containBtn:hover,
 .menuOptions .containBtnEditRoute:hover {
-    box-shadow:
-        0 0 5px #9fb4cc,
-        0 0 5px #8ea5c0,
-        0 0 5px #a6c1e0;
+    box-shadow: none;
 }
 
 .menuOptions button,
 .menuOptions .btnEditRoute {
-    background: linear-gradient(rgb(210, 238, 252), white);
+    background: linear-gradient(rgb(188, 216, 229), rgb(255, 255, 255));
     width: 88%;
     height: 86%;
     margin: 0;
     border: none;
     text-align: center;
     border-radius: 99px;
+}
+.menuOptions .btnEditRoute {
+    height: 88%;
 }
 
 .menuOptions button img {
@@ -75,7 +75,7 @@
 
     .menuOptions .containBtn,
     .menuOptions .containBtnEditRoute {
-        background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+        background: linear-gradient(rgb(240, 240, 240), rgb(207, 207, 207));
         display: flex;
         justify-content: center;
         align-items: center;
@@ -87,21 +87,21 @@
 
     .menuOptions .containBtn:hover,
     .menuOptions .containBtnEditRoute:hover {
-        box-shadow:
-            0 0 5px #9fb4cc,
-            0 0 5px #8ea5c0,
-            0 0 5px #a6c1e0;
+        box-shadow: none;
     }
 
     .menuOptions button,
     .menuOptions .btnEditRoute {
-        background: linear-gradient(rgb(210, 238, 252), white);
+        background: linear-gradient(rgb(188, 216, 229), rgb(255, 255, 255));
         width: 88%;
         height: 86%;
         margin: 0;
         border: none;
         text-align: center;
         border-radius: 99px;
+    }
+    .menuOptions .btnEditRoute {
+        height: 88%;
     }
 
     .menuOptions button img {

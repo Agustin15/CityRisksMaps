@@ -41,3 +41,15 @@
     height: 2rem;
     font-size: 14px;
 }
+
+.loadNeighborhoods table td .inputDisabled {
+    background: rgb(231, 231, 231);
+    box-shadow: none;
+}
+
+.loadNeighborhoods table td input[type="checkbox"] {
+    border: 1px solid rgb(211, 211, 211);
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}

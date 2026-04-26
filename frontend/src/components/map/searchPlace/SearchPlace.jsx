@@ -14,7 +14,6 @@ export const SearchPlace = () => {
   const { handleClose, showRoutes } = useRoutes();
 
   const {
-    moreDetailsPlace,
     setSelectedPlace,
     valueInput,
     setValueInput,
@@ -32,6 +31,7 @@ export const SearchPlace = () => {
 
   const handleSearch = async () => {
     const places = await searchByText();
+
     if (!places) {
       getSuggestions(
         userLocation,
@@ -85,12 +85,7 @@ export const SearchPlace = () => {
         </button>
       </div>
 
-      {suggestions && (
-        <Suggestions
-          suggestions={suggestions}
-          moreDetailsPlace={moreDetailsPlace}
-        />
-      )}
+      {suggestions && <Suggestions suggestions={suggestions} />}
     </div>
   );
 };

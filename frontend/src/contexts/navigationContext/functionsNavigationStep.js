@@ -11,15 +11,15 @@ export const getIndexOfCoordinatesMostClosestToUser = (
   );
 
   coordinates.forEach((latLng, index) => {
-    if (index > 0) {
-      let distance = google.maps.geometry.spherical.computeDistanceBetween(
-        userLocation,
-        latLng
-      );
+    if (index == 0) return;
 
-      if (distance < prevDistance) {
-        indexLatLngSelected = index;
-      }
+    let distance = google.maps.geometry.spherical.computeDistanceBetween(
+      userLocation,
+      latLng
+    );
+
+    if (distance < prevDistance) {
+      indexLatLngSelected = index;
     }
   });
 
@@ -60,6 +60,8 @@ export const getUserCurrentStep = (
       return step;
     }
   });
+
+  if (!stepCurrentFound) return null;
 
   return {
     step: stepCurrentFound,

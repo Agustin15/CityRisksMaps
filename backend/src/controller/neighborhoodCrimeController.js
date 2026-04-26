@@ -7,9 +7,7 @@ import { NeighborhoodService } from "../service/neighborhoodService.js";
 export const addThroughtTable = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
-    if (!req.params) throw new Error("Parametros de solicitud no definidos");
-
-    let { year, crime, neighborhoodsCrime, department, optionAdd } = req.body;
+    const { year, crime, neighborhoodsCrime } = req.body;
 
     if (!crime || crime.length == 0)
       throw new Error("Debe indicar una categoria de delito");
@@ -18,48 +16,59 @@ export const addThroughtTable = async (req, res) => {
     if (year > new Date().getFullYear())
       throw new Error("Año debe ser menor al año actual");
 
-    if (optionAdd == "addThroughtFile") {
-      if (!department || department.length == 0)
-        throw new Error("Debe indicar departamento del delito");
-
-      if (!req.file)
-        throw new Error("Debe indicar un archivo para subir  la información");
-
-      if (req.file.mimetype != "text/csv")
-        throw new Error("Debe indicar un archivo formato CSV");
-
-      if (req.file.size > 120000000)
-        throw new Error("Tamaño del archivo excede el limite de 110MB");
-
-      const json = await readerFile(req.file);
-
-      const neighborhoods = await NeighborhoodService.getNeighborhoods();
-
-      if (neighborhoods.length == 0)
-        throw new Error("No hay barrios registrados en el sistema");
-
-      neighborhoodsCrime = filterFile(
-        department,
-        crime,
-        neighborhoods,
-        year,
-        json
-      );
-    } else if (neighborhoodsCrime.length == 0) {
-      throw new Error(
-        "Debe indicar al menos un barrio con su cantidad de delitos"
-      );
-    }
     await NeighborhoodCrimeService.addThroughtTable(
       neighborhoodsCrime,
       crime,
       year
     );
 
-    return res.status(200).json(true);
+    res.status(200).json(true);
   } catch (error) {
-    return res
+    res
       .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
+  }
+};
+
+export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
+  try {
+    if (!req.body) throw new Error("Cuerpo de solicitud no definido");
+
+    const { year, crime, department, neighborhoodsSelected } = req.body;
+
+    if (!crime || crime.length == 0)
+      throw new Error("Debe indicar una categoria de delito");
+
+    if (!year) throw new Error("Debe indicar un año");
+    if (year > new Date().getFullYear())
+      throw new Error("Año debe ser menor al año actual");
+
+    if (!department || department.length == 0)
+      throw new Error("Debe indicar departamento del delito");
+
+    if (!req.file)
+      throw new Error("Debe indicar un archivo para subir  la información");
+
+    if (req.file.mimetype != "text/csv")
+      throw new Error("Debe indicar un archivo formato CSV");
+
+    if (req.file.size > 115000000)
+      throw new Error("Tamaño del archivo excede el limite de 110MB");
+
+    const json = await readerFile(req.file);
+
+    const neighborhoodsCrime = filterFile(
+      department,
+      crime,
+      year,
+      neighborhoodsSelected,
+      json
+    );
+
+    res.status(200).json(neighborhoodsCrime);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
   }
 };
@@ -84,19 +93,25 @@ const normalize = (text) => {
     .toUpperCase();
 };
 
-const filterFile = (department, crime, neighborhoods, year, json) => {
+const filterFile = (department, crime, year, neighborhoodsSelected, json) => {
   let filteredByCrimeYearDepartment = json.filter((item) => {
-    return (
+    if (
       normalize(item.DEPTO.trim()) == normalize(department) &&
       normalize(item.DELITO.trim()) == normalize(crime) &&
       normalize(item.TENTATIVA.trim()) == "NO" &&
-      item.AÑO == year
-    );
+      item.AÑO == year &&
+      neighborhoodsSelected.some(
+        (neighborhood) =>
+          normalize(neighborhood) == normalize(item.BARRIO_MONTEVIDEO.trim())
+      )
+    )
+      return item;
   });
 
   if (filteredByCrimeYearDepartment.length == 0)
     throw new Error(
-      "No se encontraron registros de este tipo de delito en el archivo subido"
+      "No se encontraron registros de este tipo de delito en los barrios seleccionados" +
+        " en el archivo subido"
     );
 
   let neighborhoodsCrime = [];
@@ -115,16 +130,13 @@ const filterFile = (department, crime, neighborhoods, year, json) => {
           });
 
     if (!found) {
-      const neighborhoodFound = neighborhoods.find((neighborhood) => {
-        if (
-          normalize(item.BARRIO_MONTEVIDEO.trim()) ==
-          normalize(neighborhood.name.trim())
-        )
+      const neighborhoodFound = neighborhoodsSelected.find((neighborhood) => {
+        if (normalize(item.BARRIO_MONTEVIDEO.trim()) == normalize(neighborhood))
           return neighborhood;
       });
 
       neighborhoodsCrime.push({
-        nameNeighborhood: neighborhoodFound.name,
+        nameNeighborhood: neighborhoodFound,
         crime: crime,
         amount: 1,
         dateOfLastCrime: formatDate(item.FECHA),

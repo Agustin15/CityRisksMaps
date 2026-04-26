@@ -9,6 +9,7 @@ import {
   addThroughtTable,
   getCategoryCrimeInNeighborhood,
   getNeighborhoodsCrimeByYearOffset,
+  loadNeighborhoodsCrimeFromFile,
   getYearsNeighborhoodsCrime
 } from "../controller/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
@@ -33,9 +34,11 @@ RoutesNeighborhoodCrimeAdmin.get(
   getCategoryCrimeInNeighborhood
 );
 
+RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);
+
 RoutesNeighborhoodCrimeAdmin.post(
-  "/",
+  "/loadNeighborhoodsCrimeFromFile",
   upload.single("file"),
   verifyAuthorization,
-  addThroughtTable
+  loadNeighborhoodsCrimeFromFile
 );

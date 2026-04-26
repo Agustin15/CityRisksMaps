@@ -86,6 +86,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   };
 
   const handleMouseNeighborhoohdPolygon = (event) => {
+   
     let polygonFound = null;
     if (polygons) {
       for (const polygon of polygons) {

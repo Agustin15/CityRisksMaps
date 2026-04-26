@@ -7,7 +7,7 @@
     align-items: center;
     padding: 0;
     font-size: 14px;
-    background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+    background: linear-gradient(rgb(240, 240, 240), rgb(207, 207, 207));
     box-shadow: 2px 2px 2px gray;
     border-radius: 99px;
     color: rgb(55, 59, 107);
@@ -16,17 +16,14 @@
     width: 88%;
     height: 88%;
     border-radius: 99px;
-    background: linear-gradient(rgb(210, 238, 252), white);
+    background: linear-gradient(rgb(188, 216, 229), rgb(238, 244, 253));
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .zoneInfo:hover {
-    box-shadow:
-        0 0 5px #9fb4cc,
-        0 0 5px #8ea5c0,
-        0 0 5px #a6c1e0;
+    box-shadow: none;
 }
 
 .zoneInfo .detailsWarning {
@@ -66,7 +63,7 @@
         align-items: center;
         padding: 0;
         font-size: 14px;
-        background: linear-gradient(rgb(241, 241, 241), rgb(202, 202, 202));
+        background: linear-gradient(rgb(240, 240, 240), rgb(207, 207, 207));
         box-shadow: 2px 2px 2px gray;
         border-radius: 99px;
         color: rgb(55, 59, 107);
@@ -75,17 +72,14 @@
         width: 88%;
         height: 88%;
         border-radius: 99px;
-        background: linear-gradient(rgb(210, 238, 252), white);
+        background: linear-gradient(rgb(188, 216, 229), rgb(238, 244, 253));
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .zoneInfo:hover {
-        box-shadow:
-            0 0 5px #9fb4cc,
-            0 0 5px #8ea5c0,
-            0 0 5px #a6c1e0;
+        box-shadow: none;
     }
 
     .zoneInfo .detailsWarning {

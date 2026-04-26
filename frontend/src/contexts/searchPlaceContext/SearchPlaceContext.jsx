@@ -4,9 +4,9 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { usePhotosPlace } from "../PhotosContext.jsx";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import {
+  getGeocodification,
   getMoreDetailsPlace,
   getPlacesByText,
-  getReverseGeocodification
 } from "./functions.js";
 
 const SearchPlaceContext = createContext();
@@ -52,8 +52,9 @@ export const SearchPlaceProvider = ({ children }) => {
       await moreDetailsPlace(event.detail.placeId, true);
     } else {
       setSelectedPlace(null);
-      getReverseGeocodification(
+      getGeocodification(
         event.detail.latLng,
+        null,
         setValueInput,
         setStreetSelected
       );
@@ -119,6 +120,10 @@ export const SearchPlaceProvider = ({ children }) => {
     }
   };
 
+  const handleClickOnSuggestionAddress = (address) => {
+    getGeocodification(null, address, setValueInput, setStreetSelected);
+  };
+
   return (
     <SearchPlaceContext.Provider
       value={{
@@ -134,6 +139,7 @@ export const SearchPlaceProvider = ({ children }) => {
         setStreetSelected,
         moreDetailsPlace,
         handleClickOnMap,
+        handleClickOnSuggestionAddress,
         searchByText,
         loadingPlace,
         setLoadingPlace
