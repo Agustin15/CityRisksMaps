@@ -139,14 +139,10 @@ const filterFile = (department, crime, year, neighborhoodsSelected, json) => {
         nameNeighborhood: neighborhoodFound,
         crime: crime,
         amount: 1,
-        dateOfLastCrime: formatDate(item.FECHA),
         year: year
       });
     } else {
       found.amount++;
-      if (new Date(formatDate(item.FECHA)) > new Date(found.dateOfLastCrime)) {
-        found.dateOfLastCrime = formatDate(item.FECHA);
-      }
     }
   });
 

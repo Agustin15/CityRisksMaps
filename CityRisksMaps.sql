@@ -63,7 +63,6 @@ crime VARCHAR(20) FOREIGN KEY REFERENCES Crimes(category) ON UPDATE CASCADE ON D
 quantity INT CHECK(quantity>=0),
 increase DECIMAL(5,1),
 rate DECIMAL(6,1) CHECK(rate>=0),
-dateOfLastCrime DATE,
 year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
@@ -813,7 +812,6 @@ CREATE TYPE NeighborhoodsCrimeTableType AS TABLE(
 nameNeighborhood VARCHAR(30) NOT NULL,
 crime VARCHAR(30) NOT NULL,
 quantity INT NOT NULL,
-dateOfLastCrime DATE,
 year INT NOT NULL
 );
 
@@ -889,9 +887,9 @@ RETURN -5;
 
 BEGIN TRANSACTION
 
-INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,dateOfLastCrime,year)
+INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,year)
 select N.idNeighborhood,@categoryCrime,T.quantity,dbo.CalculateIncrease(N.idNeighborhood,@categoryCrime,T.quantity,T.year),
-dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.dateOfLastCrime,T.year from @table T INNER JOIN Neighborhoods N 
+dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.year from @table T INNER JOIN Neighborhoods N 
 ON N.name=T.nameNeighborhood
 
 IF(@@ERROR<>0)
@@ -901,6 +899,46 @@ RETURN -6
 END
 
 COMMIT TRANSACTION
+RETURN 1
+
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE AddNeighborhoodCrime @neighborhood VARCHAR(30),@categoryCrime VARCHAR(30),@quantity INT ,@year INT AS
+
+BEGIN
+
+DECLARE @idNeighborhood INT;
+DECLARE @increase DECIMAL(5,1);
+DECLARE @rate DECIMAL(6,1);
+
+IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood )
+RETURN -1;
+
+IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
+RETURN -2;
+
+IF(@quantity<0)
+RETURN -3;
+
+IF (@year>YEAR(GETDATE()))
+RETURN -4;
+
+select @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighborhood
+
+IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@categoryCrime and year=@year)
+RETURN -5;
+
+EXEC @increase=dbo.CalculateIncrease @idNeighborhood,@categoryCrime,@quantity,@year;
+EXEC @rate=dbo.CalculateRate @idNeighborhood,@quantity,@year;
+
+INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,year) VALUES (@idNeighborhood,@categoryCrime,@quantity,
+@increase,@rate,@year)
+
+IF(@@ERROR<>0)
+RETURN -6
+
 RETURN 1
 
 END
@@ -929,7 +967,7 @@ RETURN -5;
 
 BEGIN TRANSACTION
 
-UPDATE Neighborhoods_Crimes SET quantity=(NC.quantity+T.quantity),dateOfLastCrime=T.dateOfLastCrime FROM Neighborhoods_Crimes NC 
+UPDATE Neighborhoods_Crimes SET quantity=T.quantity FROM Neighborhoods_Crimes NC 
 INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and
 NC.neighborhood=(select idNeighborhood from Neighborhoods where name=T.nameNeighborhood)
 
@@ -1437,7 +1475,6 @@ EXEC AddCrime 'Hurto','Se entiende por hurto cualquier acto que implique sustrae
 EXEC AddCrime 'Rapiña','Se clasifican como rapiñas todos los incidentes en que se sustrajo o intentó sustraer, por medio de la fuerza o amenaza de uso de la fuerza, cualquier objeto o propiedad al cuidado o bajo la custodia de otra u otras personas.';
 
 GO
-
 
 EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2022;
 EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',3,2022;

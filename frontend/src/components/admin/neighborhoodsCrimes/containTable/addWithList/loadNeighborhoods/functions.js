@@ -30,3 +30,11 @@ export const handleCheckbox = (
     )
   );
 };
+
+export const setValue = (neighborhoodsCrime, nameNeighborhood) => {
+  const found = neighborhoodsCrime.find(
+    (hoodCrime) => hoodCrime.nameNeighborhood == nameNeighborhood
+  );
+
+  if (found) return found.amount;
+};

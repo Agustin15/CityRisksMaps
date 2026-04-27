@@ -1,0 +1,52 @@
+.secondColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+    position: relative;
+    width: 45%;
+    gap: 1.5rem;
+}
+
+.secondColumn .columnInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.secondColumn select {
+    height: 2.3rem;
+    width: 16.5rem;
+    padding-left: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgb(218, 218, 218);
+    background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
+    font-size: 15px;
+    outline: none;
+}
+
+.secondColumn .load,
+.secondColumn .loadDisabled {
+    background: rgb(34, 207, 63);
+    border-radius: 5px;
+    box-shadow: none;
+    width: 16rem;
+    height: 2rem;
+    color: white;
+    margin: 0.5rem 0 0 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+.secondColumn.load:hover {
+    background: rgb(30, 184, 55);
+}
+
+.secondColumn.loadDisabled {
+    opacity: 85%;
+    cursor: auto;
+}
+.secondColumn .loadDisabled:hover {
+    opacity: 85%;
+}

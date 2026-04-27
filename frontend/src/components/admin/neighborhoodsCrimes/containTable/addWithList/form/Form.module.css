@@ -7,9 +7,7 @@
     margin-top: 1rem;
 }
 
-.form .columnInput,
-.form .columnNeighborhoods,
-.form .columnOne {
+.form .columnNeighborhoods {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -22,13 +20,8 @@
     margin-top: 0.5rem;
     width: 65%;
 }
-.form .columnOne {
-    width: 45%;
-    gap: 1.5rem;
-}
 
-.form input,
-.form select {
+.form input{
     height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
@@ -38,15 +31,6 @@
     outline: none;
 }
 
-.form input[type="file"] {
-    display: none;
-}
-
-.form select {
-    height: 2.3rem;
-    width: 16.5rem;
-    background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
-}
 
 .form label,
 .form .lblNeighborhoodsCrime {
@@ -74,28 +58,4 @@
 
 .form .errorNeighborhoodsCrime {
     top: 100%;
-}
-
-.form .load,
-.form .loadDisabled {
-    background: rgb(34, 207, 63);
-    border-radius: 5px;
-    box-shadow: none;
-    width: 16rem;
-    height: 2rem;
-    color: white;
-    margin: 0.5rem 0 0 0;
-    font-size: 15px;
-    font-weight: bold;
-}
-.form .load:hover {
-    background: rgb(30, 184, 55);
-}
-
-.form .loadDisabled {
-    opacity: 85%;
-    cursor: auto;
-}
-.form .loadDisabled:hover {
-    opacity: 85%;
 }

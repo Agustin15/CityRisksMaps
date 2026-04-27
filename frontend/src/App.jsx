@@ -27,6 +27,7 @@ function App() {
         <CrudProvider>
           <BrowserRouter>
             <Routes>
+             
               <Route path="/" element={<MapPage />}></Route>
               <Route path="/*" element={<NotFoundPage />}></Route>
               <Route path="/admin/login" element={<LoginAdmin />}></Route>

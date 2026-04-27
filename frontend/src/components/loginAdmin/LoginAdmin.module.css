@@ -15,9 +15,6 @@
     align-items: center;
     border: 1px solid #cecece;
     box-shadow: 4px 4px 4px gray;
-    background: url("../../assets/img/waveLogin.svg");
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 .login h3 {
     margin: 0;
@@ -30,6 +27,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(rgb(57, 116, 194), rgb(37, 80, 136));
     color: white;
     gap: 0rem;
 }

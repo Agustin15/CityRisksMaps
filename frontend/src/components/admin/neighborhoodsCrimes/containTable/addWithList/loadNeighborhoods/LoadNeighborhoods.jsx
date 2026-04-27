@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
 import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
 import { LoadData } from "./LoadData";
-import { handleChange, handleCheckbox } from "./functions.js";
+import { handleChange, handleCheckbox, setValue } from "./functions.js";
 
 export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
   const [loading, setLoading] = useState(false);
@@ -51,6 +51,10 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                           ? styles.inputDisabled
                           : ""
                       }
+                      value={setValue(
+                        values.neighborhoodsCrime,
+                        neighborhood.name
+                      )}
                       name={neighborhood.name}
                       min={0}
                       type="number"

@@ -11,7 +11,6 @@ export class NeighborhoodCrimeDAL {
       table.columns.add("nameNeighborhood", sql.VarChar(30));
       table.columns.add("crime", sql.VarChar(30));
       table.columns.add("quantity", sql.Int);
-      table.columns.add("dateOfLastCrime", sql.Date);
       table.columns.add("year", sql.Int);
 
       neighborhoodsCrime.forEach((neighborhoodCrime) => {
@@ -19,9 +18,6 @@ export class NeighborhoodCrimeDAL {
           neighborhoodCrime.nameNeighborhood,
           categoryCrime,
           neighborhoodCrime.amount,
-          neighborhoodCrime.dateOfLastCrime
-            ? neighborhoodCrime.dateOfLastCrime
-            : null,
           year
         );
       });
