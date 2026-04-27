@@ -88,7 +88,6 @@ export const CrudProvider = ({ children }) => {
   const fetchPostWithFormData = async (url, setLoading, formData) => {
     setLoading(true);
     try {
-      
       const response = await fetch(LOCALHOST_BACKEND + url, {
         method: "POST",
         credentials: "include",
@@ -144,8 +143,6 @@ export const CrudProvider = ({ children }) => {
     if (response.status == 401) {
       setUser();
       location.href = LOCALHOST_FRONTEND + "/admin/login";
-    } else if (response.status == 403) {
-      location.href = LOCALHOST_FRONTEND + "/admin/permiso-denegado";
     } else throw new Error(result.messageError);
   };
 

@@ -1,25 +1,63 @@
 import styles from "./Form.module.css";
 import { useCrud } from "../../../../../../contexts/adminContext/CrudContext";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../../../../contexts/adminContext/AuthContext.jsx";
+import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
 import { UploadFile } from "../uploadFile/UploadFile";
 import { LoadNeighborhoods } from "../loadNeighborhoods/LoadNeighborhoods";
-import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
+import { fetchGetNeighborhoodsCrimeFromFile, validation } from "./functions.js";
 
 export const Form = () => {
   const [neighborhoods, setNeighborhoods] = useState([]);
-  const [neighborhoodsSelected, setNeighborhoodsSelected] = useState([]);
   const { crimes } = useCrud();
-  const { handleSubmit, errors, values, setValues, loading } =
-    useAddNeighborhoodCrime();
+  const { setUser } = useAuth();
 
-  useEffect(() => {
-    if (neighborhoods.length == 0) return;
+  const {
+    handleSubmit,
+    setErrors,
+    errors,
+    values,
+    setValues,
+    neighborhoodsSelected,
+    setNeighborhoodsSelected,
+    loading,
+    loadingFromFile,
+    setLoadingFromFile
+  } = useAddNeighborhoodCrime();
 
-    values.neighborhoodsSelected = neighborhoods.map((neighborhood) => {
-      return { neighborhood: neighborhood.name, checked: false };
-    });
-  }, [neighborhoods]);
-  
+  const handleLoadCrimesFromFile = async () => {
+    let selectedNeighborhoods = neighborhoodsSelected.filter(
+      (neighborhood) => neighborhood.checked == true
+    );
+
+    if (selectedNeighborhoods.length > 0) {
+      selectedNeighborhoods = selectedNeighborhoods.map(
+        (hood) => hood.neighborhood
+      );
+    }
+
+    const valuesLoadFile = {
+      file: values.file,
+      department: "Montevideo",
+      crime: values.crime,
+      year: values.year,
+      neighborhoodsSelected: selectedNeighborhoods
+    };
+
+    const errorsValues = validation(valuesLoadFile);
+    setErrors(errorsValues);
+
+    if (Object.values(errorsValues).some((error) => error.length > 0)) {
+      return;
+    }
+
+    const result = await fetchGetNeighborhoodsCrimeFromFile(
+      setLoadingFromFile,
+      valuesLoadFile,
+      setUser
+    );
+  };
+
   return (
     <form className={styles.form} onSubmit={(event) => handleSubmit(event)}>
       <div className={styles.columnNeighborhoods}>
@@ -75,15 +113,16 @@ export const Form = () => {
         <UploadFile values={values} setValues={setValues} errors={errors} />
 
         <button
-          disabled={loading || neighborhoods.length == 0}
+          onClick={() => handleLoadCrimesFromFile()}
+          disabled={loadingFromFile || neighborhoods.length == 0}
           className={
-            loading || neighborhoods.length == 0
-              ? styles.addDisabled
-              : styles.add
+            loadingFromFile || neighborhoods.length == 0
+              ? styles.loadDisabled
+              : styles.load
           }
-          type="submit"
+          type="button"
         >
-          {loading ? "Cargando..." : "Cargar informacion"}
+          {loadingFromFile ? "Cargando..." : "Cargar informacion"}
         </button>
       </div>
     </form>

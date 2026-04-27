@@ -1,3 +1,5 @@
+import { alertSwalErrorAdmin } from "../../../../../sweetAlert/sweetAlert.js";
+
 export const handleChange = (event, neighborhoodName, values, setValues) => {
   const newNeighborhoodsCrime = values.neighborhoodsCrime.map((nhCrime) => {
     if (nhCrime.nameNeighborhood == neighborhoodName) {
@@ -15,7 +17,11 @@ export const handleChange = (event, neighborhoodName, values, setValues) => {
   });
 };
 
-export const handleCheckbox = (neighborhoodName, setNeighborhoodsSelected) => {
+export const handleCheckbox = (
+  neighborhoodName,
+  neighborhoodsSelected,
+  setNeighborhoodsSelected
+) => {
   setNeighborhoodsSelected(
     neighborhoodsSelected.map((hoodSelected) =>
       hoodSelected.neighborhood == neighborhoodName
@@ -23,10 +29,4 @@ export const handleCheckbox = (neighborhoodName, setNeighborhoodsSelected) => {
         : hoodSelected
     )
   );
-};
-
-export const verifyInputEnable = (neighborhoodName, neighborhoodsSelected) => {
-  return neighborhoodsSelected.find(
-    (hood) => hood.neighborhood == neighborhoodName
-  ).checked;
 };

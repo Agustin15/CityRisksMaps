@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
 import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
 import { LoadData } from "./LoadData";
-import {
-  handleChange,
-  handleCheckbox,
-  verifyInputEnable
-} from "./functions.js";
+import { handleChange, handleCheckbox } from "./functions.js";
 
 export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
   const [loading, setLoading] = useState(false);
@@ -43,12 +39,15 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                           setValues
                         )
                       }
-                      disabled={!verifyInputEnable(neighborhood.name)}
+                      disabled={
+                        neighborhoodsSelected.find(
+                          (hood) => hood.neighborhood == neighborhood.name
+                        ).checked == false
+                      }
                       className={
-                        !verifyInputEnable(
-                          neighborhood.name,
-                          neighborhoodsSelected
-                        )
+                        neighborhoodsSelected.find(
+                          (hood) => hood.neighborhood == neighborhood.name
+                        ).checked == false
                           ? styles.inputDisabled
                           : ""
                       }
@@ -57,17 +56,20 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                       type="number"
                       placeholder="Cantidad"
                     ></input>
+
                     <input
                       onChange={(event) =>
                         handleCheckbox(
                           neighborhood.name,
+                          neighborhoodsSelected,
                           setNeighborhoodsSelected
                         )
                       }
-                      defaultChecked={verifyInputEnable(
-                        neighborhood.name,
-                        neighborhoodsSelected
-                      )}
+                      defaultChecked={
+                        neighborhoodsSelected.find(
+                          (hood) => hood.neighborhood == neighborhood.name
+                        ).checked
+                      }
                       type="checkbox"
                     ></input>
                   </td>

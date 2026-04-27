@@ -76,25 +76,26 @@
     top: 100%;
 }
 
-.form .add,
-.form .addDisabled {
+.form .load,
+.form .loadDisabled {
     background: rgb(34, 207, 63);
     border-radius: 5px;
     box-shadow: none;
     width: 16rem;
     height: 2rem;
     color: white;
-    margin: 0;
+    margin: 0.5rem 0 0 0;
     font-size: 15px;
     font-weight: bold;
 }
-.form .add:hover {
+.form .load:hover {
     background: rgb(30, 184, 55);
 }
 
-.form .addDisabled {
+.form .loadDisabled {
     opacity: 85%;
+    cursor: auto;
 }
-.form .addDisabled:hover {
+.form .loadDisabled:hover {
     opacity: 85%;
 }

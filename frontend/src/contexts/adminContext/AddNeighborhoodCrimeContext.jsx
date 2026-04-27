@@ -1,5 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import { alertSwalSuccess } from "../../components/sweetAlert/sweetAlert.js";
+import {
+  alertSwalSuccess
+} from "../../components/sweetAlert/sweetAlert.js";
 import { useCrud } from "./CrudContext.jsx";
 
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
@@ -9,6 +11,7 @@ const AddNeighborhoodCrimeContext = createContext();
 export const AddNeighborhoodCrimeProvider = ({ children }) => {
   const { setRegisters, loadYears, fetchPostOrPut, fetchGet, crimes } =
     useCrud();
+  const [loadingFromFile, setLoadingFromFile] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [values, setValues] = useState({
@@ -117,6 +120,8 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
         setValues,
         loading,
         setLoading,
+        setLoadingFromFile,
+        loadingFromFile,
         neighborhoodsSelected,
         setNeighborhoodsSelected
       }}
