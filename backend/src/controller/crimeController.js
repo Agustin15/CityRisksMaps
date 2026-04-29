@@ -10,9 +10,9 @@ export const add = async (req, res) => {
 
     await CrimeService.add(crime);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res
+    return res
       .status(error.cause ? error.cause.code : 502)
       .json({ messageError: error.message });
   }
@@ -32,9 +32,9 @@ export const update = async (req, res) => {
 
     await CrimeService.update(crime);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res
+    return res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
   }
@@ -48,9 +48,9 @@ export const deleteByCategory = async (req, res) => {
 
     await CrimeService.delete(category);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res
+    return res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
   }
@@ -63,9 +63,9 @@ export const getAllTypeCrimes = async (req, res) => {
     if (crimes.length == 0)
       throw new Error("No se encontraron categorias de crimenes en el sistema");
 
-    res.status(200).json(crimes);
+    return res.status(200).json(crimes);
   } catch (error) {
-    res
+    return res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
   }

@@ -27,12 +27,9 @@ export const Years = ({ years, yearSelected }) => {
 
   return (
     <div className={styles.years}>
-      <select
-        onChange={(event) => handleChange(event.target.value)}
-        defaultValue={yearSelected}
-      >
+      <select onChange={(event) => handleChange(event.target.value)}>
         {years.map((year, index) => (
-          <option key={index} value={year}>
+          <option defaultValue={year == yearSelected} key={index} value={year}>
             {year}
           </option>
         ))}

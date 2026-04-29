@@ -123,9 +123,12 @@ export class NeighborhoodCrimeDAL {
           );
 
         case -6:
-          throw new Error("Error inesperado al actualizar crimenes en barrios", {
-            cause: { code: 502 }
-          });
+          throw new Error(
+            "Error inesperado al actualizar crimenes en barrios",
+            {
+              cause: { code: 502 }
+            }
+          );
       }
     } catch (error) {
       throw error;
@@ -228,6 +231,75 @@ export class NeighborhoodCrimeDAL {
       request.input("offset", sql.Int, offset);
 
       const result = await request.execute("NeighborhoodsCrimeByYearOffset");
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAmountOfAnCrimeInYears(crime) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("crime", sql.VarChar(20), crime);
+      const result = await request.execute("AmountOfAnCrimeInYears");
+
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("crime", sql.VarChar(20), crime);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute(
+        "AmountOfAnCrimeInNeighborhoodsByYear"
+      );
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, neighborhood) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("crime", sql.VarChar(20), crime);
+      request.input("neighborhood", sql.VarChar(30), neighborhood);
+
+      const result = await request.execute(
+        "AmountOfAnCrimeInNeighborhoodInYears"
+      );
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getTopTenNeighborhoodsWithMoreTypeOfCrime(crime) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("crime", sql.VarChar(20), crime);
+
+      const result = await request.execute(
+        "TopTenNeighborhoodsWithMoreTypeOfCrime"
+      );
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getTopTenNeighborhoodsWithLessTypeOfCrime(crime) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("crime", sql.VarChar(20), crime);
+
+      const result = await request.execute(
+        "TopTenNeighborhoodsWithLessTypeOfCrime"
+      );
       return result.recordset;
     } catch (error) {
       throw error;

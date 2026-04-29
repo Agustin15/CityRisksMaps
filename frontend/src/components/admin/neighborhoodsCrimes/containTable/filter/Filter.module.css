@@ -22,24 +22,16 @@
     width: 5.5rem;
     height: 2rem;
     font-weight: bold;
-    box-shadow: 2px 2px 2px rgb(216, 216, 216);
-}
-
-.filter .crimes button:hover {
     box-shadow: none;
-    background: rgb(240, 240, 240);
+    border: 1px solid rgb(224, 224, 224);
 }
 
 .filter .crimes .crimeBtn {
     background: white;
-    border: 1px solid rgb(175, 175, 175);
     color: black;
 }
 
 .filter .crimes .crimeBtnSelected,
-.filter .crimes .crimeBtnSelected:hover {
-    background: rgb(63, 97, 160);
-    color: white;
-    border: none;
-    box-shadow: none;
+.filter .crimes button:hover {
+    background: linear-gradient(rgb(241, 241, 241), rgb(218, 217, 217));
 }

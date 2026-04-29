@@ -50,11 +50,11 @@ export const add = async (req, res) => {
     await sendActivateUserMail(email, name, activateUserToken);
 
     await transaction.commit();
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
     if (transaction) await transaction.rollback();
 
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -83,9 +83,9 @@ export const update = async (req, res) => {
 
     await UserService.update(user);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -110,11 +110,11 @@ export const deleteById = async (req, res) => {
       await transaction.commit();
     }
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
     if (transaction) await transaction.rollback();
 
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -134,12 +134,12 @@ export const getUsersOffset = async (req, res) => {
     if (usersOffset.length == 0)
       throw new Error("No se encontraron usuarios en el sistema");
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: usersOffset,
       pages: Math.ceil(users.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -169,12 +169,12 @@ export const getUsersByRolOffset = async (req, res) => {
     if (usersOffset.length == 0)
       throw new Error("No se encontraron usuarios con este rol en el sistema");
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: usersOffset,
       pages: Math.ceil(users.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -206,9 +206,9 @@ export const activate = async (req, res) => {
 
     await UserService.activateUserByIdUser(idUser, hashedPassword);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -223,8 +223,8 @@ export const validateActivateUserToken = async (req, res) => {
     if (userFound.activated)
       throw new Error("¡El usuario ya ha sido activado!");
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };

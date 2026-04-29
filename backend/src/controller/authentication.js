@@ -26,7 +26,7 @@ export const verifyAuthToken = (req, res, next) => {
     else if (error.name === "JsonWebTokenError")
       error.message = "Autenticacion fallida,token invalido";
 
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };
 
@@ -100,7 +100,7 @@ export const verifyActivateUserToken = (req, res) => {
     } else if (error.name === "JsonWebTokenError") {
       error.message = "El token de acceso para activar usuario es invalido";
     }
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };
 
@@ -135,6 +135,6 @@ export const verifyConfirmEmailToken = async (req, res) => {
       error.message =
         "El acceso para confirmar el correo electronico no es valido";
     }
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };

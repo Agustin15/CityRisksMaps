@@ -11,9 +11,9 @@ export const add = async (req, res) => {
 
     await DepartmentService.add(department);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -31,9 +31,9 @@ export const update = async (req, res) => {
 
     await DepartmentService.update(department);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -46,9 +46,9 @@ export const deleteById = async (req, res) => {
 
     await DepartmentService.delete(idDepartment);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -61,9 +61,9 @@ export const getDepartments = async (req, res) => {
         "No se encontraron registros de departamentos en el sistema"
       );
 
-    res.status(200).json(departments);
+    return res.status(200).json(departments);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -88,12 +88,12 @@ export const getDepartmentsOffset = async (req, res) => {
         "No se encontraron registros de departamentos en el sistema"
       );
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: departmentsOffset,
       pages: Math.ceil(departments.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -110,8 +110,8 @@ export const getDepartmentById = async (req, res) => {
         "No se encontro el registo de departamento en el sistema"
       );
 
-    res.status(200).json(department);
+    return res.status(200).json(department);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };

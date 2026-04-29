@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useCrud } from "../../../../../../contexts/adminContext/CrudContext";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
-import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
+import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext";
 
 export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
   const { setUser } = useAuth();

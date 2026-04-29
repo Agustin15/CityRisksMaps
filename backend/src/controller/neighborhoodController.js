@@ -13,9 +13,9 @@ export const add = async (req, res) => {
 
     await NeighborhoodService.add(neighborhood);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -33,9 +33,9 @@ export const update = async (req, res) => {
 
     await NeighborhoodService.update(neighborhood);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -48,9 +48,9 @@ export const deleteById = async (req, res) => {
 
     await NeighborhoodService.delete(idNeighborhood);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -61,9 +61,9 @@ export const getNeighborhoods = async (req, res) => {
     if (neighbordhoods.length == 0)
       throw new Error("No se encontraron registros de barrios en el sistema");
 
-    res.status(200).json(neighbordhoods);
+    return res.status(200).json(neighbordhoods);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -84,12 +84,12 @@ export const getNeighborhoodsOffset = async (req, res) => {
     if (neighbordhoodsOffset.length == 0)
       throw new Error("No se encontraron registros de barrios en el sistema");
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: neighbordhoodsOffset,
       pages: Math.ceil(neighbordhoods.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -122,11 +122,11 @@ export const getNeighborhoodsByDepartmentOffset = async (req, res) => {
         "No se encontraron registros de barrios en este departamento en el sistema"
       );
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: neighbordhoodsOffset,
       pages: Math.ceil(neighbordhoods.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };

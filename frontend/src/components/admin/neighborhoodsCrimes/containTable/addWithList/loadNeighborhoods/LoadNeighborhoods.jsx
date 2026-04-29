@@ -2,9 +2,15 @@ import styles from "./LoadNeighborhoods.module.css";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
-import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/AddNeighborhoodCrimeContext";
+import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext.jsx";
 import { LoadData } from "./LoadData";
-import { handleChange, handleCheckbox, setValue } from "./functions.js";
+import { SelectAllNeighborhoods } from "./allSelect/SelectAllNeighborhoods.jsx";
+import {
+  handleChangeInput,
+  handleChangeCheckbox,
+  verifyChecked,
+  setValueAmount
+} from "./functions.js";
 
 export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +30,10 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
       {errorLoad && <p>{errorLoad}</p>}
       {loading == false && neighborhoods.length > 0 && (
         <div className={styles.neighborhoodsTable}>
+          <SelectAllNeighborhoods
+            neighborhoodsSelected={neighborhoodsSelected}
+            setNeighborhoodsSelected={setNeighborhoodsSelected}
+          />
           <table>
             <tbody>
               {neighborhoods.map((neighborhood, index) => (
@@ -32,7 +42,7 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                   <td>
                     <input
                       onChange={(event) =>
-                        handleChange(
+                        handleChangeInput(
                           event,
                           neighborhood.name,
                           values,
@@ -40,18 +50,20 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                         )
                       }
                       disabled={
-                        neighborhoodsSelected.find(
-                          (hood) => hood.neighborhood == neighborhood.name
-                        ).checked == false
+                        verifyChecked(
+                          neighborhoodsSelected,
+                          neighborhood.name
+                        ) == false
                       }
                       className={
-                        neighborhoodsSelected.find(
-                          (hood) => hood.neighborhood == neighborhood.name
-                        ).checked == false
+                        verifyChecked(
+                          neighborhoodsSelected,
+                          neighborhood.name
+                        ) == false
                           ? styles.inputDisabled
                           : ""
                       }
-                      value={setValue(
+                      value={setValueAmount(
                         values.neighborhoodsCrime,
                         neighborhood.name
                       )}
@@ -63,17 +75,16 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
 
                     <input
                       onChange={(event) =>
-                        handleCheckbox(
+                        handleChangeCheckbox(
                           neighborhood.name,
                           neighborhoodsSelected,
                           setNeighborhoodsSelected
                         )
                       }
-                      defaultChecked={
-                        neighborhoodsSelected.find(
-                          (hood) => hood.neighborhood == neighborhood.name
-                        ).checked
-                      }
+                      checked={verifyChecked(
+                        neighborhoodsSelected,
+                        neighborhood.name
+                      )}
                       type="checkbox"
                     ></input>
                   </td>

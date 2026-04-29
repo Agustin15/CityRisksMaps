@@ -6,6 +6,10 @@
     position: relative;
 }
 
+.uploadFile input {
+    display: none;
+}
+
 .uploadFile p {
     color: red;
     position: absolute;

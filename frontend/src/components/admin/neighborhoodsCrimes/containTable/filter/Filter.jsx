@@ -6,17 +6,22 @@ export const Filter = ({ crimes }) => {
   const { crimeSelected, setCrimeSelected, years, yearSelected } = useCrud();
 
   const handleCrimeSelect = (crime) => {
-    setCrimeSelected(
-      crimeSelected.category == crime.category ? null : crime.category
-    );
+    setCrimeSelected(crime.category);
   };
 
   return (
     <div className={styles.filter}>
       <ul className={styles.crimes}>
-        {crimes.map((crime) => (
+        {crimes.map((crime, index) => (
           <li key={crime.category}>
             <button
+              style={{
+                borderTopLeftRadius: index == 0 ? "5px" : "0px",
+                borderBottomLeftRadius: index == 0 ? "5px" : "0px",
+                borderBottomRightRadius:
+                  index + 1 == crimes.length ? "5px" : "0px",
+                borderTopRightRadius: index + 1 == crimes.length ? "5px" : "0px"
+              }}
               onClick={() => handleCrimeSelect(crime)}
               className={
                 crimeSelected == crime.category

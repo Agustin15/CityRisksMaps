@@ -7,7 +7,7 @@
     border: 1px solid rgb(221, 221, 221);
     height: 45vh;
     gap: 1rem;
-    width: 80%;
+    width: 100%;
 }
 
 .loadNeighborhoods p {
@@ -22,6 +22,19 @@
     width: 100%;
     overflow-y: scroll;
     margin-top: 0.5rem;
+}
+
+.loadNeighborhoods .allSelect {
+    width: 99%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.loadNeighborhoods .allSelect button {
+    width: 12rem;
+    height: 2rem;
+    background: rgb(221, 221, 221);
 }
 
 .loadNeighborhoods table {
@@ -45,6 +58,13 @@
 .loadNeighborhoods table td .inputDisabled {
     background: rgb(231, 231, 231);
     box-shadow: none;
+}
+
+.loadNeighborhoods .allSelected {
+    width: 99%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .loadNeighborhoods table td input[type="checkbox"] {

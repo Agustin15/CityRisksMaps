@@ -70,10 +70,10 @@ export const login = async (req, res) => {
       secure: true
     });
 
-    res
+    return res
       .status(200)
       .json({ ...userFound, ["rol"]: rolFound.name, ["avatarUrl"]: avatarUrl });
   } catch (error) {
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };

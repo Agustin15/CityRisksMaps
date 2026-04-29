@@ -24,11 +24,11 @@ export const getProfile = async (req, res) => {
     if (userFound.avatar)
       avatarUrl = await CloudinaryService.getAvatar(userFound.avatar);
 
-    res
+    return res
       .status(200)
       .json({ ...userFound, ["rol"]: req.rol, ["avatarUrl"]: avatarUrl });
   } catch (error) {
-    res.status(401).json({ messageError: error.message });
+    return res.status(401).json({ messageError: error.message });
   }
 };
 
@@ -71,9 +71,9 @@ export const resetPassword = async (req, res) => {
 
     await UserService.updateUserPasswordByIdUser(idUser, hash);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -93,9 +93,9 @@ export const updateCompleteNameByIdUser = async (req, res) => {
 
     await UserService.updateCompleteNameByIdUser(idUser, name, lastname);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -122,9 +122,9 @@ export const updateAvatar = async (req, res) => {
 
     await UserService.updateAvatarByIdUser(idUser, result.public_id);
 
-    res.status(200).json({ avatar: result.public_id, avatarUrl: result.url });
+    return res.status(200).json({ avatar: result.public_id, avatarUrl: result.url });
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -143,9 +143,9 @@ export const deleteAvatar = async (req, res) => {
 
     await UserService.updateAvatarByIdUser(idUser, null);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -207,8 +207,8 @@ export const sendConfirmEmail = async (req, res) => {
 
     await sendMailToConfirmNewEmail(newEmail, userFound.name, jwtConfirmEmail);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };

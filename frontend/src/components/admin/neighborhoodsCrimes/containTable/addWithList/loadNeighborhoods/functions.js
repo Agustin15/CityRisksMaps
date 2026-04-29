@@ -1,10 +1,15 @@
 import { alertSwalErrorAdmin } from "../../../../../sweetAlert/sweetAlert.js";
 
-export const handleChange = (event, neighborhoodName, values, setValues) => {
+export const handleChangeInput = (
+  event,
+  neighborhoodName,
+  values,
+  setValues
+) => {
   const newNeighborhoodsCrime = values.neighborhoodsCrime.map((nhCrime) => {
     if (nhCrime.nameNeighborhood == neighborhoodName) {
       if (event.target.value != null && event.target.value.length == 0) {
-        nhCrime.amount = null;
+        nhCrime.amount = "";
       } else nhCrime.amount = event.target.value;
     }
 
@@ -17,7 +22,7 @@ export const handleChange = (event, neighborhoodName, values, setValues) => {
   });
 };
 
-export const handleCheckbox = (
+export const handleChangeCheckbox = (
   neighborhoodName,
   neighborhoodsSelected,
   setNeighborhoodsSelected
@@ -31,10 +36,20 @@ export const handleCheckbox = (
   );
 };
 
-export const setValue = (neighborhoodsCrime, nameNeighborhood) => {
+export const setValueAmount = (neighborhoodsCrime, nameNeighborhood) => {
   const found = neighborhoodsCrime.find(
     (hoodCrime) => hoodCrime.nameNeighborhood == nameNeighborhood
   );
 
-  if (found) return found.amount;
+  if (!found) return "";
+
+  return found.amount;
+};
+
+export const verifyChecked = (neighborhoodsSelected, nameNeighborhood) => {
+  const found = neighborhoodsSelected.find(
+    (hood) => hood.neighborhood == nameNeighborhood
+  );
+
+  return found.checked;
 };

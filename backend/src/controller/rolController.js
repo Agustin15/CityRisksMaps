@@ -8,9 +8,9 @@ export const getRols = async (req, res) => {
     if (rols.length == 0)
       throw new Error("No se encontraron registros de roles en en sistema");
 
-    res.status(200).json(rols);
+    return res.status(200).json(rols);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -24,9 +24,9 @@ export const add = async (req, res) => {
 
     await RolService.add(rol);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -43,9 +43,9 @@ export const update = async (req, res) => {
     
     await RolService.update(rol);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -57,8 +57,8 @@ export const deleteById = async (req, res) => {
 
     await RolService.delete(idRol);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };

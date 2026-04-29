@@ -7,8 +7,7 @@ import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
-import { AddNeighborhoodCrimeProvider } from "../../../contexts/adminContext/AddNeighborhoodCrimeContext";
-
+import { AddNeighborhoodCrimeProvider } from "../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext";
 export const NeighborhoodsCrimes = () => {
   const { loadingProfile, user, getProfile } = useAuth();
   const [addForm, setAddForm] = useState(false);
@@ -26,7 +25,7 @@ export const NeighborhoodsCrimes = () => {
           <MenuSide />
           <div className={styles.body}>
             <Header
-              title={"Categoria del delitos en barrios"}
+              title={"Indice de denuncias de delitos en barrios"}
               setAddForm={setAddForm}
             />
 

@@ -1,7 +1,7 @@
 .secondColumn {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     gap: 0.5rem;
     position: relative;
     width: 45%;
@@ -39,7 +39,7 @@
     font-size: 15px;
     font-weight: bold;
 }
-.secondColumn.load:hover {
+.secondColumn .load:hover {
     background: rgb(30, 184, 55);
 }
 

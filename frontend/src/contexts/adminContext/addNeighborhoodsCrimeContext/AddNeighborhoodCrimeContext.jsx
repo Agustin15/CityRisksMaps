@@ -1,16 +1,30 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
+import { useCrud } from "../CrudContext.jsx";
+import { useAuth } from "../AuthContext.jsx";
+import { alertSwalSuccess } from "../../../components/sweetAlert/sweetAlert.js";
 import {
-  alertSwalSuccess
-} from "../../components/sweetAlert/sweetAlert.js";
-import { useCrud } from "./CrudContext.jsx";
+  fetchGetNeighborhoodsCrimeFromFile,
+  validationForm,
+  validationLoadFromFile
+} from "./functions.js";
 
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 const AddNeighborhoodCrimeContext = createContext();
 
 export const AddNeighborhoodCrimeProvider = ({ children }) => {
-  const { setRegisters, loadYears, fetchPostOrPut, fetchGet, crimes } =
-    useCrud();
+  const {
+    setRegisters,
+    loadYears,
+    yearSelected,
+    fetchPostOrPut,
+    fetchGet,
+    setIndex,
+    crimes,
+    crimeSelected
+  } = useCrud();
+  const { setUser } = useAuth();
+
   const [loadingFromFile, setLoadingFromFile] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -29,63 +43,82 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
 
   const [neighborhoodsSelected, setNeighborhoodsSelected] = useState([]);
 
-  const validationForm = () => {
-    let errorsValues = {
-      crime: "",
-      year: "",
-      neighborhoodsCrime: ""
+  const handleLoadCrimesFromFile = async () => {
+    let selectedNeighborhoods = neighborhoodsSelected.filter(
+      (neighborhood) => neighborhood.checked == true
+    );
+
+    if (selectedNeighborhoods.length > 0) {
+      selectedNeighborhoods = selectedNeighborhoods.map(
+        (hood) => hood.neighborhood
+      );
+    }
+
+    const valuesLoadFile = {
+      file: values.file,
+      department: "Montevideo",
+      crime: values.crime,
+      year: values.year,
+      neighborhoodsSelected: selectedNeighborhoods
     };
 
-    if (values.crime.length == 0) {
-      errorsValues["crime"] = "*Debe ingresar categoria de crimen";
-    }
-    if (values.year.length == 0) {
-      errorsValues["year"] = "*Debe ingresar el año";
-    }
-    if (
-      values.neighborhoodsCrime.reduce(
-        (acc, curr) => acc + (curr.amount || 0),
-        0
-      ) == 0
-    ) {
-      errorsValues["neighborhoodsCrime"] =
-        "*Debe indicar al menos un delito de barrio";
+    const errorsValues = validationLoadFromFile(valuesLoadFile);
+    setErrors(errorsValues);
+
+    if (Object.values(errorsValues).some((error) => error.length > 0)) {
+      return;
     }
 
-    return errorsValues;
+    const result = await fetchGetNeighborhoodsCrimeFromFile(
+      setLoadingFromFile,
+      valuesLoadFile,
+      setUser
+    );
+
+    if (result) {
+      setValues({ ...values, neighborhoodsCrime: result });
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let url;
 
-    const errorsValues = validationForm();
+    const valuesToAdd = {
+      crime: values.crime,
+      neighborhoodsCrime: values.neighborhoodsCrime,
+      year: values.year
+    };
+
+    const errorsValues = validationForm(valuesToAdd);
     setErrors(errorsValues);
 
     if (Object.values(errorsValues).find((error) => error.length > 0)) {
       return;
     }
+
     const result = await fetchPostOrPut(
       "/neighborhoodCrimeAdmin/",
       "POST",
       setLoading,
-      values
+      valuesToAdd
     );
 
     if (!result) return;
 
     alertSwalSuccess(
-      "¡Denuncias de delito de" +
+      "¡Denuncias de delito de " +
         values.crime +
         " en barrios agregados exitosamente!"
     );
 
     if (values.crime == crimeSelected) {
+      let url;
       if (values.year != yearSelected) {
         await loadYears(
           "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
         );
         url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + values.year;
+        setIndex(0);
       } else {
         url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
       }
@@ -99,12 +132,7 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
   const cleanValues = () => {
     document.querySelector("form").reset();
     setValues({
-      neighborhoodsCrime: values.neighborhoodsCrime.map(
-        (neighborhoodCrime) => ({
-          ...neighborhoodCrime,
-          amount: null
-        })
-      ),
+      neighborhoodsCrime: [],
       crime: "",
       year: ""
     });
@@ -114,6 +142,8 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     <AddNeighborhoodCrimeContext.Provider
       value={{
         handleSubmit,
+        handleLoadCrimesFromFile,
+        cleanValues,
         errors,
         setErrors,
         values,

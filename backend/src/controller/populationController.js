@@ -13,9 +13,9 @@ export const add = async (req, res) => {
 
     await PopulationService.add(population);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(502).json({ messageError: error.message });
+    return res.status(502).json({ messageError: error.message });
   }
 };
 
@@ -40,9 +40,9 @@ export const update = async (req, res) => {
 
     await PopulationService.update(population);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -55,9 +55,9 @@ export const deleteById = async (req, res) => {
 
     await PopulationService.delete(idPopulation);
 
-    res.status(200).json(true);
+    return res.status(200).json(true);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -70,9 +70,9 @@ export const getPopulationsYears = async (req, res) => {
         "No se encontraron registros de años de poblaciones en el sistema"
       );
 
-    res.status(200).json(populationsYears);
+    return res.status(200).json(populationsYears);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -97,9 +97,9 @@ export const getDatapointsNeighborhoodPopulationsYears = async (req, res) => {
       return { x: population.year, y: population.quantity };
     });
 
-    res.status(200).json(datapoints);
+    return res.status(200).json(datapoints);
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -127,12 +127,12 @@ export const getPopulationsOffsetByYear = async (req, res) => {
         "No se encontraron registros de poblaciones en este año en el sistema"
       );
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: populationsOffset,
       pages: Math.ceil(populations.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };
 
@@ -165,11 +165,11 @@ export const getPopulationsOffsetByNeighborhood = async (req, res) => {
         "No se encontraron registros de poblaciones en este barrio en el sistema"
       );
 
-    res.status(200).json({
+    return res.status(200).json({
       registersOffset: populationsOffset,
       pages: Math.ceil(populations.length / 10)
     });
   } catch (error) {
-    res.status(404).json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };

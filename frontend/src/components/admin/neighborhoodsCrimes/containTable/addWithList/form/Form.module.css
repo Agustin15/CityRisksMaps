@@ -1,36 +1,29 @@
 .form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.form .row {
+    display: flex;
+    flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    width: 100%;
 }
 
 .form .columnNeighborhoods {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
+    margin-top: 0.5rem;
+    width: 51%;
     gap: 0.5rem;
     position: relative;
 }
-
-.form .columnNeighborhoods {
-    align-items: center;
-    margin-top: 0.5rem;
-    width: 65%;
-}
-
-.form input{
-    height: 2.1rem;
-    width: 16rem;
-    padding-left: 0.5rem;
-    border-radius: 3px;
-    border: 1px solid rgb(218, 218, 218);
-    font-size: 15px;
-    outline: none;
-}
-
 
 .form label,
 .form .lblNeighborhoodsCrime {
@@ -58,4 +51,54 @@
 
 .form .errorNeighborhoodsCrime {
     top: 100%;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btnAdd,
+.btnReset,
+.btnAddDisabled,
+.btnResetDisabled {
+    margin: 1rem 0 0 0;
+    font-size: 15px;
+    min-width: 9rem;
+    width: auto;
+    height: 1.9rem;
+    padding: 0 0.5rem 0 0.5rem;
+    color: white;
+    font-weight: bold;
+    background: rgb(34, 207, 63);
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btnAdd:hover {
+    background: rgb(36, 187, 61);
+}
+
+.btnReset {
+    background: rgb(202, 29, 29);
+}
+
+.btnReset:hover {
+    background: rgb(163, 30, 30);
+}
+
+.btnAddDisabled {
+    background: rgb(34, 207, 63);
+    cursor: auto;
+}
+
+.btnResetDisabled {
+    background: rgb(247, 86, 86);
+    cursor: auto;
 }

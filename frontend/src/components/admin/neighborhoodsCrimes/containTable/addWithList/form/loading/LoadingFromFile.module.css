@@ -1,0 +1,52 @@
+.loadingFromFile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 5;
+    align-items: center;
+    background: rgba(75, 75, 75, 0.151);
+    width: 100vw;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.loadingFromFile .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.loadingFromFile .content h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
+
+.loadingFromFile .content span {
+    font-family: 17px;
+    color: gray;
+}
+.loadingFromFile .content .loader {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #6ac7e4;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

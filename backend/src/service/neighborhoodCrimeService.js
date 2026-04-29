@@ -98,4 +98,67 @@ export class NeighborhoodCrimeService {
       throw error;
     }
   }
+  static async getAmountOfAnCrimeInYears(crime) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInYears(crime);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByYear(
+          crime,
+          year
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, neighborhood) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByYear(
+          crime,
+          year
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getTopTenNeighborhoodsWithMoreTypeOfCrime(crime) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getTopTenNeighborhoodsWithMoreTypeOfCrime(
+          crime
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getTopTenNeighborhoodsWithLessTypeOfCrime(crime) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getTopTenNeighborhoodsWithLessTypeOfCrime(
+          crime
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

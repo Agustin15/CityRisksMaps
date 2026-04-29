@@ -1,6 +1,6 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
-import { alertSwalErrorAdmin } from "../../../../../sweetAlert/sweetAlert.js";
+import { alertSwalErrorAdmin } from "../../../components/sweetAlert/sweetAlert.js";
 
 export const fetchGetNeighborhoodsCrimeFromFile = async (
   setLoadingFromFile,
@@ -49,7 +49,7 @@ export const fetchGetNeighborhoodsCrimeFromFile = async (
   }
 };
 
-export const validation = (values) => {
+export const validationLoadFromFile = (values) => {
   let errorsValues = {
     crime: "",
     year: "",
@@ -70,6 +70,33 @@ export const validation = (values) => {
   if (values.neighborhoodsSelected.length == 0) {
     errorsValues["neighborhoodsCrime"] =
       "*Debe indicar al menos un barrio para buscar la informacion";
+  }
+
+  return errorsValues;
+};
+
+export const validationForm = (valuesToAdd) => {
+  let errorsValues = {
+    crime: "",
+    year: "",
+    neighborhoodsCrime: ""
+  };
+
+  if (valuesToAdd.crime.length == 0) {
+    errorsValues["crime"] = "*Debe ingresar categoria de crimen";
+  }
+  if (valuesToAdd.year.length == 0) {
+    errorsValues["year"] = "*Debe ingresar el año";
+  }
+  if (
+    valuesToAdd.neighborhoodsCrime.length == 0 ||
+    valuesToAdd.neighborhoodsCrime.reduce(
+      (acc, curr) => acc + (curr.amount || 0),
+      0
+    ) == 0
+  ) {
+    errorsValues["neighborhoodsCrime"] =
+      "*Debe indicar al menos un delito de barrio";
   }
 
   return errorsValues;

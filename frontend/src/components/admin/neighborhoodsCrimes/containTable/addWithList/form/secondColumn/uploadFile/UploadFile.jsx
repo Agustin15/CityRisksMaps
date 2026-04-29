@@ -1,7 +1,10 @@
 import styles from "./UploadFile.module.css";
-import iconUpload from "../../../../../../assets/img/upload.png";
+import iconUpload from "../../../../../../../../assets/img/upload.png";
+import { useAddNeighborhoodCrime } from "../../../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext";
 
-export const UploadFile = ({ values, setValues, errors }) => {
+export const UploadFile = () => {
+  const { values, setValues, errors } = useAddNeighborhoodCrime();
+
   return (
     <div className={styles.uploadFile}>
       <label htmlFor="file">Datos a partir de archivo CSV:</label>
