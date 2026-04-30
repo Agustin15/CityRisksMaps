@@ -27,16 +27,15 @@ export const Header = ({ title, setAddForm, route, controller }) => {
         )}
 
         {location.pathname != "/admin/indice-delitos-barrios" && (
-          <>
-            <input
-              onChange={() => searcher(inputRef.current.value)}
-              ref={inputRef}
-              type="text"
-              placeholder="Buscar..."
-            ></input>
-            <Years years={years} route={route} controller={controller} />
-          </>
+          <input
+            onChange={() => searcher(inputRef.current.value)}
+            ref={inputRef}
+            type="text"
+            placeholder="Buscar..."
+          ></input>
         )}
+
+        {years && <Years years={years} route={route} controller={controller} />}
       </div>
     </div>
   );

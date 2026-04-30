@@ -68,41 +68,45 @@ export const createPolygons = (
   neighborhoodsCrimes,
   map
 ) => {
-  const polygonsCreated = neighborhoodsCrimes.map((neighborhoodCrime) => {
-    let colorRange = null;
-    let levelRange = null;
+  const polygonsCreated = neighborhoodsCrimes.filter((neighborhoodCrime) => {
+    const neighborhoodFound = neighborhoodsCoordinates.find(
+      (hoodCoordinate) => hoodCoordinate.name == neighborhoodCrime.name
+    );
 
-    if (neighborhoodCrime.rate != null) {
-      const range = getCrimeRange(
-        neighborhoodCrime.rate.toFixed(0),
-        neighborhoodCrime.crime
-      );
+    if (neighborhoodFound) {
+      let colorRange = null;
+      let levelRange = null;
 
-      colorRange = range.color;
-      levelRange = range.level;
+      if (neighborhoodCrime.rate != null) {
+        const range = getCrimeRange(
+          neighborhoodCrime.rate.toFixed(0),
+          neighborhoodCrime.crime
+        );
+
+        colorRange = range.color;
+        levelRange = range.level;
+      }
+
+      const polygon = new google.maps.Polygon({
+        paths: neighborhoodFound.coordinates,
+        fillColor: colorRange,
+        fillOpacity: 0.4,
+        strokeColor: "rgb(66, 66, 66)",
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        data: {
+          neighborhood: neighborhoodCrime.name,
+          crime: neighborhoodCrime.crime,
+          rate: neighborhoodCrime.rate,
+          rateLevel: levelRange ? levelRange : "Sin datos",
+          rateColor: colorRange ? colorRange : "#bbbbbbff",
+          coordinates: neighborhoodFound.coordinates
+        },
+        map: map
+      });
+
+      return polygon;
     }
-
-    const polygon = new google.maps.Polygon({
-      paths: neighborhoodsCoordinates.find(
-        (hoodCoordinate) => hoodCoordinate.name == neighborhoodCrime.name
-      ).coordinates,
-
-      fillColor: colorRange,
-      fillOpacity: 0.4,
-      strokeColor: "#8d8d8dff",
-      strokeOpacity: 1,
-      strokeWeight: 1,
-      data: {
-        neighborhood: neighborhoodCrime.name,
-        crime: neighborhoodCrime.crime,
-        rate: neighborhoodCrime.rate,
-        rateLevel: levelRange ? levelRange : "Sin datos",
-        rateColor: colorRange ? colorRange : "#bbbbbbff"
-      },
-      map: map
-    });
-
-    return polygon;
   });
 
   return polygonsCreated;

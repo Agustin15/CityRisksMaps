@@ -88,7 +88,7 @@ export const Options = ({ user }) => {
         }
       >
         <div className={styles.iconNeighborhoodsCrimes}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/delitos-barrios"}>
+        <a href={LOCALHOST_FRONTEND + "/admin/indice-delitos-barrios"}>
           Indice delitos barrios
         </a>
       </li>
