@@ -11,7 +11,7 @@ export const PlacesSearched = () => {
     useSearchPlace();
   const { setPhotosList } = usePhotosPlace();
 
-  const map = useMap();
+  const map = useMap("mainMap");
 
   const handleClick = (place) => {
     setPhotosList(place.photosList);

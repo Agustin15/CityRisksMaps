@@ -18,13 +18,15 @@ export const NeighborhoodsCrimesProvider = ({ children }) => {
   const [polygons, setPolygons] = useState([]);
   const [yearSelected, setYearSelected] = useState();
   const [years, setYears] = useState();
-  const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
-  const { neighbordhoodsCoordinates } = useMapControls();
   const [errorLoad, setErrorLoad] = useState();
   const [indexChartActive, setIndexChartActive] = useState(null);
+
+  const [neighborhoodsCrimeByYear, setNeighborhoodsCrimeByYear] = useState();
+  const { neighborhoodsCoordinates } = useMapControls();
+
   const tableRef = useRef();
 
-  const map = useMap();
+  const map = useMap("mainMap");
 
   const fetchEndpoint = async (url, setLoading) => {
     setLoading(true);
@@ -82,13 +84,15 @@ export const NeighborhoodsCrimesProvider = ({ children }) => {
 
     if (neighborhoodsCrime) {
       setNeighborhoodsCrimeByYear(neighborhoodsCrime);
-      createPolygonsNeighbordhood(
+
+      const polygons = createPolygonsNeighbordhood(
         neighborhoodsCrime,
         categoryCrime,
-        neighbordhoodsCoordinates,
-        map,
-        setPolygons
+        neighborhoodsCoordinates
       );
+
+      polygons.map((polygon) => polygon.setMap(map));
+      setPolygons(polygons);
     }
   };
 

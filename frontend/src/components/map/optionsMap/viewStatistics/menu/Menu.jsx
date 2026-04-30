@@ -7,7 +7,7 @@ import { AlertMenu } from "./AlertMenu/alertMenu.jsx";
 import { getCrimes } from "../functions.js";
 
 export const Menu = ({
-  neighbordhoodsCoordinates,
+  neighborhoodsCoordinates,
   showViewStatistics,
   setShowViewStatistics
 }) => {
@@ -21,9 +21,10 @@ export const Menu = ({
     useNeighborhoodsCrimes();
 
   useEffect(() => {
-    if (!neighbordhoodsCoordinates) return;
+
+    if (!neighborhoodsCoordinates) return;
     loadData();
-  }, [neighbordhoodsCoordinates]);
+  }, [neighborhoodsCoordinates]);
 
   const loadData = async () => {
     const crimes = await getCrimes(loadingMenu, setLoadingMenu, setErrorLoad);

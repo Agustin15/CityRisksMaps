@@ -11,7 +11,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   const [polygonSelected, setPolygonSelected] = useState();
   const { neighbordhoodsCoordinates } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
-  const map = useMap();
+  const map = useMap("mainMap");
 
   useEffect(() => {
     refIdIntervalAnimation.current = idIntervalAnimation;

@@ -80,7 +80,7 @@ enable bit NOT NULL
 
 
 CREATE TABLE Zones_Neighborhoods(
-zone INT FOREIGN KEY REFERENCES Zones(idZone)ON UPDATE CASCADE ON DELETE CASCADE,
+zone INT FOREIGN KEY REFERENCES Zones(idZone) ON UPDATE CASCADE ON DELETE CASCADE,
 neighborhood INT FOREIGN KEY REFERENCES Neighborhoods(idNeighborhood) ON UPDATE CASCADE ON DELETE CASCADE 
 Primary key(zone,neighborhood)
 );

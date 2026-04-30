@@ -10,7 +10,7 @@ import { useNavigation } from "../../../contexts/navigationContext/NavigationCon
 import { StreetView } from "../streetView/StreetView";
 
 export const MapHandlerClick = () => {
-  const map = useMap();
+  const map = useMap("mainMap");
   const { selectedPlace, streetSelected } = useSearchPlace();
   const { routeNavigation } = useNavigation();
 

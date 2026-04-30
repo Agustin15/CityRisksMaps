@@ -19,7 +19,7 @@ export const NavigationStepProvider = ({ children }) => {
     neighborhood: ""
   });
 
-  const map = useMap();
+  const map = useMap("mainMap");
   const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const {

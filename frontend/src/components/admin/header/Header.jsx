@@ -7,12 +7,7 @@ import { useRef } from "react";
 import { Years } from "./years/Years";
 import { useLocation, useParams } from "react-router";
 
-export const Header = ({
-  title,
-  setAddForm,
-  route,
-  controller
-}) => {
+export const Header = ({ title, setAddForm, route, controller }) => {
   const { searcher, years } = useCrud();
   const { user } = useAuth();
   const inputRef = useRef();
@@ -31,15 +26,16 @@ export const Header = ({
           </button>
         )}
 
-        <input
-          onChange={() => searcher(inputRef.current.value)}
-          ref={inputRef}
-          type="text"
-          placeholder="Buscar..."
-        ></input>
-
-        {location.pathname != "/admin/delitos-barrios" && years && (
-          <Years years={years} route={route} controller={controller} />
+        {location.pathname != "/admin/indice-delitos-barrios" && (
+          <>
+            <input
+              onChange={() => searcher(inputRef.current.value)}
+              ref={inputRef}
+              type="text"
+              placeholder="Buscar..."
+            ></input>
+            <Years years={years} route={route} controller={controller} />
+          </>
         )}
       </div>
     </div>

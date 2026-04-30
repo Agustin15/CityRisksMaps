@@ -41,74 +41,50 @@ export const getCrimeRange = (rate, categoryCrime) => {
   }
 };
 
-export const createArrayForPolygons = (
-  neighbordhoodsCrime,
+export const createPolygonsNeighbordhood = (
+  neighborhoodsCrime,
   categoryCrime,
-  neighbordhoodsCoordinates
+  neighborhoodsCoordinates
 ) => {
-  const neighborhoodsCrimeCoordinates = [];
+  let colorRange = null;
+  let levelRange = null;
 
-  for (let nhCrime of neighbordhoodsCrime) {
-    neighbordhoodsCoordinates.forEach((nhCoordinate) => {
-      if (
-        nhCoordinate.neighborhood.toLowerCase() == nhCrime.name.toLowerCase()
-      ) {
-        let colorRange = null;
-        let levelRange = null;
+  const polygons = neighborhoodsCrime.map((neighborhoodCrime) => {
+    if (neighborhoodCrime.rate != null) {
+      const range = getCrimeRange(
+        neighborhoodCrime.rate.toFixed(0),
+        categoryCrime
+      );
+      colorRange = range.color;
+      levelRange = range.level;
+    }
 
-        if (nhCrime.rate != null) {
-          const range = getCrimeRange(nhCrime.rate.toFixed(0), categoryCrime);
-          colorRange = range.color;
-          levelRange = range.level;
-        }
+    const neighborhoodFound = neighborhoodsCoordinates.find(
+      (hoodCoordinate) => hoodCoordinate.neighborhood == neighborhoodCrime.name
+    );
 
-        neighborhoodsCrimeCoordinates.push({
-          name: nhCrime.name,
-          population: nhCrime.quantityPopulation,
-          quantityCrime: nhCrime.quantityCrime,
-          rate: nhCrime.rate,
-          rateLevel: levelRange ? levelRange : "Sin datos",
-          rateColor: colorRange ? colorRange : "#bbbbbbff",
-          categoryCrime: categoryCrime,
-          coordinates: nhCoordinate.coordinates,
-        });
-      }
-    });
-  }
-
-  return neighborhoodsCrimeCoordinates;
-};
-
-export const createPolygonsNeighbordhood = async (
-  neighbordhoodsCrime,
-  categoryCrime,
-  neighbordhoodsCoordinates,
-  map,
-  setPolygons
-) => {
-  const polygons = [];
-  map.setZoom(12);
-
-  const neighborhoodsCrimeCoordinates = createArrayForPolygons(
-    neighbordhoodsCrime,
-    categoryCrime,
-    neighbordhoodsCoordinates
-  );
-
-  neighborhoodsCrimeCoordinates.forEach((neighborhoodCrimeCoordinates) => {
     const polygon = new google.maps.Polygon({
-      paths: neighborhoodCrimeCoordinates.coordinates,
+      paths: neighborhoodFound.coordinates,
       strokeColor: "#8d8d8dff",
       strokeOpacity: 1,
       strokeWeight: 1,
-      fillColor: neighborhoodCrimeCoordinates.rateColor,
+      fillColor: colorRange,
       fillOpacity: 0.4,
       clickable: false,
-      data: neighborhoodCrimeCoordinates
+      data: {
+        name: neighborhoodCrime.name,
+        population: neighborhoodCrime.quantityPopulation,
+        quantityCrime: neighborhoodCrime.quantityCrime,
+        rate: neighborhoodCrime.rate,
+        rateLevel: levelRange ? levelRange : "Sin datos",
+        rateColor: colorRange ? colorRange : "#bbbbbbff",
+        categoryCrime: categoryCrime,
+        coordinates: neighborhoodFound.coordinates
+      }
     });
-    polygon.setMap(map);
-    polygons.push(polygon);
+
+    return polygon;
   });
 
-  setPolygons(polygons);
+  return polygons;
 };

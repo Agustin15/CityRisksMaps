@@ -1,8 +1,6 @@
-import { Map, ControlPosition } from "@vis.gl/react-google-maps";
-
-const MAP_ID = import.meta.env.VITE_MAP_ID;
 import style from "./ContainMap.module.css";
-
+import { Map, ControlPosition } from "@vis.gl/react-google-maps";
+const MAP_ID = import.meta.env.VITE_MAP_ID;
 import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { useInteractionNeighborhoodsPolygons } from "../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext.jsx";
@@ -26,6 +24,7 @@ export const ContainMap = () => {
       <Map
         renderingType="VECTOR"
         gestureHandling="greedy"
+        id="mainMap"
         mapId={MAP_ID}
         defaultZoom={15}
         disableDefaultUI

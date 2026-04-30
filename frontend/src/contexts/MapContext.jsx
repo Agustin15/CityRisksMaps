@@ -5,13 +5,13 @@ import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 const MapContext = createContext();
 
 export const MapProvider = ({ children }) => {
-  const [neighbordhoodsCoordinates, setNeighbordhoodsCoordinates] = useState();
+  const [neighborhoodsCoordinates, setNeighborhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
   const watchIdRef = useRef();
   const userLocationRef = useRef();
-  const map = useMap();
+  const map = useMap("mainMap");
 
   useEffect(() => {
     if (!apiIsLoaded || !map) return;
@@ -23,7 +23,7 @@ export const MapProvider = ({ children }) => {
   }, [userLocation]);
 
   const loadMap = async () => {
-    await createNeighbordhoodCoordinates();
+    await createNeighborhoodCoordinates();
     const bounds = await boundsMontevideo();
 
     map.setOptions({
@@ -109,29 +109,27 @@ export const MapProvider = ({ children }) => {
       const result = await response.json();
 
       if (result) return result.features;
-      return null;
     } catch (error) {
       alertSwalError(
-        "Ups,sin coordenas de barrios",
+        "Ups, algo salio mal",
         "Hubo un error al cargar las coordenadas de los barrios"
       );
     }
   };
 
-  const createNeighbordhoodCoordinates = async () => {
+  const createNeighborhoodCoordinates = async () => {
     const features = await getCoordinatesNeighbordhoods();
-    const neighbordhoodsCoordinates = [];
+    if (!features) return;
+    const neighborhoodsCoordinates = [];
 
-    if (features) {
-      features.forEach((feature) => {
-        neighbordhoodsCoordinates.push({
-          neighborhood: feature.properties.nombre,
-          coordinates: formatCoordinates(feature.geometry.coordinates.flat())
-        });
+    features.forEach((feature) => {
+      neighborhoodsCoordinates.push({
+        neighborhood: feature.properties.nombre,
+        coordinates: formatCoordinates(feature.geometry.coordinates.flat())
       });
+    });
 
-      setNeighbordhoodsCoordinates(neighbordhoodsCoordinates);
-    }
+    setNeighborhoodsCoordinates(neighborhoodsCoordinates);
   };
 
   const boundsMontevideo = async () => {
@@ -171,7 +169,7 @@ export const MapProvider = ({ children }) => {
         userLocation,
         setUserLocation,
         loadingMyLocation,
-        neighbordhoodsCoordinates
+        neighborhoodsCoordinates
       }}
     >
       {children}

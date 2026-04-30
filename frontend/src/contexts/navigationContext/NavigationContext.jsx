@@ -8,7 +8,6 @@ import { getNewRoute } from "./functionsNavigation.js";
 const NavigationContext = createContext();
 
 export const NavigationProvider = ({ children }) => {
-  const map = useMap();
   const [routeNavigation, setRouteNavigation] = useState();
   const [polylineNavigation, setPolylineNavigation] = useState();
   const [currentStep, setCurrentStep] = useState();
@@ -17,6 +16,7 @@ export const NavigationProvider = ({ children }) => {
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
   const [editRoute, setEditRoute] = useState(false);
 
+  const map = useMap("mainMap");
   const { userLocation, setUserLocation } = useMapControls();
   const {
     routes,

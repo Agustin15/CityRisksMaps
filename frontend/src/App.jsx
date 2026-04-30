@@ -56,7 +56,7 @@ function App() {
               ></Route>
 
               <Route
-                path="/admin/delitos-barrios/"
+                path="/admin/indice-delitos-barrios/"
                 element={<NeighborhoodsCrimes />}
               ></Route>
 

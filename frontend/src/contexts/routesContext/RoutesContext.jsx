@@ -19,7 +19,7 @@ export const RoutesProvider = ({ children }) => {
   const [indexRouteSelected, setIndexRouteSelected] = useState();
   const [polylines, setPolylines] = useState();
 
-  const map = useMap();
+  const map = useMap("mainMap");
   const { polygons} = useNeighborhoodsCrimes();
 
   const handleClickRoute = (address, location) => {

@@ -15,7 +15,7 @@ export const Table = ({ crime, elementSearchedNotFound }) => {
     loadingYears,
     tableRef
   } = useNeighborhoodsCrimes();
-  const map = useMap();
+  const map = useMap("mainMap");
 
   return (
     <div className={styles.containTable}>

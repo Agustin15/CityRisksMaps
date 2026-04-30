@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
-import { rateLimit } from "express-rate-limit";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
@@ -18,28 +17,12 @@ import { RoutesRol } from "./route/routeRol.js";
 import { RoutesUser } from "./route/routeUser.js";
 import { RoutesConfirmEmail } from "./route/routeConfirmEmail.js";
 
-const limiterOptions = {
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  statusCode: 429,
-  ipv6Subnet: 56,
-  message: {
-    messageError:
-      "Alcanzo el limite de solicitudes, intente de nuevo en 15 minutos"
-  }
-};
-
-const limitRate = rateLimit(limiterOptions);
-
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: process.env.LOCALHOST_FRONTEND, credentials: true }));
 app.use(cookieParser());
-app.use(limitRate);
 
 try {
   if (!process.env.PORT) throw "PORT not declared";

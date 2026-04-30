@@ -14,7 +14,7 @@ export const ViewStatistics = () => {
   const viewStatisticsId = useId();
   const { windowWidth } = useWindowResize();
   const { crimeSelected } = useNeighborhoodsCrimes();
-  const { neighbordhoodsCoordinates } = useMapControls();
+  const { neighborhoodsCoordinates } = useMapControls();
 
   useEffect(() => {
     if (windowWidth < 1200 || showViewStatistics == true) return;
@@ -24,7 +24,7 @@ export const ViewStatistics = () => {
   return (
     <>
       <Menu
-        neighbordhoodsCoordinates={neighbordhoodsCoordinates}
+        neighborhoodsCoordinates={neighborhoodsCoordinates}
         showViewStatistics={showViewStatistics}
         setShowViewStatistics={setShowViewStatistics}
       />

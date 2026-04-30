@@ -20,7 +20,7 @@ export const SearchPlaceProvider = ({ children }) => {
   const [loadingPlace, setLoadingPlace] = useState(false);
   const inputRef = useRef(null);
 
-  const map = useMap();
+  const map = useMap("mainMap");
   const { userLocation } = useMapControls();
   const { setPhotosList, createPhotosList } = usePhotosPlace();
 
