@@ -32,8 +32,9 @@ export const ContainMap = () => {
     const neighborhoodsCoordinatesFound = await createCoordinatesNeighborhoods(
       setNeighborhoodsCoordinates
     );
-    setNeighborhoodsCoordinates(neighborhoodsCoordinates);
-    
+
+    setNeighborhoodsCoordinates(neighborhoodsCoordinatesFound);
+
     const bounds = await boundsMontevideo();
 
     map.setOptions({

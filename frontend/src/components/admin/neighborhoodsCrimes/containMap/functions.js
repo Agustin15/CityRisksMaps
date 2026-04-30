@@ -45,7 +45,6 @@ export const createCoordinatesNeighborhoods = async () => {
       })
     };
   });
-
   return neighborhoodsCoordinates;
 };
 
@@ -68,12 +67,14 @@ export const createPolygons = (
   neighborhoodsCrimes,
   map
 ) => {
-  const polygonsCreated = neighborhoodsCrimes.filter((neighborhoodCrime) => {
+  const polygonsCreated = [];
+
+  neighborhoodsCrimes.map((neighborhoodCrime) => {
     const neighborhoodFound = neighborhoodsCoordinates.find(
       (hoodCoordinate) => hoodCoordinate.name == neighborhoodCrime.name
     );
 
-    if (neighborhoodFound) {
+    if (neighborhoodFound.coordinates) {
       let colorRange = null;
       let levelRange = null;
 
@@ -91,7 +92,7 @@ export const createPolygons = (
         paths: neighborhoodFound.coordinates,
         fillColor: colorRange,
         fillOpacity: 0.4,
-        strokeColor: "rgb(66, 66, 66)",
+        strokeColor: "#8d8d8dff",
         strokeOpacity: 1,
         strokeWeight: 1,
         data: {
@@ -105,7 +106,7 @@ export const createPolygons = (
         map: map
       });
 
-      return polygon;
+      polygonsCreated.push(polygon);
     }
   });
 
@@ -115,3 +116,4 @@ export const createPolygons = (
 export const cleanPolygons = (polygons) => {
   polygons.map((polygon) => polygon.setMap(null));
 };
+
