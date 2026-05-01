@@ -9,7 +9,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   const [idIntervalAnimation, setIdIntervalAnimation] = useState();
   const refIdIntervalAnimation = useRef();
   const [polygonSelected, setPolygonSelected] = useState();
-  const { neighbordhoodsCoordinates } = useMapControls();
+  const { neighborhoodsCoordinates } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const map = useMap("mainMap");
 
@@ -28,7 +28,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   };
 
   const focusPolygon = (neighborhood) => {
-    const nhCoordinatesFound = neighbordhoodsCoordinates.find(
+    const nhCoordinatesFound = neighborhoodsCoordinates.find(
       (nhCoordinates) => nhCoordinates.neighborhood == neighborhood
     );
 
@@ -86,26 +86,16 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   };
 
   const handleMouseNeighborhoohdPolygon = (event) => {
-   
-    let polygonFound = null;
-    if (polygons) {
-      for (const polygon of polygons) {
-        if (
-          google.maps.geometry.poly.containsLocation(
-            event.detail.latLng,
-            polygon
-          )
-        ) {
-          polygonFound = polygon;
-          polygonFound.data.center = getPolygonCenter(
-            polygonFound.data.coordinates
-          );
-          break;
-        }
-      }
-    }
+    if (!polygons) return;
+
+    const polygonFound = polygons.find((polygon) =>
+      google.maps.geometry.poly.containsLocation(event.detail.latLng, polygon)
+    );
 
     if (polygonFound) {
+      polygonFound.data.center = getPolygonCenter(
+        polygonFound.data.coordinates
+      );
       setPolygonSelected(polygonFound);
     } else setPolygonSelected();
   };

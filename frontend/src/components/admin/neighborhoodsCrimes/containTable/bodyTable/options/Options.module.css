@@ -1,0 +1,44 @@
+.options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+.options button {
+    width: 2.2rem;
+    height: 2rem;
+    border-radius: 3px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.options button img {
+    width: 19px;
+    height: 19px;
+}
+.options .delete {
+    background: rgb(216, 10, 10);
+}
+
+.options .delete:hover {
+    background: rgb(202, 10, 10);
+    box-shadow: none;
+}
+
+.options .chart {
+    background: rgb(30, 159, 182);
+}
+.options .chart img {
+    width: 23px;
+    height: 23px;
+}
+
+.options .chart:hover {
+    background: rgb(24, 148, 169);
+}
+
+.options .delete:hover {
+    background: rgb(202, 10, 10);
+    box-shadow: none;
+}

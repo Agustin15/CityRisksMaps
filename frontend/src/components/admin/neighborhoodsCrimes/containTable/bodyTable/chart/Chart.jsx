@@ -51,10 +51,6 @@ export const Chart = ({ neighborhoodCrime, setShowChart }) => {
             options={loadOptions(dataChart, neighborhoodCrime.crime)}
           ></CanvasJSChart>
         )}
-
-        <div className={styles.reflex}></div>
-        <div className={styles.reflexTwo}></div>
-        <div className={styles.reflexThree}></div>
       </div>
     </div>
   );

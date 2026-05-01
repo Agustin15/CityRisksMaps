@@ -42,10 +42,6 @@ export const Chart = ({ nameNeighborhood, setChartPopulation }) => {
         {loading == false && dataChart && (
           <CanvasJSChart options={loadOptions(dataChart)}></CanvasJSChart>
         )}
-
-        <div className={styles.reflex}></div>
-        <div className={styles.reflexTwo}></div>
-        <div className={styles.reflexThree}></div>
       </div>
     </div>
   );

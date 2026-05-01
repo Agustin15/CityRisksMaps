@@ -9,7 +9,7 @@ import { useNeighborhoodsCrimes } from "../../../../../../../contexts/neighborho
 import { drawShape } from "./functions.js";
 
 export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
-  const { neighbordhoodsCoordinates } = useMapControls();
+  const { neighborhoodsCoordinates } = useMapControls();
   const { getCrimeRange } = useNeighborhoodsCrimes();
   const [drawn, setDrawn] = useState(false);
   const refCanvasPolygon = useRef();
@@ -26,7 +26,7 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
       const canvas = refCanvasPolygon.current;
       const ctx = canvas.getContext("2d");
 
-      const neighborhoodCoordinates = neighbordhoodsCoordinates.find(
+      const neighborhoodCoordinates = neighborhoodsCoordinates.find(
         (nhCoord) => {
           return nhCoord.neighborhood == neighborhoodCrime.name;
         }

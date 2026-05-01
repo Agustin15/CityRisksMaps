@@ -70,7 +70,6 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
 * [dotenv](https://github.com/motdotla/dotenv)
 * [cors](https://github.com/expressjs/cors)
 * [express](https://github.com/expressjs/express)
-* [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit)
 * [cookie-parser](https://github.com/expressjs/cookie-parser)
 * [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
 * [jose](https://github.com/panva/jose)

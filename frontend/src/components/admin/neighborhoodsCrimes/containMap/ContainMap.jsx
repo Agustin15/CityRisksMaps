@@ -1,6 +1,7 @@
 import style from "./ContainMap.module.css";
 const MAP_ID_BACKOFFICE = import.meta.env.VITE_MAP_ID_BACKOFFICE;
 import {
+  AdvancedMarker,
   APIProvider,
   Map,
   useApiIsLoaded,
@@ -11,14 +12,18 @@ import {
   boundsMontevideo,
   cleanPolygons,
   createCoordinatesNeighborhoods,
-  createPolygons
+  createPolygons,
+  handleMouseInNeighborhoodPolygon
 } from "./functions.js";
 import { useState } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext.jsx";
+import { DetailsNeighborhood } from "./detailsNeighborhood/DetailsNeighborhood.jsx";
 
 export const ContainMap = () => {
   const [neighborhoodsCoordinates, setNeighborhoodsCoordinates] = useState([]);
   const [polygons, setPolygons] = useState([]);
+  const [polygonSelected, setPolygonSelected] = useState();
+
   const { registers, crimeSelected } = useCrud();
   const apiIsLoaded = useApiIsLoaded();
   const map = useMap("backofficeMap");
@@ -60,16 +65,32 @@ export const ContainMap = () => {
 
   return (
     <div className={style.containMap}>
-      <Map
-        id="backofficeMap"
-        mapId={MAP_ID_BACKOFFICE}
-        renderingType="VECTOR"
-        style={{ width: "100%", height: "100%" }}
-        defaultCenter={{ lat: -34.901112, lng: -56.164532 }}
-        defaultZoom={6}
-        disableDefaultUI
-        zoomControl={true}
-      />
+      <div className={style.box}>
+        <Map
+          id="backofficeMap"
+          mapId={MAP_ID_BACKOFFICE}
+          renderingType="VECTOR"
+          style={{ width: "100%", height: "100%" }}
+          defaultCenter={{ lat: -34.901112, lng: -56.164532 }}
+          defaultZoom={6}
+          disableDefaultUI
+          zoomControl={true}
+          onClick={(event) => event.stop()}
+          onMousemove={(event) =>
+            handleMouseInNeighborhoodPolygon(
+              event,
+              polygons,
+              setPolygonSelected
+            )
+          }
+        >
+          {polygonSelected && (
+            <AdvancedMarker position={polygonSelected.data.center}>
+              <DetailsNeighborhood polygonSelected={polygonSelected} />
+            </AdvancedMarker>
+          )}
+        </Map>
+      </div>
     </div>
   );
 };

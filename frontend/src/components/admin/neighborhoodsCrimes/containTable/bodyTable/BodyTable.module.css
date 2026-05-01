@@ -1,7 +1,17 @@
 tbody td {
     padding: 0.3rem;
-    font-size: 14px;
+    font-size: 13px;
 }
+
+tbody .nameNeighborhood {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 12px;
+    width: auto;
+}
+
 tbody .trGray {
     background: rgb(236, 236, 236);
 }
@@ -12,11 +22,12 @@ tbody .containIncrease {
     justify-content: center;
     align-items: center;
     gap: 0.3rem;
+    font-size: 12px;
 }
 
 tbody .containIncrease img {
-    width: 22px;
-    height: 22px;
+    width: 21px;
+    height: 21px;
 }
 
 tbody .containIncrease .increase {
@@ -26,51 +37,4 @@ tbody .containIncrease .increase {
 tbody .containIncrease .decrease {
     color: rgb(30, 194, 52);
     font-weight: bold;
-}
-
-tbody .options {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-}
-tbody .options button {
-    width: 2.3rem;
-    height: 2rem;
-    border-radius: 3px;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-tbody .options button img {
-    width: 21px;
-    height: 21px;
-}
-tbody .options .delete {
-    background: rgb(216, 10, 10);
-}
-
-tbody .options .delete:hover {
-    background: rgb(202, 10, 10);
-    box-shadow: none;
-}
-
-tbody .options .chart {
-    background: rgb(30, 159, 182);
-}
-
-tbody .options .chart img {
-    width: 25px;
-    height: 25px;
-}
-
-tbody .options .chart:hover {
-    background: rgb(24, 148, 169);
-}
-
-tbody .options .delete:hover {
-    background: rgb(202, 10, 10);
-    box-shadow: none;
 }

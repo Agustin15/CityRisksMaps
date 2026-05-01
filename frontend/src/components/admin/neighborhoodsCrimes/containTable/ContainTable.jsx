@@ -1,7 +1,7 @@
 import styles from "./ContainTable.module.css";
 import { LoadData } from "../../departments/containTable/LoadData";
 import { Pagination } from "../../departments/containTable/pagination/Pagination";
-import { BodyTable } from "./bodyTable/bodyTable";
+import { BodyTable } from "./bodyTable/BodyTable";
 import { FooterTable } from "../../departments/containTable/footerTable/FooterTable";
 import { useEffect } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";

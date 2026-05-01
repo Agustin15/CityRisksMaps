@@ -24,8 +24,8 @@
     max-height: 65%;
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
-    table-layout: fixed;
+    font-size: 12px;
+    table-layout:auto;
 }
 
 .containTable table thead {

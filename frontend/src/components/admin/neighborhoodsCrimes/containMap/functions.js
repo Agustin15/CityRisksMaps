@@ -88,6 +88,9 @@ export const createPolygons = (
         levelRange = range.level;
       }
 
+      const bounds = new google.maps.LatLngBounds();
+      neighborhoodFound.coordinates.map((latLng) => bounds.extend(latLng));
+
       const polygon = new google.maps.Polygon({
         paths: neighborhoodFound.coordinates,
         fillColor: colorRange,
@@ -95,13 +98,16 @@ export const createPolygons = (
         strokeColor: "#8d8d8dff",
         strokeOpacity: 1,
         strokeWeight: 1,
+        clickable: false,
         data: {
           neighborhood: neighborhoodCrime.name,
           crime: neighborhoodCrime.crime,
+          amount: neighborhoodCrime.quantity,
           rate: neighborhoodCrime.rate,
           rateLevel: levelRange ? levelRange : "Sin datos",
           rateColor: colorRange ? colorRange : "#bbbbbbff",
-          coordinates: neighborhoodFound.coordinates
+          coordinates: neighborhoodFound.coordinates,
+          center: bounds.getCenter()
         },
         map: map
       });
@@ -117,3 +123,18 @@ export const cleanPolygons = (polygons) => {
   polygons.map((polygon) => polygon.setMap(null));
 };
 
+export const handleMouseInNeighborhoodPolygon = (
+  event,
+  polygons,
+  setPolygonSelected
+) => {
+  const latLng = event.detail.latLng;
+
+  const polygonFound = polygons.find((polygon) =>
+    google.maps.geometry.poly.containsLocation(latLng, polygon)
+  );
+
+  if (polygonFound) {
+    setPolygonSelected(polygonFound);
+  } else setPolygonSelected(null);
+};
