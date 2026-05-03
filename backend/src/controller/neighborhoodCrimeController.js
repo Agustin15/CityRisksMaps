@@ -30,6 +30,32 @@ export const addThroughtTable = async (req, res) => {
   }
 };
 
+export const updateThroughtTable = async (req, res) => {
+  try {
+    if (!req.body) throw new Error("Cuerpo de solicitud no definido");
+    const { year, crime, neighborhoodsCrime } = req.body;
+
+    if (!crime || crime.length == 0)
+      throw new Error("Debe indicar una categoria de delito");
+
+    if (!year) throw new Error("Debe indicar un año");
+    if (year > new Date().getFullYear())
+      throw new Error("Año debe ser menor al año actual");
+
+    await NeighborhoodCrimeService.updateThroughtTable(
+      neighborhoodsCrime,
+      crime,
+      year
+    );
+
+    res.status(200).json(true);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
 export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
@@ -318,10 +344,18 @@ export const getAmountAnCrimeInNeighborhoodByYear = async (req, res) => {
           hoodCrime.idNeighborhood
         );
 
+      if (amountCrimesInNeighborhoodByYear.length == 0) {
+        throw new Error(
+          "No se encontraron registros de delitos en esta categoria de " +
+            "crimen,barrio y año solicitado"
+        );
+      }
+      const amount = amountCrimesInNeighborhoodByYear[0].quantity;
+
       amountCategoryCrimeInNeighborhoods.push({
         idNeighborhood: hoodCrime.idNeighborhood,
         name: hoodCrime.name,
-        amount: amountCrimesInNeighborhoodByYear
+        amount: amount
       });
     }
 

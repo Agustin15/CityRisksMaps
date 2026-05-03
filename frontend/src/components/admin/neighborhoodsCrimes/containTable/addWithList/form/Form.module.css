@@ -1,9 +1,16 @@
-.form {
+.form,
+fieldset {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+}
+fieldset {
+    margin: 0;
+    border: none;
+    width: 100%;
+    gap: 1rem;
 }
 
 .form .row {
@@ -25,23 +32,18 @@
     position: relative;
 }
 
-.form label,
-.form .lblNeighborhoodsCrime {
-    font-weight: bold;
-    font-size: 15px;
-    width: 16rem;
-    text-align: start;
-}
-
 .form .lblNeighborhoodsCrime {
     background: white;
     position: absolute;
     top: -0.5rem;
-    left: 3rem;
+    left: 1rem;
+    width: auto;
     padding-left: 0.3rem;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: start;
 }
 
-.form p,
 .form .errorNeighborhoodsCrime {
     color: red;
     position: absolute;
@@ -61,9 +63,7 @@
 }
 
 .btnAdd,
-.btnReset,
-.btnAddDisabled,
-.btnResetDisabled {
+.btnReset {
     margin: 1rem 0 0 0;
     font-size: 15px;
     min-width: 9rem;
@@ -91,14 +91,4 @@
 
 .btnReset:hover {
     background: rgb(163, 30, 30);
-}
-
-.btnAddDisabled {
-    background: rgb(84, 241, 110);
-    cursor: auto;
-}
-
-.btnResetDisabled {
-    background: rgb(247, 86, 86);
-    cursor: auto;
 }

@@ -7,6 +7,7 @@ const upload = multer({
 
 import {
   addThroughtTable,
+  updateThroughtTable,
   getCategoryCrimeInNeighborhood,
   getNeighborhoodsCrimeByYearOffset,
   loadNeighborhoodsCrimeFromFile,
@@ -42,6 +43,7 @@ RoutesNeighborhoodCrimeAdmin.get(
 );
 
 RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);
+RoutesNeighborhoodCrimeAdmin.put("/", verifyAuthorization, updateThroughtTable);
 
 RoutesNeighborhoodCrimeAdmin.post(
   "/loadNeighborhoodsCrimeFromFile",

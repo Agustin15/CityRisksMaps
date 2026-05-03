@@ -11,49 +11,49 @@ export const Form = () => {
   const { crimes } = useCrud();
   const { setUser } = useAuth();
 
-  const { handleSubmit, errors, loading, loadingFromFile, cleanValues } =
+  const { handleSubmit, errors, loading, cleanValues } =
     useAddNeighborhoodCrime();
 
   return (
-    <form className={styles.form} onSubmit={(event) => handleSubmit(event)}>
-      <div className={styles.row}>
-        <div className={styles.columnNeighborhoods}>
-          <label className={styles.lblNeighborhoodsCrime}>
-            Cantidad de denuncias en barrios:
-          </label>
+    <form
+      className={styles.form}
+      onSubmit={(event) => handleSubmit(event, "POST")}
+    >
+      <fieldset disabled={loading == true}>
+        <div className={styles.row}>
+          <div className={styles.columnNeighborhoods}>
+            <label className={styles.lblNeighborhoodsCrime}>
+              Cantidad de denuncias en barrios:
+            </label>
 
-          <LoadNeighborhoods
-            neighborhoods={neighborhoods}
-            setNeighborhoods={setNeighborhoods}
-          />
-          {errors && (
-            <p className={styles.errorNeighborhoodsCrime}>
-              {errors.neighborhoodsCrime}
-            </p>
-          )}
+            <LoadNeighborhoods
+              neighborhoods={neighborhoods}
+              setNeighborhoods={setNeighborhoods}
+            />
+            {errors && (
+              <p className={styles.errorNeighborhoodsCrime}>
+                {errors.neighborhoodsCrime}
+              </p>
+            )}
+          </div>
+
+          <SecondColumn neighborhoods={neighborhoods} />
         </div>
 
-        <SecondColumn neighborhoods={neighborhoods} />
-      </div>
+        <div className={styles.options}>
+          <button className={styles.btnAdd} type="submit">
+            {loading ? "Agregando datos..." : "Agregar datos"}
+          </button>
 
-      <div className={styles.options}>
-        <button
-          disabled={loading}
-          className={!loading ? styles.btnAdd : styles.btnAddDisabled}
-          type="submit"
-        >
-          {loading ? "Agregando datos..." : "Agregar datos"}
-        </button>
-
-        <button
-          onClick={() => cleanValues()}
-          type="button"
-          disabled={loading}
-          className={!loading ? styles.btnReset : styles.btnResetDisabled}
-        >
-          Limpiar
-        </button>
-      </div>
+          <button
+            onClick={() => cleanValues()}
+            type="button"
+            className={styles.btnReset}
+          >
+            Limpiar
+          </button>
+        </div>
+      </fieldset>
     </form>
   );
 };

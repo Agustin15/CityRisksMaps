@@ -89,7 +89,7 @@ export class NeighborhoodCrimeDAL {
       request.input("categoryCrime", sql.VarChar(30), categoryCrime);
       request.input("year", sql.Int, year);
 
-      const result = await request.execute("AddNeighborhoodsCrime");
+      const result = await request.execute("UpdateNeighborhoodsCrime");
 
       switch (result.returnValue) {
         case -1:
@@ -240,7 +240,7 @@ export class NeighborhoodCrimeDAL {
   ) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("neighborhood", sql.Int, idNeighborhood);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
       request.input("crime", sql.VarChar(20), crime);
       request.input("year", sql.Int, year);
 

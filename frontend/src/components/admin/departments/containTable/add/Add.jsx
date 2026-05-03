@@ -32,7 +32,7 @@ export const Add = ({ setAddForm }) => {
 
       let departments = await fetchGet(url);
       setRegisters(departments.registersOffset);
-      if (departments.pages != pages) setPages(neighborhoods.pages);
+      if (departments.pages != pages) setPages(departments.pages);
       setName("");
     }
     return;

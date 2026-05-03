@@ -32,7 +32,7 @@ export const SelectAllNeighborhoods = () => {
       <label htmlFor="checkboxAll">
         <div className={styles.ball}></div>
       </label>
-      <input
+      <input 
         ref={refCheckboxSelectAll}
         onChange={() => handleSelectAll()}
         id="checkboxAll"

@@ -16,6 +16,17 @@
     position: relative;
 }
 
+.secondColumn .columnInput label {
+    width: 16rem;
+    text-align: start;
+}
+
+.secondColumn .columnInput p {
+    width: 16rem;
+    text-align: start;
+    position: absolute;
+}
+
 .secondColumn select {
     height: 2.3rem;
     width: 16.5rem;

@@ -78,36 +78,36 @@ export const validationLoadFromFile = (values) => {
   return errorsValues;
 };
 
-export const validationForm = (valuesToAdd) => {
+export const validationForm = (valuesToSend) => {
   let errorsValues = {
     crime: "",
     year: "",
     neighborhoodsCrime: ""
   };
 
-  if (valuesToAdd.crime.length == 0) {
-    errorsValues["crime"] = "*Debe ingresar categoria de crimen";
-  }
-  if (valuesToAdd.year.length == 0) {
-    errorsValues["year"] = "*Debe ingresar el año";
-  }
-  if (
-    valuesToAdd.neighborhoodsCrime.reduce(
-      (acc, curr) => acc + (curr.amount || 0),
-      0
-    ) == 0 ||
-    !valuesToAdd.neighborhoodsCrime.some(
-      (hoodCrime) => hoodCrime.amount != null
-    )
-  ) {
-    errorsValues["neighborhoodsCrime"] =
-      "*Debe indicar al menos un delito de barrio";
+  switch (true) {
+    case valuesToSend.crime.length == 0:
+      errorsValues["crime"] = "*Debe ingresar categoria de crimen";
+
+    case valuesToSend.year.length == 0:
+      errorsValues["year"] = "*Debe ingresar el año";
+
+    case valuesToSend.neighborhoodsCrime &&
+      valuesToSend.neighborhoodsCrime.length == 0:
+      errorsValues["neighborhoodsCrime"] =
+        "*Debe indicar al menos un delito de barrio";
+
+    case valuesToSend.neighborhoodsCrimeToGet &&
+      valuesToSend.neighborhoodsCrimeToGet.length == 0:
+      errorsValues["neighborhoodsCrime"] =
+        "*Debe indicar al menos un barrio para buscar la informacion";
   }
 
   return errorsValues;
 };
 
 export const fetchGetAmountsOfAnCrimeInNeighborhoodsByYear = async (
+  setLoadingSearch,
   setUser,
   values
 ) => {
@@ -118,8 +118,9 @@ export const fetchGetAmountsOfAnCrimeInNeighborhoodsByYear = async (
     "/" +
     values.year +
     "/" +
-    JSON.stringify(values.neighborhoodsCrime);
+    JSON.stringify(values.neighborhoodsCrimeToGet);
 
+  setLoadingSearch(true);
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -145,6 +146,17 @@ export const fetchGetAmountsOfAnCrimeInNeighborhoodsByYear = async (
       error.message
     );
   } finally {
-    return;
+    setLoadingSearch(false);
   }
+};
+
+export const replaceNeighborhoodsCrimeWithValuesFound = (result, values) => {
+  return values.neighborhoodsCrime.map((hoodCrime) => {
+    const found = result.find(
+      (item) => item.idNeighborhood == hoodCrime.idNeighborhood
+    );
+    if (found) {
+      return found;
+    } else return hoodCrime;
+  });
 };

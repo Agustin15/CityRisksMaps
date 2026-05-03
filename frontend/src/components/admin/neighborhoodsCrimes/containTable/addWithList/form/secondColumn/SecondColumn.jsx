@@ -11,7 +11,6 @@ export const SecondColumn = ({ neighborhoods }) => {
     values,
     setValues,
     errors,
-    loading,
     loadingFromFile,
     handleLoadCrimesFromFile
   } = useAddNeighborhoodCrime();
@@ -64,12 +63,7 @@ export const SecondColumn = ({ neighborhoods }) => {
 
       <button
         onClick={() => handleLoadCrimesFromFile()}
-        disabled={loading || neighborhoods.length == 0}
-        className={
-          loading || neighborhoods.length == 0
-            ? styles.loadDisabled
-            : styles.load
-        }
+        className={styles.load}
         type="button"
       >
         Cargar informacion

@@ -5,6 +5,7 @@ import { alertSwalSuccess } from "../../../components/sweetAlert/sweetAlert.js";
 import {
   fetchGetAmountsOfAnCrimeInNeighborhoodsByYear,
   fetchGetNeighborhoodsCrimeFromFile,
+  replaceNeighborhoodsCrimeWithValuesFound,
   validationForm,
   validationLoadFromFile
 } from "./functions.js";
@@ -20,7 +21,9 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     yearSelected,
     fetchPostOrPut,
     fetchGet,
+    index,
     setIndex,
+    setPages,
     crimes,
     crimeSelected
   } = useCrud();
@@ -68,21 +71,60 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
       setUser
     );
 
-    if (result) {
-      setValues({ ...values, neighborhoodsCrime: result });
-    }
+    if (!result) return;
+
+    const neighborhoodCrimeWithNewValues =
+      replaceNeighborhoodsCrimeWithValuesFound(result, values);
+
+    setValues({
+      ...values,
+      neighborhoodsCrime: neighborhoodCrimeWithNewValues
+    });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const valuesToAdd = {
+  const getAmountsOfAnCrimeInNeighborhoodsByYear = async () => {
+    const valuesToSend = {
       crime: values.crime,
-      neighborhoodsCrime: values.neighborhoodsCrime,
-      year: values.year
+      year: values.year,
+      neighborhoodsCrimeToGet: values.neighborhoodsCrime.filter(
+        (hoodCrime) => hoodCrime.amount != null
+      )
     };
 
-    const errorsValues = validationForm(valuesToAdd);
+    const errorsValues = validationForm(valuesToSend);
+    setErrors(errorsValues);
+
+    if (Object.values(errorsValues).some((error) => error.length > 0)) return;
+
+    const result = await fetchGetAmountsOfAnCrimeInNeighborhoodsByYear(
+      setLoadingSearch,
+      setUser,
+      valuesToSend
+    );
+
+    if (!result) return;
+
+    const neighborhoodCrimeWithNewValues =
+      replaceNeighborhoodsCrimeWithValuesFound(result, values);
+
+    setValues({
+      ...values,
+      neighborhoodsCrime: neighborhoodCrimeWithNewValues
+    });
+  };
+
+  const handleSubmit = async (event, method) => {
+    event.preventDefault();
+
+    const valuesToSend = {
+      crime: values.crime,
+      year: values.year,
+      neighborhoodsCrime: values.neighborhoodsCrime.filter(
+        (hoodCrime) => hoodCrime.amount != null
+      )
+    };
+
+    const errorsValues = validationForm(valuesToSend);
     setErrors(errorsValues);
 
     if (Object.values(errorsValues).find((error) => error.length > 0)) {
@@ -91,33 +133,19 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
 
     const result = await fetchPostOrPut(
       "/neighborhoodCrimeAdmin/",
-      "POST",
+      method,
       setLoading,
-      valuesToAdd
+      valuesToSend
     );
 
     if (!result) return;
 
     alertSwalSuccess(
-      "¡Denuncias de delito de " +
-        values.crime +
-        " en barrios agregados exitosamente!"
+      `¡Denuncias de delito de ${values.crime} en barrios 
+      ${values.method == "POST" ? " agregados" : " actualizados"} exitosamente!`
     );
 
-    if (values.crime == crimeSelected) {
-      let url;
-      if (values.year != yearSelected) {
-        await loadYears(
-          "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
-        );
-        url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + values.year;
-        setIndex(0);
-      } else {
-        url = "/neighborhoodCrimeAdmin/" + crimeSelected + "/" + yearSelected;
-      }
-      let nhCrimes = await fetchGet(url);
-      setRegisters(nhCrimes);
-    }
+    await loadDataAfterChanges();
 
     setValues({
       ...values,
@@ -125,20 +153,33 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
         return { ...hoodCrime, amount: null };
       })
     });
+
     return;
   };
 
-  const getAmountsOfAnCrimeInNeighborhoodsByYear = async () => {
-    setLoadingSearch(true);
+  const loadDataAfterChanges = async () => {
+    if (values.crime == crimeSelected) {
+      let url =
+        "/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset/" +
+        crimeSelected +
+        "/" +
+        values.year;
 
-    const result = await fetchGetAmountsOfAnCrimeInNeighborhoodsByYear(
-      setUser,
-      values
-    );
-
-    if (result) setValues({ ...values, neighborhoodsCrime: result });
-
-    setLoadingSearch(false);
+      if (values.year != yearSelected) {
+        await loadYears(
+          "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
+        );
+        url += "/0";
+        setIndex(0);
+      } else {
+        url += "/" + index * 10;
+      }
+      let nhCrimes = await fetchGet(url);
+      if (nhCrimes) {
+        setRegisters(nhCrimes.registersOffset);
+        setPages(nhCrimes.pages);
+      }
+    }
   };
 
   const cleanValues = () => {

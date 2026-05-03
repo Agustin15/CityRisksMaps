@@ -16,11 +16,16 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async update(neighbordhoodCrime) {
+  static async updateThroughtTable(neighbordhoodsCrime, crime, year) {
     try {
-      if (neighbordhoodCrime == null)
-        throw new Error("Debe indicar un crimen de barrio para agregar");
-      await NeighborhoodCrimeDAL.update(neighbordhoodCrime);
+      if (neighbordhoodsCrime == null || neighbordhoodsCrime.length == 0)
+        throw new Error("Debe indicar crimenes de barrios para actualizar");
+
+      await NeighborhoodCrimeDAL.updateThroughtTable(
+        neighbordhoodsCrime,
+        crime,
+        year
+      );
     } catch (error) {
       throw error;
     }
