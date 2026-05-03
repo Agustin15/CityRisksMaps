@@ -8,14 +8,14 @@ export class NeighborhoodCrimeDAL {
 
       const table = new sql.Table("NeighborhoodsCrimeTableType");
 
-      table.columns.add("nameNeighborhood", sql.VarChar(30));
+      table.columns.add("idNeighborhood", sql.Int);
       table.columns.add("crime", sql.VarChar(30));
       table.columns.add("quantity", sql.Int);
       table.columns.add("year", sql.Int);
 
       neighborhoodsCrime.forEach((neighborhoodCrime) => {
         table.rows.add(
-          neighborhoodCrime.nameNeighborhood,
+          neighborhoodCrime.idNeighborhood,
           categoryCrime,
           neighborhoodCrime.amount,
           year
@@ -71,20 +71,16 @@ export class NeighborhoodCrimeDAL {
 
       const table = new sql.Table("NeighborhoodsCrimeTableType");
 
-      table.columns.add("nameNeighborhood", sql.VarChar(30));
+      table.columns.add("idNeighborhood", sql.Int);
       table.columns.add("crime", sql.VarChar(30));
       table.columns.add("quantity", sql.Int);
-      table.columns.add("dateOfLastCrime", sql.Date);
       table.columns.add("year", sql.Int);
 
       neighborhoodsCrime.forEach((neighborhoodCrime) => {
         table.rows.add(
-          neighborhoodCrime.nameNeighborhood,
+          neighborhoodCrime.idNeighborhood,
           categoryCrime,
           neighborhoodCrime.amount,
-          neighborhoodCrime.dateOfLastCrime
-            ? neighborhoodCrime.dateOfLastCrime
-            : null,
           year
         );
       });
@@ -231,6 +227,27 @@ export class NeighborhoodCrimeDAL {
       request.input("offset", sql.Int, offset);
 
       const result = await request.execute("NeighborhoodsCrimeByYearOffset");
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getAmountAnCrimeInNeighborhoodByYear(
+    crime,
+    year,
+    idNeighborhood
+  ) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("neighborhood", sql.Int, idNeighborhood);
+      request.input("crime", sql.VarChar(20), crime);
+      request.input("year", sql.Int, year);
+
+      const result = await request.execute(
+        "AmountOfAnCrimeInNeighborhoodByYear"
+      );
+
       return result.recordset;
     } catch (error) {
       throw error;

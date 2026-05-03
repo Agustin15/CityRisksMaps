@@ -119,22 +119,3 @@ export const createPolygons = (
   return polygonsCreated;
 };
 
-export const cleanPolygons = (polygons) => {
-  polygons.map((polygon) => polygon.setMap(null));
-};
-
-export const handleMouseInNeighborhoodPolygon = (
-  event,
-  polygons,
-  setPolygonSelected
-) => {
-  const latLng = event.detail.latLng;
-
-  const polygonFound = polygons.find((polygon) =>
-    google.maps.geometry.poly.containsLocation(latLng, polygon)
-  );
-
-  if (polygonFound) {
-    setPolygonSelected(polygonFound);
-  } else setPolygonSelected(null);
-};

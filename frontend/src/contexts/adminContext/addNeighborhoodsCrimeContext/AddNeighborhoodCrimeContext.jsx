@@ -1,8 +1,9 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useCrud } from "../CrudContext.jsx";
 import { useAuth } from "../AuthContext.jsx";
 import { alertSwalSuccess } from "../../../components/sweetAlert/sweetAlert.js";
 import {
+  fetchGetAmountsOfAnCrimeInNeighborhoodsByYear,
   fetchGetNeighborhoodsCrimeFromFile,
   validationForm,
   validationLoadFromFile
@@ -27,6 +28,8 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
 
   const [loadingFromFile, setLoadingFromFile] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const refCheckboxSelectAll = useRef();
 
   const [values, setValues] = useState({
     neighborhoodsCrime: [],
@@ -41,25 +44,15 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     year: ""
   });
 
-  const [neighborhoodsSelected, setNeighborhoodsSelected] = useState([]);
-
   const handleLoadCrimesFromFile = async () => {
-    let selectedNeighborhoods = neighborhoodsSelected.filter(
-      (neighborhood) => neighborhood.checked == true
-    );
-
-    if (selectedNeighborhoods.length > 0) {
-      selectedNeighborhoods = selectedNeighborhoods.map(
-        (hood) => hood.neighborhood
-      );
-    }
-
     const valuesLoadFile = {
       file: values.file,
       department: "Montevideo",
       crime: values.crime,
       year: values.year,
-      neighborhoodsSelected: selectedNeighborhoods
+      neighborhoodsCrimeToSelect: values.neighborhoodsCrime.filter(
+        (hoodCrime) => hoodCrime.amount != null
+      )
     };
 
     const errorsValues = validationLoadFromFile(valuesLoadFile);
@@ -126,13 +119,36 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
       setRegisters(nhCrimes);
     }
 
+    setValues({
+      ...values,
+      neighborhoodsCrime: values.neighborhoodsCrime.map((hoodCrime) => {
+        return { ...hoodCrime, amount: null };
+      })
+    });
     return;
+  };
+
+  const getAmountsOfAnCrimeInNeighborhoodsByYear = async () => {
+    setLoadingSearch(true);
+
+    const result = await fetchGetAmountsOfAnCrimeInNeighborhoodsByYear(
+      setUser,
+      values
+    );
+
+    if (result) setValues({ ...values, neighborhoodsCrime: result });
+
+    setLoadingSearch(false);
   };
 
   const cleanValues = () => {
     document.querySelector("form").reset();
+    refCheckboxSelectAll.current.checked = false;
+
     setValues({
-      neighborhoodsCrime: [],
+      neighborhoodsCrime: values.neighborhoodsCrime.map((hoodCrime) => {
+        return { ...hoodCrime, amount: null };
+      }),
       crime: "",
       year: ""
     });
@@ -143,6 +159,7 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
       value={{
         handleSubmit,
         handleLoadCrimesFromFile,
+        getAmountsOfAnCrimeInNeighborhoodsByYear,
         cleanValues,
         errors,
         setErrors,
@@ -152,8 +169,9 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
         setLoading,
         setLoadingFromFile,
         loadingFromFile,
-        neighborhoodsSelected,
-        setNeighborhoodsSelected
+        loadingSearch,
+        setLoadingSearch,
+        refCheckboxSelectAll
       }}
     >
       {children}

@@ -7,8 +7,7 @@ import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext
 
 export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
   const { setUser } = useAuth();
-  const { values, setValues, setNeighborhoodsSelected } =
-    useAddNeighborhoodCrime();
+  const { values, setValues } = useAddNeighborhoodCrime();
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -35,19 +34,18 @@ export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
           } else throw new Error(result.messageError);
         }
 
-        values.neighborhoodsCrime = result.map((neighborhood) => {
-          return {
-            nameNeighborhood: neighborhood.name,
-            amount: null
-          };
-        });
-        setNeighborhoods(result);
-
-        setNeighborhoodsSelected(
-          result.map((neighborhood) => {
-            return { neighborhood: neighborhood.name, checked: false };
+        setValues({
+          ...values,
+          neighborhoodsCrime: result.map((neighborhood) => {
+            return {
+              idNeighborhood: neighborhood.idNeighborhood,
+              name: neighborhood.name,
+              amount: null
+            };
           })
-        );
+        });
+
+        setNeighborhoods(result);
       } catch (error) {
         setErrorLoad(error.message);
       } finally {

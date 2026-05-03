@@ -809,7 +809,7 @@ GO
 --NeighborhoodCrimes PROCEDURES
 
 CREATE TYPE NeighborhoodsCrimeTableType AS TABLE(
-nameNeighborhood VARCHAR(30) NOT NULL,
+idNeighborhood INT NOT NULL,
 crime VARCHAR(30) NOT NULL,
 quantity INT NOT NULL,
 year INT NOT NULL
@@ -868,7 +868,7 @@ CREATE OR ALTER PROCEDURE AddNeighborhoodsCrime @table dbo.NeighborhoodsCrimeTab
 
 BEGIN
 
-IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.nameNeighborhood=N.name where N.name IS NULL)
+IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
 RETURN -1;
 
 IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
@@ -880,17 +880,15 @@ RETURN -3;
 IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
 RETURN -4;
 
-IF EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and
-T.nameNeighborhood=(select name from Neighborhoods where 
-name=T.nameNeighborhood))
+IF EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and 
+NC.neighborhood=T.idNeighborhood)
 RETURN -5;
 
 BEGIN TRANSACTION
 
 INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,year)
-select N.idNeighborhood,@categoryCrime,T.quantity,dbo.CalculateIncrease(N.idNeighborhood,@categoryCrime,T.quantity,T.year),
-dbo.CalculateRate(N.idNeighborhood,T.quantity,T.year),T.year from @table T INNER JOIN Neighborhoods N 
-ON N.name=T.nameNeighborhood
+select T.idNeighborhood,@categoryCrime,T.quantity,dbo.CalculateIncrease(T.idNeighborhood,@categoryCrime,T.quantity,T.year),
+dbo.CalculateRate(T.idNeighborhood,T.quantity,T.year),T.year from @table T
 
 IF(@@ERROR<>0)
 BEGIN
@@ -948,7 +946,7 @@ CREATE OR ALTER PROCEDURE UpdateNeighborhoodsCrime @table dbo.NeighborhoodsCrime
 
 BEGIN
 
-IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.nameNeighborhood=N.name where N.name IS NULL)
+IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
 RETURN -1;
 
 IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
@@ -961,15 +959,13 @@ IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
 RETURN -4;
 
 IF NOT EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and
-T.nameNeighborhood=(select name from Neighborhoods where 
-name=T.nameNeighborhood))
+NC.neighborhood=T.idNeighborhood)
 RETURN -5;
 
 BEGIN TRANSACTION
 
 UPDATE Neighborhoods_Crimes SET quantity=T.quantity FROM Neighborhoods_Crimes NC 
-INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and
-NC.neighborhood=(select idNeighborhood from Neighborhoods where name=T.nameNeighborhood)
+INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and NC.neighborhood=T.idNeighborhood
 
 
 IF(@@ERROR<>0)
@@ -1032,10 +1028,18 @@ END
 
 GO
 
-CREATE OR ALTER  PROCEDURE NeighborhoodsCrimeByYearSecondVersion @crime VARCHAR(20), @year INT AS 
+CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYearSecondVersion @crime VARCHAR(20), @year INT AS 
 
 BEGIN 
 select * from Neighborhoods_Crimes where crime=@crime and year=@year;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodByYear @idNeighborhood INT,@crime VARCHAR(20), @year INT AS 
+
+BEGIN 
+select quantity from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime and year=@year;
 END
 
 GO

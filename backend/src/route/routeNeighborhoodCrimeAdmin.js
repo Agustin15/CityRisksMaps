@@ -10,7 +10,8 @@ import {
   getCategoryCrimeInNeighborhood,
   getNeighborhoodsCrimeByYearOffset,
   loadNeighborhoodsCrimeFromFile,
-  getYearsNeighborhoodsCrime
+  getYearsNeighborhoodsCrime,
+  getAmountAnCrimeInNeighborhoodByYear
 } from "../controller/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -32,6 +33,12 @@ RoutesNeighborhoodCrimeAdmin.get(
 RoutesNeighborhoodCrimeAdmin.get(
   "/categoryCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
   getCategoryCrimeInNeighborhood
+);
+
+RoutesNeighborhoodCrimeAdmin.get(
+  "/amountAnCrimeInNeighborhoodByYear/:categoryCrime/:year/:neighborhoodsCrimeToGet",
+  verifyAuthorization,
+  getAmountAnCrimeInNeighborhoodByYear
 );
 
 RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);

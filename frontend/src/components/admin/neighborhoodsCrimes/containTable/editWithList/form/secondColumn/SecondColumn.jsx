@@ -12,8 +12,10 @@ export const SecondColumn = ({ neighborhoods }) => {
     setValues,
     errors,
     loading,
+    loadingSearch,
     loadingFromFile,
-    handleLoadCrimesFromFile
+    handleLoadCrimesFromFile,
+    getAmountsOfAnCrimeInNeighborhoodsByYear
   } = useAddNeighborhoodCrime();
   const { crimes } = useCrud();
 
@@ -51,6 +53,17 @@ export const SecondColumn = ({ neighborhoods }) => {
         </select>
         {errors.crime && <p>{errors.crime}</p>}
       </div>
+
+      <button
+        disabled={loadingSearch}
+        type="button"
+        onClick={() => {
+          getAmountsOfAnCrimeInNeighborhoodsByYear();
+        }}
+        className={styles.btnSearch}
+      >
+        {!loadingSearch ? "Buscar datos" : "Buscando datos..."}
+      </button>
 
       <UploadFile />
 

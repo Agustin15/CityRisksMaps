@@ -60,9 +60,10 @@
     gap: 1rem;
 }
 
-.btnAdd,
+
+.btnEdit,
 .btnReset,
-.btnAddDisabled,
+.btnEditDisabled,
 .btnResetDisabled {
     margin: 1rem 0 0 0;
     font-size: 15px;
@@ -72,7 +73,7 @@
     padding: 0 0.5rem 0 0.5rem;
     color: white;
     font-weight: bold;
-    background: rgb(34, 207, 63);
+    background: rgb(34, 115, 207);
     cursor: pointer;
     border-radius: 3px;
     display: flex;
@@ -81,8 +82,8 @@
     gap: 1rem;
 }
 
-.btnAdd:hover {
-    background: rgb(36, 187, 61);
+.btnEdit:hover {
+    background: rgb(32, 108, 194);
 }
 
 .btnReset {
@@ -93,8 +94,8 @@
     background: rgb(163, 30, 30);
 }
 
-.btnAddDisabled {
-    background: rgb(84, 241, 110);
+.btnEditDisabled {
+    background: rgb(114, 170, 235);
     cursor: auto;
 }
 

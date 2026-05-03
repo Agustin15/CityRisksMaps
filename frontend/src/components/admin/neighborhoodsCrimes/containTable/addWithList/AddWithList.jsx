@@ -1,5 +1,5 @@
 import styles from "./AddWithList.module.css";
-import iconAdd from "../../../../../assets/img/addWithList.png";
+import iconAdd from "../../../../../assets/img/add.png";
 import { useState } from "react";
 import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import { Form } from "./form/Form";

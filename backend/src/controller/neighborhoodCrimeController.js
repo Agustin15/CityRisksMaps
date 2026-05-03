@@ -34,7 +34,7 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
 
-    const { year, crime, department, neighborhoodsSelected } = req.body;
+    let { year, crime, department, neighborhoodsCrimeToSelect } = req.body;
 
     if (!crime || crime.length == 0)
       throw new Error("Debe indicar una categoria de delito");
@@ -55,18 +55,23 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
     if (req.file.size > 115000000)
       throw new Error("Tamaño del archivo excede el limite de 110MB");
 
+    neighborhoodsCrimeToSelect = neighborhoodsCrimeToSelect.map(
+      (neighborhood) => JSON.parse(neighborhood)
+    );
+
     const json = await readerFile(req.file);
 
     const neighborhoodsCrime = filterFile(
       department,
       crime,
       year,
-      neighborhoodsSelected,
+      neighborhoodsCrimeToSelect,
       json
     );
 
     res.status(200).json(neighborhoodsCrime);
   } catch (error) {
+    console.log(error);
     res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
@@ -93,16 +98,23 @@ const normalize = (text) => {
     .toUpperCase();
 };
 
-const filterFile = (department, crime, year, neighborhoodsSelected, json) => {
+const filterFile = (
+  department,
+  crime,
+  year,
+  neighborhoodsCrimeToSelect,
+  json
+) => {
   let filteredByCrimeYearDepartment = json.filter((item) => {
     if (
       normalize(item.DEPTO.trim()) == normalize(department) &&
       normalize(item.DELITO.trim()) == normalize(crime) &&
       normalize(item.TENTATIVA.trim()) == "NO" &&
       item.AÑO == year &&
-      neighborhoodsSelected.some(
+      neighborhoodsCrimeToSelect.some(
         (neighborhood) =>
-          normalize(neighborhood) == normalize(item.BARRIO_MONTEVIDEO.trim())
+          normalize(neighborhood.name) ==
+          normalize(item.BARRIO_MONTEVIDEO.trim())
       )
     )
       return item;
@@ -118,28 +130,33 @@ const filterFile = (department, crime, year, neighborhoodsSelected, json) => {
 
   filteredByCrimeYearDepartment.forEach((item) => {
     if (item.BARRIO_MONTEVIDEO.trim() == "SIN CLASIFICAR") return;
-    const found =
+
+    let found =
       neighborhoodsCrime.length == 0
         ? null
         : neighborhoodsCrime.find((f) => {
             if (
-              normalize(f.nameNeighborhood.trim()) ==
+              normalize(f.name.trim()) ==
               normalize(item.BARRIO_MONTEVIDEO.trim())
             )
               return f;
           });
 
     if (!found) {
-      const neighborhoodFound = neighborhoodsSelected.find((neighborhood) => {
-        if (normalize(item.BARRIO_MONTEVIDEO.trim()) == normalize(neighborhood))
-          return neighborhood;
-      });
+      const neighborhoodFound = neighborhoodsCrimeToSelect.find(
+        (neighborhood) => {
+          if (
+            normalize(item.BARRIO_MONTEVIDEO.trim()) ==
+            normalize(neighborhood.name.trim())
+          )
+            return neighborhood;
+        }
+      );
 
       neighborhoodsCrime.push({
-        nameNeighborhood: neighborhoodFound,
-        crime: crime,
-        amount: 1,
-        year: year
+        idNeighborhood: neighborhoodFound.idNeighborhood,
+        name: neighborhoodFound.name,
+        amount: 1
       });
     } else {
       found.amount++;
@@ -267,6 +284,53 @@ export const getCategoryCrimeInNeighborhood = async (req, res) => {
       );
 
     return res.status(200).json(categoryCrimeInNeighborhood);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getAmountAnCrimeInNeighborhoodByYear = async (req, res) => {
+  try {
+    const year = req.params.year;
+    const categoryCrime = req.params.categoryCrime;
+    const neighborhoodsCrimeToGet = JSON.parse(
+      req.params.neighborhoodsCrimeToGet
+    );
+
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
+
+    if (!neighborhoodsCrimeToGet || neighborhoodsCrimeToGet.length == 0)
+      throw new Error(
+        "Debe ingresar al menos un barrio en el que desee obtener la cantidad de delitos"
+      );
+
+    const amountCategoryCrimeInNeighborhoods = [];
+
+    for (const hoodCrime of neighborhoodsCrimeToGet) {
+      const amountCrimesInNeighborhoodByYear =
+        await NeighborhoodCrimeService.getAmountAnCrimeInNeighborhoodByYear(
+          categoryCrime,
+          year,
+          hoodCrime.idNeighborhood
+        );
+
+      amountCategoryCrimeInNeighborhoods.push({
+        idNeighborhood: hoodCrime.idNeighborhood,
+        name: hoodCrime.name,
+        amount: amountCrimesInNeighborhoodByYear
+      });
+    }
+
+    if (amountCategoryCrimeInNeighborhoods.length == 0)
+      throw new Error(
+        "No hay registros de crimenes en los barrios seleccionados en este año"
+      );
+
+    return res.status(200).json(amountCategoryCrimeInNeighborhoods);
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 404)

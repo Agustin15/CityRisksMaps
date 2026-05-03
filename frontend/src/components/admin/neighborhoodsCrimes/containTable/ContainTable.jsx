@@ -11,6 +11,8 @@ export const ContainTable = () => {
   const {
     fetchGet,
     setRegisters,
+    setPages,
+    setIndex,
     crimes,
     setCrimes,
     setCrimeSelected,
@@ -42,7 +44,13 @@ export const ContainTable = () => {
       const years = await loadYears(
         "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
       );
-      if (!years) setRegisters();
+
+      if (years) {
+        setIndex(0);
+      } else {
+        setRegisters();
+        setPages();
+      }
     };
 
     loadYearsData();

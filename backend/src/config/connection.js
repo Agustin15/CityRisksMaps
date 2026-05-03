@@ -63,7 +63,7 @@ class Connection {
       user: this.propUser,
       password: this.propPassword,
       server: this.propHost,
-      database: this.#database,
+      database: this.propDatabase,
       pool: {
         max: 10,
         min: 0,

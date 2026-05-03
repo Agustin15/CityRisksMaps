@@ -10,19 +10,25 @@ import {
 import { useEffect } from "react";
 import {
   boundsMontevideo,
-  cleanPolygons,
   createCoordinatesNeighborhoods,
-  createPolygons,
-  handleMouseInNeighborhoodPolygon
+  createPolygons
 } from "./functions.js";
+
+import { useInteractionNeighborhoodsPolygons } from "../../../../contexts/adminContext/InteractionNeighborhoodsPolygons.jsx";
 import { useState } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext.jsx";
 import { DetailsNeighborhood } from "./detailsNeighborhood/DetailsNeighborhood.jsx";
 
 export const ContainMap = () => {
   const [neighborhoodsCoordinates, setNeighborhoodsCoordinates] = useState([]);
-  const [polygons, setPolygons] = useState([]);
-  const [polygonSelected, setPolygonSelected] = useState();
+  const {
+    polygons,
+    setPolygons,
+    polygonSelected,
+    setPolygonSelected,
+    cleanPolygons,
+    handleMouseInNeighborhoodPolygon
+  } = useInteractionNeighborhoodsPolygons();
 
   const { registers, crimeSelected } = useCrud();
   const apiIsLoaded = useApiIsLoaded();
@@ -48,9 +54,8 @@ export const ContainMap = () => {
   };
 
   useEffect(() => {
+    cleanPolygons();
     if (!registers || neighborhoodsCoordinates.length == 0) return;
-
-    if (polygons.length > 0) cleanPolygons(polygons);
 
     const polygonsCreated = createPolygons(
       neighborhoodsCoordinates,
@@ -76,13 +81,7 @@ export const ContainMap = () => {
           disableDefaultUI
           zoomControl={true}
           onClick={(event) => event.stop()}
-          onMousemove={(event) =>
-            handleMouseInNeighborhoodPolygon(
-              event,
-              polygons,
-              setPolygonSelected
-            )
-          }
+          onMousemove={(event) => handleMouseInNeighborhoodPolygon(event)}
         >
           {polygonSelected && (
             <AdvancedMarker position={polygonSelected.data.center}>

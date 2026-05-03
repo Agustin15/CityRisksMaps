@@ -44,12 +44,18 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getNeighborhoodsCrimeByYear(category, year) {
+  static async getAmountAnCrimeInNeighborhoodByYear(
+    category,
+    year,
+    idNeighborhood
+  ) {
     try {
-      const result = await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYear(
-        category,
-        year
-      );
+      const result =
+        await NeighborhoodCrimeDAL.getAmountAnCrimeInNeighborhoodByYear(
+          category,
+          year,
+          idNeighborhood
+        );
 
       return result;
     } catch (error) {

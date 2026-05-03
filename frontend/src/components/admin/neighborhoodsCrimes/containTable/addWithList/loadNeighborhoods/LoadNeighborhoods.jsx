@@ -15,8 +15,7 @@ import {
 export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
   const [loading, setLoading] = useState(false);
   const [errorLoad, setErrorLoad] = useState(null);
-  const { values, setValues, neighborhoodsSelected, setNeighborhoodsSelected } =
-    useAddNeighborhoodCrime();
+  const { values, setValues } = useAddNeighborhoodCrime();
 
   return (
     <div className={styles.loadNeighborhoods}>
@@ -30,10 +29,7 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
       {errorLoad && <p>{errorLoad}</p>}
       {loading == false && neighborhoods.length > 0 && (
         <div className={styles.neighborhoodsTable}>
-          <SelectAllNeighborhoods
-            neighborhoodsSelected={neighborhoodsSelected}
-            setNeighborhoodsSelected={setNeighborhoodsSelected}
-          />
+          <SelectAllNeighborhoods />
           <table>
             <tbody>
               {neighborhoods.map((neighborhood, index) => (
@@ -44,30 +40,26 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                       onChange={(event) =>
                         handleChangeInput(
                           event,
-                          neighborhood.name,
+                          neighborhood.idNeighborhood,
                           values,
                           setValues
                         )
                       }
                       disabled={
-                        verifyChecked(
-                          neighborhoodsSelected,
-                          neighborhood.name
-                        ) == false
+                        verifyChecked(values, neighborhood.idNeighborhood) ==
+                        false
                       }
                       className={
-                        verifyChecked(
-                          neighborhoodsSelected,
-                          neighborhood.name
-                        ) == false
+                        verifyChecked(values, neighborhood.idNeighborhood) ==
+                        false
                           ? styles.inputDisabled
                           : ""
                       }
                       value={setValueAmount(
-                        values.neighborhoodsCrime,
-                        neighborhood.name
+                        values,
+                        neighborhood.idNeighborhood
                       )}
-                      name={neighborhood.name}
+                      name={neighborhood.idNeighborhood}
                       min={0}
                       type="number"
                       placeholder="Cantidad"
@@ -76,14 +68,15 @@ export const LoadNeighborhoods = ({ neighborhoods, setNeighborhoods }) => {
                     <input
                       onChange={(event) =>
                         handleChangeCheckbox(
-                          neighborhood.name,
-                          neighborhoodsSelected,
-                          setNeighborhoodsSelected
+                          event,
+                          neighborhood.idNeighborhood,
+                          values,
+                          setValues
                         )
                       }
                       checked={verifyChecked(
-                        neighborhoodsSelected,
-                        neighborhood.name
+                        values,
+                        neighborhood.idNeighborhood
                       )}
                       type="checkbox"
                     ></input>

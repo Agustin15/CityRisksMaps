@@ -1,28 +1,28 @@
+import { useAddNeighborhoodCrime } from "../../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext";
 import styles from "./SelectAllNeighborhoods.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const SelectAllNeighborhoods = ({
-  neighborhoodsSelected,
-  setNeighborhoodsSelected
-}) => {
+export const SelectAllNeighborhoods = () => {
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const { setValues, values, refCheckboxSelectAll } = useAddNeighborhoodCrime();
 
   const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
+    const isChecked = refCheckboxSelectAll.current.checked;
+
     setIsAllSelected(isChecked);
 
     if (isChecked) {
-      const allSelected = neighborhoodsSelected.map((hood) => ({
+      const allSelected = values.neighborhoodsCrime.map((hood) => ({
         ...hood,
-        checked: true
+        amount: 0
       }));
-      setNeighborhoodsSelected(allSelected);
+      setValues({ ...values, neighborhoodsCrime: allSelected });
     } else {
-      const noneSelected = neighborhoodsSelected.map((hood) => ({
+      const noneSelected = values.neighborhoodsCrime.map((hood) => ({
         ...hood,
-        checked: false
+        amount: null
       }));
-      setNeighborhoodsSelected(noneSelected);
+      setValues({ ...values, neighborhoodsCrime: noneSelected });
     }
   };
 
@@ -33,7 +33,8 @@ export const SelectAllNeighborhoods = ({
         <div className={styles.ball}></div>
       </label>
       <input
-        onChange={(event) => handleSelectAll(event)}
+        ref={refCheckboxSelectAll}
+        onChange={() => handleSelectAll()}
         id="checkboxAll"
         type="checkbox"
       ></input>

@@ -27,6 +27,23 @@
     outline: none;
 }
 
+.secondColumn .btnSearch {
+    width: 11rem;
+    color: white;
+    height: 1.8rem;
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    background: rgb(34, 103, 207);
+    font-size: 14px;
+    font-weight: bold;
+    margin: -0.5rem 0 0 0;
+}
+
+.secondColumn .btnSearch:hover {
+    background: rgb(34, 98, 194);
+}
+
 .secondColumn .load,
 .secondColumn .loadDisabled {
     background: rgb(34, 207, 63);
@@ -44,9 +61,9 @@
 }
 
 .secondColumn.loadDisabled {
+    opacity: 85%;
     cursor: auto;
-    background: rgb(83, 221, 106);
 }
 .secondColumn .loadDisabled:hover {
-    background: rgb(83, 221, 106);
+    opacity: 85%;
 }

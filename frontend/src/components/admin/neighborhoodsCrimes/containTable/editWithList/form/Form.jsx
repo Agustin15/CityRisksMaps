@@ -3,7 +3,7 @@ import { useCrud } from "../../../../../../contexts/adminContext/CrudContext";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext.jsx";
 import { useAddNeighborhoodCrime } from "../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext.jsx";
-import { LoadNeighborhoods } from "../loadNeighborhoods/LoadNeighborhoods";
+import { LoadNeighborhoods } from "../../addWithList/loadNeighborhoods/LoadNeighborhoods.jsx";
 import { SecondColumn } from "./secondColumn/SecondColumn.jsx";
 
 export const Form = () => {
@@ -39,10 +39,10 @@ export const Form = () => {
       <div className={styles.options}>
         <button
           disabled={loading}
-          className={!loading ? styles.btnAdd : styles.btnAddDisabled}
+          className={!loading ? styles.btnEdit : styles.btnEditDisabled}
           type="submit"
         >
-          {loading ? "Agregando datos..." : "Agregar datos"}
+          {loading ? "Actualizando datos..." : "Actualizar datos"}
         </button>
 
         <button
