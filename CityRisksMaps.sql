@@ -87,6 +87,7 @@ Primary key(zone,neighborhood)
 
 
 GO
+
 --------------------------------------------------------------------------------------------------------------
 --Rols PROCEDURES
 
@@ -772,7 +773,6 @@ select * from Population where year=@year;
 END
 GO
 
-
 CREATE OR ALTER PROCEDURE PopulationsOffsetByYear @offset INT,@year INT AS
 BEGIN
 
@@ -1385,7 +1385,35 @@ Update Zones set lastModified=GETDATE() where idZone=@idZone;
 END
 
 GO
+
 ------------------------------------------------------------------------------------------------------------------
+--Users INDEXES
+
+CREATE NONCLUSTERED INDEX IX_UserByEmailAndState ON Users(email,activated) 
+
+GO
+------------------------------------------------------------------------------------------------------------------
+--Neighborhoods INDEXES
+
+CREATE NONCLUSTERED INDEX IX_NeighborhoodByName ON Neighborhoods(name) 
+
+GO
+--------------------------------------------------------------------------------------------------------------
+--Neighborhoods_Crimes INDEXES
+
+CREATE NONCLUSTERED INDEX IX_CrimeInNeighborhood ON Neighborhoods_Crimes(crime,neighborhood) 
+
+GO
+--------------------------------------------------------------------------------------------------------------
+--Populations INDEXES
+CREATE NONCLUSTERED INDEX IX_PopulationByNeighborhoodAndYear ON Population(neighborhood,year)
+
+CREATE NONCLUSTERED INDEX IX_PopulationsByNeighborhood ON Population(neighborhood)
+
+GO
+--------------------------------------------------------------------------------------------------------------
+
+
 EXEC AddRol 'Admin';
 
 EXEC AddDepartment 'Montevideo';
