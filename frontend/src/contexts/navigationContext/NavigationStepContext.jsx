@@ -4,11 +4,13 @@ import {
   getUserCurrentStep,
   getIndexOfCoordinatesMostClosestToUser
 } from "./functionsNavigationStep.js";
+import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useNavigation } from "./NavigationContext";
 import { useMapControls } from "../MapContext";
 import { useNeighborhoodsCrimes } from "../neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
+
 
 const NavigationStepContext = createContext();
 
@@ -61,49 +63,60 @@ export const NavigationStepProvider = ({ children }) => {
   };
 
   const verifyUserDistanceToCurrentStep = () => {
-    let toleranceGrades;
+    try {
+      let toleranceGrades;
 
-    if (
-      transportSelected == "Drive" ||
-      transportSelected == "Transit" ||
-      transportSelected == "Two_wheeler"
-    )
-      toleranceGrades = 30 / 111319;
-    else toleranceGrades = 15 / 111319;
+      if (
+        transportSelected == "Drive" ||
+        transportSelected == "Transit" ||
+        transportSelected == "Two_wheeler"
+      )
+        toleranceGrades = 30 / 111319;
+      else toleranceGrades = 15 / 111319;
 
-    const coordinatesStep = google.maps.geometry.encoding.decodePath(
-      currentStep.polyline.encodedPolyline
-    );
-
-    const userInStep = google.maps.geometry.poly.isLocationOnEdge(
-      userLocation,
-      new google.maps.Polyline({ path: coordinatesStep }),
-      toleranceGrades
-    );
-
-    if (!userInStep) {
-      recalculateRoute();
-    } else {
-      const indexLatLng = getIndexOfCoordinatesMostClosestToUser(
-        polylineNavigation,
-        userLocation
+      const coordinatesStep = google.maps.geometry.encoding.decodePath(
+        currentStep.polyline.encodedPolyline
       );
-      redrawRouteWhenUserMove(indexLatLng);
+
+      const userInStep = google.maps.geometry.poly.isLocationOnEdge(
+        userLocation,
+        new google.maps.Polyline({ path: coordinatesStep }),
+        toleranceGrades
+      );
+
+      if (!userInStep) {
+        recalculateRoute();
+      } else {
+        const indexLatLng = getIndexOfCoordinatesMostClosestToUser(
+          polylineNavigation,
+          userLocation
+        );
+        redrawRouteWhenUserMove(indexLatLng);
+      }
+    } catch (error) {
+      return alertSwalError(
+        "Ups algo salio mal durante la navegacion",
+        error.message
+      );
     }
   };
 
   const redrawRouteWhenUserMove = (indexLatLng) => {
-    const newPolylinePath = polylineNavigation
-      .getPath()
-      .mh.filter((latLng, index) => {
-        if (index >= indexLatLng) return latLng;
-      });
+    try {
+      const newPolylinePath = polylineNavigation
+        .getPath()
+        .mh.filter((latLng, index) => {
+          if (index >= indexLatLng) return latLng;
+        });
 
-    polylineNavigation.setOptions({ path: newPolylinePath });
+      polylineNavigation.setOptions({ path: newPolylinePath });
 
-    setPolylineNavigation(polylineNavigation);
+      setPolylineNavigation(polylineNavigation);
 
-    calculateCurrentUserStep(routeNavigation);
+      calculateCurrentUserStep(routeNavigation);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
 
   const calculateCurrentUserStep = (routeNavigation) => {
@@ -113,12 +126,9 @@ export const NavigationStepProvider = ({ children }) => {
       transportSelected
     );
 
-    if (!userStepFound) return;
+    if (!userStepFound) throw new Error("Ups se ha deviado de la ruta actual");
 
-    if (
-      userStepFound.step &&
-      (userStepFound.index != indexStep || userStepFound.index == 0)
-    ) {
+    if (userStepFound.index != indexStep || userStepFound.index == 0) {
       setIndexStep(userStepFound.index);
       setCurrentStep(userStepFound.step);
 

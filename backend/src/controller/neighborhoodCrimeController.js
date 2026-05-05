@@ -371,3 +371,26 @@ export const getAmountAnCrimeInNeighborhoodByYear = async (req, res) => {
       .json({ messageError: error.message });
   }
 };
+
+export const getAmountOfAnCrimeInYears = async (req, res) => {
+  try {
+    const categoryCrime = req.params.categoryCrime;
+
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
+
+    const amountCategoryCrimeByYears =
+      await NeighborhoodCrimeService.getAmountOfAnCrimeInYears(categoryCrime);
+
+    if (!amountCategoryCrimeByYears || amountCategoryCrimeByYears.length == 0)
+      throw new Error(
+        "No se encontraron registros de este crimen en el sistema"
+      );
+
+    return res.status(200).json(amountCategoryCrimeByYears);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};

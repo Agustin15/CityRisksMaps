@@ -4,131 +4,81 @@ import { matchPath, useLocation } from "react-router";
 
 export const Options = ({ user }) => {
   const location = useLocation();
+
+  const options = [
+    {
+      title: "Departamentos",
+      path: "/admin/departamentos",
+      divStyle: styles.iconDepartments
+    },
+    {
+      title: "Barrios",
+      path: "/admin/barrios",
+      divStyle: styles.iconNeighborhoods,
+      allow: true
+    },
+    {
+      title: "Poblaciones",
+      path: "/admin/poblaciones",
+      divStyle: styles.iconPopulation,
+      allow: true
+    },
+    {
+      title: "Categorias de delitos",
+      path: "/admin/categorias-delitos",
+      divStyle: styles.iconCrimes,
+      allow: true
+    },
+    {
+      title: "Indice delitos barrios",
+      path: "/admin/indice-delitos-barrios",
+      divStyle: styles.iconNeighborhoodsCrimes,
+      allow: true
+    },
+
+    {
+      title: "Estadisticas",
+      path: "/admin/estadisticas",
+      divStyle: styles.iconStatistics,
+      allow: true
+    },
+    {
+      title: "Roles",
+      path: "/admin/roles",
+      divStyle: styles.iconRols,
+      allow: user.rol == "Admin"
+    },
+    {
+      title: "Usuarios",
+      path: "/admin/usuarios",
+      divStyle: styles.iconUsers,
+      allow: user.rol == "Admin"
+    }
+  ];
+
+  let optionsAllowed = options.filter((option) => option.allow == true);
+
   return (
     <ul className={styles.options}>
-      <li
-        className={
-          matchPath(
-            {
-              path: "/admin/departamentos",
-              caseSensitive: true
-            },
-            location.pathname
-          )
-            ? styles.selected
-            : ""
-        }
-      >
-        <div className={styles.iconDepartments}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/departamentos"}>Departamentos</a>
-      </li>
-      <li
-        className={
-          matchPath(
-            {
-              path: "/admin/barrios/",
-              caseSensitive: true
-            },
-            location.pathname
-          )
-            ? styles.selected
-            : ""
-        }
-      >
-        <div className={styles.iconNeighborhoods}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/barrios"}>Barrios</a>
-      </li>
-      <li
-        className={
-          matchPath(
-            {
-              path: "/admin/poblaciones/",
-              caseSensitive: true
-            },
-            location.pathname
-          )
-            ? styles.selected
-            : ""
-        }
-      >
-        <div className={styles.iconPopulation}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/poblaciones"}>Poblaciones</a>
-      </li>
-
-      <li
-        className={
-          matchPath(
-            {
-              path: "/admin/categorias-delitos/",
-              caseSensitive: true
-            },
-            location.pathname
-          )
-            ? styles.selected
-            : ""
-        }
-      >
-        <div className={styles.iconCrimes}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/categorias-delitos"}>
-          Categoria de delitos
-        </a>
-      </li>
-
-      <li
-        className={
-          matchPath(
-            {
-              path: "/admin/categorias-delitos-barrios",
-              caseSensitive: true
-            },
-            location.pathname
-          )
-            ? styles.selected
-            : ""
-        }
-      >
-        <div className={styles.iconNeighborhoodsCrimes}></div>
-        <a href={LOCALHOST_FRONTEND + "/admin/indice-delitos-barrios"}>
-          Indice delitos barrios
-        </a>
-      </li>
-
-      {user.rol == "Admin" && (
-        <>
-          <li
-            className={
-              matchPath(
-                {
-                  path: "/admin/roles/",
-                  caseSensitive: true
-                },
-                location.pathname
-              )
-                ? styles.selected
-                : ""
-            }
-          >
-            <div className={styles.iconRols}></div>
-            <a href={LOCALHOST_FRONTEND + "/admin/roles"}> Roles</a>
-          </li>
-          <li
-            className={
-              matchPath(
-                {
-                  path: "/admin/usuarios/",
-                  caseSensitive: true
-                },
-                location.pathname
-              )
-                ? styles.selected
-                : ""
-            }
-          >
-            <div className={styles.iconUsers}></div>
-            <a href={LOCALHOST_FRONTEND + "/admin/usuarios"}> Usuarios</a>
-          </li>
-        </>
-      )}
+      {optionsAllowed.map((option, index) => (
+        <li
+          key={index}
+          className={
+            matchPath(
+              {
+                path: option.path,
+                caseSensitive: true
+              },
+              location.pathname
+            )
+              ? styles.selected
+              : ""
+          }
+        >
+          <div className={option.divStyle}></div>
+          <a href={LOCALHOST_FRONTEND + option.path}>{option.title}</a>
+        </li>
+      ))}
     </ul>
   );
 };

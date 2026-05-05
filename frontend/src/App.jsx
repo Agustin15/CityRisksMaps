@@ -19,6 +19,7 @@ import { ActivateUser } from "./components/admin/activateUser/ActivateUser.jsx";
 import { EmailConfirmedPage } from "./pages/EmailConfirmedPage.jsx";
 import { NeighborhoodsCrimes } from "./components/admin/neighborhoodsCrimes/NeighborhoodsCrimes.jsx";
 import { EditProfile } from "./components/admin/editProfile/EditProfile.jsx";
+import { Statistics } from "./components/admin/statistics/Statistics.jsx";
 
 function App() {
   return (
@@ -27,7 +28,6 @@ function App() {
         <CrudProvider>
           <BrowserRouter>
             <Routes>
-             
               <Route path="/" element={<MapPage />}></Route>
               <Route path="/*" element={<NotFoundPage />}></Route>
               <Route path="/admin/login" element={<LoginAdmin />}></Route>
@@ -58,6 +58,10 @@ function App() {
               <Route
                 path="/admin/indice-delitos-barrios/"
                 element={<NeighborhoodsCrimes />}
+              ></Route>
+              <Route
+                path="/admin/estadisticas/"
+                element={<Statistics/>}
               ></Route>
 
               <Route path="/admin/roles/" element={<Rols />}></Route>

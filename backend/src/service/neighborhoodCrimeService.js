@@ -68,6 +68,21 @@ export class NeighborhoodCrimeService {
     }
   }
 
+  
+  static async getNeighborhoodsCrimeByYear(category, year) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYear(
+          category,
+          year
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getNeighborhoodsCrimeByYearSecondVersion(category, year) {
     try {
       const result =
