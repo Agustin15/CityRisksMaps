@@ -158,6 +158,7 @@ export const NavigationProvider = ({ children }) => {
         setIndexStep,
         setPolylineNavigation,
         destinationArrived,
+        setDestinationArrived,
         editRoute,
         setEditRoute,
         handleCloseNavigation,

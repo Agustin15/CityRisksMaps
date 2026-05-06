@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { Passwords } from "./password/Passwords";
 import { useActivateUser } from "../../../contexts/adminContext/ActivateUserContext";
+import { Helmet } from "react-helmet-async";
 
 export const ActivateUser = () => {
   const params = useParams();
@@ -29,6 +30,10 @@ export const ActivateUser = () => {
     <>
       {validToken && !loadingValidation && (
         <div className={styles.containActivate}>
+          <Helmet>
+            <title>Activar usuario</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <div className={styles.content}>
             <h3>
               <img className={styles.iconActivate} src={iconActivate} />

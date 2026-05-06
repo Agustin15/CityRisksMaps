@@ -1,5 +1,6 @@
 import iconMaintenance from "../../assets/img/maintenance.png";
 import { NoContentComponent } from "../noContentComponent/NoContentComponent";
+import { Helmet } from "react-helmet-async";
 
 export const Maintenance = () => {
   return (

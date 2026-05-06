@@ -1,31 +1,3 @@
-export const getIndexOfCoordinatesMostClosestToUser = (
-  polylineNavigation,
-  userLocation
-) => {
-  const coordinates = polylineNavigation.getPath().mh;
-
-  let indexLatLngSelected = 0;
-  let prevDistance = google.maps.geometry.spherical.computeDistanceBetween(
-    userLocation,
-    coordinates[0]
-  );
-
-  coordinates.forEach((latLng, index) => {
-    if (index == 0) return;
-
-    let distance = google.maps.geometry.spherical.computeDistanceBetween(
-      userLocation,
-      latLng
-    );
-
-    if (distance < prevDistance) {
-      indexLatLngSelected = index;
-    }
-  });
-
-  return indexLatLngSelected;
-};
-
 export const getUserCurrentStep = (
   routeNavigation,
   userLocation,

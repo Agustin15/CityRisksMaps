@@ -1,10 +1,11 @@
-import style from "./EmailConfirmed.module.css";
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
+import style from "./EmailConfirmed.module.css";
 import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import iconEmailConfirmed from "../../../assets/img/emailConfirmed.png";
 import iconEmailNotConfirmed from "../../../assets/img/emailNotConfirmed.png";
+import { Helmet } from "react-helmet-async";
 
 export const EmailConfirmed = () => {
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,10 @@ export const EmailConfirmed = () => {
     <>
       {!loading && (
         <div className={style.emailConfirmed}>
+          <Helmet>
+            <title>Confirmar correo</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <div className={style.wave}>
             <img
               src={error == null ? iconEmailConfirmed : iconEmailNotConfirmed}

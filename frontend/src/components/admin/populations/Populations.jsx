@@ -22,12 +22,18 @@ export const Populations = () => {
 
   let title =
     "Lista de poblaciones" +
-    (!params.neighborhoodName ? " en barrios" : " de " + params.neighborhoodName);
+    (!params.neighborhoodName
+      ? " en barrios"
+      : " de " + params.neighborhoodName);
 
   return (
     <>
       {user && !loadingProfile && (
         <div className={styles.populations}>
+          <Helmet>
+            <title>Administracion-Poblaciones</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <MenuSide />
           <div className={styles.body}>
             <Header

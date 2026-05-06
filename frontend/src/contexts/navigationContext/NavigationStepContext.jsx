@@ -1,16 +1,12 @@
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
-import {
-  getUserCurrentStep,
-  getIndexOfCoordinatesMostClosestToUser
-} from "./functionsNavigationStep.js";
+import { getUserCurrentStep } from "./functionsNavigationStep.js";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useNavigation } from "./NavigationContext";
 import { useMapControls } from "../MapContext";
 import { useNeighborhoodsCrimes } from "../neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
-
 
 const NavigationStepContext = createContext();
 
@@ -25,7 +21,6 @@ export const NavigationStepProvider = ({ children }) => {
   const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const {
-    recalculateRoute,
     routeNavigation,
     setPolylineNavigation,
     polylineNavigation,
@@ -62,63 +57,6 @@ export const NavigationStepProvider = ({ children }) => {
     }
   };
 
-  const verifyUserDistanceToCurrentStep = () => {
-    try {
-      let toleranceGrades;
-
-      if (
-        transportSelected == "Drive" ||
-        transportSelected == "Transit" ||
-        transportSelected == "Two_wheeler"
-      )
-        toleranceGrades = 30 / 111319;
-      else toleranceGrades = 15 / 111319;
-
-      const coordinatesStep = google.maps.geometry.encoding.decodePath(
-        currentStep.polyline.encodedPolyline
-      );
-
-      const userInStep = google.maps.geometry.poly.isLocationOnEdge(
-        userLocation,
-        new google.maps.Polyline({ path: coordinatesStep }),
-        toleranceGrades
-      );
-
-      if (!userInStep) {
-        recalculateRoute();
-      } else {
-        const indexLatLng = getIndexOfCoordinatesMostClosestToUser(
-          polylineNavigation,
-          userLocation
-        );
-        redrawRouteWhenUserMove(indexLatLng);
-      }
-    } catch (error) {
-      return alertSwalError(
-        "Ups algo salio mal durante la navegacion",
-        error.message
-      );
-    }
-  };
-
-  const redrawRouteWhenUserMove = (indexLatLng) => {
-    try {
-      const newPolylinePath = polylineNavigation
-        .getPath()
-        .mh.filter((latLng, index) => {
-          if (index >= indexLatLng) return latLng;
-        });
-
-      polylineNavigation.setOptions({ path: newPolylinePath });
-
-      setPolylineNavigation(polylineNavigation);
-
-      calculateCurrentUserStep(routeNavigation);
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
-
   const calculateCurrentUserStep = (routeNavigation) => {
     let userStepFound = getUserCurrentStep(
       routeNavigation,
@@ -126,7 +64,7 @@ export const NavigationStepProvider = ({ children }) => {
       transportSelected
     );
 
-    if (!userStepFound) throw new Error("Ups se ha deviado de la ruta actual");
+    if (!userStepFound) return;
 
     if (userStepFound.index != indexStep || userStepFound.index == 0) {
       setIndexStep(userStepFound.index);
@@ -165,7 +103,6 @@ export const NavigationStepProvider = ({ children }) => {
   return (
     <NavigationStepContext.Provider
       value={{
-        verifyUserDistanceToCurrentStep,
         verifyUserLocationInPolygon,
         warning
       }}

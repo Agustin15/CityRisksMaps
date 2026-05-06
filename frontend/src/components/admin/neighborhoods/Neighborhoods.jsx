@@ -1,13 +1,15 @@
 import styles from "./Neighborhoods.module.css";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
-import { useAuth } from "../../../contexts/adminContext/AuthContext";
-import { useEffect, useState } from "react";
 import { Header } from "../header/Header";
-import { useParams } from "react-router";
+
+import { Helmet } from "react-helmet-async";
 
 export const Neighborhoods = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -28,6 +30,10 @@ export const Neighborhoods = () => {
     <>
       {user && !loadingProfile && (
         <div className={styles.neighborhoods}>
+          <Helmet>
+            <title>Administracion-Barrios</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <MenuSide />
           <div className={styles.body}>
             <Header title={title} setAddForm={setAddForm} />

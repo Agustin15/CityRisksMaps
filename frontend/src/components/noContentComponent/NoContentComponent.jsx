@@ -1,9 +1,13 @@
 import styles from "./NoContentComponent.module.css";
 import iconLogo from "../../assets/img/logo.png";
+import { Helmet } from "react-helmet-async";
 
 export const NoContentComponent = ({ title, msj, image }) => {
   return (
     <div className={styles.noContentComponentPage}>
+      <Helmet>
+        <meta name="robots" content="noindex"></meta>
+      </Helmet>
       <div className={styles.wave}></div>
       <div className={styles.msj}>
         <img src={image}></img>

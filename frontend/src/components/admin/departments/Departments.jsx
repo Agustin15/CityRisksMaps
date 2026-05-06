@@ -7,6 +7,7 @@ import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
+import { Helmet } from "react-helmet-async";
 
 export const Departments = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -22,6 +23,10 @@ export const Departments = () => {
     <>
       {user && !loadingProfile && (
         <div className={styles.departments}>
+         <Helmet>
+            <title>Administracion-Departamentos</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <MenuSide />
           <div className={styles.body}>
             <Header title={"Lista de departamentos"} setAddForm={setAddForm} />

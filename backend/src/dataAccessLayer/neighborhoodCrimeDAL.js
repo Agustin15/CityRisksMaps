@@ -280,11 +280,11 @@ export class NeighborhoodCrimeDAL {
       throw error;
     }
   }
-  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, neighborhood) {
+  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, idNeighborhood) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("crime", sql.VarChar(20), crime);
-      request.input("neighborhood", sql.VarChar(30), neighborhood);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
 
       const result = await request.execute(
         "AmountOfAnCrimeInNeighborhoodInYears"
@@ -295,27 +295,17 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  static async getTopTenNeighborhoodsWithMoreTypeOfCrime(crime) {
+  static async getAmountOfDifferentsCrimesInNeighborhoodInYear(
+    idNeighborhood,
+    year
+  ) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("crime", sql.VarChar(20), crime);
+      request.input("idNeighborhood", sql.Int, year);
+      request.input("year", sql.Int, year);
 
       const result = await request.execute(
-        "TopTenNeighborhoodsWithMoreTypeOfCrime"
-      );
-      return result.recordset;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async getTopTenNeighborhoodsWithLessTypeOfCrime(crime) {
-    try {
-      const request = new sql.Request(connection.pool);
-      request.input("crime", sql.VarChar(20), crime);
-
-      const result = await request.execute(
-        "TopTenNeighborhoodsWithLessTypeOfCrime"
+        "AmountOfDifferentsCrimesInNeighborhoodInYear"
       );
       return result.recordset;
     } catch (error) {

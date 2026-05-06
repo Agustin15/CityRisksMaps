@@ -13,7 +13,9 @@ import {
   loadNeighborhoodsCrimeFromFile,
   getYearsNeighborhoodsCrime,
   getAmountAnCrimeInNeighborhoodByYear,
-  getAmountOfAnCrimeInYears
+  getAmountOfAnCrimeInYears,
+  getAmountOfAnCrimeInNeighborhood,
+  getAmountOfDifferentsCrimesInNeighborhoodInYear
 } from "../controller/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -45,8 +47,16 @@ RoutesNeighborhoodCrimeAdmin.get(
 
 RoutesNeighborhoodCrimeAdmin.get(
   "/amountOfAnCrimeInYears/:categoryCrime",
-  verifyAuthorization,
   getAmountOfAnCrimeInYears
+);
+RoutesNeighborhoodCrimeAdmin.get(
+  "/amountOfAnCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
+  getAmountOfAnCrimeInNeighborhood
+);
+
+RoutesNeighborhoodCrimeAdmin.get(
+  "/amountOfDifferentsCrimesInNeighborhoodInYear/:idNeighborhood/:year",
+  getAmountOfDifferentsCrimesInNeighborhoodInYear
 );
 
 RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);

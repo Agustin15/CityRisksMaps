@@ -1,12 +1,13 @@
 import styles from "./Rols.module.css";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Add } from "./containTable/add/Add";
 import { Modal } from "../modal/Modal";
 import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../../contexts/adminContext/AuthContext";
+import { Helmet } from "react-helmet-async";
 
 export const Rols = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -22,6 +23,11 @@ export const Rols = () => {
     <>
       {user && user.rol == "Admin" && !loadingProfile && (
         <div className={styles.rols}>
+          <Helmet>
+            <title>Administracion-Roles</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
+
           <MenuSide />
           <div className={styles.body}>
             <Header title={"Lista de Roles"} setAddForm={setAddForm} />

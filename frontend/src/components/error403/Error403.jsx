@@ -1,11 +1,16 @@
+import styles from "./Error403.module.css";
 import iconForbbiden from "../../assets/img/forbidden.png";
 import iconLogo from "../../assets/img/logo.png";
-import styles from "./Error403.module.css";
+import { Helmet } from "react-helmet-async";
 
 export const Error403 = () => {
   return (
     <div className={styles.forbidden}>
+      <Helmet>
+        <meta name="robots" content="noindex"></meta>
+      </Helmet>
       <div className={styles.wave}></div>
+
       <div className={styles.msj}>
         <img src={iconForbbiden}></img>
         <h3>ERROR 403</h3>

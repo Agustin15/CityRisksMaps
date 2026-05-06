@@ -68,14 +68,12 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  
   static async getNeighborhoodsCrimeByYear(category, year) {
     try {
-      const result =
-        await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYear(
-          category,
-          year
-        );
+      const result = await NeighborhoodCrimeDAL.getNeighborhoodsCrimeByYear(
+        category,
+        year
+      );
 
       return result;
     } catch (error) {
@@ -135,6 +133,19 @@ export class NeighborhoodCrimeService {
     }
   }
 
+  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, idNeighborhood) {
+    try {
+      const result =
+        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodInYears(
+          crime,
+          idNeighborhood
+        );
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year) {
     try {
       const result =
@@ -148,38 +159,16 @@ export class NeighborhoodCrimeService {
       throw error;
     }
   }
-  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, neighborhood) {
+
+  static async getAmountOfDifferentsCrimesInNeighborhoodInYear(
+    idNeighborhood,
+    year
+  ) {
     try {
       const result =
-        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByYear(
-          crime,
+        await NeighborhoodCrimeDAL.getAmountOfDifferentsCrimesInNeighborhoodInYear(
+          idNeighborhood,
           year
-        );
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async getTopTenNeighborhoodsWithMoreTypeOfCrime(crime) {
-    try {
-      const result =
-        await NeighborhoodCrimeDAL.getTopTenNeighborhoodsWithMoreTypeOfCrime(
-          crime
-        );
-
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async getTopTenNeighborhoodsWithLessTypeOfCrime(crime) {
-    try {
-      const result =
-        await NeighborhoodCrimeDAL.getTopTenNeighborhoodsWithLessTypeOfCrime(
-          crime
         );
 
       return result;

@@ -1054,12 +1054,21 @@ END
 
 GO
 
-----STORED PROCEDUR TO Statistics
+----STORED PROCEDURE TO Statistics
 
 CREATE OR ALTER PROCEDURE AmountOfAnCrimeInYears @crime VARCHAR(20) AS 
 
 BEGIN 
 select year,SUM(quantity) as 'amount',SUM(increase) as 'increase' from Neighborhoods_Crimes where crime=@crime GROUP BY year ORDER BY year ASC; 
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodInYears @crime VARCHAR(20),@idNeighborhood INT AS 
+
+BEGIN 
+select NC.year, N.name as 'nameNeighborhood',NC.quantity as 'amount',increase from Neighborhoods_Crimes NC 
+INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood where NC.crime=@crime and NC.neighborhood=@idNeighborhood ORDER BY year ASC;
 END
 
 GO
@@ -1074,34 +1083,18 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodInYears @crime VARCHAR(20),@neighborhood VARCHAR(30) AS 
-
+CREATE OR ALTER PROCEDURE AmountOfDifferentsCrimesInNeighborhoodInYear @idNeighborhood INT,@year INT AS 
 BEGIN 
-select N.name,NC.quantity as 'amount',increase from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime and N.name=@neighborhood ORDER BY year ASC;
+
+DECLARE @amountCrimes INT;
+
+select @amountCrimes=SUM(quantity) from Neighborhoods_Crimes where neighborhood=@idNeighborhood and year=@year;
+
+select crime,SUM(quantity) as 'amount',((SUM(quantity)*100)/@amountCrimes) as 'percentege' from Neighborhoods_Crimes
+where neighborhood=@idNeighborhood and year=@year GROUP BY crime;
 END
 
 GO
-
-
-CREATE OR ALTER PROCEDURE TopTenNeighborhoodsWithMoreTypeOfCrime @crime VARCHAR(20) AS 
-
-BEGIN 
-select TOP 10 N.name,SUM(NC.quantity) as 'amount' from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime GROUP BY N.name ORDER BY 'amount' DESC;
-END
-
-GO
-
-CREATE OR ALTER PROCEDURE TopTenNeighborhoodsWithLessTypeOfCrime @crime VARCHAR(20) AS 
-
-BEGIN 
-select TOP 10 N.name,SUM(NC.quantity) as 'amount' from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime GROUP BY N.name ORDER BY 'amount' ASC;
-END
-
-GO
-
 
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES

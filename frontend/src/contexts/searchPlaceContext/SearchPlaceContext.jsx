@@ -6,7 +6,7 @@ import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import {
   getGeocodification,
   getMoreDetailsPlace,
-  getPlacesByText,
+  getPlacesByText
 } from "./functions.js";
 
 const SearchPlaceContext = createContext();
@@ -95,7 +95,7 @@ export const SearchPlaceProvider = ({ children }) => {
       await Promise.all(
         result.places.map(async (place) => {
           const list = await createPhotosList(place);
-          place.photosList = list;
+          setPhotosList(list);
           return place;
         })
       );

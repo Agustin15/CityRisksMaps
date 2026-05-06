@@ -394,3 +394,68 @@ export const getAmountOfAnCrimeInYears = async (req, res) => {
       .json({ messageError: error.message });
   }
 };
+
+export const getAmountOfAnCrimeInNeighborhood = async (req, res) => {
+  try {
+    const categoryCrime = req.params.categoryCrime;
+    const idNeighborhood = req.params.idNeighborhood;
+
+    if (!categoryCrime)
+      throw new Error("Debe ingresar un categoria de crimen para la busqueda");
+
+    if (!idNeighborhood)
+      throw new Error("Debe ingresar un barrio para la busqueda");
+
+    const amountCategoryCrimeInNeighborhoodInYears =
+      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodInYears(
+        categoryCrime,
+        idNeighborhood
+      );
+
+    if (
+      !amountCategoryCrimeInNeighborhoodInYears ||
+      amountCategoryCrimeInNeighborhoodInYears.length == 0
+    )
+      throw new Error(
+        "No se encontraron registros de este crimen en este barrio en el sistema"
+      );
+
+    return res.status(200).json(amountCategoryCrimeInNeighborhoodInYears);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getAmountOfDifferentsCrimesInNeighborhoodInYear = async (
+  req,
+  res
+) => {
+  try {
+    const year = req.params.year;
+    const idNeighborhood = req.params.idNeighborhood;
+
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+
+    if (!idNeighborhood)
+      throw new Error("Debe ingresar un barrio para la busqueda");
+
+    const amountDifferentCrimesInHood =
+      await NeighborhoodCrimeService.getAmountOfDifferentsCrimesInNeighborhoodInYear(
+        idNeighborhood,
+        year
+      );
+
+    if (!amountDifferentCrimesInHood || amountDifferentCrimesInHood.length == 0)
+      throw new Error(
+        "No se encontraron registros de crimenes en este barrio y este año en el sistema"
+      );
+
+    return res.status(200).json(amountDifferentCrimesInHood);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};

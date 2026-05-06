@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { MenuSide } from "../menuSide/MenuSide";
 import { Details } from "./details/Details.jsx";
 import { Form } from "./form/Form.jsx";
+import { Helmet } from "react-helmet-async";
 
 export const EditProfile = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -19,6 +20,10 @@ export const EditProfile = () => {
     <>
       {user && !loadingProfile && (
         <div className={styles.editProfile}>
+          <Helmet>
+            <title>Administracion-Editar perfil</title>
+            <meta name="robots" content="noindex"></meta>
+          </Helmet>
           <MenuSide />
           <div className={styles.body}>
             <div className={styles.header}>
