@@ -9,8 +9,8 @@ import { useRoutes } from "../../../../../../contexts/routesContext/RoutesContex
 import { createIntermediates } from "./functions";
 
 export const EditRoute = () => {
-  const [intermediates, setIntermediates] = useState([]);
-  const { recalculateRoute, routeNavigation } = useNavigation();
+  const { recalculateRoute, routeNavigation, intermediates, setIntermediates } =
+    useNavigation();
   const { destinationLocation } = useRoutes();
   const { warning } = useNavigationStep();
   const { polygons } = useNeighborhoodsCrimes();

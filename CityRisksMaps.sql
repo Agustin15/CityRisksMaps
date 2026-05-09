@@ -1,6 +1,6 @@
 CREATE DATABASE CityRisksMap;
-
-USE CityRisksMap;
+ 
+ USE CityRisksMap;
 
 CREATE TABLE Rols(
 idRol INT IDENTITY(1,1) Primary key,

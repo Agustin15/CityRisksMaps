@@ -1,6 +1,10 @@
 import { useContext, useEffect } from "react";
 import { createContext, useState } from "react";
-import { getUserCurrentStep } from "./functionsNavigationStep.js";
+import {
+  getUserCurrentStep,
+  getNextCoordinatesToUserLocation,
+  coordinateMostCloseToUserLocation
+} from "./functionsNavigationStep.js";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useNavigation } from "./NavigationContext";
 import { useMapControls } from "../MapContext";
@@ -17,26 +21,31 @@ export const NavigationStepProvider = ({ children }) => {
     neighborhood: ""
   });
 
+  const [lastLatLngMostClose, setLastLatLngMostClose] = useState(null);
+
   const map = useMap("mainMap");
   const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const {
     routeNavigation,
+    recalculateRoute,
     setPolylineNavigation,
     polylineNavigation,
+    polylineBackground,
     setDestinationArrived,
     destinationArrived,
     currentStep,
     setCurrentStep,
     setIndexStep,
-    indexStep
+    indexStep,
+    intermediates
   } = useNavigation();
 
   const { transportSelected } = useRoutes();
 
   useEffect(() => {
     if (!routeNavigation) return;
-    calculateCurrentUserStep(routeNavigation);
+    redrawPolylineNavigation(routeNavigation);
   }, [routeNavigation]);
 
   const verifyUserLocationInPolygon = () => {
@@ -57,53 +66,117 @@ export const NavigationStepProvider = ({ children }) => {
     }
   };
 
-  const calculateCurrentUserStep = (routeNavigation) => {
-    let userStepFound = getUserCurrentStep(
-      routeNavigation,
+  const actionWhenUserLocationChange = async () => {
+    let toleranceGrades;
+
+    const polylineCurrentStep = new google.maps.Polyline({
+      path: google.maps.geometry.encoding.decodePath(
+        currentStep.polyline.encodedPolyline
+      )
+    });
+
+    if (
+      transportSelected == "Drive" ||
+      transportSelected == "Transit" ||
+      transportSelected == "Two_wheeler"
+    )
+      toleranceGrades = 15 / 111319;
+    else toleranceGrades = 10 / 111319;
+
+    const isOnEdge = google.maps.geometry.poly.isLocationOnEdge(
       userLocation,
-      transportSelected
+      polylineCurrentStep,
+      toleranceGrades
+    );
+    if (!isOnEdge) {
+      await recalculateRoute(intermediates);
+    } else {
+      redrawPolylineNavigation(routeNavigation);
+    }
+  };
+
+  const redrawPolylineNavigation = (routeNavigation) => {
+    const currentStep = calculateCurrentUserStep(routeNavigation);
+
+    if (!currentStep) return;
+
+    const polylineStep = new google.maps.Polyline({
+      path: google.maps.geometry.encoding.decodePath(
+        currentStep.step.polyline.encodedPolyline
+      )
+    });
+
+    let path = polylineStep.getPath().getArray();
+
+    let nextCoordinates = getNextCoordinatesToUserLocation(
+      path,
+      userLocation,
+      map
     );
 
+    if (nextCoordinates.length == 0) return;
+
+    const latLngMostCloseToUserLocation = coordinateMostCloseToUserLocation(
+      nextCoordinates,
+      userLocation
+    );
+
+    let pathNavigation = polylineNavigation.getPath().getArray();
+
+    pathNavigation = pathNavigation.slice(
+      pathNavigation.findIndex((latLng) =>
+        latLng.equals(latLngMostCloseToUserLocation)
+      )
+    );
+
+    pathNavigation.unshift(userLocation);
+    polylineBackground.setPath(pathNavigation);
+    polylineNavigation.setPath(pathNavigation);
+  };
+
+  const calculateCurrentUserStep = (routeNavigation) => {
+    let userStepFound = getUserCurrentStep(routeNavigation, userLocation);
+
     if (!userStepFound) return;
+    let endLocationStep = userStepFound.step.endLocation.latLng;
 
     if (userStepFound.index != indexStep || userStepFound.index == 0) {
       setIndexStep(userStepFound.index);
       setCurrentStep(userStepFound.step);
 
-      let startLocation = userStepFound.step.startLocation.latLng;
-      let endLocation = userStepFound.step.endLocation.latLng;
-
       const heading = google.maps.geometry.spherical.computeHeading(
+        userLocation,
         {
-          lat: startLocation.latitude,
-          lng: startLocation.longitude
-        },
-        {
-          lat: endLocation.latitude,
-          lng: endLocation.longitude
+          lat: endLocationStep.latitude,
+          lng: endLocationStep.longitude
         }
       );
 
-      if (routeNavigation.legs[0].steps.length == userStepFound.index + 1) {
-        const distanceToDestination =
-          google.maps.geometry.spherical.computeDistanceBetween(userLocation, {
-            lat: endLocation.latitude,
-            lng: endLocation.longitude
-          });
-
-        if (distanceToDestination < (transportSelected == "Walk" ? 15 : 10))
-          setDestinationArrived(true);
-        else if (destinationArrived == true) setDestinationArrived(false);
-      }
-
       map.setHeading(heading);
     }
+    verifyUserArrivedToDestination(userStepFound, endLocationStep);
+
+    return userStepFound;
   };
 
+  const verifyUserArrivedToDestination = (userStepFound, endLocationStep) => {
+    if (routeNavigation.legs[0].steps.length == userStepFound.index + 1) {
+      const distanceToDestination =
+        google.maps.geometry.spherical.computeDistanceBetween(userLocation, {
+          lat: endLocationStep.latitude,
+          lng: endLocationStep.longitude
+        });
+
+      if (distanceToDestination < (transportSelected == "Walk" ? 15 : 10))
+        setDestinationArrived(true);
+      else if (destinationArrived == true) setDestinationArrived(false);
+    }
+  };
   return (
     <NavigationStepContext.Provider
       value={{
         verifyUserLocationInPolygon,
+        actionWhenUserLocationChange,
         warning
       }}
     >

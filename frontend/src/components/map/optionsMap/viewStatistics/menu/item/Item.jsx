@@ -9,6 +9,8 @@ export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
     loadCrimeDataNeighborhoods,
     crimeSelected,
     setCrimeSelected,
+    loadingNeighborhoodsCrime,
+    loadingYears,
     handleClose
   } = useNeighborhoodsCrimes();
 
@@ -16,6 +18,8 @@ export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
   const { routeNavigation } = useNavigation();
 
   const handleClickOption = (crime) => {
+    if (loadingYears || loadingNeighborhoodsCrime) return;
+
     if (crime.category != crimeSelected) {
       if (routes || routeNavigation) {
         alertSwalWarning(

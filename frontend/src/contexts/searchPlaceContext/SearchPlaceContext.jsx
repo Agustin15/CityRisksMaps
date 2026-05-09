@@ -95,13 +95,15 @@ export const SearchPlaceProvider = ({ children }) => {
       await Promise.all(
         result.places.map(async (place) => {
           const list = await createPhotosList(place);
-          setPhotosList(list);
+          place.photosList = list;
           return place;
         })
       );
 
-      if (result.places.length == 1) setSelectedPlace(result.places[0]);
-      else {
+      if (result.places.length == 1) {
+        setSelectedPlace(result.places[0]);
+        setPhotosList(result.places[0].photosList);
+      } else {
         setPlacesSearched(result.places);
         setValueSearchedByText(inputRef.current.value);
       }

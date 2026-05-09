@@ -10,13 +10,16 @@ const NavigationContext = createContext();
 export const NavigationProvider = ({ children }) => {
   const [routeNavigation, setRouteNavigation] = useState();
   const [polylineNavigation, setPolylineNavigation] = useState();
+  const [polylineBackground, setPolylineBackground] = useState();
   const [currentStep, setCurrentStep] = useState();
   const [indexStep, setIndexStep] = useState(0);
   const [destinationArrived, setDestinationArrived] = useState(false);
   const [activeNavigationVoice, setActiveNavigationVoice] = useState(false);
   const [editRoute, setEditRoute] = useState(false);
+  const [intermediates, setIntermediates] = useState([]);
 
   const map = useMap("mainMap");
+
   const { userLocation, setUserLocation } = useMapControls();
   const {
     routes,
@@ -30,17 +33,27 @@ export const NavigationProvider = ({ children }) => {
   } = useRoutes();
 
   const handleNavigation = (indexRouteSelected) => {
-    let polylineFound;
+    let polylineRouteFound;
 
     polylines.map((polyline, index) => {
       if (index != indexRouteSelected) polyline.setMap(null);
       else {
         polyline.setOptions({
           strokeOpacity: 1.0,
+          strokeWeight: 12,
           zIndex: 1
         });
-        polylineFound = polyline;
+        polylineRouteFound = polyline;
       }
+    });
+
+    const polylineToBackground = new google.maps.Polyline({
+      path: polylineRouteFound.getPath().getArray(),
+      strokeColor: "#ffffff",
+      strokeOpacity: 1.0,
+      strokeWeight: 21,
+      zIndex: 0,
+      map: map
     });
 
     const routeFound = routes.find(
@@ -53,10 +66,9 @@ export const NavigationProvider = ({ children }) => {
       zoomControl: false,
       streetViewControl: false,
       center: userLocation,
-      zoom: 18
+      zoom: 25,
+      tilt: 70
     });
-
-    map.setTilt(70);
 
     const pathFirstStep = google.maps.geometry.encoding.decodePath(
       routeFound.legs[0].steps[0].polyline.encodedPolyline
@@ -71,14 +83,20 @@ export const NavigationProvider = ({ children }) => {
     setRoutes();
     setIndexRouteSelected();
     setShowMenuRoutes(false);
-    setPolylineNavigation(polylineFound);
+    setPolylineNavigation(polylineRouteFound);
+    setPolylineBackground(polylineToBackground);
     setRouteNavigation(routeFound);
   };
 
   const handleCloseNavigation = () => {
     polylineNavigation.setMap(null);
+    polylineBackground.setMap(null);
+
     setPolylineNavigation();
+    setPolylineBackground();
     setRouteNavigation();
+    setIndexStep();
+    setCurrentStep();
     setEditRoute(false);
 
     if (activeNavigationVoice) setActiveNavigationVoice(false);
@@ -118,11 +136,21 @@ export const NavigationProvider = ({ children }) => {
       );
 
       polylineNavigation.setOptions({
-        path: pathRoute
+        path: pathRoute,
+        strokeWeight: 12,
+        zIndex: 1
+      });
+
+      polylineBackground.setOptions({
+        path: pathRoute,
+        bacground: "#ffffff",
+        strokeWeight: 21,
+        zIndex: 0
       });
 
       setRouteNavigation(newRoute);
       setPolylineNavigation(polylineNavigation);
+      setPolylineBackground(polylineBackground);
     }
   };
 
@@ -150,6 +178,7 @@ export const NavigationProvider = ({ children }) => {
       value={{
         routeNavigation,
         polylineNavigation,
+        polylineBackground,
         currentStep,
         setCurrentStep,
         indexStep,
@@ -161,6 +190,8 @@ export const NavigationProvider = ({ children }) => {
         setDestinationArrived,
         editRoute,
         setEditRoute,
+        intermediates,
+        setIntermediates,
         handleCloseNavigation,
         handleNavigation,
         handleOptionVoice,
