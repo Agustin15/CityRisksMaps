@@ -1,8 +1,9 @@
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
+const LOCALHOST_BACKEND= import.meta.env.VITE_LOCALHOST_BACKEND;
 
-export const loadData = async (url, setUser) => {
+export const loadData = async (endpoint, setUser) => {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(LOCALHOST_BACKEND + endpoint, {
       method: "GET",
       credentials: "include",
       headers: {

@@ -13,9 +13,10 @@ import {
   loadNeighborhoodsCrimeFromFile,
   getYearsNeighborhoodsCrime,
   getAmountAnCrimeInNeighborhoodByYear,
-  getAmountOfAnCrimeInYears,
-  getAmountOfAnCrimeInNeighborhood,
-  getAmountOfDifferentsCrimesInNeighborhoodInYear
+  getAmountOfDifferentsCrimesInNeighborhoodInYear,
+  getIncreaseOfCrimeInYears,
+  getIncreaseOfCrimeInNeighborhood,
+  getAllYearsOfCrimes
 } from "../controller/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -46,13 +47,15 @@ RoutesNeighborhoodCrimeAdmin.get(
 );
 
 RoutesNeighborhoodCrimeAdmin.get(
-  "/amountOfAnCrimeInYears/:categoryCrime",
-  getAmountOfAnCrimeInYears
+  "/increaseOfCrimeInYears/:categoryCrime",
+  getIncreaseOfCrimeInYears
 );
 RoutesNeighborhoodCrimeAdmin.get(
-  "/amountOfAnCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
-  getAmountOfAnCrimeInNeighborhood
+  "/increaseOfCrimeInNeighborhood/:categoryCrime/:idNeighborhood",
+  getIncreaseOfCrimeInNeighborhood
 );
+
+RoutesNeighborhoodCrimeAdmin.get("/allYears", getAllYearsOfCrimes);
 
 RoutesNeighborhoodCrimeAdmin.get(
   "/amountOfDifferentsCrimesInNeighborhoodInYear/:idNeighborhood/:year",

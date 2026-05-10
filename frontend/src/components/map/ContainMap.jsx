@@ -41,16 +41,17 @@ export const ContainMap = () => {
           position: ControlPosition.RIGHT_BOTTOM
         }}
         onClick={(event) => {
-          if (event.detail.placeId && !routeNavigation) {
-            event.stop();
-            handleClickOnMap(event);
-          }
-          if (windowWidth < 1200 && !editRoute)
-            handleMouseNeighborhoohdPolygon(
-              event,
-              polygons,
-              setPolygonSelected
-            );
+          setUserLocation(event.detail.latLng);
+          // if (event.detail.placeId && !routeNavigation) {
+          //   event.stop();
+          //   handleClickOnMap(event);
+          // }
+          // if (windowWidth < 1200 && !editRoute)
+          //   handleMouseNeighborhoohdPolygon(
+          //     event,
+          //     polygons,
+          //     setPolygonSelected
+          //   );
         }}
         onMousemove={(event) => {
           if (windowWidth < 1200 || editRoute) return;

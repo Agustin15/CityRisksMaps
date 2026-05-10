@@ -1,13 +1,14 @@
 import styles from "./Populations.module.css";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { MenuSide } from "../menuSide/MenuSide";
 import { ContainTable } from "./containTable/ContainTable";
 import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { Header } from "../header/Header";
-import { useParams } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 export const Populations = () => {
   const { loadingProfile, user, getProfile } = useAuth();

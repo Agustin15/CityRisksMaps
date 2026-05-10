@@ -1,24 +1,19 @@
-export const loadOptionsLineChart = (
-  dataChart,
-  crime,
-  intervalOne,
-  intervalTwo
-) => {
+export const loadOptionsColumnChart = (dataChart) => {
+  console.log(dataChart);
   const options = {
     backgroundColor: "",
     animationEnabled: true,
     axisX: {
-      title: "Años",
+      title: "Tipo de delito",
       titleFontSize: 21,
       titleFontWeight: "bold",
       labelFontColor: "#0f0f0f",
       labelFontSize: 16,
       gridColor: "#d6d6d6",
-      interval: 1,
       valueFormatString: "#.###"
     },
     axisY: {
-      title: "Denuncias",
+      title: "Cantidad",
       titleFontWeight: "bold",
       labelFontColor: "#030303",
       titleFontSize: 21,
@@ -27,29 +22,21 @@ export const loadOptionsLineChart = (
       labelFontSize: 16,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: crime == "Homicidio" ? intervalOne : intervalTwo,
+      interval: 100,
       labelFormatter: function (e) {
         return e.value;
       }
     },
     data: [
       {
-        type: "spline",
-        markerColor: "rgb(202, 47, 47)",
-        lineColor: "rgb(206, 38, 38)",
+        type: "column",
         yValueFormatString: "#,###",
         xValueFormatString: "#.###",
-        type: "spline",
         dataPoints: dataChart.map((item) => ({
-          x: item.year,
+          label: item.crime,
           y: item.amount,
           toolTipContent:
-            "Denuncias {x}:{y}" +
-            (item.increase !== null
-              ? item.increase > 0
-                ? "<span style='color:red'> (+" + item.increase + ")</span>"
-                : "<span style='color:green'> (" + item.increase + "%)</span>"
-              : "")
+            "{label}:" + item.amount + " (" + item.percentege + "%" + ")"
         }))
       }
     ]

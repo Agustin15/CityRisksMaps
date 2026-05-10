@@ -1056,7 +1056,7 @@ GO
 
 ----STORED PROCEDURE TO Statistics
 
-CREATE OR ALTER PROCEDURE AmountOfAnCrimeInYears @crime VARCHAR(20) AS 
+CREATE OR ALTER PROCEDURE IncreaseOfOneCrimeInYears @crime VARCHAR(20) AS 
 
 BEGIN 
 select year,SUM(quantity) as 'amount',SUM(increase) as 'increase' from Neighborhoods_Crimes where crime=@crime GROUP BY year ORDER BY year ASC; 
@@ -1064,7 +1064,7 @@ END
 
 GO
 
-CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodInYears @crime VARCHAR(20),@idNeighborhood INT AS 
+CREATE OR ALTER PROCEDURE IncreaseOfOneCrimeOfInNeighborhood @crime VARCHAR(20),@idNeighborhood INT AS 
 
 BEGIN 
 select NC.year, N.name as 'nameNeighborhood',NC.quantity as 'amount',increase from Neighborhoods_Crimes NC 
@@ -1074,11 +1074,13 @@ END
 GO
 
 
-CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodsByYear @crime VARCHAR(20),@year INT AS 
+CREATE OR ALTER FUNCTION CalculatePercentege(@amount INT,@amountCrimes INT) RETURNS DECIMAL(3,1)
+BEGIN
+DECLARE @percentege DECIMAL(6,1);
 
-BEGIN 
-select N.name,NC.quantity as 'amount' from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime and NC.year=@year ORDER BY 'amount' DESC;
+SET @percentege=(SUM(@amount)*100)/CAST(@amountCrimes AS DECIMAL(6,1))
+
+RETURN @percentege
 END
 
 GO
@@ -1087,15 +1089,32 @@ CREATE OR ALTER PROCEDURE AmountOfDifferentsCrimesInNeighborhoodInYear @idNeighb
 BEGIN 
 
 DECLARE @amountCrimes INT;
+DECLARE @percentege DECIMAL;
 
 select @amountCrimes=SUM(quantity) from Neighborhoods_Crimes where neighborhood=@idNeighborhood and year=@year;
 
-select crime,SUM(quantity) as 'amount',((SUM(quantity)*100)/@amountCrimes) as 'percentege' from Neighborhoods_Crimes
+select crime,SUM(quantity) as 'amount', dbo.CalculatePercentege(SUM(quantity),@amountCrimes) as 'percentege' from Neighborhoods_Crimes
 where neighborhood=@idNeighborhood and year=@year GROUP BY crime;
 END
 
 GO
 
+CREATE OR ALTER PROCEDURE AllYearsOfCrimes AS 
+BEGIN 
+
+select DISTINCT year from Neighborhoods_Crimes ORDER BY year;  
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodsByYear @crime VARCHAR(20),@year INT AS 
+
+BEGIN 
+select N.name,NC.quantity as 'amount' from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
+where NC.crime=@crime and NC.year=@year ORDER BY 'amount' DESC;
+END
+
+GO
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
 

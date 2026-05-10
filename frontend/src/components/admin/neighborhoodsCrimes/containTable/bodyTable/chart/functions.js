@@ -34,7 +34,7 @@ export const getDataChart = async (
   }
 };
 
-export const loadOptions = (dataChart,crime) => {
+export const loadOptions = (dataChart, crime) => {
   const options = {
     backgroundColor: "",
     animationEnabled: true,
@@ -43,24 +43,24 @@ export const loadOptions = (dataChart,crime) => {
     },
     axisX: {
       title: "Años",
-      titleFontColor: "white",
+      titleFontColor: "#2c2c2c",
       titleFontSize: 18,
-      labelFontColor: "white",
+      labelFontColor: "#2c2c2c",
       labelFontSize: 15,
-      lineColor: "#ffffff",
+      lineColor: "#2c2c2c",
       interval: 1,
       valueFormatString: "#.###"
     },
     axisY: {
       title: "Denuncias",
-      titleFontColor: "white",
+      titleFontColor: "#2c2c2c",
       titleFontSize: 18,
-      lineColor: "white",
-      labelFontColor: "white",
+      lineColor: "#2c2c2c",
+      labelFontColor: "#2c2c2c",
       labelFontSize: 15,
-      tickColor: "white",
+      tickColor: "#2c2c2c",
       gridThickness: 0,
-      interval:crime == "Homicidio" ? 10 : 500,
+      interval: crime == "Homicidio" ? 10 : 500,
       labelFormatter: function (e) {
         return e.value;
       }
@@ -68,8 +68,8 @@ export const loadOptions = (dataChart,crime) => {
     data: [
       {
         type: "spline",
-        markerColor: "rgb(228, 74, 74)",
-        lineColor: "rgb(255, 255, 255)",
+        markerColor: "rgb(190, 39, 39)",
+        lineColor: "rgb(218, 58, 58)",
         yValueFormatString: "#,###",
         xValueFormatString: "#.###",
         type: "spline",
@@ -80,7 +80,7 @@ export const loadOptions = (dataChart,crime) => {
             "Denuncias {x}:{y}" +
             (item.increase !== null
               ? item.increase > 0
-                ?"<span style='color:red'> (+" + item.increase + ")</span>"
+                ? "<span style='color:red'> (+" + item.increase + ")</span>"
                 : "<span style='color:green'> (" + item.increase + "%)</span>"
               : "")
         }))

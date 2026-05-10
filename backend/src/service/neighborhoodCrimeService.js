@@ -122,10 +122,10 @@ export class NeighborhoodCrimeService {
       throw error;
     }
   }
-  static async getAmountOfAnCrimeInYears(crime) {
+  static async getIncreaseOfCrimeInYears(crime) {
     try {
       const result =
-        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInYears(crime);
+        await NeighborhoodCrimeDAL.getIncreaseOfCrimeInYears(crime);
 
       return result;
     } catch (error) {
@@ -133,10 +133,10 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, idNeighborhood) {
+  static async getIncreaseOfCrimeInNeighborhood(crime, idNeighborhood) {
     try {
       const result =
-        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodInYears(
+        await NeighborhoodCrimeDAL.getIncreaseOfCrimeInNeighborhood(
           crime,
           idNeighborhood
         );
@@ -146,6 +146,16 @@ export class NeighborhoodCrimeService {
       throw error;
     }
   }
+  static async getAllYearsOfCrimes() {
+    try {
+      const result = await NeighborhoodCrimeDAL.getAllYearsOfCrimes();
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year) {
     try {
       const result =

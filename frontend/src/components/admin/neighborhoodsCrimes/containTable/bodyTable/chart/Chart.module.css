@@ -13,10 +13,11 @@
 
 .containChart h3 {
     text-align: center;
-    padding: 0.5rem 0 0.5rem 0;
+    padding: 0.8rem 0 0.8rem 0;
     font-size: 16px;
     margin: 0;
-    background: rgb(192, 192, 192);
+    background: rgb(20, 42, 70);
+    color: white;
     width: 100%;
 }
 
@@ -27,10 +28,15 @@
     right: 0.1rem;
     box-shadow: none;
     background: none;
-    color: rgb(31, 31, 31);
+    color: rgb(247, 247, 247);
     width: auto;
     height: auto;
-    font-size: 14px;
+    font-size: 13px;
+    opacity: 85%;
+}
+
+.containChart .close:hover {
+    opacity: 99%;
 }
 .containChart .chart .loading {
     display: flex;
@@ -39,7 +45,7 @@
     height: 85%;
     padding: 0;
     margin: 0;
-    color: white;
+    color: rgb(51, 51, 51);
     font-size: 17px;
     font-weight: bold;
 }
@@ -51,7 +57,7 @@
     width: 96%;
     height: 79%;
     padding: 2%;
-    background: linear-gradient(345deg, #6a86bb, #5571a5);
+    background: linear-gradient(345deg, #f0f0f0, #f7f7f7);
     overflow: hidden;
     position: relative;
 }
@@ -75,4 +81,5 @@
     width: 75px;
     height: 75px;
     margin: 0;
+    opacity: 85%;
 }

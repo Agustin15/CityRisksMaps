@@ -372,22 +372,22 @@ export const getAmountAnCrimeInNeighborhoodByYear = async (req, res) => {
   }
 };
 
-export const getAmountOfAnCrimeInYears = async (req, res) => {
+export const getIncreaseOfCrimeInYears = async (req, res) => {
   try {
     const categoryCrime = req.params.categoryCrime;
 
     if (!categoryCrime)
       throw new Error("Debe ingresar un categoria de crimen para la busqueda");
 
-    const amountCategoryCrimeByYears =
-      await NeighborhoodCrimeService.getAmountOfAnCrimeInYears(categoryCrime);
+    const result =
+      await NeighborhoodCrimeService.getIncreaseOfCrimeInYears(categoryCrime);
 
-    if (!amountCategoryCrimeByYears || amountCategoryCrimeByYears.length == 0)
+    if (!result || result.length == 0)
       throw new Error(
         "No se encontraron registros de este crimen en el sistema"
       );
 
-    return res.status(200).json(amountCategoryCrimeByYears);
+    return res.status(200).json(result);
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 404)
@@ -395,7 +395,7 @@ export const getAmountOfAnCrimeInYears = async (req, res) => {
   }
 };
 
-export const getAmountOfAnCrimeInNeighborhood = async (req, res) => {
+export const getIncreaseOfCrimeInNeighborhood = async (req, res) => {
   try {
     const categoryCrime = req.params.categoryCrime;
     const idNeighborhood = req.params.idNeighborhood;
@@ -406,21 +406,35 @@ export const getAmountOfAnCrimeInNeighborhood = async (req, res) => {
     if (!idNeighborhood)
       throw new Error("Debe ingresar un barrio para la busqueda");
 
-    const amountCategoryCrimeInNeighborhoodInYears =
-      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodInYears(
+    const result =
+      await NeighborhoodCrimeService.getIncreaseOfCrimeInNeighborhood(
         categoryCrime,
         idNeighborhood
       );
 
-    if (
-      !amountCategoryCrimeInNeighborhoodInYears ||
-      amountCategoryCrimeInNeighborhoodInYears.length == 0
-    )
+    if (!result || result.length == 0)
       throw new Error(
         "No se encontraron registros de este crimen en este barrio en el sistema"
       );
 
-    return res.status(200).json(amountCategoryCrimeInNeighborhoodInYears);
+    return res.status(200).json(result);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getAllYearsOfCrimes = async (req, res) => {
+  try {
+    const result = await NeighborhoodCrimeService.getAllYearsOfCrimes();
+
+    if (!result || result.length == 0)
+      throw new Error(
+        "No se encontraron registros de años de crimenes en barrios"
+      );
+
+    return res.status(200).json(result);
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 404)
@@ -441,18 +455,18 @@ export const getAmountOfDifferentsCrimesInNeighborhoodInYear = async (
     if (!idNeighborhood)
       throw new Error("Debe ingresar un barrio para la busqueda");
 
-    const amountDifferentCrimesInHood =
+    const result =
       await NeighborhoodCrimeService.getAmountOfDifferentsCrimesInNeighborhoodInYear(
         idNeighborhood,
         year
       );
 
-    if (!amountDifferentCrimesInHood || amountDifferentCrimesInHood.length == 0)
+    if (!result || result.length == 0)
       throw new Error(
         "No se encontraron registros de crimenes en este barrio y este año en el sistema"
       );
 
-    return res.status(200).json(amountDifferentCrimesInHood);
+    return res.status(200).json(result);
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 404)

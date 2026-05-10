@@ -3,7 +3,10 @@ import { createContext, useState } from "react";
 import { useRoutes } from "../routesContext/RoutesContext";
 import { useMap } from "@vis.gl/react-google-maps";
 import { useMapControls } from "../MapContext";
-import { getNewRoute } from "./functionsNavigation.js";
+import {
+  animationCameraZoomNavigationInitialized,
+  getNewRoute
+} from "./functionsNavigation.js";
 
 const NavigationContext = createContext();
 
@@ -64,10 +67,7 @@ export const NavigationProvider = ({ children }) => {
       disableDefaultUI: true,
       clickableIcons: false,
       zoomControl: false,
-      streetViewControl: false,
-      center: userLocation,
-      zoom: 25,
-      tilt: 70
+      streetViewControl: false
     });
 
     const pathFirstStep = google.maps.geometry.encoding.decodePath(
@@ -78,6 +78,8 @@ export const NavigationProvider = ({ children }) => {
       lat: pathFirstStep[0].lat(),
       lng: pathFirstStep[0].lng()
     });
+    
+    animationCameraZoomNavigationInitialized(map, userLocation);
 
     setPolylines();
     setRoutes();
@@ -136,16 +138,11 @@ export const NavigationProvider = ({ children }) => {
       );
 
       polylineNavigation.setOptions({
-        path: pathRoute,
-        strokeWeight: 12,
-        zIndex: 1
+        path: pathRoute
       });
 
       polylineBackground.setOptions({
-        path: pathRoute,
-        bacground: "#ffffff",
-        strokeWeight: 21,
-        zIndex: 0
+        path: pathRoute
       });
 
       setRouteNavigation(newRoute);

@@ -3,7 +3,8 @@ import { createContext, useState } from "react";
 import {
   getUserCurrentStep,
   getNextCoordinatesToUserLocation,
-  coordinateMostCloseToUserLocation
+  coordinateMostCloseToUserLocation,
+  calculateAllCoordinatesOfSteps
 } from "./functionsNavigationStep.js";
 import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import { useNavigation } from "./NavigationContext";
@@ -21,11 +22,12 @@ export const NavigationStepProvider = ({ children }) => {
     neighborhood: ""
   });
 
-  const [lastLatLngMostClose, setLastLatLngMostClose] = useState(null);
+  const [allCoordinatesBySteps, setAllCoordinatesBySteps] = useState([]);
 
   const map = useMap("mainMap");
   const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
+
   const {
     routeNavigation,
     recalculateRoute,
@@ -44,7 +46,10 @@ export const NavigationStepProvider = ({ children }) => {
   const { transportSelected } = useRoutes();
 
   useEffect(() => {
-    if (!routeNavigation) return;
+    if (!routeNavigation) {
+      setAllCoordinatesBySteps([]);
+      return;
+    }
     redrawPolylineNavigation(routeNavigation);
   }, [routeNavigation]);
 
@@ -135,7 +140,20 @@ export const NavigationStepProvider = ({ children }) => {
   };
 
   const calculateCurrentUserStep = (routeNavigation) => {
-    let userStepFound = getUserCurrentStep(routeNavigation, userLocation);
+    let allCoordinatesOfSteps;
+    if (allCoordinatesBySteps.length == 0) {
+      allCoordinatesOfSteps = calculateAllCoordinatesOfSteps(routeNavigation);
+      setAllCoordinatesBySteps(allCoordinatesBySteps);
+    }
+
+    
+    let userStepFound = getUserCurrentStep(
+      routeNavigation,
+      userLocation,
+      allCoordinatesBySteps.length > 0
+        ? allCoordinatesBySteps
+        : allCoordinatesOfSteps
+    );
 
     if (!userStepFound) return;
     let endLocationStep = userStepFound.step.endLocation.latLng;

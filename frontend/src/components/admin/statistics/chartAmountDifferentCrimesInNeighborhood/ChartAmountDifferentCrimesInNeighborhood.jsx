@@ -1,19 +1,18 @@
-import styles from "./ChartAmountCrimeInNeighborhood.module.css";
+import styles from "./ChartAmountDifferentCrimesInNeighborhood.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
-const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import { useEffect, useState } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
 import { loadData } from "../functions.js";
 import { FilterChart } from "./filterChart/FilterChart.jsx";
-import { loadOptionsLineChart } from "../chartIncreaseCategoryCrime/functions.js";
+import { loadOptionsColumnChart } from "./function.js";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-export const ChartAmountCrimeInNeighborhood = () => {
-  const [crimes, setCrimes] = useState([]);
+export const ChartAmountDifferentCrimesInNeighborhood = () => {
   const [neighborhoods, setNeighborhoods] = useState([]);
-  const [crimeSelected, setCrimeSelected] = useState(null);
   const [neighborhoodSelected, setNeighborhoodSelected] = useState(null);
+  const [years, setYears] = useState([]);
+  const [yearSelected, setYearSelected] = useState(null);
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,23 +22,20 @@ export const ChartAmountCrimeInNeighborhood = () => {
   }, []);
 
   useEffect(() => {
-    if (!crimeSelected || !neighborhoodSelected) return;
+    if (!neighborhoodSelected || !yearSelected) return;
+    loadChangeFilter();
+  }, [neighborhoodSelected, yearSelected]);
 
-    loadChangeFilter(
-      "/neighborhoodCrimeAdmin/amountOfAnCrimeInNeighborhood/" +
-        crimeSelected +
-        "/" +
-        neighborhoodSelected.idNeighborhood
-    );
-  }, [crimeSelected, neighborhoodSelected]);
-
-  const loadChangeFilter = async (endpoint) => {
+  const loadChangeFilter = async () => {
+    setError("");
     try {
-      setError("");
-      console.log(LOCALHOST_BACKEND + endpoint);
-      const result = await loadData(LOCALHOST_BACKEND + endpoint);
+      const result = await loadData(
+        "/neighborhoodCrimeAdmin/amountOfDifferentsCrimesInNeighborhoodInYear/" +
+          neighborhoodSelected.idNeighborhood +
+          "/" +
+          yearSelected
+      );
 
-      console.log(result);
       setDataChart(result);
     } catch (error) {
       setError(error.message);
@@ -49,14 +45,12 @@ export const ChartAmountCrimeInNeighborhood = () => {
   const loadFilter = async () => {
     setLoading(true);
     try {
-      const crimes = await loadData(LOCALHOST_BACKEND + "/crime/crimes");
-      setCrimes(crimes);
-      setCrimeSelected(crimes[0].category);
-      const neighborhoods = await loadData(
-        LOCALHOST_BACKEND + "/neighborhood/allNeighborhoods"
-      );
+      const neighborhoods = await loadData("/neighborhood/allNeighborhoods");
       setNeighborhoods(neighborhoods);
       setNeighborhoodSelected(neighborhoods[0]);
+      const years = await loadData("/neighborhoodCrimeAdmin/allYears");
+      setYears(years);
+      setYearSelected(Object.values(years[0]));
     } catch (error) {
       setError(error.message);
     } finally {
@@ -67,18 +61,21 @@ export const ChartAmountCrimeInNeighborhood = () => {
   return (
     <div className={styles.containChart}>
       <div className={styles.header}>
+        <h3>
+          {neighborhoodSelected &&
+            yearSelected &&
+            "Cantidade de denuncias por delitos en " +
+              neighborhoodSelected.name +
+              " en " +
+              yearSelected}
+        </h3>
+
         <FilterChart
-          crimes={crimes}
+          years={years}
           neighborhoods={neighborhoods}
-          setCrimeSelected={setCrimeSelected}
+          setYearSelected={setYearSelected}
           setNeighborhoodSelected={setNeighborhoodSelected}
         />
-        {crimeSelected && neighborhoodSelected && (
-          <h3>
-            Crecimiento de denuncias de {crimeSelected + "s"} en{" "}
-            {neighborhoodSelected.name}{" "}
-          </h3>
-        )}
       </div>
 
       {loading && (
@@ -89,13 +86,13 @@ export const ChartAmountCrimeInNeighborhood = () => {
       )}
       {!loading && error.length > 0 && (
         <div className={styles.containError}>
-          <img src={iconNotData}></img>
           <h3>{error}</h3>
+          <img src={iconNotData}></img>
         </div>
       )}
       {!loading && error.length == 0 && dataChart && (
         <CanvasJSChart
-          options={loadOptionsLineChart(dataChart, crimeSelected, 2, 200)}
+          options={loadOptionsColumnChart(dataChart)}
         ></CanvasJSChart>
       )}
     </div>

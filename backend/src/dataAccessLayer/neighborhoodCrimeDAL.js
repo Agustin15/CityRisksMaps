@@ -254,11 +254,11 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  static async getAmountOfAnCrimeInYears(crime) {
+  static async getIncreaseOfCrimeInYears(crime) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("crime", sql.VarChar(20), crime);
-      const result = await request.execute("AmountOfAnCrimeInYears");
+      const result = await request.execute("IncreaseOfOneCrimeInYears");
 
       return result.recordset;
     } catch (error) {
@@ -280,15 +280,24 @@ export class NeighborhoodCrimeDAL {
       throw error;
     }
   }
-  static async getAmountOfAnCrimeInNeighborhoodInYears(crime, idNeighborhood) {
+  static async getIncreaseOfCrimeInNeighborhood(crime, idNeighborhood) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("crime", sql.VarChar(20), crime);
       request.input("idNeighborhood", sql.Int, idNeighborhood);
 
       const result = await request.execute(
-        "AmountOfAnCrimeInNeighborhoodInYears"
+        "IncreaseOfOneCrimeOfInNeighborhood"
       );
+      return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async getAllYearsOfCrimes() {
+    try {
+      const request = new sql.Request(connection.pool);
+      const result = await request.execute("AllYearsOfCrimes");
       return result.recordset;
     } catch (error) {
       throw error;
@@ -301,12 +310,13 @@ export class NeighborhoodCrimeDAL {
   ) {
     try {
       const request = new sql.Request(connection.pool);
-      request.input("idNeighborhood", sql.Int, year);
+      request.input("idNeighborhood", sql.Int, idNeighborhood);
       request.input("year", sql.Int, year);
 
       const result = await request.execute(
         "AmountOfDifferentsCrimesInNeighborhoodInYear"
       );
+
       return result.recordset;
     } catch (error) {
       throw error;

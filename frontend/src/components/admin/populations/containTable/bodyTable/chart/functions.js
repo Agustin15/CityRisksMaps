@@ -41,21 +41,22 @@ export const loadOptions = (dataChart) => {
     },
     axisX: {
       title: "Años",
-      titleFontColor: "white",
-      titleFontSize: 15,
-      labelFontColor: "white",
+      titleFontColor: "#2c2c2c",
+      titleFontSize: 18,
+      labelFontColor: "#2c2c2c",
       labelFontSize: 15,
-      lineColor: "#ffffff",
-      interval: 1
+      lineColor: "#2c2c2c",
+      interval: 1,
+      valueFormatString: "#.###"
     },
     axisY: {
       title: "Habitantes",
-      titleFontColor: "white",
-      titleFontSize: 16,
-      lineColor: "white",
-      labelFontColor: "white",
-      labelFontSize: 14,
-      tickColor: "white",
+      titleFontColor: "#2c2c2c",
+      titleFontSize: 18,
+      lineColor: "#2c2c2c",
+      labelFontColor: "#2c2c2c",
+      labelFontSize: 15,
+      tickColor: "#2c2c2c",
       gridThickness: 0,
       interval: 1000,
       labelFormatter: function (e) {

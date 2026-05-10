@@ -1,3 +1,18 @@
+export const calculateAllCoordinatesOfSteps = (routeNavigation) => {
+  const steps = routeNavigation.legs[0].steps;
+
+  const allCoordinatesOfStep = steps.map((step, index) => {
+    const allCoordinates = getInterpolatedPointsFromStep(step, 9);
+
+    return {
+      index: index,
+      allCoordinates: allCoordinates
+    };
+  });
+
+  return allCoordinatesOfStep;
+};
+
 const getInterpolatedPointsFromStep = (step, fractionSegments) => {
   let interpolatedPoints = [];
 
@@ -23,21 +38,28 @@ const getInterpolatedPointsFromStep = (step, fractionSegments) => {
   return interpolatedPoints;
 };
 
-export const getUserCurrentStep = (routeNavigation, userLocation) => {
+export const getUserCurrentStep = (
+  routeNavigation,
+  userLocation,
+  allCoordinatesOfSteps
+) => {
   const steps = routeNavigation.legs[0].steps;
 
   const stepsAndDistanceToUser = steps.map((step, index) => {
-    const interpolatedPoints = getInterpolatedPointsFromStep(step, 9);
+    
+    const allCoordinatesOfStepFound = allCoordinatesOfSteps.find(
+      (coordinatesStep) => coordinatesStep.index == index
+    );
 
     let prevDistance = google.maps.geometry.spherical.computeDistanceBetween(
       userLocation,
-      interpolatedPoints[0]
+      allCoordinatesOfStepFound.allCoordinates[0]
     );
 
-    for (let i = 1; i < interpolatedPoints.length; i++) {
+    for (let i = 1; i < allCoordinatesOfStepFound.allCoordinates.length; i++) {
       const distance = google.maps.geometry.spherical.computeDistanceBetween(
         userLocation,
-        interpolatedPoints[i]
+        allCoordinatesOfStepFound.allCoordinates[i]
       );
 
       if (distance < prevDistance) prevDistance = distance;

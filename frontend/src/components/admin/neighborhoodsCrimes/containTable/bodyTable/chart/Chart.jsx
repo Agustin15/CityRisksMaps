@@ -1,5 +1,5 @@
 import styles from "./Chart.module.css";
-import iconNoData from "../../../../../../assets/img/notData.png";
+import iconNoData from "../../../../../../assets/img/notDataAlert.png";
 import { loadOptions, getDataChart } from "./functions.js";
 import CanvasJSReact from "@canvasjs/react-charts";
 import { useEffect, useState } from "react";
