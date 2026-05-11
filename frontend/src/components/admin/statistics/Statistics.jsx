@@ -1,7 +1,7 @@
 import styles from "./Statistics.module.css";
 import iconStatistics from "../../../assets/img/iconStatistics.png";
 import iconChartLine from "../../../assets/img/chartLine.png";
-import iconChartColumn from "../../../assets/img/chartColumn.png";
+import iconChartColumn from "../../../assets/img/columnChart.png";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { useEffect, useState } from "react";
 import { MenuSide } from "../menuSide/MenuSide";
@@ -9,6 +9,7 @@ import { ChartIncreaseCategoryCrime } from "./chartIncreaseCategoryCrime/ChartIn
 import { ChartIncreaseOfCrimeInNeighborhood } from "./chartIncreaseOfCrimeInNeighborhood/ChartIncreaseOfCrimeInNeighborhood";
 import { Helmet } from "react-helmet-async";
 import { ChartAmountDifferentCrimesInNeighborhood } from "./chartAmountDifferentCrimesInNeighborhood/ChartAmountDifferentCrimesInNeighborhood";
+import { ChartAmountOfCrimeInNeighborhoodsByYear } from "./chartAmountOfCrimeInNeighborhoods/ChartAmountOfCrimeInNeighborhoods";
 
 export const Statistics = () => {
   const { user, loadingProfile, getProfile } = useAuth();
@@ -68,6 +69,19 @@ export const Statistics = () => {
                   <img src={iconChartColumn}></img>
                   <span>Crimenes en barrio por año</span>
                 </li>
+                <li
+                  className={
+                    selected == "AmountOfCrimeInNeighborhoodsByYear"
+                      ? styles.selected
+                      : ""
+                  }
+                  onClick={() =>
+                    setSelected("AmountOfCrimeInNeighborhoodsByYear")
+                  }
+                >
+                  <img src={iconChartColumn}></img>
+                  <span>Crimen en barrios por año</span>
+                </li>
               </ul>
             </div>
             <div className={styles.row}>
@@ -79,6 +93,9 @@ export const Statistics = () => {
               )}
               {selected == "AmountDifferentCrimesInNeighborhoodAndYear" && (
                 <ChartAmountDifferentCrimesInNeighborhood />
+              )}
+              {selected == "AmountOfCrimeInNeighborhoodsByYear" && (
+                <ChartAmountOfCrimeInNeighborhoodsByYear />
               )}
             </div>
           </div>

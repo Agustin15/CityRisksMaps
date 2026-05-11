@@ -1,10 +1,11 @@
+import CanvasJSReact from "@canvasjs/react-charts";
 import styles from "./ChartAmountDifferentCrimesInNeighborhood.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
 import { useEffect, useState } from "react";
-import CanvasJSReact from "@canvasjs/react-charts";
 import { loadData } from "../functions.js";
-import { FilterChart } from "./filterChart/FilterChart.jsx";
 import { loadOptionsColumnChart } from "./function.js";
+import { FilterOfNeighborhood } from "../filterOfNeighborhood/FilterOfNeighborhood.jsx";
+import { FilterOfYears } from "../filterOfYears/FilterOfYears.jsx";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -16,10 +17,6 @@ export const ChartAmountDifferentCrimesInNeighborhood = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    loadFilter();
-  }, []);
 
   useEffect(() => {
     if (!neighborhoodSelected || !yearSelected) return;
@@ -42,40 +39,37 @@ export const ChartAmountDifferentCrimesInNeighborhood = () => {
     }
   };
 
-  const loadFilter = async () => {
-    setLoading(true);
-    try {
-      const neighborhoods = await loadData("/neighborhood/allNeighborhoods");
-      setNeighborhoods(neighborhoods);
-      setNeighborhoodSelected(neighborhoods[0]);
-      const years = await loadData("/neighborhoodCrimeAdmin/allYears");
-      setYears(years);
-      setYearSelected(Object.values(years[0]));
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className={styles.containChart}>
       <div className={styles.header}>
         <h3>
           {neighborhoodSelected &&
             yearSelected &&
-            "Cantidade de denuncias por delitos en " +
+            "Cantidad de denuncias por delitos en " +
               neighborhoodSelected.name +
               " en " +
               yearSelected}
         </h3>
 
-        <FilterChart
-          years={years}
-          neighborhoods={neighborhoods}
-          setYearSelected={setYearSelected}
-          setNeighborhoodSelected={setNeighborhoodSelected}
-        />
+        <div className={styles.row}>
+          <FilterOfNeighborhood
+            neighborhoods={neighborhoods}
+            setNeighborhoods={setNeighborhoods}
+            setNeighborhoodSelected={setNeighborhoodSelected}
+            setLoading={setLoading}
+            setError={setError}
+          />
+
+          {neighborhoods && (
+            <FilterOfYears
+              years={years}
+              setYears={setYears}
+              setYearSelected={setYearSelected}
+              setLoading={setLoading}
+              setError={setError}
+            />
+          )}
+        </div>
       </div>
 
       {loading && (

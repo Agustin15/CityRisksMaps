@@ -1,28 +1,35 @@
-export const loadOptionsColumnChart = (dataChart) => {
+import CanvasJSReact from "@canvasjs/react-charts";
+
+export const loadOptionsColumnChart = (dataChart, crime) => {
+  CanvasJSReact.CanvasJS.addColorSet("blue", ["#20599b"]);
+
   const options = {
     backgroundColor: "",
+    colorSet: "blue",
     animationEnabled: true,
-    dataPointWidth: 65,
+    dataPointWidth: 35,
+    theme: "blue",
     axisX: {
-      title: "Tipo de delito",
-      titleFontSize: 21,
+      title: "Barrios",
+      titleFontSize: 19,
       titleFontWeight: "bold",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 16,
+      labelFontSize: 10,
+      interval: 1,
       gridColor: "#d6d6d6",
       valueFormatString: "#.###"
     },
     axisY: {
-      title: "Cantidad",
+      title: "Cantidad de denuncias",
       titleFontWeight: "bold",
       labelFontColor: "#030303",
-      titleFontSize: 21,
+      titleFontSize: 18,
       lineColor: "#383838",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 16,
+      labelFontSize: 15,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: 100,
+      interval: crime == "Homicidio" ? 5 : crime == "Hurto" ? 200 : 50,
       labelFormatter: function (e) {
         return e.value;
       }
@@ -30,13 +37,13 @@ export const loadOptionsColumnChart = (dataChart) => {
     data: [
       {
         type: "column",
+        width: 25,
         yValueFormatString: "#,###",
         xValueFormatString: "#.###",
         dataPoints: dataChart.map((item) => ({
-          label: item.crime,
+          label: item.name,
           y: item.amount,
-          toolTipContent:
-            "{label}:" + item.amount + " (" + item.percentege + "%" + ")"
+          toolTipContent: "{label}:" + "(" + item.amount + ")"
         }))
       }
     ]

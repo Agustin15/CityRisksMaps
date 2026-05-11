@@ -1,11 +1,11 @@
+import CanvasJSReact from "@canvasjs/react-charts";
 import styles from "./ChartIncreaseOfCrimeInNeighborhood.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
-const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import { useEffect, useState } from "react";
-import CanvasJSReact from "@canvasjs/react-charts";
 import { loadData } from "../functions.js";
-import { FilterChart } from "./filterChart/FilterChart.jsx";
 import { loadOptionsLineChart } from "../chartIncreaseCategoryCrime/functions.js";
+import { FilterOfCrime } from "../filterOfCrime/FilterOfCrime.jsx";
+import { FilterOfNeighborhood } from "../filterOfNeighborhood/FilterOfNeighborhood.jsx";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -17,10 +17,6 @@ export const ChartIncreaseOfCrimeInNeighborhood = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    loadFilter();
-  }, []);
 
   useEffect(() => {
     if (!crimeSelected || !neighborhoodSelected) return;
@@ -45,31 +41,28 @@ export const ChartIncreaseOfCrimeInNeighborhood = () => {
     }
   };
 
-  const loadFilter = async () => {
-    setLoading(true);
-    try {
-      const crimes = await loadData("/crime/crimes");
-      setCrimes(crimes);
-      setCrimeSelected(crimes[0].category);
-      const neighborhoods = await loadData("/neighborhood/allNeighborhoods");
-      setNeighborhoods(neighborhoods);
-      setNeighborhoodSelected(neighborhoods[0]);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className={styles.containChart}>
       <div className={styles.header}>
-        <FilterChart
+
+        <div className={styles.row}>
+        <FilterOfCrime
           crimes={crimes}
-          neighborhoods={neighborhoods}
+          setCrimes={setCrimes}
           setCrimeSelected={setCrimeSelected}
-          setNeighborhoodSelected={setNeighborhoodSelected}
+          setLoading={setLoading}
+          setError={setError}
         />
+        {crimes && (
+          <FilterOfNeighborhood
+            neighborhoods={neighborhoods}
+            setNeighborhoods={setNeighborhoods}
+            setNeighborhoodSelected={setNeighborhoodSelected}
+            setLoading={setLoading}
+            setError={setError}
+          />
+        )}
+        </div>
         {crimeSelected && neighborhoodSelected && (
           <h3>
             Crecimiento de denuncias de {crimeSelected + "s"} en{" "}

@@ -86,6 +86,7 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
     );
 
     const json = await readerFile(req.file);
+    console.log(json);
 
     const neighborhoodsCrime = filterFile(
       department,
@@ -97,7 +98,6 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
 
     res.status(200).json(neighborhoodsCrime);
   } catch (error) {
-    console.log(error);
     res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });
@@ -105,16 +105,26 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
 };
 
 const readerFile = async (file) => {
-  const buffer = fs.readFileSync(file.path);
-  const utf8String = iconv.decode(buffer, "latin1");
+  const read = fs.createReadStream(file.path);
 
-  const result = await csv({
-    noheader: false,
-    output: "json",
-    delimiter: ";"
-  }).fromString(utf8String);
+  let contentFile = "";
 
-  return result;
+  read.on("data", (chunk) => {
+    const chunkDecodeString = iconv.decode(chunk, "latin1");
+    contentFile += chunkDecodeString;
+  });
+
+  return new Promise((resolve, reject) => {
+    read.on("end", async () => {
+      const result = await csv({
+        noheader: false,
+        output: "json",
+        delimiter: ";"
+      }).fromString(contentFile);
+
+      resolve(result);
+    });
+  });
 };
 
 const normalize = (text) => {
@@ -464,6 +474,41 @@ export const getAmountOfDifferentsCrimesInNeighborhoodInYear = async (
     if (!result || result.length == 0)
       throw new Error(
         "No se encontraron registros de crimenes en este barrio y este año en el sistema"
+      );
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getAmountOfAnCrimeInNeighborhoodsByYear = async (req, res) => {
+  try {
+    const year = req.params.year;
+    const crime = req.params.crime;
+    const offset = req.params.offset;
+
+    if (!year) throw new Error("Debe ingresar un año para la busqueda");
+
+    if (!crime) throw new Error("Debe ingresar un crimen para la busqueda");
+
+    if (offset == null)
+      throw new Error(
+        "Debe indicar desde que numero de barrio quiere obtener los datos"
+      );
+
+    const result =
+      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodsByYear(
+        crime,
+        year,
+        offset
+      );
+
+    if (!result || result.length == 0)
+      throw new Error(
+        "No se encontraron registros de este crimen en este año en el sistema"
       );
 
     return res.status(200).json(result);

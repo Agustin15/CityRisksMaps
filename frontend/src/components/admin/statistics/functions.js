@@ -1,5 +1,5 @@
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
-const LOCALHOST_BACKEND= import.meta.env.VITE_LOCALHOST_BACKEND;
+const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const loadData = async (endpoint, setUser) => {
   try {
@@ -17,10 +17,11 @@ export const loadData = async (endpoint, setUser) => {
         setUser();
         location.href = LOCALHOST_FRONTEND + "/admin/login";
       }
+      throw new Error(result.messageError);
     }
 
     return result;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };

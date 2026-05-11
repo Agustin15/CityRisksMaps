@@ -5,8 +5,8 @@
     background-color: white;
     padding: 0.4rem;
     border-radius: 5px;
-    width: 92%;
-    height: 87%;
+    width: 96%;
+    height: 92%;
     box-shadow: 2px 2px 2px rgb(214, 214, 214);
     border: 1px solid rgb(228, 228, 228);
     margin-left: 0.5rem;
@@ -16,13 +16,18 @@
     font-size: 16px;
     margin: 0;
     padding: 0;
-    gap: 0.5rem;
     width: 100%;
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: start;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     position: relative;
+}
+.containChart .header h3 {
+    text-align: center;
+    font-size: 18px;
+    margin: 0.3rem 0 0 0;
+    width: 75%;
 }
 
 .containChart .header .row {
@@ -30,12 +35,6 @@
     justify-content: end;
     align-items: center;
     width: 99%;
-}
-
-.containChart .header h3 {
-    text-align: center;
-    font-size: 16px;
-    margin: 0.3rem 0 0 0;
 }
 
 .containLoader,
@@ -46,6 +45,10 @@
     align-items: center;
     height: 55%;
     gap: 0.5rem;
+}
+
+.containError {
+    flex-direction: column-reverse;
 }
 
 .containError img {

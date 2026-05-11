@@ -1,10 +1,10 @@
+import CanvasJSReact from "@canvasjs/react-charts";
 import styles from "./ChartIncreaseCategoryCrime.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
-const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import { useEffect, useState } from "react";
-import CanvasJSReact from "@canvasjs/react-charts";
 import { loadData } from "../functions.js";
 import { loadOptionsLineChart } from "./functions.js";
+import { FilterOfCrime } from "../filterOfCrime/FilterOfCrime.jsx";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -14,10 +14,6 @@ export const ChartIncreaseCategoryCrime = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    loadFilter();
-  }, []);
 
   useEffect(() => {
     if (!crimeSelected) return;
@@ -37,32 +33,20 @@ export const ChartIncreaseCategoryCrime = () => {
     }
   };
 
-  const loadFilter = async () => {
-    setLoading(true);
-    try {
-      const crimes = await loadData("/crime/crimes");
-      setCrimes(crimes);
-      setCrimeSelected(crimes[0].category);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className={styles.containChart}>
       <div className={styles.header}>
-        <h3>Crecimiento de denuncias de {crimeSelected + "s"}</h3>
-        <div className={styles.containSelect}>
-          <select onChange={(event) => setCrimeSelected(event.target.value)}>
-            {crimes.length > 0 &&
-              crimes.map((crime, index) => (
-                <option value={crime.category} key={index}>
-                  {crime.category}
-                </option>
-              ))}
-          </select>
+        {crimeSelected && (
+          <h3>Crecimiento de denuncias de {crimeSelected + "s"}</h3>
+        )}
+        <div className={styles.row}>
+          <FilterOfCrime
+            crimes={crimes}
+            setCrimes={setCrimes}
+            setCrimeSelected={setCrimeSelected}
+            setLoading={setLoading}
+            setError={setError}
+          />
         </div>
       </div>
 
