@@ -52,26 +52,3 @@ export const getNewRoute = async (
     );
   }
 };
-
-export const animationCameraZoomNavigationInitialized = (map, userLocation) => {
-  const cameraOptions = {
-    center: userLocation,
-    heading: map.getHeading(),
-    tilt: map.getTilt(),
-    zoom: map.getZoom()
-  };
-
-  map.moveCamera(cameraOptions);
-
-  const idInterval = setInterval(() => {
-    map.moveCamera({
-      ...cameraOptions,
-      tilt: map.getTilt() >= 70 ? 70 : map.getTilt() + 0.5,
-      zoom: map.getZoom() >= 23 ? 23 : map.getZoom() + 0.09
-    });
-  }, 10);
-
-  setTimeout(() => {
-    clearInterval(idInterval);
-  }, [5000]);
-};
