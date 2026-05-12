@@ -44,8 +44,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 55%;
-    gap: 0.5rem;
+    height: 65%;
+    gap: 1rem;
 }
 
 .containError img {
