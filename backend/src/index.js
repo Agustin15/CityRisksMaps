@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { v2 as cloudinary } from "cloudinary";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
@@ -52,11 +51,4 @@ app.use("/", (req, res) => {
   return res.status(200).send("Servidor corriendo");
 });
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true
-});
 
-export default cloudinary;

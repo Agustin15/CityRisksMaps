@@ -11,7 +11,7 @@ import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
 
 export const ContainMap = () => {
-  const { userLocation, setUserLocation } = useMapControls();
+  const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const { handleClickOnMap } = useSearchPlace();
   const { routeNavigation, editRoute } = useNavigation();
@@ -41,17 +41,16 @@ export const ContainMap = () => {
           position: ControlPosition.RIGHT_BOTTOM
         }}
         onClick={(event) => {
-          setUserLocation(event.detail.latLng);
-          // if (event.detail.placeId && !routeNavigation) {
-          //   event.stop();
-          //   handleClickOnMap(event);
-          // }
-          // if (windowWidth < 1200 && !editRoute)
-          //   handleMouseNeighborhoohdPolygon(
-          //     event,
-          //     polygons,
-          //     setPolygonSelected
-          //   );
+          if (event.detail.placeId && !routeNavigation) {
+            event.stop();
+            handleClickOnMap(event);
+          }
+          if (windowWidth < 1200 && !editRoute)
+            handleMouseNeighborhoohdPolygon(
+              event,
+              polygons,
+              setPolygonSelected
+            );
         }}
         onMousemove={(event) => {
           if (windowWidth < 1200 || editRoute) return;
