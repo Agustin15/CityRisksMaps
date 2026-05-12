@@ -80,3 +80,39 @@ export const sendMailToConfirmNewEmail = async (email, name, token) => {
     throw error;
   }
 };
+
+const sendVerificationCode = async (code, email) => {
+  try {
+    if (!EMAIL_FROM) throw new Error("EMAIL_FROM no declarado");
+    if (!APP_PASSWORD) throw new Error("APP_PASSWORD no declarado");
+    
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_FROM,
+        pass: process.env.APP_PASSWORD
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: '"CityRisksMap" <cityrisksmap@gmail.com>',
+      to: email,
+      subject: "Verificacion de encuesta sobre percepcion de seguridad barrio",
+      html: `<p>¡Hola!, hemos recibido una solicitud para verificar su correo para proseguir
+              con la encuesta.</p>
+              <p>Ingrese este codigo para la verificacion</p>
+          <h3>${code}</h3>
+
+          <p>El codigo caducara en 24 horas</p>
+
+          <p>Si usted no hizo esta solicitud de verificacion, contactenos</p> 
+        `
+    });
+
+    return info.messageId;
+  } catch (error) {
+    throw error;
+  }
+};

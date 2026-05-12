@@ -3,10 +3,21 @@ import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
 import {
   alertSwalConfirmDelete,
   alertSwalSuccess
-} from "../../../../sweetAlert/sweetAlert";
+} from "../../../../sweetAlert/sweetAlert.js";
 
-export const Delete = ({ crime, setDeleteCrime }) => {
-  const { fetchDelete, fetchGet, setRegisters } = useCrud();
+export const Delete = ({ neighborhoodCrime, setDeleteItem }) => {
+  const {
+    fetchDelete,
+    fetchGet,
+    setRegisters,
+    registers,
+    setPages,
+    setIndex,
+    index,
+    loadYears,
+    setYearSelected,
+    yearSelected
+  } = useCrud();
 
   useEffect(() => {
     handleDelete();
@@ -14,26 +25,60 @@ export const Delete = ({ crime, setDeleteCrime }) => {
 
   const handleDelete = async () => {
     const result = await alertSwalConfirmDelete(
-      `¿Desea eliminar el registro ${crime.category}?`
+      `¿Desea eliminar los registros de ${neighborhoodCrime.crime} 
+      en ${neighborhoodCrime.name} de ${yearSelected}?`
     );
 
     if (result.isDismissed) {
-      setDeleteCrime(null);
+      setDeleteItem(null);
     } else if (result.isConfirmed) {
-      let url = "/crimeAdmin/" + crime.category;
+      const idCompound = JSON.stringify({
+        idNeighborhood: neighborhoodCrime.neighborhood,
+        year: yearSelected,
+        crime: neighborhoodCrime.crime
+      });
+
+      let url = "/neighborhoodCrimeAdmin/" + idCompound;
 
       const result = await fetchDelete(url);
       if (result) {
-        alertSwalSuccess("¡Categoria eliminada exitosamente!");
+        alertSwalSuccess(
+          "¡Registro de crimen en barrio eliminada exitosamente!"
+        );
         reloadRegisters();
       }
     }
   };
   const reloadRegisters = async () => {
-    let url = "/crimeAdmin/crimes";
-    let crimes = await fetchGet(url);
-    if (crimes) {
-      setRegisters(crimes);
+    let url =
+      "/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset/" +
+      neighborhoodCrime.crime;
+
+    if (registers.length == 1) {
+      if (index == 0) {
+        const yearsLoaded = await loadYears(
+          "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime" + neighborhoodCrime.crime
+        );
+
+        if (!yearsLoaded || yearsLoaded.length == 0) return;
+        const yearToSelect = Math.max(...yearsLoaded);
+
+        setYearSelected(yearToSelect);
+        url += "/" + yearToSelect + "/" + 0;
+      } else {
+        url += "/" + yearSelected + "/" + (index - 1) * 10;
+      }
+    } else {
+      url += "/" + yearSelected + "/" + index * 10;
+    }
+
+    let result = await fetchGet(url);
+    if (result) {
+      setRegisters(result.registersOffset);
+      if (result.pages < pages) {
+        setPages(result.pages);
+        setIndex(index - 1);
+      }
     }
   };
 };

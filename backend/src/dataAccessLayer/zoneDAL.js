@@ -1,4 +1,5 @@
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import sql, { MAX } from "mssql";
 
 export class ZoneDAL {
@@ -10,27 +11,11 @@ export class ZoneDAL {
       request.input("coordinates", sql.VarChar(MAX), zone.coordinates);
       request.input("enable", sql.Bit, zone.enable);
 
-      const result = await request.execute("AddZone");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Habilitar debe ser verdadero o falso", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("La descripcion no puede estar vacia", {
-            cause: { code: 400 }
-          });
-
-        case -3:
-          throw new Error("Error inesperado al agregar zona", {
-            cause: { code: 502 }
-          });
-      }
-      return result.returnValue;
+      await request.execute("AddZone");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -43,31 +28,11 @@ export class ZoneDAL {
       request.input("coordinates", sql.VarChar(MAX), zone.coordinates);
       request.input("enable", sql.Bit, zone.enable);
 
-      const result = await request.execute("UpdateZone");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Habilitar debe ser verdadero o falso", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("La descripcion no puede estar vacia", {
-            cause: { code: 400 }
-          });
-
-        case -3:
-          throw new Error("No se encontro al zona indicada en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -4:
-          throw new Error("Error inesperado al actualizar zona", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateZone");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
   static async delete(idZone) {
@@ -76,21 +41,11 @@ export class ZoneDAL {
 
       request.input("idZone", sql.Int, idZone);
 
-      const result = await request.execute("DeleteZone");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No se encontro al zona indicada en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -2:
-          throw new Error("Error inesperado al eliminar zona", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("DeleteZone");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 

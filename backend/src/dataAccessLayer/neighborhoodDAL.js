@@ -1,5 +1,6 @@
 import sql from "mssql";
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 
 export class NeighborhoodDAL {
   static async add(neighbordhood) {
@@ -12,29 +13,11 @@ export class NeighborhoodDAL {
         neighbordhood.department.idDepartment
       );
 
-      const result = await request.execute("AddNeighborhood");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("Ya hay un barrio registrado con este nombre", {
-            cause: { code: 409 }
-          });
-        case -3:
-          throw new Error("No hay un departamento registrado con este ID", {
-            cause: { code: 404 }
-          });
-        case -4:
-          throw new Error("Error inesperado al agregar barrio", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("AddNeighborhood");
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -49,24 +32,11 @@ export class NeighborhoodDAL {
         neighbordhood.department.idDepartment
       );
 
-      const result = await request.execute("UpdateNeighborhood");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("No hay un departamento registrado con este ID", {
-            cause: { code: 404 }
-          });
-        case -3:
-          throw new Error("Error inesperado al agregar barrio", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateNeighborhood");
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -83,6 +53,10 @@ export class NeighborhoodDAL {
         });
       else if (result.returnValue == -2)
         throw new Error("Error inesperado al eliminar barrio", {
+          cause: { code: 502 }
+        });
+      else if (result.returnValue == -3)
+        throw new Error("Este registro ya ha sido eliminado por otro usuario", {
           cause: { code: 502 }
         });
     } catch (error) {

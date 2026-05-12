@@ -30,6 +30,33 @@ export const addThroughtTable = async (req, res) => {
   }
 };
 
+export const deleteById = async (req, res) => {
+  try {
+    if (!JSON.parse(req.params.idCompound))
+      throw new Error("Identificadores de crimen en barrio no indicados");
+
+    let { year, crime, idNeighborhood } = JSON.parse(req.params.idCompound);
+
+    if (!crime || crime.length == 0)
+      throw new Error(
+        "Debe indicar una categoria de delito para la eliminacion"
+      );
+
+    if (!idNeighborhood)
+      throw new Error("Debe indicar un barrio para la eliminacion");
+
+    if (!year) throw new Error("Debe indicar un año para la eliminacion");
+
+    await NeighborhoodCrimeService.delete(crime, idNeighborhood, year);
+
+    res.status(200).json(true);
+  } catch (error) {
+    res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
+  }
+};
+
 export const updateThroughtTable = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
@@ -86,7 +113,6 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
     );
 
     const json = await readerFile(req.file);
-    console.log(json);
 
     const neighborhoodsCrime = filterFile(
       department,

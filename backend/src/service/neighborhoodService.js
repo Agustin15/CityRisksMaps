@@ -4,7 +4,9 @@ export class NeighborhoodService {
   static async add(neighbordhood) {
     try {
       if (neighbordhood == null)
-        throw new Error("Debe indicar un barrio para agregar");
+        throw new Error("Debe indicar un barrio para agregar", {
+          cause: { code: 400 }
+        });
       await NeighborhoodDAL.add(neighbordhood);
     } catch (error) {
       throw error;
@@ -14,7 +16,9 @@ export class NeighborhoodService {
   static async update(neighbordhood) {
     try {
       if (neighbordhood == null)
-        throw new Error("Debe indicar un barrio para editar");
+        throw new Error("Debe indicar un barrio para editar", {
+          cause: { code: 400 }
+        });
       await NeighborhoodDAL.update(neighbordhood);
     } catch (error) {
       throw error;

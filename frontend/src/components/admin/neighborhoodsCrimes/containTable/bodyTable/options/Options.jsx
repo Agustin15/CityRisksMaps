@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Modal } from "../../../../modal/Modal";
 import { Chart } from "../chart/Chart";
 import { createPortal } from "react-dom";
+import { Delete } from "../../delete/Delete";
 
 export const Options = ({ user, nhCrime }) => {
   const [deleteItem, setDeleteItem] = useState(null);
@@ -36,6 +37,19 @@ export const Options = ({ user, nhCrime }) => {
           {createPortal(
             <Modal>
               <Chart neighborhoodCrime={nhCrime} setShowChart={setShowChart} />
+            </Modal>,
+            document.body
+          )}
+        </td>
+      )}
+      {deleteItem == nhCrime.name && (
+        <td>
+          {createPortal(
+            <Modal>
+              <Delete
+                neighborhoodCrime={nhCrime}
+                setDeleteItem={setDeleteItem}
+              />
             </Modal>,
             document.body
           )}

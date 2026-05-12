@@ -1,4 +1,5 @@
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import sql from "mssql";
 
 export class ZoneNeighborhoodDAL {
@@ -9,34 +10,11 @@ export class ZoneNeighborhoodDAL {
       request.input("idZone", sql.Int, idZone);
       request.input("idNeighborhood", sql.Int, idNeighborhood);
 
-      const result = await request.execute("AddZoneNeighborhood");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No se encontro esta barrio en el sistema", {
-            cause: { code: 404 }
-          });
-        case -2:
-          throw new Error("No se encontro esta zona en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -2:
-          throw new Error(
-            "Ya existe un registro de este barrio en esta zona" +
-              " en el sistema",
-            {
-              cause: { code: 409 }
-            }
-          );
-
-        case -4:
-          throw new Error("Error inesperado al agregar zona de barrio", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("AddZoneNeighborhood");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -47,20 +25,11 @@ export class ZoneNeighborhoodDAL {
       request.input("idZone", sql.Int, idZone);
       request.input("idNeighborhood", sql.Int, idNeighborhood);
 
-      const result = await request.execute("DeleteZoneNeighborhood");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No se encontro esta zona de barrio en el sistema", {
-            cause: { code: 404 }
-          });
-        case -2:
-          throw new Error("Error inesperado al eliminar zona de barrio", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("DeleteZoneNeighborhood");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 

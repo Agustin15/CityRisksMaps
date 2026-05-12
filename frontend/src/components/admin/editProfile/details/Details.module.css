@@ -19,14 +19,14 @@
 }
 .avatar .avatarImg {
     position: relative;
-    font-size: 61px;
+    font-size: 56px;
     text-align: center;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 11rem;
-    height: 11rem;
+    width: 9.5rem;
+    height: 9.5rem;
     border-radius: 100%;
     background: rgb(189, 206, 214);
     color: rgba(13, 52, 73, 0.856);

@@ -3,7 +3,10 @@ import { UserDAL } from "../dataAccessLayer/userDAL.js";
 export class UserService {
   static async add(user, transaction) {
     try {
-      if (!user) throw new Error("Debe indicar un usuario para agregar");
+      if (!user)
+        throw new Error("Debe indicar un usuario para agregar,", {
+          cause: { code: 400 }
+        });
 
       const idUser = await UserDAL.add(user, transaction);
       return idUser;
@@ -13,7 +16,10 @@ export class UserService {
   }
   static async update(user) {
     try {
-      if (!user) throw new Error("Debe indicar un usuario para actualizar");
+      if (!user)
+        throw new Error("Debe indicar un usuario para actualizar", {
+          cause: { code: 400 }
+        });
 
       await UserDAL.update(user);
     } catch (error) {
@@ -37,14 +43,6 @@ export class UserService {
     }
   }
 
-  static async updateAvatarByIdUser(idUser, avatarURL) {
-    try {
-      await UserDAL.updateAvatarByIdUser(idUser, avatarURL);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   static async updateUserPasswordByIdUser(idUser, password) {
     try {
       await UserDAL.updateUserPasswordByIdUser(idUser, password);
@@ -56,6 +54,14 @@ export class UserService {
   static async updateCompleteNameByIdUser(idUser, name, lastname) {
     try {
       await UserDAL.updateCompleteNameByIdUser(idUser, name, lastname);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateStateAuth2FA(idUser, state) {
+    try {
+      const result = await UserDAL.updateStateAuth2FA(idUser, state);
     } catch (error) {
       throw error;
     }

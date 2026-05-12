@@ -4,7 +4,9 @@ export class NeighborhoodCrimeService {
   static async addThroughtTable(neighbordhoodsCrime, crime, year) {
     try {
       if (neighbordhoodsCrime == null || neighbordhoodsCrime.length == 0)
-        throw new Error("Debe indicar crimenes de barrios para agregar");
+        throw new Error("Debe indicar crimenes de barrios para agregar", {
+          cause: { code: 400 }
+        });
 
       await NeighborhoodCrimeDAL.addThroughtTable(
         neighbordhoodsCrime,
@@ -19,7 +21,9 @@ export class NeighborhoodCrimeService {
   static async updateThroughtTable(neighbordhoodsCrime, crime, year) {
     try {
       if (neighbordhoodsCrime == null || neighbordhoodsCrime.length == 0)
-        throw new Error("Debe indicar crimenes de barrios para actualizar");
+        throw new Error("Debe indicar crimenes de barrios para actualizar", {
+          cause: { code: 400 }
+        });
 
       await NeighborhoodCrimeDAL.updateThroughtTable(
         neighbordhoodsCrime,
@@ -156,7 +160,7 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year,offset) {
+  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year, offset) {
     try {
       const result =
         await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByYear(

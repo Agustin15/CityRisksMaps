@@ -5,7 +5,6 @@ import { RolService } from "../service/rolService.js";
 import { Rol } from "../entity/rol.js";
 import { sendActivateUserMail } from "./sendMail.js";
 import { verifyActivateUserToken } from "./authentication.js";
-import { CloudinaryService } from "../service/cloudinaryService.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import sql from "mssql";
@@ -54,7 +53,9 @@ export const add = async (req, res) => {
   } catch (error) {
     if (transaction) await transaction.rollback();
 
-    return res.status(502).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
   }
 };
 
@@ -85,7 +86,33 @@ export const update = async (req, res) => {
 
     return res.status(200).json(true);
   } catch (error) {
-    return res.status(404).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
+  }
+};
+
+export const updateAuth2FA = async (req, res) => {
+  try {
+    if (!req.body) throw new Error("Cuerpo de solicitud no definido");
+    if (!req.params.idUser) throw new Error("Usuario no indicado");
+
+    const { state } = req.body;
+
+    if (state == null)
+      throw new Error(
+        "Debe indicar si quiere activar o desactivar la autenticacion 2FA"
+      );
+
+    const idUser = parseInt(req.params.idUser);
+
+    await UserService.updateStateAuth2FA(idUser, state);
+
+    return res.status(200).json(true);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
   }
 };
 
@@ -99,22 +126,19 @@ export const deleteById = async (req, res) => {
     if (!userFound)
       throw new Error("No se encontro un usuario con este ID en el sistema");
 
-    if (!userFound.avatar) {
-      await UserService.deleteById(idUser);
-    } else {
-      transaction = new sql.Transaction(connection.pool);
+    transaction = new sql.Transaction(connection.pool);
 
-      await UserService.deleteById(idUser);
-      await CloudinaryService.deleteAvatar(userFound.avatar);
+    await UserService.deleteById(idUser);
 
-      await transaction.commit();
-    }
+    await transaction.commit();
 
     return res.status(200).json(true);
   } catch (error) {
     if (transaction) await transaction.rollback();
 
-    return res.status(404).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
   }
 };
 

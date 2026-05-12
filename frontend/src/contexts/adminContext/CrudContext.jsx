@@ -149,7 +149,8 @@ export const CrudProvider = ({ children }) => {
   const loadYears = async (url) => {
     const yearsFound = await fetchGet(url, setLoadingFilter);
     if (yearsFound) {
-      let yearsFormatted = yearsFound.map((year) => Object.values(year));
+      let yearsFormatted = yearsFound.map((yearData) => yearData.year);
+
       setYears(yearsFormatted);
       setYearSelected(yearsFormatted[0]);
       return yearsFormatted;

@@ -17,7 +17,8 @@ import {
   getIncreaseOfCrimeInYears,
   getIncreaseOfCrimeInNeighborhood,
   getAllYearsOfCrimes,
-  getAmountOfAnCrimeInNeighborhoodsByYear
+  getAmountOfAnCrimeInNeighborhoodsByYear,
+  deleteById
 } from "../controller/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -70,6 +71,12 @@ RoutesNeighborhoodCrimeAdmin.get(
 
 RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);
 RoutesNeighborhoodCrimeAdmin.put("/", verifyAuthorization, updateThroughtTable);
+
+RoutesNeighborhoodCrimeAdmin.delete(
+  "/:idCompound",
+  verifyAuthorization,
+  deleteById
+);
 
 RoutesNeighborhoodCrimeAdmin.post(
   "/loadNeighborhoodsCrimeFromFile",

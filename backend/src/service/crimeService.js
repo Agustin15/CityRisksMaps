@@ -4,7 +4,10 @@ import { Crime } from "../entity/crime.js";
 export class CrimeService {
   static async add(crime) {
     try {
-      if (crime == null) throw new Error("Debe indicar un crimen para agregar");
+      if (crime == null)
+        throw new Error("Debe indicar un crimen para agregar", {
+          cause: { code: 400 }
+        });
 
       await CrimeDAL.add(crime);
     } catch (error) {
@@ -14,7 +17,10 @@ export class CrimeService {
 
   static async update(crime) {
     try {
-      if (crime == null) throw new Error("Debe indicar un crimen para editar");
+      if (crime == null)
+        throw new Error("Debe indicar un crimen para editar", {
+          cause: { code: 400 }
+        });
       await CrimeDAL.update(crime);
     } catch (error) {
       throw error;

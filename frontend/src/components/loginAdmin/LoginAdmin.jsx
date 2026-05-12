@@ -12,11 +12,6 @@ export const LoginAdmin = () => {
         <meta name="robots" content="noindex"></meta>
       </Helmet>
       <div className={styles.login}>
-        <div className={styles.welcome}>
-          <img src={iconAdmin}></img>
-          <h2>Bienvenido al panel de administración</h2>
-          <span>Inicia sesión para administrar el sistema</span>
-        </div>
         <div className={styles.containForm}>
           <div className={styles.title}>
             <img src={iconLogo}></img>

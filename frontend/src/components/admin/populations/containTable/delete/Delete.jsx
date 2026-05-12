@@ -53,9 +53,12 @@ export const Delete = ({ population, setDeletePopulation }) => {
     if (registers.length == 1) {
       if (index == 0) {
         const yearsLoaded = await loadYears("/population/populationsYears");
+        
+        if (!yearsLoaded || yearsLoaded.length == 0) return;
+
         const yearToSelect = Math.max(...yearsLoaded);
         setYearSelected(yearToSelect);
-        url = "/population/populationsOffsetYear//" + yearToSelect + "/" + 0;
+        url = "/population/populationsOffsetYear/" + yearToSelect + "/" + 0;
       } else {
         url =
           "/population/populationsOffsetYear/" +

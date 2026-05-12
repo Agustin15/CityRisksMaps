@@ -1,3 +1,4 @@
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import { connection } from "../config/connection.js";
 import sql from "mssql";
 
@@ -8,25 +9,11 @@ export class RolDAL {
 
       request.input("name", sql.VarChar(10), rol.name);
 
-      const result = await request.execute("AddRol");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("Ya existe un rol con este nombre en el sistema", {
-            cause: { code: 409 }
-          });
-
-        case -3:
-          throw new Error("Error inesperado al agregar rol", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("AddRol");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -37,30 +24,11 @@ export class RolDAL {
       request.input("idRol", sql.Int, rol.idRol);
       request.input("name", sql.VarChar(10), rol.name);
 
-      const result = await request.execute("UpdateRol");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("No se encontro el rol indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -3:
-          throw new Error("Ya existe un rol con este nombre en el sistema", {
-            cause: { code: 409 }
-          });
-
-        case -4:
-          throw new Error("Error inesperado al actualizar rol", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateRol");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
   static async delete(idRol) {
@@ -70,20 +38,10 @@ export class RolDAL {
       request.input("idRol", sql.Int, idRol);
 
       const result = await request.execute("DeleteRol");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No se encontro un el rol indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -2:
-          throw new Error("Error inesperado al eliminar rol", {
-            cause: { code: 502 }
-          });
-      }
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 

@@ -15,8 +15,8 @@ email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0),
 name VARCHAR(20) NOT NULL CHECK(LEN(name)>0),
 lastname VARCHAR(20) NOT NULL CHECK(LEN(lastname)>0),
 password VARCHAR(60),
-avatar VARCHAR(100),
 activated BIT NOT NULL,
+auth2FA BIT NOT NULL DEFAULT 0,
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
 rol INT NOT NULL FOREIGN KEY REFERENCES Rols(idRol) ON UPDATE CASCADE ON DELETE CASCADE
@@ -89,23 +89,37 @@ Primary key(zone,neighborhood)
 GO
 
 --------------------------------------------------------------------------------------------------------------
+
+-----1 Client Error 
+-----2 Not found Error
+-----3 Conflict Error 
+-----4 Server Error 
+
 --Rols PROCEDURES
 
 CREATE OR ALTER PROCEDURE AddRol @name VARCHAR(10)  AS
 BEGIN
 
 IF (LEN(@name)=0)
-RETURN -1
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
 IF EXISTS (select * from Rols where name=@name)
-RETURN -2
+BEGIN
+RAISERROR('Ya existe un rol con este nombre en el sistema',16,3)
+RETURN 
+END
+
 
 INSERT INTO Rols(name) VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar rol',17,4)
+RETURN 
+END
 
 END
 GO
@@ -114,38 +128,61 @@ CREATE OR ALTER PROCEDURE UpdateRol @idRol INT,@name VARCHAR(10) AS
 BEGIN
 
 IF (LEN(@name)=0)
-RETURN -1
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Rols where idRol=@idRol)
-RETURN -2
+BEGIN
+RAISERROR('No se encontro un rol con el ID',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from Rols where idRol!=@idRol and name=@name)
-RETURN -3
+BEGIN
+RAISERROR('Ya existe un rol con este nombre',16,3)
+RETURN 
+END
 
 UPDATE Rols set name=@name where idRol=@idRol;
 
 IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperadoa al actualizar el rol',16,4)
+RETURN 
+END
 
 END
 GO
 
-
 CREATE OR ALTER PROCEDURE DeleteRol @idRol INT AS
 BEGIN
 
+DECLARE @rowsAffected INT
+
 IF NOT EXISTS (select * from Rols where idRol=@idRol)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro un rol con este ID',16,2)
+RETURN 
+END
 
 DELETE FROM Rols where idRol=@idRol
+SELECT @rowsAffected=@@ROWCOUNT;
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar rol',16,4)
+RETURN 
+END
+
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 RETURN 1
-
 END
 GO
 
@@ -182,24 +219,43 @@ CREATE OR ALTER PROCEDURE AddUser @email VARCHAR(40),@name VARCHAR(20),@lastname
 BEGIN
 
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
-RETURN -1
+BEGIN
+RAISERROR('Formato de correo incorrecto',16,1)
+RETURN 
+END
 
-IF (LEN(@name)=0)
-RETURN -2
+IF (@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
-IF (LEN(@lastname)=0)
-RETURN -3
+IF (@lastname='' OR LEN(@lastname)=0)
+BEGIN
+RAISERROR('Apellido no puede estar vacio',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Rols where idRol=@rol)
-RETURN -4
+BEGIN
+RAISERROR('No se encontro un rol con este ID',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from Users where email=@email)
-RETURN -5
+BEGIN
+RAISERROR('Ya existe un usuario registrado con este correo',16,3)
+RETURN 
+END
 
 INSERT INTO Users(email,name,lastname,activated,rol) VALUES(@email,@name,@lastname,@activated,@rol);
 
 IF(@@ERROR<>0)
-RETURN -6
+BEGIN
+RAISERROR('Error inesperado al agregar usuario',16,4)
+RETURN 
+END
+
 
 RETURN scope_identity();
 
@@ -212,29 +268,49 @@ CREATE OR ALTER PROCEDURE UpdateUser @idUser INT,@email VARCHAR(40),@name VARCHA
 BEGIN
 
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
-RETURN -1
+BEGIN
+RAISERROR('Formato de correo incorrecto',16,1)
+RETURN 
+END
 
-IF (LEN(@name)=0)
-RETURN -2
+IF (@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
-IF (LEN(@lastname)=0)
-RETURN -3
+IF (@lastname='' OR LEN(@lastname)=0)
+BEGIN
+RAISERROR('Apellido no puede estar vacio',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -4
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Rols where idRol=@rol)
-RETURN -5
+BEGIN
+RAISERROR('No se encontro un rol con este ID',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
-RETURN -6
+BEGIN
+RAISERROR('Ya existe un usuario registrado con este correo electronico',16,3)
+RETURN 
+END
 
 UPDATE Users set email=@email,name=@name,lastname=@lastname,@rol=rol where idUser=@idUser;
 
 IF(@@ERROR<>0)
-RETURN -7
+BEGIN
+RAISERROR('Error inesperado al actualizar usuario',16,4)
+RETURN 
+END
 
-RETURN 1
 
 END
 GO
@@ -245,43 +321,31 @@ CREATE OR ALTER PROCEDURE UpdateEmailByIdUser @idUser INT,@email VARCHAR(40) AS
 BEGIN
 
 IF (PATINDEX('%@[a-zA-Z]%.com%%',@email)=0)
-RETURN -1
+BEGIN
+RAISERROR('Formato de correo incorrecto',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -2
-
-IF EXISTS (select * from Users where idUser=@idUser and email=@email)
-RETURN -3
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from Users where idUser!=@idUser and email=@email)
-RETURN -4
+BEGIN
+RAISERROR('Ya existe un usuario registrado con este correo electronico',16,3)
+RETURN 
+END
 
 UPDATE Users set email=@email where idUser=@idUser;
 
 IF(@@ERROR<>0)
-RETURN -5
-
-RETURN 1
-
-END
-GO
-
-CREATE OR ALTER PROCEDURE UpdateAvatarByIdUser @idUser INT,@avatar VARCHAR(100) AS
-
 BEGIN
+RAISERROR('Error inesperado al actualizar correo electronico del usuario',16,4)
+RETURN 
+END
 
-IF (LEN(@avatar)=0)
-RETURN -1
-
-IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -2
-
-UPDATE Users set avatar=@avatar where idUser=@idUser;
-
-IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
 
 END
 GO
@@ -289,71 +353,133 @@ GO
 CREATE OR ALTER PROCEDURE UpdateUserPasswordByIdUser @idUser INT,@password VARCHAR(60) AS
 
 IF(LEN(@password)=0)
-RETURN -1
+BEGIN
+RAISERROR('Contraseña no puede estar vacia',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -2
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 Update Users set password=@password where idUser=@idUser
 
 IF(@@ERROR<>0)
-RETURN -3
+BEGIN
+RAISERROR('Error inesperado al actualizar contraseña del usuario',16,4)
+RETURN 
+END
 
-RETURN 1
 
 GO
 
 
 CREATE OR ALTER PROCEDURE UpdateCompleteNameByIdUser @idUser INT,@name VARCHAR(20),@lastname VARCHAR(20) AS
 
-IF(LEN(@name)=0)
-RETURN -1
+IF(@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
-IF(LEN(@lastname)=0)
-RETURN -2
+IF(@lastname='' OR LEN(@lastname)=0)
+BEGIN
+RAISERROR('Apellido no puede estar vacio',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -3
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 Update Users set name=@name,lastname=@lastname where idUser=@idUser
 
 IF(@@ERROR<>0)
-RETURN -4
+BEGIN
+RAISERROR('Error inesperado al actualizar el usuario',16,4)
+RETURN 
+END
 
-RETURN 1
 
+GO
+
+CREATE OR ALTER PROCEDURE UpdateStateAuth2FA @idUser INT,@state BIT AS
+
+BEGIN
+
+IF NOT EXISTS (select * from Users where idUser=@idUser)
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
+
+UPDATE Users set auth2FA=@state where idUser=@idUser;
+
+IF(@@ERROR<>0)
+BEGIN
+RAISERROR('Error inesperado al activar o desactivar la autenticacion en dos pasos',16,4)
+RETURN 
+END
+
+END
 GO
 
 CREATE OR ALTER PROCEDURE ActivateUserByIdUser @idUser INT,@password VARCHAR(60) AS
 
-IF(LEN(@password)=0)
-RETURN -1
+IF(@password='' OR LEN(@password)=0)
+BEGIN
+RAISERROR('Contraseña no puede estar vacia',16,1)
+RETURN 
+END
+
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -2
+BEGIN
+RAISERROR('No se  encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 Update Users set password=@password,activated=1 where idUser=@idUser
 
 IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al activar el usuario',16,4)
+RETURN 
+END
 
 GO
+
 
 CREATE OR ALTER PROCEDURE DeleteUser @idUser INT AS
 
 BEGIN
 
+DECLARE @rowsAffected INT;
+
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,1)
+RETURN 
+END
 
 DELETE FROM Users where idUser=@idUser;
+SET @rowsAffected=@@ROWCOUNT;
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar usuario',16,4)
+RETURN 
+END
 
-RETURN 1
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -361,26 +487,26 @@ GO
 
 CREATE OR ALTER PROCEDURE AllUsers AS
 BEGIN
-SELECT idUser,name,lastname,email,activated,avatar,created,lastModified,rol FROM Users;
+SELECT idUser,name,lastname,email,activated,created,lastModified,rol FROM Users;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersOffset @offset INT AS
 BEGIN
-SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.avatar,U.created,U.lastModified,U.rol,
+SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.created,U.lastModified,U.rol,
 R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersByRole @idRol INT AS
 BEGIN
-SELECT idUser,name,lastname,email,activated,avatar,created,lastModified,rol FROM Users where rol=@idRol;
+SELECT idUser,name,lastname,email,activated,created,lastModified,rol FROM Users where rol=@idRol;
 END
 GO
 
 CREATE OR ALTER PROCEDURE UsersByRoleOffset @idRol INT,@offset INT AS
 BEGIN
-SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.avatar,U.created,U.lastModified,U.rol
+SELECT U.idUser,U.name,U.lastname,U.email,U.activated,U.created,U.lastModified,U.rol
 ,R.name as 'nameRole' FROM Users U INNER JOIN Rols R ON U.rol=R.idRol where U.rol=@idRol 
 ORDER BY created OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
@@ -411,18 +537,26 @@ GO
 CREATE OR ALTER PROCEDURE AddDepartment @name VARCHAR(30) AS
 BEGIN
 
-IF(LEN(@name)=0)
-RETURN -1
+IF(@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
+
 
 IF EXISTS (select * from Departments where name=@name)
-RETURN -2
+BEGIN
+RAISERROR('Ya existe un registro de un departamento con este nombre',16,3)
+RETURN 
+END
 
 INSERT INTO Departments(name) VALUES(@name);
 
 IF(@@ERROR<>0)
-RETURN -3
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar departamento',16,4)
+RETURN 
+END
 
 END
 GO
@@ -430,21 +564,32 @@ GO
 CREATE OR ALTER PROCEDURE UpdateDepartment @idDepartment INT ,@name VARCHAR(30) AS
 BEGIN
 
-IF(LEN(@name)=0)
-RETURN -1
+IF(@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -2
+BEGIN
+RAISERROR('No se encontro un departamento con este ID',16,2)
+RETURN 
+END
+
 
 IF EXISTS (select * from Departments where name=@name and idDepartment!=@idDepartment)
-RETURN -3
+BEGIN
+RAISERROR('Ya existe un registro de un departamento con este nombre',16,3)
+RETURN 
+END
 
 UPDATE Departments set name=@name where idDepartment=@idDepartment;
 
 IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al actualizar departamento',16,4)
+RETURN 
+END
 
 END
 GO
@@ -453,16 +598,29 @@ GO
 CREATE OR ALTER PROCEDURE DeleteDepartment @idDepartment INT AS
 BEGIN
 
+DECLARE @rowsAffected INT;
 
 IF NOT EXISTS(select * from Departments where idDepartment=@idDepartment)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro un departamento con este ID',16,2)
+RETURN 
+END
 
 DELETE from Departments where idDepartment=@idDepartment;
 
-IF(@@ERROR<>0)
-RETURN -2
+SET @rowsAffected=@@ROWCOUNT
 
-RETURN 1
+IF(@@ERROR<>0)
+BEGIN
+RAISERROR('Error inesperado al eliminar departamento',16,4)
+RETURN 
+END
+
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -499,15 +657,31 @@ CREATE OR ALTER PROCEDURE AddCrime @category VARCHAR(20),@description VARCHAR(70
 
 BEGIN
 
+IF(@category='' OR LEN(@category)=0)
+BEGIN
+RAISERROR('Nombre de la categoria no puede estar vacio',16,1)
+RETURN 
+END
+
+IF(@description='' OR LEN(@description)=0)
+BEGIN
+RAISERROR('Descripcion no puede estar vacia',16,1)
+RETURN 
+END
+
 IF EXISTS (select * from Crimes where category=@category)
-RETURN -1
+BEGIN
+RAISERROR('Ya existe un registro de una categoria de crimen con este nombre',16,3)
+RETURN 
+END
 
 INSERT INTO Crimes(category,description) VALUES(@category,@description);
 
 IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar categoria de crimen',16,4)
+RETURN 
+END
 
 END
 
@@ -516,15 +690,31 @@ GO
 CREATE OR ALTER PROCEDURE UpdateCrime @category VARCHAR(20),@description VARCHAR(700) AS
 BEGIN
 
+IF(@category='' OR LEN(@category)=0)
+BEGIN
+RAISERROR('Nombre de la categoria no puede estar vacio',16,1)
+RETURN 
+END
+
+IF(@description='' OR LEN(@description)=0)
+BEGIN
+RAISERROR('Descripcion no puede estar vacia',16,1)
+RETURN 
+END
+
 IF NOT EXISTS (select * from Crimes where category=@category)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro una categoria de crimen con este nombre',16,2)
+RETURN 
+END
 
 UPDATE Crimes set description=@description where category=@category;
 
 IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al actualizar categoria de crimen',16,4)
+RETURN 
+END
 
 END
 
@@ -533,15 +723,29 @@ GO
 CREATE OR ALTER PROCEDURE DeleteCrime @category VARCHAR(20) AS
 BEGIN
 
+DECLARE @rowsAffected INT;
+
 IF NOT EXISTS(select * from Crimes where category=@category)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro una categoria de crimen con este nombre',16,2)
+RETURN 
+END
 
 DELETE from Crimes where category=@category;
+SET @rowsAffected=@@ROWCOUNT
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar categoria de crimen',16,4)
+RETURN 
+END
 
-RETURN 1
+
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -569,21 +773,31 @@ CREATE OR ALTER PROCEDURE AddNeighborhood @name VARCHAR(30), @idDepartment INT A
 
 BEGIN
 
-IF (LEN(@name)=0)
-RETURN -1
+IF (@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
 
 IF EXISTS (select * from Neighborhoods where name=@name)
-RETURN -2
+BEGIN
+RAISERROR('Ya existe un registro de un barrio con este nombre',16,3)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -3
+BEGIN
+RAISERROR('No se encontro un departmento con este ID',16,2)
+RETURN 
+END
 
 INSERT INTO Neighborhoods VALUES(@name,@idDepartment);
 
 IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar barrio',16,4)
+RETURN 
+END
 
 END
 
@@ -592,18 +806,39 @@ GO
 CREATE OR ALTER PROCEDURE UpdateNeighborhood @idNeighborhood INT, @name VARCHAR(30),@idDepartment INT AS
 BEGIN
 
-IF (LEN(@name)=0)
-RETURN -1
+IF (@name='' OR LEN(@name)=0)
+BEGIN
+RAISERROR('Nombre no puede estar vacio',16,1)
+RETURN 
+END
+
+IF NOT EXISTS (select * from Neighborhoods where idNeighborhood=@idNeighborhood)
+BEGIN
+RAISERROR('No se encontro un barrio con este ID',16,2)
+RETURN 
+END
+
 
 IF NOT EXISTS (select * from Departments where idDepartment=@idDepartment)
-RETURN -2
+BEGIN
+RAISERROR('No se encontro un departamento con este ID',16,2)
+RETURN 
+END
+
+IF EXISTS (select * from Neighborhoods where idNeighborhood!=@idNeighborhood and name=@name)
+BEGIN
+RAISERROR('Ya existe un registro de un barrio con este nombre',16,3)
+RETURN 
+END
 
 UPDATE Neighborhoods set name=@name,department=@idDepartment where idNeighborhood=@idNeighborhood;
 
 IF(@@ERROR<>0)
-RETURN -3
+BEGIN
+RAISERROR('Error inesperado al actualizar barrio',16,4)
+RETURN 
+END
 
-RETURN 1
 
 END
 GO
@@ -611,15 +846,28 @@ GO
 CREATE OR ALTER PROCEDURE DeleteNeighborhood @idNeighborhood INT AS
 BEGIN
 
-IF NOT EXISTS(select * from Neighborhoods where idNeighborhood=@idNeighborhood )
-RETURN -1
+DECLARE @rowsAffected INT
 
-DELETE from Neighborhoods where idNeighborhood=@idNeighborhood ;
+IF NOT EXISTS(select * from Neighborhoods where idNeighborhood=@idNeighborhood )
+BEGIN
+RAISERROR('No se encontro un barrio con este ID',16,2)
+RETURN 
+END
+
+DELETE from Neighborhoods where idNeighborhood=@idNeighborhood;
+SET @rowsAffected=@@ROWCOUNT
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar barrio',16,4)
+RETURN 
+END
 
-RETURN 1
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -669,25 +917,39 @@ BEGIN
 DECLARE @idNeighborhood INT;
 
 IF(@quantity<0)
-RETURN -1
+BEGIN
+RAISERROR('Cantidad debe ser mayor a cero',16,1)
+RETURN 
+END
 
 IF(@year>YEAR(GETDATE()))
-RETURN -2
+BEGIN
+RAISERROR('Año debe ser mayor al año actual',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Neighborhoods where name=@neighbordhood) 
-RETURN -3
+BEGIN
+RAISERROR('No se encontro un barrio con este nombre',16,2)
+RETURN 
+END
+
 
 SELECT @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighbordhood
 
 IF EXISTS (select * from Population where neighborhood=@idNeighborhood and year=@year) 
-RETURN -4
+BEGIN
+RAISERROR('Ya existe un registro de una poblacion en el barrio y año indicado',16,3)
+RETURN 
+END
 
 INSERT INTO Population VALUES(@idNeighborhood,@quantity,@year);
 
 IF(@@ERROR<>0)
-RETURN -5
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar poblacion',16,4)
+RETURN 
+END
 
 END
 
@@ -699,46 +961,75 @@ BEGIN
 
 DECLARE @idNeighborhood INT;
 
-IF (@quantity<0)
-RETURN -1
+IF(@quantity<0)
+BEGIN
+RAISERROR('Cantidad debe ser mayor a cero',16,1)
+RETURN 
+END
 
 IF(@year>YEAR(GETDATE()))
-RETURN -2
+BEGIN
+RAISERROR('Año debe ser mayor al año actual',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Population where @idPopulation=idPopulation)
-RETURN -3
+BEGIN
+RAISERROR('No se encontro una poblacion con este ID',16,2)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood)
-RETURN -4
+BEGIN
+RAISERROR('No se encontro un barrio con este nombre',16,2)
+RETURN 
+END
 
 SELECT @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighborhood
 
 IF EXISTS (select * from Population where neighborhood=@idNeighborhood and year=@year and idPopulation!=@idPopulation)
-RETURN -5
+BEGIN
+RAISERROR('Ya existe un registro de  esta poblacion en este barrio y año',16,3)
+RETURN 
+END
+
 
 UPDATE Population set quantity=@quantity,year=@year,neighborhood=@idNeighborhood where @idPopulation=idPopulation;
 
 IF(@@ERROR<>0)
-RETURN -6
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al actualizar poblacion',16,4)
+RETURN 
+END
 
 END
 GO
 
-
 CREATE OR ALTER PROCEDURE DeletePopulation @idPopulation INT AS
 BEGIN
 
+DECLARE @rowsAffected INT
+
 IF NOT EXISTS(select * from Population where @idPopulation=idPopulation )
-RETURN -1
+BEGIN
+RAISERROR('No se encontro una poblacion con este ID',16,2)
+RETURN 
+END
 
 DELETE from Population where idPopulation=@idPopulation;
+SET @rowsAffected=@@ROWCOUNT
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar poblacion',16,4)
+RETURN 
+END
 
-RETURN 1
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -868,21 +1159,37 @@ CREATE OR ALTER PROCEDURE AddNeighborhoodsCrime @table dbo.NeighborhoodsCrimeTab
 
 BEGIN
 
-IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
-RETURN -1;
-
-IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
-RETURN -2;
-
 IF EXISTS (select * from @table where quantity<0)
-RETURN -3;
+BEGIN
+RAISERROR('Cantidad debe ser mayor a cero',16,1)
+RETURN 
+END
 
 IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
-RETURN -4;
+BEGIN
+RAISERROR('Año debe ser mayor al año actual',16,1)
+RETURN 
+END
+
+
+IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
+BEGIN
+RAISERROR('No se encontro un barrio con este ID',16,2)
+RETURN 
+END
+
+IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
+BEGIN
+RAISERROR('No se encontro una categoria de crimen con este nombre',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and 
 NC.neighborhood=T.idNeighborhood)
-RETURN -5;
+BEGIN
+RAISERROR('Ya existe un registro de este crimen en este barrio y este año',16,3)
+RETURN 
+END
 
 BEGIN TRANSACTION
 
@@ -893,11 +1200,11 @@ dbo.CalculateRate(T.idNeighborhood,T.quantity,T.year),T.year from @table T
 IF(@@ERROR<>0)
 BEGIN
 ROLLBACK TRANSACTION
-RETURN -6
+RAISERROR('Error inesperado al agregar crimenes en barrios',16,4)
+RETURN 
 END
 
 COMMIT TRANSACTION
-RETURN 1
 
 END
 GO
@@ -911,22 +1218,38 @@ DECLARE @idNeighborhood INT;
 DECLARE @increase DECIMAL(5,1);
 DECLARE @rate DECIMAL(6,1);
 
-IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood )
-RETURN -1;
-
-IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
-RETURN -2;
-
 IF(@quantity<0)
-RETURN -3;
+BEGIN
+RAISERROR('Cantidad debe ser mayor a cero',16,1)
+RETURN 
+END
 
 IF (@year>YEAR(GETDATE()))
-RETURN -4;
+BEGIN
+RAISERROR('Año debe ser mayor al año actual',16,1)
+RETURN 
+END
+
+IF NOT EXISTS (select * from Neighborhoods where name=@neighborhood )
+BEGIN
+RAISERROR('No se encontro un barrio con este ID',16,2)
+RETURN 
+END
+
+IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
+BEGIN
+RAISERROR('No se encontro una categoria de crimen con este nombre',16,2)
+RETURN 
+END
 
 select @idNeighborhood=idNeighborhood from Neighborhoods where name=@neighborhood
 
 IF EXISTS (select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@categoryCrime and year=@year)
-RETURN -5;
+BEGIN
+RAISERROR('Ya existe un registro de este crimen en este barrio y este año',16,3)
+RETURN 
+END
+
 
 EXEC @increase=dbo.CalculateIncrease @idNeighborhood,@categoryCrime,@quantity,@year;
 EXEC @rate=dbo.CalculateRate @idNeighborhood,@quantity,@year;
@@ -935,9 +1258,10 @@ INSERT INTO Neighborhoods_Crimes(neighborhood,crime,quantity,increase,rate,year)
 @increase,@rate,@year)
 
 IF(@@ERROR<>0)
-RETURN -6
-
-RETURN 1
+BEGIN
+RAISERROR('Error inesperado al agregar crimen en barrio',16,4)
+RETURN 
+END
 
 END
 GO
@@ -946,21 +1270,37 @@ CREATE OR ALTER PROCEDURE UpdateNeighborhoodsCrime @table dbo.NeighborhoodsCrime
 
 BEGIN
 
-IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
-RETURN -1;
-
-IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
-RETURN -2;
-
 IF EXISTS (select * from @table where quantity<0)
-RETURN -3;
+BEGIN
+RAISERROR('Cantidad debe ser mayor a cero',16,1)
+RETURN 
+END
 
 IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
-RETURN -4;
+BEGIN
+RAISERROR('Año debe ser mayor al año actual',16,1)
+RETURN 
+END
+
+IF EXISTS (select * from @table T LEFT JOIN Neighborhoods N on T.idNeighborhood=N.idNeighborhood where N.idNeighborhood IS NULL)
+BEGIN
+RAISERROR('No se encontro un barrio con este ID',16,2)
+RETURN 
+END
+
+IF NOT EXISTS (select * from Crimes where category=@categoryCrime)
+BEGIN
+RAISERROR('No se encontro una categoria de crimen con este nombre',16,2)
+RETURN 
+END
+
 
 IF NOT EXISTS (select * from @table T INNER JOIN Neighborhoods_Crimes NC ON  T.crime=NC.crime and T.year=NC.year and
 NC.neighborhood=T.idNeighborhood)
-RETURN -5;
+BEGIN
+RAISERROR('No se encontro un registro de este crimen en este barrio y este año',16,2)
+RETURN 
+END
 
 BEGIN TRANSACTION
 
@@ -971,11 +1311,11 @@ INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and NC.neighborhood=T
 IF(@@ERROR<>0)
 BEGIN
 ROLLBACK TRANSACTION
-RETURN -6
+RAISERROR('Error inesperado al actualizar crimen en barrios',16,4)
+RETURN 
 END
 
 COMMIT TRANSACTION
-RETURN 1
 
 END
 GO
@@ -983,15 +1323,26 @@ GO
 CREATE OR ALTER PROCEDURE DeleteNeighborhoodCrime @crime VARCHAR(20),@idNeighborhood INT,@year INT AS
 BEGIN
 
-IF NOT EXISTS(select * from Neighborhoods_Crimes where crime=@crime and neighborhood=@idNeighborhood and @year=year)
+DECLARE @rowsAffected INT
+
+IF NOT EXISTS(select * from Neighborhoods_Crimes where crime=@crime and neighborhood=@idNeighborhood and year=@year)
 RETURN -1
 
 DELETE from Neighborhoods_Crimes where crime=@crime and neighborhood=@idNeighborhood and @year=year;
+SELECT @rowsAffected=@@ROWCOUNT;
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar crimen en barrio',16,4)
+RETURN 
+END
 
-RETURN 1
+
+IF (@rowsAffected=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 GO
@@ -1122,16 +1473,25 @@ CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHA
 BEGIN 
 
 IF(@enable!=0 or @enable!=1)
-RETURN -1
+BEGIN
+RAISERROR('Habilitado debe ser cero o 1',16,1)
+RETURN 
+END
 
-IF (LEN(@description)=0)
-RETURN -2
+IF (@description='' OR LEN(@description)=0)
+BEGIN
+RAISERROR('Descripcion no puede estar vacia',16,1)
+RETURN 
+END
 
 INSERT INTO Zones(description,coordinates,enable) VALUES(@description,@coordinates,@enable);
 IF(@@ERROR<>0)
-RETURN -3
+BEGIN
+RAISERROR('Error inesperado al agregar zona',16,4)
+RETURN 
+END
 
-RETURN IDENT_CURRENT('Zones');
+RETURN SCOPE_IDENTITY(); 
 
 END
 
@@ -1144,9 +1504,20 @@ IF NOT EXISTS(select * from Zones where idZone=@idZone)
 RETURN -1
 
 DELETE FROM Zones where idZone=@idZone
-IF(@@ERROR<>0)
-RETURN -2
 
+IF(@@ERROR<>0)
+BEGIN
+RAISERROR('Error inesperado al eliminar zona',16,4)
+RETURN 
+END
+
+IF (@@ROWCOUNT=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
+
+RETURN 1
 END
 
 GO
@@ -1155,18 +1526,31 @@ CREATE OR ALTER PROCEDURE UpdateZone @idZone INT,@description VARCHAR(250),@coor
 BEGIN 
 
 IF(@enable!=0 or @enable!=1)
-RETURN -1
+BEGIN
+RAISERROR('Habilitado debe ser cero o 1',16,1)
+RETURN 
+END
 
-IF (LEN(@description)=0)
-RETURN -2
+IF (@description='' OR LEN(@description)=0)
+BEGIN
+RAISERROR('Descripcion no puede estar vacia',16,1)
+RETURN 
+END
+
 
 IF NOT EXISTS(select * from Zones where idZone=@idZone)
-RETURN -3
+BEGIN
+RAISERROR('No se encontro una zona con este ID',16,2)
+RETURN 
+END
 
 Update Zones set description=@description,coordinates=@coordinates,enable=@enable where idZone=@idZone
 
 IF(@@ERROR<>0)
-RETURN -4
+BEGIN
+RAISERROR('Error inesperado al actualizar zona',16,4)
+RETURN 
+END
 
 END
 
@@ -1212,7 +1596,10 @@ RETURN -3
 INSERT INTO Zones_Neighborhoods VALUES (@idZone,@idNeighborhood);
 
 IF(@@ERROR<>0)
-RETURN -4
+BEGIN
+RAISERROR('Error inesperado al agregar zona de barrio',16,4)
+RETURN 
+END
 
 END
 
@@ -1222,12 +1609,24 @@ CREATE OR ALTER PROCEDURE DeleteZoneNeighborhood @idZone INT,@idNeighborhood INT
 BEGIN 
 
 IF NOT EXISTS(select * from Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood)
-RETURN -1
+BEGIN
+RAISERROR('No se encontro una zona de barrio con este ID',16,2)
+RETURN 
+END
 
 DELETE FROM Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood;
 
 IF(@@ERROR<>0)
-RETURN -2
+BEGIN
+RAISERROR('Error inesperado al eliminar zona de barrio',16,4)
+RETURN 
+END
+
+IF (@@ROWCOUNT=0)
+BEGIN
+RAISERROR('Este registro ya ha sido eliminado por otro usuario',16,4)
+RETURN 
+END
 
 END
 
@@ -1258,95 +1657,39 @@ CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@idUser INT,@exp
 BEGIN
 
 IF @expiration<GETDATE()
-RETURN -1
+BEGIN
+RAISERROR('Fecha de expiracion debe ser mayor a la fecha actual',16,1)
+RETURN 
+END
 
 IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -2
+BEGIN
+RAISERROR('No se encontro un usuario con este ID',16,2)
+RETURN 
+END
 
 IF EXISTS (select * from Verifications_Codes where code=@code)
-RETURN -3
+BEGIN
+RAISERROR('Codigo de verificacion ya existente',16,3)
+RETURN 
+END
+
 
 INSERT INTO Verifications_Codes VALUES(@code,@expiration,@idUser)
 
 IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE UpdateVerificationCode @code VARCHAR(60),@idUser INT,@expiration DATETIME AS
-
 BEGIN
-
-IF @expiration<GETDATE()
-RETURN -1
-
-IF NOT EXISTS (select * from Verifications_Codes where code=@code)
-RETURN -2
-
-IF NOT EXISTS (select * from Users where idUser=@idUser)
-RETURN -3
-
-Update Verifications_Codes set idUser=@idUser,expiration=@expiration where code=@code
-
-IF(@@ERROR<>0)
-RETURN -4
-
-RETURN 1
-END
-GO
-
-
-CREATE OR ALTER PROCEDURE DeleteVerificationCode @code VARCHAR(60) AS
-
-BEGIN
-
-IF NOT EXISTS (select * from Verifications_Codes where code=@code)
-RETURN -1
-
-delete from Verifications_Codes where code=@code
-
-IF(@@ERROR<>0)
-RETURN -2
-
-RETURN 1
-END
-GO
-
-CREATE OR ALTER PROCEDURE AllVerificationCodes  AS
-BEGIN 
-select * from Verifications_Codes;
-END
-GO
-
-CREATE OR ALTER PROCEDURE VerificationCodesOffset @offset INT AS
-BEGIN 
-select * from Verifications_Codes ORDER BY expiration OFFSET @offset rows FETCH NEXT 10 ROWS ONLY;
+RAISERROR('Error inesperado al agregar codigo de verificacion',16,4)
+RETURN 
 END
 
+END
 GO
 
 CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByIdUser @idUser INT AS
 BEGIN 
 
 select TOP 1 *  from Verifications_Codes where idUser=@idUser;
-END
-
-GO
-
-
-CREATE OR ALTER PROCEDURE VerificationCodesByUser @idUser INT AS
-BEGIN 
-select * from Verifications_Codes where idUser=@idUser;
-END
-GO
-
-CREATE OR ALTER PROCEDURE VerificationCodesByUserOffset @idUser INT,@offset INT AS
-BEGIN 
-
-select * from Verifications_Codes where idUser=@idUser ORDER BY expiration OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 END
 
 GO
@@ -1569,6 +1912,7 @@ EXEC AddCrime 'Rapiña','Se clasifican como rapiñas todos los incidentes en que
 
 GO
 
+---------------------------------Homicidios -------------------------------------------------------
 EXEC AddNeighborhoodCrime 'Aguada','Homicidio',1,2022;
 EXEC AddNeighborhoodCrime 'Aires Puros','Homicidio',3,2022;
 EXEC AddNeighborhoodCrime 'Atahualpa','Homicidio',0,2022;
@@ -1760,3 +2104,519 @@ EXEC AddNeighborhoodCrime 'Unión','Homicidio',4,2024;
 EXEC AddNeighborhoodCrime 'Villa Española','Homicidio',8,2024;
 EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Homicidio',9,2024;
 EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Homicidio',3,2024;
+
+
+---------------------------------Hurtos -------------------------------------------------------
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',1121,2022;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',406,2022;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',363,2022;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',386,2022;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',562,2022;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',1154,2022;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',733,2022;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',1558,2022;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Hurto',667,2022;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',423,2022;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',479,2022;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Hurto',576,2022;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',1068,2022;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Hurto',454,2022;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2404,2022;
+EXEC AddNeighborhoodCrime 'Cerro','Hurto',1047,2022;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',667,2022;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1174,2022;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1160,2022;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Hurto',341,2022;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',599,2022;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',2677,2022;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',1290,2022;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',789,2022;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',383,2022;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',692,2022;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',656,2022;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',466,2022;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',1088,2022;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',423,2022;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',964,2022;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Hurto',838,2022;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',737,2022;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',974,2022;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Hurto',589,2022;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1155,2022;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',595,2022;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',557,2022;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',583,2022;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Hurto',1160,2022;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Hurto',1058,2022;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',1216,2022;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',359,2022;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Hurto',1814,2022;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',661,2022;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',926,2022;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',435,2022;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Hurto',725,2022;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',781,2022;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',1845,2022;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Hurto',1376,2022;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1096,2022;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',365,2022;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Hurto',642,2022;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',483,2022;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',491,2022;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1502,2022;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Hurto',716,2022;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',3126,2022;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',989,2022;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',671,2022;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',614,2022;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',1108,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',519,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',344,2023;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',417,2023;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',459,2023;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',866,2023;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',721,2023;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',1760,2023;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Hurto',570,2023;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',493,2023;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',435,2023;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Hurto',484,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',768,2023;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Hurto',421,2023;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2446,2023;
+EXEC AddNeighborhoodCrime 'Cerro','Hurto',888,2023;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',566,2023;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',1137,2023;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1112,2023;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Hurto',332,2023;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',550,2023;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',3037,2023;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',908,2023;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',842,2023;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',376,2023;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',545,2023;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',784,2023;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',540,2023;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',577,2023;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',326,2023;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',1001,2023;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Hurto',674,2023;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',578,2023;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',690,2023;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Hurto',844,2023;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1050,2023;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',556,2023;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',422,2023;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',504,2023;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Hurto',804,2023;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Hurto',966,2023;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',974,2023;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',316,2023;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Hurto',1878,2023;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',565,2023;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',778,2023;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',477,2023;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Hurto',876,2023;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',739,2023;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',1913,2023;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Hurto',1325,2023;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1080,2023;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',373,2023;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Hurto',848,2023;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',408,2023;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',577,2023;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1717,2023;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Hurto',475,2023;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',3351,2023;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',740,2023;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',638,2023;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',511,2023;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',1092,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',470,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',356,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',390,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',456,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',971,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',729,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',2143,2024;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Hurto',581,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',580,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',521,2024;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Hurto',509,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',725,2024;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Hurto',368,2024;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2315,2024;
+EXEC AddNeighborhoodCrime 'Cerro','Hurto',845,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',607,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',952,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',1256,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Hurto',313,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',442,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',2754,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',839,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',683,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',457,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',604,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',804,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',410,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',652,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',328,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',921,2024;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Hurto',659,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',621,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',715,2024;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Hurto',637,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1249,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',602,2024;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',376,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',480,2024;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Hurto',752,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Hurto',1143,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',838,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',344,2024;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Hurto',1989,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',605,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',712,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',345,2024;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Hurto',785,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',727,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',2107,2024;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Hurto',1214,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1077,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',555,2024;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Hurto',847,2024;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',417,2024;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',504,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1420,2024;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Hurto',466,2024;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',2983,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',610,2024;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',585,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',497,2024;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Hurto',926,2025;
+EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',400,2025;
+EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',294,2025;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Hurto',397,2025;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Hurto',365,2025;
+EXEC AddNeighborhoodCrime 'Belvedere','Hurto',942,2025;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Hurto',580,2025;
+EXEC AddNeighborhoodCrime 'Buceo','Hurto',1569,2025;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Hurto',567,2025;
+EXEC AddNeighborhoodCrime 'Carrasco','Hurto',479,2025;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Hurto',425,2025;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Hurto',380,2025;
+EXEC AddNeighborhoodCrime 'Casavalle','Hurto',775,2025;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Hurto',455,2025;
+EXEC AddNeighborhoodCrime 'Centro','Hurto',2185,2025;
+EXEC AddNeighborhoodCrime 'Cerro','Hurto',649,2025;
+EXEC AddNeighborhoodCrime 'Cerrito','Hurto',640,2025;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Hurto',930,2025;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Hurto',931,2025;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Hurto',304,2025;
+EXEC AddNeighborhoodCrime 'Conciliación','Hurto',340,2025;
+EXEC AddNeighborhoodCrime 'Cordón','Hurto',2512,2025;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Hurto',814,2025;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Hurto',520,2025;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Hurto',437,2025;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Hurto',714,2025;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Hurto',612,2025;
+EXEC AddNeighborhoodCrime 'La Comercial','Hurto',459,2025;
+EXEC AddNeighborhoodCrime 'Las Canteras','Hurto',595,2025;
+EXEC AddNeighborhoodCrime 'La Figurita','Hurto',317,2025;
+EXEC AddNeighborhoodCrime 'Larrañaga','Hurto',809,2025;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Hurto',562,2025;
+EXEC AddNeighborhoodCrime 'Las Acacias','Hurto',572,2025;
+EXEC AddNeighborhoodCrime 'La Teja','Hurto',610,2025;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Hurto',497,2025;
+EXEC AddNeighborhoodCrime 'Malvín','Hurto',1257,2025;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Hurto',608,2025;
+EXEC AddNeighborhoodCrime 'Manga','Hurto',454,2025;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Hurto',422,2025;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Hurto',673,2025;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Hurto',918,2025;
+EXEC AddNeighborhoodCrime 'Nuevo París','Hurto',712,2025;
+EXEC AddNeighborhoodCrime 'Palermo','Hurto',335,2025;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Hurto',1783,2025;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Hurto',657,2025;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Hurto',556,2025;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Hurto',428,2025;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Hurto',727,2025;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Hurto',817,2025;
+EXEC AddNeighborhoodCrime 'Pocitos','Hurto',1914,2025;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Hurto',1214,2025;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Hurto',1172,2025;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Hurto',432,2025;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Hurto',1016,2025;
+EXEC AddNeighborhoodCrime 'Reducto','Hurto',372,2025;
+EXEC AddNeighborhoodCrime 'Sayago','Hurto',490,2025;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Hurto',1507,2025;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Hurto',410,2025;
+EXEC AddNeighborhoodCrime 'Unión','Hurto',2961,2025;
+EXEC AddNeighborhoodCrime 'Villa Española','Hurto',604,2025;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',510,2025;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',559,2025;
+
+
+---------------------------------Rapiñas -------------------------------------------------------
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',192,2022;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',121,2022;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',66,2022;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',195,2022;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',74,2022;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',374,2022;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',187,2022;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',385,2022;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Rapiña',123,2022;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',57,2022;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',160,2022;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Rapiña',326,2022;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',913,2022;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Rapiña',119,2022;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',376,2022;
+EXEC AddNeighborhoodCrime 'Cerro','Rapiña',622,2022;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',207,2022;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',149,2022;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',680,2022;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Rapiña',203,2022;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',351,2022;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',357,2022;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',314,2022;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',333,2022;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',65,2022;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',394,2022;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',68,2022;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',91,2022;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',433,2022;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',57,2022;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',132,2022;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Rapiña',586,2022;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',445,2022;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',312,2022;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Rapiña',336,2022;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',231,2022;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',440,2022;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',270,2022;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',376,2022;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Rapiña',366,2022;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Rapiña',177,2022;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',422,2022;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',34,2022;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Rapiña',265,2022;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',110,2022;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',483,2022;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',233,2022;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Rapiña',480,2022;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',369,2022;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',176,2022;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Rapiña',327,2022;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',168,2022;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',107,2022;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Rapiña',494,2022;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',43,2022;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',216,2022;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',147,2022;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Rapiña',242,2022;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',624,2022;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',234,2022;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Rapiña',507,2022;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Rapiña',95,2022;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',151,2023;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',149,2023;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',76,2023;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',180,2023;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',54,2023;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',355,2023;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',195,2023;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',316,2023;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Rapiña',111,2023;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',61,2023;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',122,2023;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Rapiña',374,2023;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',834,2023;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Rapiña',150,2023;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',298,2023;
+EXEC AddNeighborhoodCrime 'Cerro','Rapiña',480,2023;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',230,2023;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',114,2023;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',600,2023;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Rapiña',237,2023;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',326,2023;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',305,2023;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',383,2023;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',275,2023;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',88,2023;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',439,2023;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',58,2023;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',65,2023;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',331,2023;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',44,2023;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',137,2023;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Rapiña',557,2023;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',412,2023;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',232,2023;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Rapiña',394,2023;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',230,2023;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',605,2023;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',276,2023;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',431,2023;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Rapiña',414,2023;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Rapiña',200,2023;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',493,2023;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',28,2023;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Rapiña',209,2023;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',78,2023;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',464,2023;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',195,2023;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Rapiña',543,2023;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',371,2023;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',153,2023;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Rapiña',308,2023;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',157,2023;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',86,2023;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Rapiña',405,2023;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',70,2023;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',163,2023;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',150,2023;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Rapiña',223,2023;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',640,2023;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',212,2023;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Rapiña',403,2023;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Rapiña',55,2023;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',118,2024;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',100,2024;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',31,2024;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',135,2024;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',25,2024;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',258,2024;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',166,2024;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',313,2024;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Rapiña',104,2024;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',71,2024;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',109,2024;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Rapiña',260,2024;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',586,2024;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Rapiña',89,2024;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',250,2024;
+EXEC AddNeighborhoodCrime 'Cerro','Rapiña',438,2024;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',132,2024;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',108,2024;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',476,2024;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Rapiña',155,2024;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',226,2024;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',255,2024;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',300,2024;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',203,2024;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',82,2024;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',342,2024;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',48,2024;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',38,2024;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',182,2024;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',38,2024;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',101,2024;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Rapiña',329,2024;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',248,2024;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',173,2024;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Rapiña',220,2024;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',214,2024;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',657,2024;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',174,2024;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',278,2024;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Rapiña',310,2024;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Rapiña',179,2024;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',290,2024;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',27,2024;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Rapiña',193,2024;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',64,2024;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',402,2024;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',174,2024;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Rapiña',468,2024;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',361,2024;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',110,2024;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Rapiña',229,2024;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',101,2024;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',68,2024;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Rapiña',347,2024;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',35,2024;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',176,2024;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',122,2024;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Rapiña',187,2024;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',475,2024;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',141,2024;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Rapiña',311,2024;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Rapiña',45,2024;
+
+
+EXEC AddNeighborhoodCrime 'Aguada','Rapiña',99,2025;
+EXEC AddNeighborhoodCrime 'Aires Puros','Rapiña',97,2025;
+EXEC AddNeighborhoodCrime 'Atahualpa','Rapiña',50,2025;
+EXEC AddNeighborhoodCrime 'Bañados de Carrasco','Rapiña',172,2025;
+EXEC AddNeighborhoodCrime 'Barrio Sur','Rapiña',45,2025;
+EXEC AddNeighborhoodCrime 'Belvedere','Rapiña',237,2025;
+EXEC AddNeighborhoodCrime 'Brazo Oriental','Rapiña',138,2025;
+EXEC AddNeighborhoodCrime 'Buceo','Rapiña',245,2025;
+EXEC AddNeighborhoodCrime 'Capurro, Bella Vista','Rapiña',102,2025;
+EXEC AddNeighborhoodCrime 'Carrasco','Rapiña',56,2025;
+EXEC AddNeighborhoodCrime 'Carrasco Norte','Rapiña',64,2025;
+EXEC AddNeighborhoodCrime 'Casabó, Pajas Blancas','Rapiña',177,2025;
+EXEC AddNeighborhoodCrime 'Casavalle','Rapiña',460,2025;
+EXEC AddNeighborhoodCrime 'Castro, P. Castellanos','Rapiña',103,2025;
+EXEC AddNeighborhoodCrime 'Centro','Rapiña',269,2025;
+EXEC AddNeighborhoodCrime 'Cerro','Rapiña',226,2025;
+EXEC AddNeighborhoodCrime 'Cerrito','Rapiña',154,2025;
+EXEC AddNeighborhoodCrime 'Ciudad Vieja','Rapiña',84,2025;
+EXEC AddNeighborhoodCrime 'Colón Centro y Noroeste','Rapiña',405,2025;
+EXEC AddNeighborhoodCrime 'Colón Sureste, Abayubá','Rapiña',144,2025;
+EXEC AddNeighborhoodCrime 'Conciliación','Rapiña',210,2025;
+EXEC AddNeighborhoodCrime 'Cordón','Rapiña',254,2025;
+EXEC AddNeighborhoodCrime 'Flor de Maroñas','Rapiña',262,2025;
+EXEC AddNeighborhoodCrime 'Ituzaingó','Rapiña',153,2025;
+EXEC AddNeighborhoodCrime 'Jacinto Vera','Rapiña',57,2025;
+EXEC AddNeighborhoodCrime 'Jardines del Hipódromo','Rapiña',298,2025;
+EXEC AddNeighborhoodCrime 'La Blanqueada','Rapiña',40,2025;
+EXEC AddNeighborhoodCrime 'La Comercial','Rapiña',40,2025;
+EXEC AddNeighborhoodCrime 'Las Canteras','Rapiña',197,2025;
+EXEC AddNeighborhoodCrime 'La Figurita','Rapiña',41,2025;
+EXEC AddNeighborhoodCrime 'Larrañaga','Rapiña',73,2025;
+EXEC AddNeighborhoodCrime 'La Paloma, Tomkinson','Rapiña',331,2025;
+EXEC AddNeighborhoodCrime 'Las Acacias','Rapiña',273,2025;
+EXEC AddNeighborhoodCrime 'La Teja','Rapiña',208,2025;
+EXEC AddNeighborhoodCrime 'Lezica, Melilla','Rapiña',197,2025;
+EXEC AddNeighborhoodCrime 'Malvín','Rapiña',178,2025;
+EXEC AddNeighborhoodCrime 'Malvín Norte','Rapiña',478,2025;
+EXEC AddNeighborhoodCrime 'Manga','Rapiña',230,2025;
+EXEC AddNeighborhoodCrime 'Manga, Toledo Chico','Rapiña',264,2025;
+EXEC AddNeighborhoodCrime 'Maroñas, Parque Guaraní','Rapiña',286,2025;
+EXEC AddNeighborhoodCrime 'Mercado Modelo, Bolívar','Rapiña',136,2025;
+EXEC AddNeighborhoodCrime 'Nuevo París','Rapiña',281,2025;
+EXEC AddNeighborhoodCrime 'Palermo','Rapiña',26,2025;
+EXEC AddNeighborhoodCrime 'Pque. Batlle, V. Dolores','Rapiña',144,2025;
+EXEC AddNeighborhoodCrime 'Parque Rodó','Rapiña',82,2025;
+EXEC AddNeighborhoodCrime 'Paso de la Arena','Rapiña',262,2025;
+EXEC AddNeighborhoodCrime 'Paso de las Duranas','Rapiña',127,2025;
+EXEC AddNeighborhoodCrime 'Peñarol, Lavalleja','Rapiña',318,2025;
+EXEC AddNeighborhoodCrime 'Piedras Blancas','Rapiña',312,2025;
+EXEC AddNeighborhoodCrime 'Pocitos','Rapiña',112,2025;
+EXEC AddNeighborhoodCrime 'Prado, Nueva Savona','Rapiña',271,2025;
+EXEC AddNeighborhoodCrime 'Punta Carretas','Rapiña',153,2025;
+EXEC AddNeighborhoodCrime 'Punta Gorda','Rapiña',63,2025;
+EXEC AddNeighborhoodCrime 'Pta. Rieles, Bella Italia','Rapiña',309,2025;
+EXEC AddNeighborhoodCrime 'Reducto','Rapiña',55,2025;
+EXEC AddNeighborhoodCrime 'Sayago','Rapiña',134,2025;
+EXEC AddNeighborhoodCrime 'Tres Cruces','Rapiña',113,2025;
+EXEC AddNeighborhoodCrime 'Tres Ombúes, Victoria','Rapiña',143,2025;
+EXEC AddNeighborhoodCrime 'Unión','Rapiña',535,2025;
+EXEC AddNeighborhoodCrime 'Villa Española','Rapiña',182,2025;
+EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Rapiña',367,2025;
+EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Rapiña',57,2025;

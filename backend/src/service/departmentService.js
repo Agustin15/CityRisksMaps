@@ -4,7 +4,9 @@ export class DepartmentService {
   static async add(department) {
     try {
       if (department == null)
-        throw new Error("Debe indicar un departamento para agregar");
+        throw new Error("Debe indicar un departamento para agregar", {
+          cause: { code: 400 }
+        });
       await DepartmentDAL.add(department);
     } catch (error) {
       throw error;
@@ -14,7 +16,9 @@ export class DepartmentService {
   static async update(department) {
     try {
       if (department == null)
-        throw new Error("Debe indicar un departamento para editar");
+        throw new Error("Debe indicar un departamento para editar", {
+          cause: { code: 400 }
+        });
 
       await DepartmentDAL.update(department);
     } catch (error) {

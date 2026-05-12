@@ -7,7 +7,7 @@ export class User {
   #email;
   #password;
   #rol;
-  #avatar;
+
 
   constructor(
     idUser = 0,
@@ -15,7 +15,6 @@ export class User {
     lastname = "desconocido",
     email = "email@gmail.com",
     password = "D98932B1kfo#m.l",
-    avatar = null,
     rol = new Rol()
   ) {
     this.idUser = idUser;
@@ -24,7 +23,6 @@ export class User {
     this.email = email;
     this.password = password;
     this.rol = rol;
-    this.avatar = avatar;
   }
 
   set idUser(value) {
@@ -106,21 +104,5 @@ export class User {
 
   get rol() {
     return this.#rol;
-  }
-
-  set avatar(value) {
-    if (value != null && value.length == 0)
-      throw new Error(
-        "La direccion de la imagen del avatar no puede estar vacia",
-        {
-          cause: { code: 400 }
-        }
-      );
-
-    this.#avatar = value;
-  }
-
-  get avatar() {
-    return this.#avatar;
   }
 }

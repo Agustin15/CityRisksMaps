@@ -1,4 +1,5 @@
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import sql from "mssql";
 
 export class CrimeDAL {
@@ -9,20 +10,11 @@ export class CrimeDAL {
       request.input("category", sql.VarChar(20), crime.category);
       request.input("description", sql.VarChar(700), crime.description);
 
-      const result = await request.execute("AddCrime");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Ya hay un crimen registrado con esta categoria", {
-            cause: { code: 409 }
-          });
-        case -2:
-          throw new Error("Error inesperado al agregar crimen", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("AddCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -33,21 +25,11 @@ export class CrimeDAL {
       request.input("category", sql.VarChar(20), crime.category);
       request.input("description", sql.VarChar(700), crime.description);
 
-      const result = await request.execute("UpdateCrime");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No hay registrado un crimen con esta categoria", {
-            cause: { code: 404 }
-          });
-
-        case -2:
-          throw new Error("Error inesperado al actualizar crimen", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -57,18 +39,11 @@ export class CrimeDAL {
 
       request.input("category", sql.VarChar(20), category);
 
-      const result = await request.execute("DeleteCrime");
-
-      if (result.returnValue == -1)
-        throw new Error("No hay registrado un crimen con esta categoria", {
-          cause: { code: 404 }
-        });
-      else if (result.returnValue == -2)
-        throw new Error("Error inesperado al eliminar crimen", {
-          cause: { code: 502 }
-        });
+      await request.execute("DeleteCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 

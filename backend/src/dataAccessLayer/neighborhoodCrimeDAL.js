@@ -1,4 +1,5 @@
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import sql from "mssql";
 
 export class NeighborhoodCrimeDAL {
@@ -26,42 +27,11 @@ export class NeighborhoodCrimeDAL {
       request.input("categoryCrime", sql.VarChar(30), categoryCrime);
       request.input("year", sql.Int, year);
 
-      const result = await request.execute("AddNeighborhoodsCrime");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No hay registro de un barrio con este nombre", {
-            cause: { code: 404 }
-          });
-        case -2:
-          throw new Error("No hay registro de un crimen con esta categoria", {
-            cause: { code: 404 }
-          });
-        case -3:
-          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
-            cause: { code: 400 }
-          });
-
-        case -4:
-          throw new Error("Año debe ser menor al año actual", {
-            cause: { code: 400 }
-          });
-
-        case -5:
-          throw new Error(
-            "Ya existe un registro en el barrio,mes,año y crimen indicado",
-            {
-              cause: { code: 400 }
-            }
-          );
-
-        case -6:
-          throw new Error("Error inesperado al agregar crimenes en barrios", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("AddNeighborhoodsCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -89,73 +59,27 @@ export class NeighborhoodCrimeDAL {
       request.input("categoryCrime", sql.VarChar(30), categoryCrime);
       request.input("year", sql.Int, year);
 
-      const result = await request.execute("UpdateNeighborhoodsCrime");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("No hay registro de un barrio con este nombre", {
-            cause: { code: 404 }
-          });
-        case -2:
-          throw new Error("No hay registro de un crimen con esta categoria", {
-            cause: { code: 404 }
-          });
-        case -3:
-          throw new Error("Cantidad de denuncias debe ser mayor a cero", {
-            cause: { code: 400 }
-          });
-
-        case -4:
-          throw new Error("Año debe ser menor al año actual", {
-            cause: { code: 400 }
-          });
-
-        case -5:
-          throw new Error(
-            "No existe un registro en con el barrio,mes,año y crimen indicado",
-            {
-              cause: { code: 404 }
-            }
-          );
-
-        case -6:
-          throw new Error(
-            "Error inesperado al actualizar crimenes en barrios",
-            {
-              cause: { code: 502 }
-            }
-          );
-      }
+      await request.execute("UpdateNeighborhoodsCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
-  static async delete(category, idNeighborhood, month, year) {
+  static async delete(category, idNeighborhood, year) {
     try {
       const request = new sql.Request(connection.pool);
 
       request.input("crime", sql.VarChar(20), category);
       request.input("idNeighborhood", sql.Int, idNeighborhood);
-      request.input("month", sql.Int, month);
       request.input("year", sql.Int, year);
 
-      const result = await request.execute("DeleteNeighborhoodCrime");
-
-      if (result.returnValue == -1)
-        throw new Error(
-          "No hay registrado un crimen en este barrio y este año",
-          {
-            cause: { code: 404 }
-          }
-        );
-
-      if (result.returnValue == -2)
-        throw new Error("Error inesperado al eliminar crimen en barrio", {
-          cause: { code: 502 }
-        });
+      await request.execute("DeleteNeighborhoodCrime");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 

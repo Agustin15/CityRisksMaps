@@ -3,7 +3,6 @@ import { UserService } from "../service/userService.js";
 import { RolService } from "../service/rolService.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { CloudinaryService } from "../service/cloudinaryService.js";
 
 export const login = async (req, res) => {
   try {
@@ -18,8 +17,6 @@ export const login = async (req, res) => {
     const user = new User();
     user.email = email;
     user.password = password;
-
-    let avatarUrl = null;
 
     const userFound = await UserService.getUserActivatedByEmail(user.email);
 
@@ -36,9 +33,6 @@ export const login = async (req, res) => {
 
     if (!rolFound)
       throw new Error("No se encontro un rol con este ID en el sistema");
-
-    if (userFound.avatar)
-      avatarUrl = await CloudinaryService.getAvatar(userFound.avatar);
 
     const authenticationToken = jwt.sign(
       { idUser: userFound.idUser, rol: rolFound.name },
@@ -70,9 +64,8 @@ export const login = async (req, res) => {
       secure: true
     });
 
-    return res
-      .status(200)
-      .json({ ...userFound, ["rol"]: rolFound.name, ["avatarUrl"]: avatarUrl });
+    delete userFound["password"];
+    return res.status(200).json({ ...userFound, ["rol"]: rolFound.name });
   } catch (error) {
     return res.status(401).json({ messageError: error.message });
   }

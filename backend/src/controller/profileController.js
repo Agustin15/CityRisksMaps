@@ -6,7 +6,7 @@ import sql from "mssql";
 import crypto from "crypto";
 import { UserService } from "../service/userService.js";
 import { sendMailToConfirmNewEmail } from "./sendMail.js";
-import { CloudinaryService } from "../service/cloudinaryService.js";
+
 
 export const getProfile = async (req, res) => {
   try {
@@ -14,19 +14,15 @@ export const getProfile = async (req, res) => {
 
     const idUser = req.idUser;
     const rol = req.rol;
-    let avatarUrl = null;
 
     const userFound = await UserService.getUserById(idUser);
 
     if (!userFound)
       throw new Error("No se encontro un usuario con este ID en el sistema");
 
-    if (userFound.avatar)
-      avatarUrl = await CloudinaryService.getAvatar(userFound.avatar);
+    delete userFound["password"];
 
-    return res
-      .status(200)
-      .json({ ...userFound, ["rol"]: req.rol, ["avatarUrl"]: avatarUrl });
+    return res.status(200).json({ ...userFound, ["rol"]: req.rol });
   } catch (error) {
     return res.status(401).json({ messageError: error.message });
   }
@@ -92,56 +88,6 @@ export const updateCompleteNameByIdUser = async (req, res) => {
       throw new Error("Debe indicar un apellido");
 
     await UserService.updateCompleteNameByIdUser(idUser, name, lastname);
-
-    return res.status(200).json(true);
-  } catch (error) {
-    return res.status(502).json({ messageError: error.message });
-  }
-};
-
-export const updateAvatar = async (req, res) => {
-  try {
-    if (!req.params) throw new Error("Parametros de la solicitud no definidos");
-    if (!req.body) throw new Error("Cuerpo de la solicitud no definido");
-
-    if (!req.params.idUser) throw new Error("Debe indicar un usuario");
-
-    if (
-      !req.file ||
-      (req.file.mimetype != "image/png" && req.file.mimetype != "image/jpeg")
-    )
-      throw new Error("Debe indicar un imagen formato png o jpeg");
-
-    if (req.file.size > 2000000)
-      throw new Error("Tamaño del archivo excede el limite de 2MB");
-
-    const idUser = req.params.idUser;
-    const avatarUploaded = req.file;
-
-    const result = await CloudinaryService.uploadAvatar(avatarUploaded, idUser);
-
-    await UserService.updateAvatarByIdUser(idUser, result.public_id);
-
-    return res.status(200).json({ avatar: result.public_id, avatarUrl: result.url });
-  } catch (error) {
-    return res.status(502).json({ messageError: error.message });
-  }
-};
-
-export const deleteAvatar = async (req, res) => {
-  try {
-    if (!req.params) throw new Error("Parametros de la solicitud no definidos");
-
-    if (!req.params.idUser) throw new Error("Debe indicar un usuario");
-
-    if (!req.params.avatarId) throw new Error("Debe indicar el avatar");
-
-    const idUser = req.params.idUser;
-    const avatarId = decodeURIComponent(req.params.avatarId);
-
-    const result = await CloudinaryService.deleteAvatar(avatarId);
-
-    await UserService.updateAvatarByIdUser(idUser, null);
 
     return res.status(200).json(true);
   } catch (error) {

@@ -11,6 +11,8 @@ export const confirmEmail = async (req, res) => {
 
     return res.status(200).json(true);
   } catch (error) {
-    return res.status(502).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
   }
 };

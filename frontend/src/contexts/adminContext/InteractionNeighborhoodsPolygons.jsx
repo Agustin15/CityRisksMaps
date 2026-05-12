@@ -13,7 +13,11 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
   };
 
   const handleMouseInNeighborhoodPolygon = (event) => {
+    if (polygons.length == 0) return;
+    
     const latLng = event.detail.latLng;
+
+    if (polygons.length == 0) return;
 
     const polygonFound = polygons.find((polygon) =>
       google.maps.geometry.poly.containsLocation(latLng, polygon)

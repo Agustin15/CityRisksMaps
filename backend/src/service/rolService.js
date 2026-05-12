@@ -3,7 +3,10 @@ import { RolDAL } from "../dataAccessLayer/rolDAL.js";
 export class RolService {
   static async add(rol) {
     try {
-      if (!rol) throw new Error("Debe indicar un rol para agregar");
+      if (!rol)
+        throw new Error("Debe indicar un rol para agregar", {
+          cause: { code: 400 }
+        });
       await RolDAL.add(rol);
     } catch (error) {
       throw error;
@@ -12,7 +15,10 @@ export class RolService {
 
   static async update(rol) {
     try {
-      if (!rol) throw new Error("Debe indicar un rol para actualizar");
+      if (!rol)
+        throw new Error("Debe indicar un rol para actualizar", {
+          cause: { code: 400 }
+        });
 
       await RolDAL.update(rol);
     } catch (error) {

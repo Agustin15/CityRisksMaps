@@ -5,11 +5,9 @@ const upload = multer({
   limits: { fileSize: 2000000 }
 });
 import {
-  deleteAvatar,
   getProfile,
   resetPassword,
   sendConfirmEmail,
-  updateAvatar,
   updateCompleteNameByIdUser
 } from "../controller/profileController.js";
 
@@ -22,6 +20,4 @@ RoutesProfile.use(verifyAuthToken);
 RoutesProfile.get("/", getProfile);
 RoutesProfile.put("/resetPassword/:idUser", resetPassword);
 RoutesProfile.put("/updateCompleteName/:idUser", updateCompleteNameByIdUser);
-RoutesProfile.put("/avatar/:idUser", upload.single("avatar"), updateAvatar);
-RoutesProfile.put("/avatar/:idUser/delete/:avatarId", deleteAvatar);
 RoutesProfile.post("/sendConfirmEmail/:idUser", sendConfirmEmail);

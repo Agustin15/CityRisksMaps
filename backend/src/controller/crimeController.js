@@ -65,8 +65,6 @@ export const getAllTypeCrimes = async (req, res) => {
 
     return res.status(200).json(crimes);
   } catch (error) {
-    return res
-      .status(error.cause ? error.cause.code : 404)
-      .json({ messageError: error.message });
+    return res.status(404).json({ messageError: error.message });
   }
 };

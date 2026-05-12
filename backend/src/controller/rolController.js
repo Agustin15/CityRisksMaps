@@ -1,19 +1,6 @@
 import { Rol } from "../entity/rol.js";
 import { RolService } from "../service/rolService.js";
 
-export const getRols = async (req, res) => {
-  try {
-    const rols = await RolService.getAllRols();
-
-    if (rols.length == 0)
-      throw new Error("No se encontraron registros de roles en en sistema");
-
-    return res.status(200).json(rols);
-  } catch (error) {
-    return res.status(404).json({ messageError: error.message });
-  }
-};
-
 export const add = async (req, res) => {
   try {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
@@ -26,7 +13,9 @@ export const add = async (req, res) => {
 
     return res.status(200).json(true);
   } catch (error) {
-    return res.status(502).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
   }
 };
 
@@ -40,12 +29,14 @@ export const update = async (req, res) => {
     const idRol = parseInt(req.params.idRol);
 
     const rol = new Rol(idRol, name);
-    
+
     await RolService.update(rol);
 
     return res.status(200).json(true);
   } catch (error) {
-    return res.status(404).json({ messageError: error.message });
+    return res
+      .status(error.cause ? error.cause.code : 502)
+      .json({ messageError: error.message });
   }
 };
 
@@ -58,6 +49,21 @@ export const deleteById = async (req, res) => {
     await RolService.delete(idRol);
 
     return res.status(200).json(true);
+  } catch (error) {
+    return res
+      .status(error.cause ? error.cause.code : 404)
+      .json({ messageError: error.message });
+  }
+};
+
+export const getRols = async (req, res) => {
+  try {
+    const rols = await RolService.getAllRols();
+
+    if (rols.length == 0)
+      throw new Error("No se encontraron registros de roles en en sistema");
+
+    return res.status(200).json(rols);
   } catch (error) {
     return res.status(404).json({ messageError: error.message });
   }

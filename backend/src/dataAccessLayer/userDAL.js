@@ -1,4 +1,5 @@
 import { connection } from "../config/connection.js";
+import { getCodeHttpError } from "../httpCodeErrors.js";
 import sql from "mssql";
 
 export class UserDAL {
@@ -12,41 +13,11 @@ export class UserDAL {
       request.input("activated", sql.Bit, 0);
       request.input("rol", sql.Int, user.rol.idRol);
 
-      const result = await request.execute("AddUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Ingrese un correo con formato valido", {
-            cause: { code: 400 }
-          });
-
-        case -2:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -3:
-          throw new Error("Apellido no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -4:
-          throw new Error("No se encontro el rol indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -5:
-          throw new Error("Correo ingresado ya en uso", {
-            cause: { code: 409 }
-          });
-
-        case -6:
-          throw new Error("Error inesperado al agregar usuario", {
-            cause: { code: 502 }
-          });
-      }
-
-      return result.returnValue;
+      await request.execute("AddUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
   static async update(user) {
@@ -59,46 +30,11 @@ export class UserDAL {
       request.input("lastname", sql.VarChar(20), user.lastname);
       request.input("rol", sql.Int, user.rol.idRol);
 
-      const result = await request.execute("UpdateUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Ingrese un correo con formato valido", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -3:
-          throw new Error("Apellido no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -4:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-
-        case -5:
-          throw new Error("No se encontro el rol indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -6:
-          throw new Error("Correo ingresado ya en uso", {
-            cause: { code: 409 }
-          });
-
-        case -7:
-          throw new Error("Error inesperado al actualizar usuario", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
   static async activateUser(idUser, password) {
@@ -108,28 +44,11 @@ export class UserDAL {
       request.input("idUser", sql.Int, idUser);
       request.input("password", sql.VarChar(60), password);
 
-      const result = await request.execute("activateUserByIdUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Contraseña no puede estar vacia", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-
-        case -3:
-          throw new Error("Error inesperado al activar el usuario", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("activateUserByIdUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -140,38 +59,11 @@ export class UserDAL {
       request.input("idUser", sql.Int, idUser);
       request.input("email", sql.VarChar(40), email);
 
-      const result = await request.execute("UpdateEmailByIdUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Formato de correo electronico no valido", {
-            cause: { code: 404 }
-          });
-
-        case -2:
-          throw new Error("No se encontro el usuario indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -3:
-          throw new Error("La verificacion de este correo ya se ha realizado", {
-            cause: { code: 409 }
-          });
-
-        case -4:
-          throw new Error(
-            "Ya existe un usuario con este correo en el sistema",
-            {
-              cause: { code: 409 }
-            }
-          );
-        case -5:
-          throw new Error("Error inesperado al actualizar correo electronico", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateEmailByIdUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -182,28 +74,11 @@ export class UserDAL {
       request.input("idUser", sql.Int, idUser);
       request.input("password", sql.VarChar(60), password);
 
-      const result = await request.execute("UpdateUserPasswordByIdUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Contraseña no puede estar vacia", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("No se encontro el usuario indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -3:
-          throw new Error(
-            "Error inesperado al actualizar contraseña del usuario",
-            {
-              cause: { code: 502 }
-            }
-          );
-      }
+      await request.execute("UpdateUserPasswordByIdUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -215,61 +90,11 @@ export class UserDAL {
       request.input("name", sql.VarChar(20), name);
       request.input("lastname", sql.VarChar(20), lastname);
 
-      const result = await request.execute("UpdateCompleteNameByIdUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Nombre no puede estar vacio", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("Apellido no puede estar vacio", {
-            cause: { code: 400 }
-          });
-
-        case -3:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-        case -4:
-          throw new Error("Error inesperado al actualizar  usuario", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("UpdateCompleteNameByIdUser");
     } catch (error) {
-      throw error;
-    }
-  }
-
-  static async updateAvatarByIdUser(idUser, avatarURL) {
-    try {
-      const request = new sql.Request(connection.pool);
-      request.input("idUser", sql.Int, idUser);
-
-      request.input("avatar", sql.VarChar(100), avatarURL);
-
-      const result = await request.execute("UpdateAvatarByIdUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error("Debe subir una imagen ", {
-            cause: { code: 400 }
-          });
-        case -2:
-          throw new Error("No se encontro el usuario indicado en el sistema", {
-            cause: { code: 404 }
-          });
-
-        case -3:
-          throw new Error("Error inesperado al actualizar avatar del usuario", {
-            cause: { code: 502 }
-          });
-      }
-    } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -279,24 +104,11 @@ export class UserDAL {
 
       request.input("idUser", sql.Int, idUser);
 
-      const result = await request.execute("DeleteUser");
-
-      switch (result.returnValue) {
-        case -1:
-          throw new Error(
-            "No se encontro el el usuario indicado en el sistema",
-            {
-              cause: { code: 404 }
-            }
-          );
-
-        case -2:
-          throw new Error("Error inesperado al eliminarusuario", {
-            cause: { code: 502 }
-          });
-      }
+      await request.execute("DeleteUser");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 
@@ -383,6 +195,26 @@ export class UserDAL {
       const result = await request.execute("UserActivatedByEmail");
 
       return result.recordset;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async updateStateAuth2FA(idUser, state) {
+    try {
+      const request = new sql.Request(connection.pool);
+      request.input("idUser", sql.Int, idUser);
+      request.input("state", sql.Bit, state);
+
+      const result = await request.execute("UpdateStateAuth2FA");
+
+      if (result.returnValue == -1)
+        throw new Error("No se encontro un usuario con este ID");
+      else if (result.returnValue == -2)
+        throw new Error(
+          "Error al " + state == 1
+            ? "activar la autenticacion en dos pasos"
+            : "desactivar la autenticacion en dos pasos"
+        );
     } catch (error) {
       throw error;
     }

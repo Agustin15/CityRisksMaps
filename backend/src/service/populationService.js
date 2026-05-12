@@ -4,7 +4,9 @@ export class PopulationService {
   static async add(population) {
     try {
       if (population == null)
-        throw new Error("Debe indicar un poblacion para agregar");
+        throw new Error("Debe indicar un poblacion para agregar", {
+          cause: { code: 400 }
+        });
       await PopulationDAL.add(population);
     } catch (error) {
       throw error;
@@ -14,7 +16,9 @@ export class PopulationService {
   static async update(population) {
     try {
       if (population == null)
-        throw new Error("Debe indicar un poblacion para editar");
+        throw new Error("Debe indicar un poblacion para editar", {
+          cause: { code: 400 }
+        });
 
       await PopulationDAL.update(population);
     } catch (error) {

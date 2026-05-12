@@ -3,7 +3,10 @@ import { ZoneDAL } from "../dataAccessLayer/zoneDAL.js";
 export class ZoneService {
   static async add(zone) {
     try {
-      if (!zone) throw new Error("Debe indicar una zona para agregar");
+      if (!zone)
+        throw new Error("Debe indicar una zona para agregar", {
+          cause: { code: 400 }
+        });
       await ZoneDAL.add(zone);
     } catch (error) {
       throw error;
@@ -12,7 +15,10 @@ export class ZoneService {
 
   static async update(zone) {
     try {
-      if (!zone) throw new Error("Debe indicar una zona para actualizar");
+      if (!zone)
+        throw new Error("Debe indicar una zona para actualizar", {
+          cause: { code: 400 }
+        });
       await ZoneDAL.update(zone);
     } catch (error) {
       throw error;
