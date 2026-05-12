@@ -99,10 +99,7 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
      SECRET_KEY_CONFIRM_EMAIL_TOKEN=<SECRET CONFIRM EMAIL KEY FOR JSONWEBTOKEN ENCRYPT>
      ALGORITM_ENCRYPT_JWE_PAYLOAD=<ALGORITM OF ENCRYPT THE JSONWEBTOKEN JWE PAYLOAD (FOR SIMETRIC KEY)>
      ALGORITM_ENCRYPT_JWE_IV=<ALGORITM OF ENCRYPT THE IV JSONWEBTOKEN JWE (FOR SIMETRIC KEY)>
-     CLOUDINARY_CLOUD_NAME=<YOUR CLOUD NAME OF CLOUDINARY WHERE YOU STORE THE AVATARS IMAGES>
-     CLOUDINARY_API_KEY=<YOUR API KEY OF CLOUDINARY>
-     CLOUDINARY_API_SECRET=<YOUR API SECRET OF CLOUDINARY>
-
+  
 
   ![](/frontend/src/assets/Captures/screenApp1.PNG)
     
@@ -121,7 +118,18 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
   
   ![](/frontend/src/assets/Captures/screenApp6.PNG)
 
+    
+  ![](/frontend/src/assets/Captures/screenApp7.PNG)
 
+## Backoffice
+
+  ![](/frontend/src/assets/Captures/screenApp8.PNG)
+
+  
+  ![](/frontend/src/assets/Captures/screenApp9.PNG)
+
+    
+  ![](/frontend/src/assets/Captures/screenApp10.PNG)
 
 
 
