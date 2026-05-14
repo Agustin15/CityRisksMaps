@@ -101,7 +101,7 @@ export const NeighborhoodsCrimesProvider = ({ children }) => {
 
     if (years) {
       setYearSelected(years[0].year);
-      setYears(years);
+      setYears(years.map((yearItem) => yearItem.year));
       loadCrimesByYear(years[0].year, categoryCrime);
     }
   };

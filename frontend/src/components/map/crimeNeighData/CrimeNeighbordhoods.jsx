@@ -6,12 +6,14 @@ import iconHoldup from "../../../assets/img/holdup.png";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
 import { useState } from "react";
+import { ChartIncreaseOfCrime } from "./chartIncreaseOfCrime/ChartIncreaseOfCrime";
 
 export const CrimeNeighbordhoods = ({
   categoryCrime,
   setShowViewStatistics
 }) => {
   const [elementSearchedNotFound, setElementSearchedNotFound] = useState(false);
+  const [showChart, setShowChart] = useState(false);
 
   return (
     <div className={styles.containData}>
@@ -40,12 +42,14 @@ export const CrimeNeighbordhoods = ({
       <LoadCrimesInNeighborhoods
         categoryCrime={categoryCrime}
         setElementSearchedNotFound={setElementSearchedNotFound}
+        setShowChart={setShowChart}
       />
 
       <Table
         crime={categoryCrime}
         elementSearchedNotFound={elementSearchedNotFound}
       />
+      {showChart && <ChartIncreaseOfCrime setShowChart={setShowChart} />}
     </div>
   );
 };

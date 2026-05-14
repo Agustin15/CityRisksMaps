@@ -1108,6 +1108,7 @@ year INT NOT NULL
 
 GO
 
+
 CREATE OR ALTER FUNCTION CalculateIncrease (@idNeighborhood INT,@crime VARCHAR(30),@quantity INT,@year INT) 
 returns DECIMAL(5,1) AS 
 BEGIN 
@@ -1407,10 +1408,40 @@ GO
 
 ----STORED PROCEDURE TO Statistics
 
+CREATE OR ALTER FUNCTION CalculateAmountIncrease(@crime VARCHAR(20),@year INT,@amount INT) RETURNS DECIMAL(6,1) AS
+BEGIN
+
+DECLARE @increase DECIMAL(6,1);
+DECLARE @amountCrimesPrevYear INT;
+
+select @amountCrimesPrevYear=SUM(quantity) from Neighborhoods_Crimes where crime=@crime and year=@year-1;
+
+IF(@amount IS NOT NULL and @amountCrimesPrevYear IS NOT NULL)
+BEGIN
+SET @increase=(
+CASE 
+WHEN (@amount-@amountCrimesPrevYear)=0 THEN 0
+WHEN @amount=0 and @amount>@amountCrimesPrevYear THEN 100
+WHEN @amount=0 and @amountCrimesPrevYear>@amount THEN -100
+ELSE 
+((@amount-@amountCrimesPrevYear)/CAST(@amountCrimesPrevYear as decimal(6,1)))*100
+
+END
+)
+END
+
+RETURN @increase;
+
+END
+GO
+
 CREATE OR ALTER PROCEDURE IncreaseOfOneCrimeInYears @crime VARCHAR(20) AS 
 
 BEGIN 
-select year,SUM(quantity) as 'amount',SUM(increase) as 'increase' from Neighborhoods_Crimes where crime=@crime GROUP BY year ORDER BY year ASC; 
+
+select year,SUM(quantity) as 'amount',dbo.CalculateAmountIncrease(@crime,year,SUM(quantity)) as 'increase' 
+from Neighborhoods_Crimes where crime=@crime GROUP BY year ORDER BY year ASC; 
+
 END
 
 GO

@@ -1,13 +1,16 @@
 import styles from "./LoadCrimeDataNeighborhoods.module.css";
+import iconIncreaseColumnChart from "../../../../assets/img/increaseColumnChart.png";
 import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { Loading } from "../../loading/Loading";
 import { References } from "../references/References";
 import { FilterYears } from "../../filterYears/FilterYears";
 import { Searcher } from "../searcher/Searcher";
+import { ChartIncreaseOfCrime } from "../chartIncreaseOfCrime/ChartIncreaseOfCrime";
 
 export const LoadCrimesInNeighborhoods = ({
   categoryCrime,
-  setElementSearchedNotFound
+  setElementSearchedNotFound,
+  setShowChart
 }) => {
   const { loadingYears, years } = useNeighborhoodsCrimes();
 
@@ -32,7 +35,15 @@ export const LoadCrimesInNeighborhoods = ({
             <Searcher setElementSearchedNotFound={setElementSearchedNotFound} />
           </div>
 
-          <FilterYears categoryCrime={categoryCrime} />
+          <div className={styles.rowYears}>
+            <FilterYears categoryCrime={categoryCrime} />
+            <button
+              onClick={() => setShowChart(true)}
+              className={styles.btnIncrease}
+            >
+              <img src={iconIncreaseColumnChart}></img>
+            </button>
+          </div>
         </>
       )}
     </div>

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getCategoryCrimeInNeighborhood,
+  getIncreaseOfCrimeInYears,
   getNeighborhoodsCrimeByYear,
   getYearsNeighborhoodsCrime
 } from "../controller/neighborhoodCrimeController.js";
@@ -22,4 +23,7 @@ RoutesNeighborhoodCrime.get(
   getCategoryCrimeInNeighborhood
 );
 
-
+RoutesNeighborhoodCrime.get(
+  "/increaseOfCategoryCrimeInYears/:categoryCrime/",
+  getIncreaseOfCrimeInYears
+);

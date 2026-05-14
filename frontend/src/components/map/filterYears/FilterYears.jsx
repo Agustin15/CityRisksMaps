@@ -18,17 +18,15 @@ export const FilterYears = ({ categoryCrime }) => {
 
   return (
     <ul className={styles.years}>
-      {years.map((yearObject, index) => (
+      {years.map((year, index) => (
         <li key={index}>
           <button
-            onClick={() => handleClickYear(yearObject.year)}
+            onClick={() => handleClickYear(year)}
             className={
-              yearObject.year == yearSelected
-                ? styles.yearSelected
-                : styles.yearUnselected
+              year == yearSelected ? styles.yearSelected : styles.yearUnselected
             }
           >
-            {yearObject.year}
+            {year}
           </button>
         </li>
       ))}
