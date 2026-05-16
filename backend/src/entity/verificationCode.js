@@ -6,14 +6,14 @@ export class VerificationCode {
   #expiration;
   #user;
 
-  constructor(code, expiration = new Date(), user = new User()) {
-    this.code = code;
-    this.expiration = expiration;
+  constructor(user) {
+    this.code = randomInt(100000, 999999);
+    this.expiration = this.generateExpiration();
     this.user = user;
   }
 
   set code(value) {
-    this.#code = value.trim();
+    this.#code = value;
   }
 
   get code() {
@@ -21,10 +21,6 @@ export class VerificationCode {
   }
 
   set expiration(value) {
-    if (!value || new Date(value) == "Invalid Date")
-      throw new Error("Fecha de expiration no valida", {
-        cause: { code: 400 }
-      });
     this.#expiration = value;
   }
 
@@ -33,8 +29,6 @@ export class VerificationCode {
   }
 
   set user(value) {
-    if (!user)
-      throw new Error("Debe indicar un usuario", { cause: { code: 400 } });
     this.#user = value;
   }
 
@@ -42,21 +36,7 @@ export class VerificationCode {
     return this.#user;
   }
 
-  generateCode() {
-    let code = "";
-
-    let characters =
-      "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
-
-    for (let f = 0; f < 6; f++) {
-      let charSelected = characters.charAt(randomInt(0, 65));
-      code += charSelected;
-    }
-
-    return code;
-  }
-
   generateExpiration() {
-    return new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    return new Date(new Date().getTime() + 900 * 1000);
   }
 }

@@ -1,18 +1,14 @@
 import { VerificationCodeDAL } from "../dataAccessLayer/verificationCodeDAL.js";
-import bcrypt from "bcrypt";
 
 export class VerificationCodeService {
-  static async add(verificationCode) {
+  static async add(verificationCode,transaction) {
     try {
       if (!verificationCode)
         throw new Error("Debe indicar un codigo de verificacion para agregar", {
           cause: { code: 400 }
         });
 
-      const salt = await bcrypt.genSalt(10);
-      verificationCode.code = await bcrypt.hash(verificationCode.code, salt);
-
-      await VerificationCodeDAL.add(verificationCode);
+      await VerificationCodeDAL.add(verificationCode,transaction);
     } catch (error) {
       throw error;
     }

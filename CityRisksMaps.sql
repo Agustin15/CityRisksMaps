@@ -14,7 +14,7 @@ idUser INT IDENTITY(1,1) Primary key ,
 email VARCHAR(40) UNIQUE CHECK(PATINDEX('%@[a-zA-Z]%.com%%',email)>0), 
 name VARCHAR(20) NOT NULL CHECK(LEN(name)>0),
 lastname VARCHAR(20) NOT NULL CHECK(LEN(lastname)>0),
-password VARCHAR(60),
+password VARCHAR(60),   
 activated BIT NOT NULL,
 auth2FA BIT NOT NULL DEFAULT 0,
 created DATETIME NOT NULL DEFAULT GETDATE(),
@@ -25,9 +25,9 @@ rol INT NOT NULL FOREIGN KEY REFERENCES Rols(idRol) ON UPDATE CASCADE ON DELETE 
 CREATE TABLE Verifications_Codes(
 code VARCHAR(60) PRIMARY KEY,
 expiration DATETIME NOT NULL CHECK(expiration>GETDATE()),
+used BIT NOT NULL DEFAULT 0,
 idUser INT NOT NULL FOREIGN KEY REFERENCES Users(idUser) ON UPDATE CASCADE ON DELETE CASCADE,
 );
-
 
 CREATE TABLE Departments(
 idDepartment INT IDENTITY(1,1) Primary key, 
@@ -1706,7 +1706,7 @@ RETURN
 END
 
 
-INSERT INTO Verifications_Codes VALUES(@code,@expiration,@idUser)
+INSERT INTO Verifications_Codes(code,expiration,idUser) VALUES(@code,@expiration,@idUser)
 
 IF(@@ERROR<>0)
 BEGIN
@@ -1716,6 +1716,30 @@ END
 
 END
 GO
+
+
+
+CREATE OR ALTER PROCEDURE UpdateVerificationCodeLikeUsed @code VARCHAR(60) AS
+
+BEGIN
+
+IF EXISTS (select * from Verifications_Codes where code=@code)
+BEGIN
+RAISERROR('No se encontro el codigo de verificacion',16,2)
+RETURN 
+END
+
+UPDATE Verifications_Codes set used=1 where code=@code;
+
+IF(@@ERROR<>0)
+BEGIN
+RAISERROR('Error inesperado al actualizar codigo de verificacion',16,4)
+RETURN 
+END
+
+END
+GO
+
 
 CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByIdUser @idUser INT AS
 BEGIN 

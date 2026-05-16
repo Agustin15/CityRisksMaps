@@ -1,6 +1,7 @@
 import styles from "./Details.module.css";
 import { useRef, useState } from "react";
 import { formatDate } from "../../functions.js";
+import { Enable2FA } from "./Enable2FA/Enable2FA.jsx";
 
 export const Details = ({ user }) => {
   return (
@@ -63,6 +64,7 @@ export const Details = ({ user }) => {
           </table>
         </div>
       </div>
+      <Enable2FA />
     </div>
   );
 };

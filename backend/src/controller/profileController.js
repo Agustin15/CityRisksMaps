@@ -7,7 +7,6 @@ import crypto from "crypto";
 import { UserService } from "../service/userService.js";
 import { sendMailToConfirmNewEmail } from "./sendMail.js";
 
-
 export const getProfile = async (req, res) => {
   try {
     if (req.idUser == null) throw new Error("ID de usuario no definido");
@@ -54,10 +53,10 @@ export const resetPassword = async (req, res) => {
     if (!userFound)
       throw new Error("No se encontro un usuario con este ID en el sistema");
 
-    let match = true;
+    let match = false;
     if (userFound.password.length == 60)
       match = bcrypt.compare(oldPassword, userFound.password);
-    else if (userFound.password != oldPassword) match = false;
+    else match = userFound.password == oldPassword;
 
     if (!match)
       throw new Error("La contraseña antigua ingresada no es correcta");

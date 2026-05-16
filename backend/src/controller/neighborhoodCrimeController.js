@@ -1,8 +1,9 @@
 import fs from "fs";
 import iconv from "iconv-lite";
-import csv from "csvtojson";
+import csv from "csv-parser";
 import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js";
 import { NeighborhoodService } from "../service/neighborhoodService.js";
+import { rejects } from "assert";
 
 export const addThroughtTable = async (req, res) => {
   try {
@@ -133,23 +134,27 @@ export const loadNeighborhoodsCrimeFromFile = async (req, res) => {
 const readerFile = async (file) => {
   const read = fs.createReadStream(file.path);
 
-  let contentFile = "";
+  const results = [];
 
-  read.on("data", (chunk) => {
-    const chunkDecodeString = iconv.decode(chunk, "latin1");
-    contentFile += chunkDecodeString;
-  });
-
-  return new Promise((resolve, reject) => {
-    read.on("end", async () => {
-      const result = await csv({
-        noheader: false,
-        output: "json",
-        delimiter: ";"
-      }).fromString(contentFile);
-
-      resolve(result);
-    });
+  return new Promise((resolve, rejects) => {
+    try {
+      read
+        .pipe(iconv.decodeStream("latin1"))
+        .pipe(
+          csv({
+            escape: "\n",
+            separator: ";"
+          })
+        )
+        .on("data", (jsonObject) => {
+          results.push(jsonObject);
+        })
+        .on("end", () => {
+          resolve(results);
+        });
+    } catch (error) {
+      rejects(error);
+    }
   });
 };
 

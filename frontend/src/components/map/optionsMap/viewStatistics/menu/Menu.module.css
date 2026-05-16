@@ -125,7 +125,7 @@
     .menuOptionsCrimes li {
         flex-direction: column;
         font-size: 11px;
-        height: 3rem;
+        height: 100%;
         opacity: 75%;
     }
     .menuOptionsCrimes li div {
@@ -163,7 +163,7 @@
     }
     .menuOptionsCrimes li {
         flex-direction: column;
-        height: 4rem;
+        height: 6rem;
         font-size: 13px;
         opacity: 75%;
     }

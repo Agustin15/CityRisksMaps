@@ -205,18 +205,11 @@ export class UserDAL {
       request.input("idUser", sql.Int, idUser);
       request.input("state", sql.Bit, state);
 
-      const result = await request.execute("UpdateStateAuth2FA");
-
-      if (result.returnValue == -1)
-        throw new Error("No se encontro un usuario con este ID");
-      else if (result.returnValue == -2)
-        throw new Error(
-          "Error al " + state == 1
-            ? "activar la autenticacion en dos pasos"
-            : "desactivar la autenticacion en dos pasos"
-        );
+      await request.execute("UpdateStateAuth2FA");
     } catch (error) {
-      throw error;
+      throw new Error(error.message, {
+        cause: { code: getCodeHttpError(error.state) }
+      });
     }
   }
 }

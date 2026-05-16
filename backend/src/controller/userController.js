@@ -97,18 +97,31 @@ export const updateAuth2FA = async (req, res) => {
     if (!req.body) throw new Error("Cuerpo de solicitud no definido");
     if (!req.params.idUser) throw new Error("Usuario no indicado");
 
-    const { state } = req.body;
+    const { state, password } = req.body;
 
-    if (state == null)
+    if (password == null) {
+      throw new Error("Debe confirmar su contraseña");
+    } else if (state == null)
       throw new Error(
         "Debe indicar si quiere activar o desactivar la autenticacion 2FA"
       );
 
     const idUser = parseInt(req.params.idUser);
 
+    const userFound = await UserService.getUserById(idUser);
+
+    let match = false;
+
+    if (userFound.password.length == 60)
+      match = bcrypt.compare(password, userFound.password);
+    else match = password == userFound.password;
+
+    if (!match)
+      throw new Error("Error de autenticacion,contraseña ingresada incorrecta");
+
     await UserService.updateStateAuth2FA(idUser, state);
 
-    return res.status(200).json(true);
+    return res.status(200).json({ newState: state });
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 502)

@@ -1,6 +1,7 @@
 import { User } from "../entity/user.js";
 import { UserService } from "../service/userService.js";
 import { RolService } from "../service/rolService.js";
+import { createVerificationCode } from "./verificationCodeController.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -13,6 +14,9 @@ export const login = async (req, res) => {
 
     if (!process.env.SECRET_KEY_REFRESH_TOKEN)
       throw new Error("JWT_SECRET_KEY_REFRESH_TOKEN no declarado");
+
+    if (!process.env.SECRET_KEY_2FA_TOKEN)
+      throw new Error("JWT_SECRET_KEY_2FA_TOKEN no declarado");
 
     const user = new User();
     user.email = email;
@@ -64,8 +68,14 @@ export const login = async (req, res) => {
       secure: true
     });
 
-    delete userFound["password"];
-    return res.status(200).json({ ...userFound, ["rol"]: rolFound.name });
+    if (!userFound.auth2FA) {
+      delete userFound["password"];
+      return res.status(200).json({ ...userFound, ["rol"]: rolFound.name });
+    } else {
+      const token2FA = await createVerificationCode(userFound);
+      
+      return res.status(200).json({ token2FA: token2FA });
+    }
   } catch (error) {
     return res.status(401).json({ messageError: error.message });
   }
