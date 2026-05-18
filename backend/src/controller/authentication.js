@@ -138,3 +138,35 @@ export const verifyConfirmEmailToken = async (req, res) => {
     return res.status(401).json({ messageError: error.message });
   }
 };
+
+export const verifyTwoStepAuthToken = (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!process.env.SECRET_KEY_2FA_TOKEN)
+      throw new Error("SECRET_KEY_2FA_TOKEN no declarada");
+
+    const secretKeyTwoFAToken = process.env.SECRET_KEY_2FA_TOKEN;
+
+    if (!authHeader)
+      throw new Error(
+        "Token de acceso para confirmar la autenticacion en dos pasos no valido"
+      );
+
+    const jwtToken = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : authHeader;
+
+    const decoded = jwt.verify(jwtToken, secretKeyTwoFAToken);
+
+    return decoded.idUser;
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      error.message = "Token de acceso a la autenticacion en dos pasos ha expirado";
+    } else if (error.name === "JsonWebTokenError") {
+      error.message =
+        "Token de acceso a la autenticacion en dos pasos no es valida";
+    }
+    throw error;
+  }
+};

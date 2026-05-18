@@ -5,12 +5,15 @@
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-    background: url("../../assets/img/backgroundLogin.jpg");
+    background: url("../../assets/img/backgroundLogin.svg");
     background-size: cover;
 }
 .login {
-    width: 25rem;
+    width: 23rem;
     height: 28rem;
+    background: white;
+    border: 1px solid rgb(233, 233, 233);
+    box-shadow: 2px 2px 2px gray;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,34 +34,38 @@
     position: relative;
 }
 
-.containForm .title {
+.containForm .header {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.4rem;
-    width: 99%;
-    margin-top: 1rem;
+    width: 100%;
+    background: url("../../assets/img/backgroundFormLogin.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.containForm .titleText {
+.containForm .title {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.2rem;
-    width: 99%;
+    padding: 0.5rem 0 0.5rem 0;
+    width: 100%;
+    color: white;
+    background: rgba(43, 43, 173, 0.562);
 }
 
-.containForm .titleText span {
-    opacity: 81%;
+.containForm .title span {
     font-size: 18px;
 }
 
-.containForm .titleText h3 {
+.containForm .title h3 {
     font-size: 19px;
 }
-.containForm img {
+.containForm .title img {
     width: 61px;
     height: 61px;
 }
@@ -135,24 +142,10 @@
     border-radius: 5px;
     font-size: 15px;
     color: white;
-    background-color: #4e90c5;
+    background-color: #3e6bce;
     font-weight: bold;
     margin-top: 0.3rem;
 }
 .containForm button:hover {
-    background-color: #2f6da0;
-}
-
-.footer {
-    position: absolute;
-    bottom: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: gray;
-}
-.footer img {
-    width: 33px;
-    height: 33px;
+    background-color: #375eb3;
 }

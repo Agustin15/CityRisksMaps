@@ -13,10 +13,10 @@ export const LoginAdmin = () => {
       </Helmet>
       <div className={styles.login}>
         <div className={styles.containForm}>
-          <div className={styles.title}>
-            <img src={iconLogo}></img>
-            <div className={styles.titleText}>
-              <h3>IndiceDelitosMontevideo</h3>
+          <div className={styles.header}>
+            <div className={styles.title}>
+              <img src={iconLogo}></img>
+              <h3>Indice delitos Montevideo</h3>
               <span>Iniciar sesión</span>
             </div>
           </div>

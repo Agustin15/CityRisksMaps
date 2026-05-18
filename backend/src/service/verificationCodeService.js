@@ -1,16 +1,24 @@
 import { VerificationCodeDAL } from "../dataAccessLayer/verificationCodeDAL.js";
 
 export class VerificationCodeService {
-  static async add(verificationCode,transaction) {
+  static async add(verificationCode, transaction) {
     try {
       if (!verificationCode)
         throw new Error("Debe indicar un codigo de verificacion para agregar", {
           cause: { code: 400 }
         });
 
-      await VerificationCodeDAL.add(verificationCode,transaction);
+      await VerificationCodeDAL.add(verificationCode, transaction);
     } catch (error) {
       throw error;
+    }
+  }
+
+  static async updateVerificationCodeLikeUsed(code) {
+    try {
+      await VerificationCodeDAL.updateVerificationCodeLikeUsed(code);
+    } catch (error) {
+      throw error
     }
   }
 

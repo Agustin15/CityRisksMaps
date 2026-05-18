@@ -19,7 +19,7 @@ export class VerificationCodeDAL {
     }
   }
 
-  static async UpdateVerificationCodeLikeUsed(code) {
+  static async updateVerificationCodeLikeUsed(code) {
     try {
       const request = new sql.Request(connection.pool);
 

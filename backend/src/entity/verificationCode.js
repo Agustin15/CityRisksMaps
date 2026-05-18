@@ -8,7 +8,7 @@ export class VerificationCode {
 
   constructor(user) {
     this.code = randomInt(100000, 999999);
-    this.expiration = this.generateExpiration();
+    this.expiration = new Date(new Date().getTime() + 900 * 1000);
     this.user = user;
   }
 
@@ -34,9 +34,5 @@ export class VerificationCode {
 
   get user() {
     return this.#user;
-  }
-
-  generateExpiration() {
-    return new Date(new Date().getTime() + 900 * 1000);
   }
 }

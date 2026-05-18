@@ -7,29 +7,36 @@ import { connection } from "../config/connection.js";
 import bcrypt from "bcrypt";
 import sql from "mssql";
 
-export const createVerificationCode = async (user) => {
+export const createVerificationCode = async (userFound) => {
   let transaction;
   try {
     const user = new User(
-      user.idUser,
-      user.name,
-      user.lastname,
-      user.email,
-      user.password,
-      user.rol
+      userFound.idUser,
+      userFound.name,
+      userFound.lastname,
+      userFound.email,
+      userFound.password,
+      userFound.rol
     );
 
     const verificationCode = new VerificationCode(user);
 
-    verificationCode.code = await bcrypt.hash(verificationCode.code, 10);
+    const code = verificationCode.code;
+
+    const salt = await bcrypt.genSalt(10);
+
+    verificationCode.code = await bcrypt.hash(
+      verificationCode.code.toString(),
+      salt
+    );
 
     transaction = new sql.Transaction(connection.pool);
-    
+
     await transaction.begin(sql.ISOLATION_LEVEL.READ_COMMITTED);
 
-    await VerificationCodeService.add(verificationCode,transaction);
+    await VerificationCodeService.add(verificationCode, transaction);
 
-    await sendVerificationCode(verificationCode.code, verificationCode.user);
+    await sendVerificationCode(code, verificationCode.user);
 
     const token2FA = jwt.sign(
       { idUser: verificationCode.user.idUser },

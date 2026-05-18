@@ -1682,7 +1682,6 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --VerificationsCodes PROCEDURES
 
-
 CREATE OR ALTER PROCEDURE AddVerificationCode @code VARCHAR(60),@idUser INT,@expiration DATETIME AS
 
 BEGIN
@@ -1717,13 +1716,10 @@ END
 END
 GO
 
-
-
 CREATE OR ALTER PROCEDURE UpdateVerificationCodeLikeUsed @code VARCHAR(60) AS
-
 BEGIN
 
-IF EXISTS (select * from Verifications_Codes where code=@code)
+IF NOT EXISTS (select * from Verifications_Codes where code=@code)
 BEGIN
 RAISERROR('No se encontro el codigo de verificacion',16,2)
 RETURN 
@@ -1823,3 +1819,4 @@ CREATE NONCLUSTERED INDEX IX_PopulationByNeighborhoodAndYear ON Population(neigh
 CREATE NONCLUSTERED INDEX IX_PopulationsByNeighborhood ON Population(neighborhood)
 
 GO
+

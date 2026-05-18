@@ -21,7 +21,7 @@ export const sendActivateUserMail = async (emailUser, name, token) => {
     });
 
     const info = await transporter.sendMail({
-      from: "IndiceDelitosMdveoSoporte" + " <" + EMAIL_FROM + ">",
+      from: "SoporteIndiceDelitosMdveoUy" + " <" + EMAIL_FROM + ">",
       to: name + " <" + emailUser + ">",
       subject: "Activacion de usuario",
       html: `
@@ -60,7 +60,7 @@ export const sendMailToConfirmNewEmail = async (email, name, token) => {
     });
 
     const info = await transporter.sendMail({
-      from: "IndiceDelitosMdveoSoporte" + " <" + EMAIL_FROM + ">",
+      from: "SoporteIndiceDelitosMdveoUy" + " <" + EMAIL_FROM + ">",
       to: name + " <" + email + ">",
       subject: "Confirmacion del nuevo correo electronico",
       html: `
@@ -83,6 +83,9 @@ export const sendMailToConfirmNewEmail = async (email, name, token) => {
 
 export const sendVerificationCode = async (code, user) => {
   try {
+    const EMAIL_FROM = process.env.EMAIL_FROM;
+    const APP_PASSWORD = process.env.APP_PASSWORD;
+
     if (!EMAIL_FROM) throw new Error("EMAIL_FROM no declarado");
     if (!APP_PASSWORD) throw new Error("APP_PASSWORD no declarado");
 
@@ -97,7 +100,7 @@ export const sendVerificationCode = async (code, user) => {
     });
 
     const info = await transporter.sendMail({
-      from: "IndiceDelitosMdveoSoporte" + " <" + EMAIL_FROM + ">",
+      from: "SoporteIndiceDelitosMdveoUy" + " <" + EMAIL_FROM + ">",
       to: user.email,
       subject: "Codigo de verificacion",
       html: `<p>¡Hola ${user.name}!, hemos recibido una solicitud para intentar iniciar sesion en tu cuenta.</p>

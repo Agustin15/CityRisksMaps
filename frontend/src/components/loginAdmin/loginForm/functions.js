@@ -4,23 +4,28 @@ import { alertSwalErrorAdmin } from "../../sweetAlert/sweetAlert.js";
 export const submitForm = async (values, errors, setErrors) => {
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  setErrors({ email: "", password: "" });
+  try {
+    setErrors({ email: "", password: "" });
 
-  if (!regexEmail.test(values.email)) {
-    setErrors({
-      ...errors,
-      ["email"]: "*Complete correctamente el campo correo"
-    });
-    return;
-  } else if (values.password.length == 0) {
-    setErrors({
-      ...errors,
-      ["password"]: "*Complete el campo contraseña"
-    });
-    return;
+    if (!regexEmail.test(values.email)) {
+      setErrors({
+        ...errors,
+        ["email"]: "*Complete correctamente el campo correo"
+      });
+      return;
+    } else if (values.password.length == 0) {
+      setErrors({
+        ...errors,
+        ["password"]: "*Complete el campo contraseña"
+      });
+      return;
+    }
+
+    const result = await fetchLogin(values);
+    return result;
+  } catch (error) {
+    throw error;
   }
-
-  return await fetchLogin(values);
 };
 
 const fetchLogin = async (values) => {
@@ -37,6 +42,6 @@ const fetchLogin = async (values) => {
 
     return result;
   } catch (error) {
-    alertSwalErrorAdmin("Ups,hubo un error al iniciar sesion", error.message);
+    throw error;
   }
 };

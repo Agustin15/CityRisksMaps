@@ -5,6 +5,7 @@ import { submitForm } from "./functions.js";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useAuth } from "../../../contexts/adminContext/AuthContext.jsx";
+import { alertSwalErrorAdmin } from "../../sweetAlert/sweetAlert.js";
 
 export const LoginForm = () => {
   const [values, setValues] = useState({ email: "", password: "" });
@@ -37,12 +38,21 @@ export const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const userFound = await submitForm(values, errors, setErrors);
-    if (userFound) {
-      setUser(userFound);
-      navigate("/admin/departamentos");
+    try {
+      const result = await submitForm(values, errors, setErrors);
+      if (!result) return;
+
+      if (!result.token2FA) {
+        setUser(userFound);
+        navigate("/admin/departamentos");
+      } else {
+        navigate("/admin/login/" + result.token2FA);
+      }
+    } catch (error) {
+      alertSwalErrorAdmin("Autenticacion fallida", error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

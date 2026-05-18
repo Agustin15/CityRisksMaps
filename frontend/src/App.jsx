@@ -22,6 +22,7 @@ import { EditProfile } from "./components/admin/editProfile/EditProfile.jsx";
 import { Statistics } from "./components/admin/statistics/Statistics.jsx";
 import { HelmetProvider } from "react-helmet-async";
 import { TwoFA } from "./components/loginAdmin/twoFA/TwoFA.jsx";
+import { TwoStepAuthProvider } from "./contexts/adminContext/TwoStepAuthContext.jsx";
 
 function App() {
   return (
@@ -34,7 +35,14 @@ function App() {
                 <Route path="/" element={<MapPage />}></Route>
                 <Route path="/*" element={<NotFoundPage />}></Route>
                 <Route path="/admin/login" element={<LoginAdmin />}></Route>
-                <Route path="/admin/login/:token" element={<TwoFA />}></Route>
+                <Route
+                  path="/admin/login/:token"
+                  element={
+                    <TwoStepAuthProvider>
+                      <TwoFA />
+                    </TwoStepAuthProvider>
+                  }
+                ></Route>
                 <Route
                   path="/admin/departamentos"
                   element={<Departments />}

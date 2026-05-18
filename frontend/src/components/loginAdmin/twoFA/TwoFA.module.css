@@ -6,153 +6,73 @@
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-    background: url("../../../assets/img/backgroundLogin.jpg");
+    background: url("../../../assets/img/backgroundLogin.svg");
     background-size: cover;
 }
 
 .containForm {
-    width: 32rem;
-    height: 32rem;
+    width: 25rem;
+    height: auto;
+    padding-bottom: 2rem;
+    background: white;
+    border: 1px solid rgb(233, 233, 233);
+    box-shadow: 2px 2px 2px rgb(170, 170, 170);
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    background: none;
     font-size: 16px;
     position: relative;
 }
 
-.containForm .title {
+.containForm .header {
+    width: 100%;
+    background: url("../../../assets/img/backgroundFormLogin.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.containForm .header .title {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 99%;
-    margin-top: 1rem;
     gap: 0.5rem;
+    color: white;
+    width: 100%;
+    height: auto;
+    gap: 1rem;
+    padding: 1rem 0 1rem 0;
+    background: rgba(43, 43, 173, 0.562);
 }
 
-.containForm .titleText {
+.containForm .header .title h3 {
+    font-size: 19px;
+    margin: 0;
+}
+
+.containForm p {
+    font-size: 15px;
+    margin: 1rem 0 0 0;
+    padding: 0;
+    width: 65%;
+    text-align: center;
+}
+
+.containForm .errorAuth {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: column-reverse;
     align-items: center;
     text-align: center;
-    width: 99%;
     gap: 0.5rem;
+    color: red;
+}
+.containForm .header .errorAuth img {
+    width: 69px;
+    height: 69px;
 }
 
-.containForm .titleText p {
-    font-size: 16px;
-    margin: 0;
-    width: 65%;
-}
-
-.containForm .titleText h3 {
-    font-size: 19px;
-    margin: 0;
-}
 .containForm img {
-    width: 61px;
-    height: 61px;
-}
-
-.containForm form {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    background: none;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 1rem;
-}
-
-.containForm .columnInput {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    position: relative;
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-    width: 65%;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.containForm .columnInput img {
-    width: 22px;
-    height: 22px;
-    position: absolute;
-    right: 0.5rem;
-    top: 2rem;
-    cursor: pointer;
-}
-
-.containForm .columnInput input {
-    font-size: 21px;
-    width: 89%;
-    height: 2.8rem;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 6px;
-    outline: none;
-    padding-left: 1rem;
-}
-
-.containForm .columnInput input::placeholder {
-    font-size: 22px;
-}
-
-.containForm .columnInput input:hover {
-    border-color: rgba(82, 168, 236, 0.8);
-}
-
-.keyboard {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 95%;
-    margin: 0.5rem 0 0 0;
-    padding: 0;
-}
-
-.keyboard li {
-    width: 100%;
-    height: 2rem;
-}
-.keyboard li ul {
-    margin: 0;
-    padding: 0;
-    gap: 0;
-    width: 100%;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-}
-
-.keyboard li ul li {
-    width: 20%;
-    height: 2.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.keyboard li ul li button {
-    font-size: 19px;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgb(252, 252, 252), rgb(187, 187, 187));
-    box-shadow: 2px 2px 2px rgb(150, 150, 150);
-    border-radius: 3px;
-}
-
-.keyboard li ul li button:hover {
-  box-shadow: none;
+    width: 62px;
+    height: 62px;
 }
