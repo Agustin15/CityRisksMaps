@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     setLoadingProfile(true);
 
     try {
-      const response = await fetch(LOCALHOST_BACKEND + "/profile/", {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin/profile/", {
         method: "GET",
         credentials: "include",
         headers: {

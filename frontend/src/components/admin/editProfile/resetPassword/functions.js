@@ -57,7 +57,7 @@ export const fetchUpdatePassword = async (
   try {
     setLoading(true);
     const response = await fetch(
-      LOCALHOST_BACKEND + "/profile/resetPassword/" + idUser,
+      LOCALHOST_BACKEND + "/admin/profile/resetPassword/" + idUser,
       {
         method: "PUT",
         credentials: "include",

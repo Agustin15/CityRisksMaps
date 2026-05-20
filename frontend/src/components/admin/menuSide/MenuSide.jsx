@@ -2,6 +2,7 @@ const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 import styles from "./MenuSide.module.css";
 import iconLogo from "../../../assets/img/logo.png";
 import iconLogout from "../../../assets/img/logout.png";
+import { alertSwalErrorAdmin } from "../../sweetAlert/sweetAlert.js";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { Options } from "./options/Options";
@@ -12,7 +13,7 @@ export const MenuSide = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(LOCALHOST_BACKEND + "/logout/", {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin/logout/", {
         method: "POST",
         credentials: "include"
       });
@@ -25,7 +26,10 @@ export const MenuSide = () => {
         navigate("/admin/login");
       }
     } catch (error) {
-      console.log(error);
+      return alertSwalErrorAdmin(
+        "Ups, no se pudo cerrar sesion correctamente",
+        "Vuelva a intentarlo mas tarde"
+      );
     }
   };
 

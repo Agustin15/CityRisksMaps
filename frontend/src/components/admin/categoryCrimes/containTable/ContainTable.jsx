@@ -6,7 +6,7 @@ import { FooterTable } from "../../departments/containTable/footerTable/FooterTa
 export const ContainTable = () => {
   return (
     <div className={styles.containTable}>
-      <LoadData route={"/crimeAdmin/crimes"} />
+      <LoadData route={"/crime/crimes"} />
       <div className={styles.scrollTable}>
         <table>
           <thead>

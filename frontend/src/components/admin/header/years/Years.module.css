@@ -11,9 +11,10 @@
 }
 
 .years select {
-    width: 5rem;
-    height: 1.9rem;
+    width: 5.5rem;
+    height: 2rem;
     border: 1px solid rgb(185, 185, 185);
+    background: linear-gradient(rgb(248, 248, 248), rgb(228, 228, 228));
     border-radius: 5px;
     outline: none;
     cursor: pointer;

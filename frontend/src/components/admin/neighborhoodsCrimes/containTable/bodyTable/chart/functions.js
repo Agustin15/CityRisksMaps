@@ -8,7 +8,7 @@ export const getDataChart = async (
   try {
     const response = await fetch(
       LOCALHOST_BACKEND +
-        "/neighborhoodCrimeAdmin/categoryCrimeInNeighborhood/" +
+        "/admin/neighborhoodCrime/categoryCrimeInNeighborhood/" +
         neighborhoodCrime.crime +
         "/" +
         neighborhoodCrime.neighborhood,

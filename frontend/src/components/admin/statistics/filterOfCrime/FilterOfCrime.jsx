@@ -12,7 +12,7 @@ export const FilterOfCrime = ({
   const loadFilter = async () => {
     setLoading(true);
     try {
-      const crimes = await loadData("/crime/crimes");
+      const crimes = await loadData("/admin/crime/crimes");
       setCrimes(crimes);
       setCrimeSelected(crimes[0].category);
     } catch (error) {

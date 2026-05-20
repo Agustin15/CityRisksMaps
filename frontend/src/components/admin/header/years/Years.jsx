@@ -1,7 +1,7 @@
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 import styles from "./Years.module.css";
 
-export const Years = ({ years, route, controller }) => {
+export const Years = ({ years, route }) => {
   const {
     fetchGet,
     setRegisters,
@@ -14,15 +14,9 @@ export const Years = ({ years, route, controller }) => {
   const handleChange = async (year) => {
     setYearSelected(year);
 
-    let url =
-      route +
-      JSON.stringify({
-        option: controller,
-        offset: 0,
-        year: year
-      });
-
+    let url = route + "/" + year + "/" + 0;
     setIndex(0);
+
     const result = await fetchGet(url);
     if (result) {
       setRegisters(result.registersOffset);

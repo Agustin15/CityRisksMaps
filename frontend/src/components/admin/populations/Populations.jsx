@@ -40,8 +40,7 @@ export const Populations = () => {
             <Header
               title={title}
               setAddForm={setAddForm}
-              route={"/population/"}
-              controller={"getPopulationsOffsetByYear"}
+              route={"/population/populationsOffsetYear"}
             />
             {addForm &&
               createPortal(

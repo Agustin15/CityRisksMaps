@@ -27,7 +27,7 @@ export const ChartAmountDifferentCrimesInNeighborhood = () => {
     setError("");
     try {
       const result = await loadData(
-        "/neighborhoodCrimeAdmin/amountOfDifferentsCrimesInNeighborhoodInYear/" +
+        "/admin/neighborhoodCrime/amountOfDifferentsCrimesInNeighborhoodInYear/" +
           neighborhoodSelected.idNeighborhood +
           "/" +
           yearSelected

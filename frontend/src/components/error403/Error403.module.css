@@ -12,7 +12,7 @@
 }
 
 .wave {
-    background: url("../../../assets/img/backgroundForbidden.svg");
+    background: url("../../assets/img/backgroundForbidden.svg");
     background-repeat: no-repeat;
     background-size: cover;
     height: 55vh;
@@ -28,20 +28,21 @@
     align-items: center;
     justify-content: center;
     height: 75%;
+    color: rgb(26, 26, 26);
 }
 
 .msj img {
-    width: 11rem;
-    height: 11rem;
+    width: 10rem;
+    height: 10rem;
 }
 .msj h3 {
-    margin-top: 0.5rem;
+    margin-top: 0.7rem;
     font-size: 26px;
 }
 .msj p {
     margin: 0;
-    font-size: 18px;
-    color: rgb(77, 77, 77);
+    font-size: 19px;
+    color: rgb(26, 26, 26);
     text-align: center;
 }
 
@@ -96,7 +97,7 @@
 }
 
 @media (width>650px) and (width<1200px) {
-    .forbidden{
+    .forbidden {
         height: 100vh;
     }
     .wave {

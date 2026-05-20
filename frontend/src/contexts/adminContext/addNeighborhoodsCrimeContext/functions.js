@@ -24,7 +24,7 @@ export const fetchGetNeighborhoodsCrimeFromFile = async (
   try {
     const response = await fetch(
       LOCALHOST_BACKEND +
-        "/neighborhoodCrimeAdmin/loadNeighborhoodsCrimeFromFile/",
+        "/admin/neighborhoodCrime/loadNeighborhoodsCrimeFromFile/",
       {
         method: "POST",
         credentials: "include",
@@ -113,7 +113,7 @@ export const fetchGetAmountsOfAnCrimeInNeighborhoodsByYear = async (
 ) => {
   const url =
     LOCALHOST_BACKEND +
-    "/neighborhoodCrimeAdmin/amountAnCrimeInNeighborhoodByYear/" +
+    "/admin/neighborhoodCrime/amountAnCrimeInNeighborhoodByYear/" +
     values.crime +
     "/" +
     values.year +

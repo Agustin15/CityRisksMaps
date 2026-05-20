@@ -1,5 +1,6 @@
 import CanvasJSReact from "@canvasjs/react-charts";
 
+
 export const loadOptionsColumnChart = (dataChart, crime) => {
   CanvasJSReact.CanvasJS.addColorSet("blue", ["#20599b"]);
 
@@ -29,7 +30,7 @@ export const loadOptionsColumnChart = (dataChart, crime) => {
       labelFontSize: 15,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: crime == "Homicidio" ? 5 : crime == "Hurto" ? 200 : 50,
+      interval: crime == "Homicidio" ? 3 : crime == "Hurto" ? 200 : 50,
       labelFormatter: function (e) {
         return e.value;
       }

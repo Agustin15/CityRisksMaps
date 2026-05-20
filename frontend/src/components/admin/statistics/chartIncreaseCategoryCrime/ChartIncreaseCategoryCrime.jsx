@@ -24,7 +24,7 @@ export const ChartIncreaseCategoryCrime = () => {
     setError("");
     try {
       const result = await loadData(
-        "/neighborhoodCrimeAdmin/increaseOfCrimeInYears/" + crimeSelected
+        "/admin/neighborhoodCrime/increaseOfCrimeInYears/" + crimeSelected
       );
 
       setDataChart(result);

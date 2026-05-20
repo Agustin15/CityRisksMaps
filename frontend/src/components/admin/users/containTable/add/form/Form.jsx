@@ -21,7 +21,7 @@ export const Form = ({
     setLoadingRols(true);
 
     try {
-      const response = await fetch(LOCALHOST_BACKEND + "/role/allRols", {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin/role/allRols", {
         method: "GET",
         credentials: "include",
         headers: {

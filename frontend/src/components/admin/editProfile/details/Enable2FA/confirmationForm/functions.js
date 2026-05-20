@@ -10,7 +10,7 @@ export const fetchUpdateStateAuth2FA = async (
 ) => {
   try {
     const response = await fetch(
-      LOCALHOST_BACKEND + "/user/stateAuth2FA/" + user.idUser,
+      LOCALHOST_BACKEND + "/admin/user/stateAuth2FA/" + user.idUser,
       {
         method: "PUT",
         credentials: "include",

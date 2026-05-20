@@ -8,7 +8,7 @@ export const getDataChart = async (
   try {
     const response = await fetch(
       LOCALHOST_BACKEND +
-        "/population/datapointsNeighborhoodPopulationsYears/" +
+        "/admin/population/datapointsNeighborhoodPopulationsYears/" +
         nameNeighborhood,
       {
         method: "GET",

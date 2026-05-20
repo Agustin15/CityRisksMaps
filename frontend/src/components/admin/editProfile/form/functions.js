@@ -9,7 +9,7 @@ export const fetchUpdateCompleteName = async (
   try {
     setLoading(true);
     const response = await fetch(
-      LOCALHOST_BACKEND + "/profile/updateCompleteName/" + idUser,
+      LOCALHOST_BACKEND + "/admin/profile/updateCompleteName/" + idUser,
       {
         method: "PUT",
         credentials: "include",

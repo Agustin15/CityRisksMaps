@@ -23,7 +23,7 @@ export const LoadDepartaments = ({
   const load = async () => {
     try {
       const response = await fetch(
-        LOCALHOST_BACKEND + "/department/allDepartments",
+        LOCALHOST_BACKEND + "/admin/department/allDepartments",
         {
           method: "GET",
           credentials: "include",

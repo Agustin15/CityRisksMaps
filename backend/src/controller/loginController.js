@@ -40,10 +40,12 @@ export const login = async (req, res) => {
     if (!rolFound)
       throw new Error("No se encontro un rol con este ID en el sistema");
 
-    if (!userFound.auth2FA) {
+    if (userFound.auth2FA == false) {
       createAuthenticacionTokens(res, userFound, rolFound);
       delete userFound["password"];
-      return res.status(200).json({ ...userFound, ["rol"]: rolFound.name });
+      return res
+        .status(200)
+        .json({ user: { ...userFound, ["rol"]: rolFound.name } });
     } else {
       const token2FA = await createVerificationCode(userFound);
       return res.status(200).json({ token2FA: token2FA });
@@ -73,14 +75,14 @@ const createAuthenticacionTokens = async (res, userFound, rolFound) => {
   res.cookie("authenticationToken", authenticationToken, {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "none",
     secure: true
   });
 
   res.cookie("authenticationRefreshToken", authenticationRefreshToken, {
     maxAge: 60 * 60 * 1000 * 24,
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "none",
     secure: true
   });
 };
@@ -110,19 +112,12 @@ export const twoStepAuthenticacion = async (req, res) => {
       );
 
     if (!verificationCodeFound)
-      throw new Error(
-        "No se encontro un codigo de verificacion reciente para su usuario"
-      );
-
-    if (verificationCodeFound.used == true)
-      throw new Error("Este codigo de verificacion ya se ha sido utilizado");
+      throw new Error("El codigo de verificacion es incorrecto");
 
     const match = await bcrypt.compare(code, verificationCodeFound.code);
-    if (!match)
-      throw new Error("El codigo de verificacion ingresado es incorrecto");
 
-    if (verificationCodeFound.expiration < new Date())
-      throw new Error("El codigo de verificacion ya ha expirado");
+    if (!match || verificationCodeFound.expiration < new Date())
+      throw new Error("El codigo de verificacion es incorrecto");
 
     const userFound = await UserService.getUserById(idUser);
 

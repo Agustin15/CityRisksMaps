@@ -12,7 +12,7 @@ export const FilterOfNeighborhood = ({
   const loadFilter = async () => {
     setLoading(true);
     try {
-      const neighborhoods = await loadData("/neighborhood/allNeighborhoods");
+      const neighborhoods = await loadData("/admin/neighborhood/allNeighborhoods");
       setNeighborhoods(neighborhoods);
       setNeighborhoodSelected(neighborhoods[0]);
     } catch (error) {

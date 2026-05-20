@@ -28,7 +28,7 @@ export const ChartIncreaseOfCrimeInNeighborhood = () => {
       setError("");
 
       const endpoint =
-        "/neighborhoodCrimeAdmin/increaseOfCrimeInNeighborhood/" +
+        "/admin/neighborhoodCrime/increaseOfCrimeInNeighborhood/" +
         crimeSelected +
         "/" +
         neighborhoodSelected.idNeighborhood;

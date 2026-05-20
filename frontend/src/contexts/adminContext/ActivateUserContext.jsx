@@ -46,7 +46,7 @@ export const ActivateUserProvider = ({ children }) => {
   const fetchActivate = async (body, token) => {
     setLoading(true);
     try {
-      const response = await fetch(LOCALHOST_BACKEND + "/user/activate/", {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin/user/activate/", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -80,7 +80,7 @@ export const ActivateUserProvider = ({ children }) => {
     setLoadingValidation(true);
     try {
       const response = await fetch(
-        LOCALHOST_BACKEND + "/user/validate-activate-user-token/",
+        LOCALHOST_BACKEND + "/admin/user/validate-activate-user-token/",
         {
           method: "POST",
           credentials: "include",

@@ -7,6 +7,7 @@ import {
 
 export const RoutesLogin = express.Router();
 
+RoutesLogin.get("/", (req, res) => res.status(200).json(true));
 RoutesLogin.post("/", login);
 RoutesLogin.get("/validateTwoStepAuthToken/", validateTwoStepAuthToken);
 RoutesLogin.post("/twoStepAuth/", twoStepAuthenticacion);

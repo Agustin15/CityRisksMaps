@@ -26,7 +26,7 @@ export const ContainTable = () => {
   useEffect(() => {
     const getCrimes = async () => {
       const categoryCrimes = await fetchGet(
-        "/crimeAdmin/crimes",
+        "/crime/crimes",
         setLoadingFilter
       );
       if (categoryCrimes) {
@@ -42,7 +42,7 @@ export const ContainTable = () => {
     if (!crimeSelected) return;
     const loadYearsData = async () => {
       const years = await loadYears(
-        "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
+        "/neighborhoodCrime/yearsNeighborhoodsCrime/" + crimeSelected
       );
 
       if (years) {
@@ -60,7 +60,7 @@ export const ContainTable = () => {
     <div className={styles.containTable}>
       {crimeSelected && yearSelected && !loadingFilter && (
         <LoadData
-          route={"/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset"}
+          route={"/neighborhoodCrime/neighborhoodsCrimesByYearOffset"}
           offset={0}
         />
       )}
@@ -86,7 +86,7 @@ export const ContainTable = () => {
       </div>
 
       <Pagination
-        route={"/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset"}
+        route={"/neighborhoodCrime/neighborhoodsCrimesByYearOffset"}
       />
     </div>
   );

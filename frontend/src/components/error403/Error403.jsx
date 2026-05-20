@@ -13,8 +13,8 @@ export const Error403 = () => {
 
       <div className={styles.msj}>
         <img src={iconForbbiden}></img>
-        <h3>ERROR 403</h3>
-        <p>No posee permisos suficientes para acceder a esta pagina</p>
+        <h3>Acceso denegado</h3>
+        <p>No posee permisos suficientes para acceder a este recurso</p>
       </div>
 
       <div className={styles.footer}>

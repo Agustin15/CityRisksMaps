@@ -30,7 +30,7 @@ export const submitForm = async (values, errors, setErrors) => {
 
 const fetchLogin = async (values) => {
   try {
-    const response = await fetch(localhostBackend + "/login/", {
+    const response = await fetch(localhostBackend + "/admin/login/", {
       method: "POST",
       credentials: "include",
       headers: { "Content-type": "application/json" },

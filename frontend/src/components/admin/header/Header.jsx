@@ -33,7 +33,7 @@ export const Header = ({ title, setAddForm, route, controller }) => {
           placeholder="Buscar..."
         ></input>
 
-        {years && <Years years={years} route={route} controller={controller} />}
+        {years && <Years years={years} route={route} />}
       </div>
     </div>
   );

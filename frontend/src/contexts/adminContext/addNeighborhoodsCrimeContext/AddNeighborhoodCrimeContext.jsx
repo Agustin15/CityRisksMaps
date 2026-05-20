@@ -132,7 +132,7 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     }
 
     const result = await fetchPostOrPut(
-      "/neighborhoodCrimeAdmin/",
+      "/admin/neighborhoodCrime/",
       method,
       setLoading,
       valuesToSend
@@ -160,14 +160,14 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
   const loadDataAfterChanges = async () => {
     if (values.crime == crimeSelected) {
       let url =
-        "/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset/" +
+        "/admin/neighborhoodCrime/neighborhoodsCrimesByYearOffset/" +
         crimeSelected +
         "/" +
         values.year;
 
       if (values.year != yearSelected) {
         await loadYears(
-          "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime/" + crimeSelected
+          "/admin/neighborhoodCrime/yearsNeighborhoodsCrime/" + crimeSelected
         );
         url += "/0";
         setIndex(0);

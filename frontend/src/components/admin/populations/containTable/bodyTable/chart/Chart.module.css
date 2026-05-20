@@ -43,7 +43,6 @@
     height: 85%;
     padding: 0;
     margin: 0;
-    color: white;
     font-size: 18px;
     font-weight: bold;
 }
@@ -65,14 +64,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80%;
-    gap: 0;
-    color: white;
+    height: 85%;
+    gap: 0.2rem;
+}
+
+.containChart .noData p {
+    height: auto;
 }
 
 .containChart .noData img {
-    width: 72px;
-    height: 72px;
+    width: 83px;
+    height: 83px;
     margin: 0;
     opacity: 85%;
 }

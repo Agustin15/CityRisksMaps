@@ -19,18 +19,22 @@ export const EmailConfirmed = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(LOCALHOST_BACKEND + "/confirmEmail/", {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${params.token}`
+        const response = await fetch(
+          LOCALHOST_BACKEND + "/admin/confirmEmail/",
+          {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${params.token}`
+            }
           }
-        });
+        );
         const result = await response.json();
 
         if (!response.ok) {
-          if (response.status == 401) navigate("/admin/forbidden/");
+          if (response.status == 403) navigate("/admin/permiso-denegado/");
+          else if (response.status == 401) navigate("/admin/no-autorizado/");
           else throw new Error(result.messageError);
         }
       } catch (error) {

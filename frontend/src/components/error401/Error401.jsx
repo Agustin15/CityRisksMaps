@@ -4,8 +4,8 @@ import { NoContentComponent } from "../noContentComponent/NoContentComponent";
 export const Error401 = () => {
   return (
     <NoContentComponent
-      title={"ERROR 401"}
-      msj={"No tiene autorización para acceder a esta pagina"}
+      title={"Sin autorizacion"}
+      msj={"No tiene autorización para acceder a esta recurso"}
       image={iconError401}
     />
   );

@@ -43,7 +43,7 @@ export const LoginForm = () => {
       if (!result) return;
 
       if (!result.token2FA) {
-        setUser(userFound);
+        setUser(result.user);
         navigate("/admin/departamentos");
       } else {
         navigate("/admin/login/" + result.token2FA);

@@ -12,7 +12,7 @@ export const FilterOfYears = ({
   const loadFilter = async () => {
     setLoading(true);
     try {
-      const years = await loadData("/neighborhoodCrimeAdmin/allYears");
+      const years = await loadData("/admin/neighborhoodCrime/allYears");
       setYears(years);
       setYearSelected(Object.values(years[0]));
     } catch (error) {

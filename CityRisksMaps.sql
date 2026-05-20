@@ -375,7 +375,6 @@ END
 
 GO
 
-
 CREATE OR ALTER PROCEDURE UpdateCompleteNameByIdUser @idUser INT,@name VARCHAR(20),@lastname VARCHAR(20) AS
 
 IF(@name='' OR LEN(@name)=0)
@@ -1492,10 +1491,10 @@ GO
 CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodsByYear @crime VARCHAR(20),@year INT,@offset INT AS 
 
 BEGIN 
-select N.name,NC.quantity as 'amount' from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime and NC.year=@year ORDER BY 'amount' DESC OFFSET @offset ROWS FETCH NEXT 15 ROWS ONLY;
-END
+select N.name,NC.quantity as 'amount',year from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
+where NC.crime=@crime and NC.year=@year ORDER BY N.name ASC OFFSET 0 ROWS FETCH NEXT 14 ROWS ONLY;
 
+END
 GO
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
@@ -1736,11 +1735,10 @@ END
 END
 GO
 
-
 CREATE OR ALTER PROCEDURE VerificationCodeMostRecentlyByIdUser @idUser INT AS
 BEGIN 
 
-select TOP 1 *  from Verifications_Codes where idUser=@idUser;
+select TOP 1 *  from Verifications_Codes where idUser=@idUser ORDER BY expiration DESC;
 END
 
 GO

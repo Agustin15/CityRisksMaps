@@ -27,7 +27,7 @@ export const CrudProvider = ({ children }) => {
     else setLoadingFilter(true);
 
     try {
-      const response = await fetch(LOCALHOST_BACKEND + url, {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin" + url, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -53,7 +53,7 @@ export const CrudProvider = ({ children }) => {
   const fetchPostOrPut = async (url, methodFetch, setLoading, body) => {
     setLoading(true);
     try {
-      const response = await fetch(LOCALHOST_BACKEND + url, {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin" + url, {
         method: methodFetch,
         credentials: "include",
         headers: {
@@ -88,7 +88,7 @@ export const CrudProvider = ({ children }) => {
   const fetchPostWithFormData = async (url, setLoading, formData) => {
     setLoading(true);
     try {
-      const response = await fetch(LOCALHOST_BACKEND + url, {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin" + url, {
         method: "POST",
         credentials: "include",
         body: formData
@@ -114,7 +114,7 @@ export const CrudProvider = ({ children }) => {
   const fetchDelete = async (url) => {
     setLoading(true);
     try {
-      const response = await fetch(LOCALHOST_BACKEND + url, {
+      const response = await fetch(LOCALHOST_BACKEND + "/admin" + url, {
         method: "DELETE",
         credentials: "include",
         headers: {

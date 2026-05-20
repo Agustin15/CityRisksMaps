@@ -8,7 +8,7 @@ export const Years = ({ years, yearSelected }) => {
   const handleChange = async (year) => {
     setYearSelected(year);
     let url =
-      "/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset" +
+      "/neighborhoodCrime/neighborhoodsCrimesByYearOffset" +
       "/" +
       crimeSelected +
       "/" +

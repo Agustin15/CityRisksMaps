@@ -38,7 +38,7 @@ export const Delete = ({ neighborhoodCrime, setDeleteItem }) => {
         crime: neighborhoodCrime.crime
       });
 
-      let url = "/neighborhoodCrimeAdmin/" + idCompound;
+      let url = "/neighborhoodCrime/" + idCompound;
 
       const result = await fetchDelete(url);
       if (result) {
@@ -51,13 +51,13 @@ export const Delete = ({ neighborhoodCrime, setDeleteItem }) => {
   };
   const reloadRegisters = async () => {
     let url =
-      "/neighborhoodCrimeAdmin/neighborhoodsCrimesByYearOffset/" +
+      "/neighborhoodCrime/neighborhoodsCrimesByYearOffset/" +
       neighborhoodCrime.crime;
 
     if (registers.length == 1) {
       if (index == 0) {
         const yearsLoaded = await loadYears(
-          "/neighborhoodCrimeAdmin/yearsNeighborhoodsCrime" + neighborhoodCrime.crime
+          "/neighborhoodCrime/yearsNeighborhoodsCrime" + neighborhoodCrime.crime
         );
 
         if (!yearsLoaded || yearsLoaded.length == 0) return;

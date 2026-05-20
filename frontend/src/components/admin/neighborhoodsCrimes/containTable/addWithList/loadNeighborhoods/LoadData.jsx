@@ -15,7 +15,7 @@ export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
       setLoading(true);
       try {
         const response = await fetch(
-          LOCALHOST_BACKEND + "/neighborhood/allNeighborhoods",
+          LOCALHOST_BACKEND + "/admin/neighborhood/allNeighborhoods",
           {
             method: "GET",
             credentials: "include",

@@ -34,21 +34,20 @@ try {
   process.exit(1);
 }
 
-app.use("/login/", RoutesLogin);
-app.use("/profile/", RoutesProfile);
-app.use("/logout/", RoutesLogout);
-app.use("/confirmEmail/", RoutesConfirmEmail);
 app.use("/crime/", RoutesCrime);
-app.use("/neighborhood/", RoutesNeighbordhood);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
-app.use("/neighborhoodCrimeAdmin/", RoutesNeighborhoodCrimeAdmin);
-app.use("/department/", RoutesDepartment);
-app.use("/population/", RoutesPopulation);
-app.use("/crimeAdmin/", RoutesCrimeAdmin);
-app.use("/role/", RoutesRol);
-app.use("/user/", RoutesUser);
+
+app.use("/admin/login/", RoutesLogin);
+app.use("/admin/profile/", RoutesProfile);
+app.use("/admin/logout/", RoutesLogout);
+app.use("/admin/confirmEmail/", RoutesConfirmEmail);
+app.use("/admin/neighborhood/", RoutesNeighbordhood);
+app.use("/admin/crime/", RoutesCrimeAdmin);
+app.use("/admin/neighborhoodCrime/", RoutesNeighborhoodCrimeAdmin);
+app.use("/admin/department/", RoutesDepartment);
+app.use("/admin/population/", RoutesPopulation);
+app.use("/admin/role/", RoutesRol);
+app.use("/admin/user/", RoutesUser);
 app.use("/", (req, res) => {
   return res.status(200).send("Servidor corriendo");
 });
-
-

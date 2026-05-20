@@ -20,7 +20,7 @@ export const Delete = ({ crime, setDeleteCrime }) => {
     if (result.isDismissed) {
       setDeleteCrime(null);
     } else if (result.isConfirmed) {
-      let url = "/crimeAdmin/" + crime.category;
+      let url = "/crime/" + crime.category;
 
       const result = await fetchDelete(url);
       if (result) {
@@ -30,7 +30,7 @@ export const Delete = ({ crime, setDeleteCrime }) => {
     }
   };
   const reloadRegisters = async () => {
-    let url = "/crimeAdmin/crimes";
+    let url = "/crime/crimes";
     let crimes = await fetchGet(url);
     if (crimes) {
       setRegisters(crimes);

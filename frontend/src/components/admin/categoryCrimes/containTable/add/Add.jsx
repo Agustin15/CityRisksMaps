@@ -31,7 +31,7 @@ export const Add = ({ setAddForm }) => {
       return;
     }
 
-    let url = "/crimeAdmin/";
+    let url = "/crime/";
     const result = await fetchPostOrPut(url, "POST", setLoading, values);
 
     if (result) {
@@ -39,7 +39,7 @@ export const Add = ({ setAddForm }) => {
         "¡Registro de categoria de delito agregado exitosamente!"
       );
 
-      let url = "/crimeAdmin/crimes";
+      url = "/crime/crimes";
 
       let categoryCrimes = await fetchGet(url);
       setRegisters(categoryCrimes);

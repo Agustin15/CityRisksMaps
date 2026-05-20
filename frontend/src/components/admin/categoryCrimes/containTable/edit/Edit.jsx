@@ -20,7 +20,7 @@ export const Edit = ({ crime, setEditCrime }) => {
       return;
     }
 
-    let url = "/crimeAdmin/" + encodeURIComponent(crime.category);
+    let url = "/crime/" + encodeURIComponent(crime.category);
 
     const result = await fetchPostOrPut(url, "PUT", setLoading, {
       description
@@ -31,7 +31,7 @@ export const Edit = ({ crime, setEditCrime }) => {
         "¡Registro de categoria de delito actualizado exitosamente!"
       );
 
-      let url = "/crimeAdmin/crimes";
+      let url = "/crime/crimes";
 
       let categoryCrimes = await fetchGet(url);
       setRegisters(categoryCrimes);

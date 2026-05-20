@@ -5,7 +5,7 @@ export const fetchUpdateEmail = async (setLoading, setUser, values, idUser) => {
   try {
     setLoading(true);
     const response = await fetch(
-      LOCALHOST_BACKEND + "/profile/sendConfirmEmail/" + idUser,
+      LOCALHOST_BACKEND + "/admin/profile/sendConfirmEmail/" + idUser,
       {
         method: "POST",
         credentials: "include",

@@ -49,7 +49,7 @@ export const TwoStepAuthProvider = ({ children }) => {
     try {
       setLoadingForm(true);
       const response = await fetch(
-        `${VITE_LOCALHOST_BACKEND}/login/twoStepAuth/`,
+        `${VITE_LOCALHOST_BACKEND}/admin/login/twoStepAuth/`,
         {
           method: "POST",
           credentials: "include",
@@ -79,7 +79,7 @@ export const TwoStepAuthProvider = ({ children }) => {
   const validateTwo2FAToken = async (token) => {
     try {
       const response = await fetch(
-        `${VITE_LOCALHOST_BACKEND}/login/validateTwoStepAuthToken/`,
+        `${VITE_LOCALHOST_BACKEND}/admin/login/validateTwoStepAuthToken/`,
         {
           method: "GET",
           headers: {

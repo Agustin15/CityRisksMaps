@@ -8,49 +8,50 @@ export const Options = ({ user }) => {
   const options = [
     {
       title: "Departamentos",
-      path: "/admin/departamentos",
-      divStyle: styles.iconDepartments
+      paths: ["/admin/departamentos"],
+      divStyle: styles.iconDepartments,
+      allow: true
     },
     {
       title: "Barrios",
-      path: "/admin/barrios",
+      paths: ["/admin/barrios", "/admin/barrios/departamento/:nombre"],
       divStyle: styles.iconNeighborhoods,
       allow: true
     },
     {
       title: "Poblaciones",
-      path: "/admin/poblaciones",
+      paths: ["/admin/poblaciones", "/admin/poblaciones/barrio/:nombre"],
       divStyle: styles.iconPopulation,
       allow: true
     },
     {
       title: "Categorias de delitos",
-      path: "/admin/categorias-delitos",
+      paths: ["/admin/categorias-delitos"],
       divStyle: styles.iconCrimes,
       allow: true
     },
     {
       title: "Indice delitos barrios",
-      path: "/admin/indice-delitos-barrios",
+      paths: ["/admin/indice-delitos-barrios"],
       divStyle: styles.iconNeighborhoodsCrimes,
       allow: true
     },
 
     {
       title: "Estadisticas",
-      path: "/admin/estadisticas",
+      paths: ["/admin/estadisticas"],
       divStyle: styles.iconStatistics,
       allow: true
     },
     {
       title: "Roles",
-      path: "/admin/roles",
+      paths: ["/admin/roles"],
       divStyle: styles.iconRols,
       allow: user.rol == "Admin"
     },
     {
       title: "Usuarios",
-      path: "/admin/usuarios",
+      paths: ["/admin/usuarios", "/admin/usuarios/rol/:nombre"],
       divStyle: styles.iconUsers,
       allow: user.rol == "Admin"
     }
@@ -64,19 +65,13 @@ export const Options = ({ user }) => {
         <li
           key={index}
           className={
-            matchPath(
-              {
-                path: option.path,
-                caseSensitive: true
-              },
-              location.pathname
-            )
+            option.paths.some((path) => matchPath(path, location.pathname))
               ? styles.selected
               : ""
           }
         >
           <div className={option.divStyle}></div>
-          <a href={LOCALHOST_FRONTEND + option.path}>{option.title}</a>
+          <a href={LOCALHOST_FRONTEND + option.paths[0]}>{option.title}</a>
         </li>
       ))}
     </ul>
