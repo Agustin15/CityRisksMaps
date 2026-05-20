@@ -30,7 +30,7 @@ export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
         if (!response.ok) {
           if (response.status == 401) {
             setUser();
-            Navigate("/admin/login");
+            navigate("/admin/login");
           } else throw new Error(result.messageError);
         }
 
@@ -47,7 +47,7 @@ export const LoadData = ({ setLoading, setErrorLoad, setNeighborhoods }) => {
 
         setNeighborhoods(result);
       } catch (error) {
-        setErrorLoad(error.message);
+        setErrorLoad(error.message || "Error en la solicitud");
       } finally {
         setLoading(false);
       }

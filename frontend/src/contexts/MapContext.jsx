@@ -108,12 +108,14 @@ export const MapProvider = ({ children }) => {
       const response = await fetch(LOCALHOST_FRONTEND + "/barrios.json");
       const result = await response.json();
 
+      if (!response.ok)
+        throw new Error(
+          "Error en la solicitud para obtener las coordenadas de los barrios"
+        );
+
       if (result) return result.features;
     } catch (error) {
-      alertSwalError(
-        "Ups, algo salio mal",
-        "Hubo un error al cargar las coordenadas de los barrios"
-      );
+      alertSwalError("Ups, algo salio mal", error.message);
     }
   };
 
@@ -158,7 +160,7 @@ export const MapProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      alertSwalError("Ups, algo salio mal", error);
+      alertSwalError("Ups, algo salio mal", error.message);
     }
   };
 

@@ -51,7 +51,7 @@ export const Form = ({ user }) => {
         setUser({ ...user, name: values.name, lastname: values.lastname });
       }
     } catch (error) {
-      notifyError(error.message);
+      notifyError(error.message || "Error en la solicitud");
     }
   };
 

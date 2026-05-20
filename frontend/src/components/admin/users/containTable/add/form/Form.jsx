@@ -37,7 +37,7 @@ export const Form = ({
       result.unshift({ idRol: 0, name: "Seleccionar" });
       setRols(result);
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Error en la solicitud");
     } finally {
       setLoadingRols(false);
     }

@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
       setUser(result);
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message || "Error en la solicitud");
     } finally {
       setLoadingProfile(false);
     }

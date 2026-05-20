@@ -62,6 +62,7 @@ export const getPlacesByText = async (inputValue, userLocation) => {
 
     return result;
   } catch (error) {
+    console.log(error.message || "Error en la solicitud");
     throw error;
   }
 };
@@ -93,7 +94,7 @@ export const getGeocodification = async (
       setStreetSelected(resultGeocodification.results);
     } else throw new Error("Error inesperado en la geocodificacion");
   } catch (error) {
-    alertSwalError("Ups,no pudimos encontrar la ubicacion", error.message);
+    alertSwalError("Ups,no pudimos encontrar la ubicacion", error.message || "Error en la solicitud");
   }
 };
 

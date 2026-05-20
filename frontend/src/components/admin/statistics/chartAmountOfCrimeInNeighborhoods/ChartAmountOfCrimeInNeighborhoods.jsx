@@ -67,8 +67,8 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
             setError={setError}
           />
           <select onChange={(event) => setOffset(event.target.value)}>
-            <option value={0}>0 a 15</option>
-            <option value={16}>16 a 31</option>
+            <option value={0}>0 a 14</option>
+            <option value={15}>16 a 31</option>
             <option value={32}>32 a 62</option>
           </select>
         </div>

@@ -82,7 +82,7 @@ export const fetchUpdatePassword = async (
   } catch (error) {
     alertSwalErrorAdmin(
       "Ups, no se pudo actualizar la contraseña",
-      error.message
+      error.message || "Error en la solicitud"
     );
   } finally {
     setLoading(false);

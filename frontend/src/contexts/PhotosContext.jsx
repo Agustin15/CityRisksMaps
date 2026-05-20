@@ -21,7 +21,7 @@ export const PhotosProvider = ({ children }) => {
       const result = response.url;
       return result;
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error.message || "Error en la solicitud");
     }
   };
 
@@ -45,6 +45,7 @@ export const PhotosProvider = ({ children }) => {
         return photos;
       }
     } catch (error) {
+      console.log(error.message || "Error en la solicitud");
       throw error;
     }
   };
@@ -64,7 +65,7 @@ export const PhotosProvider = ({ children }) => {
         setImageStreet(result);
       }
     } catch (error) {
-      throw new Error("Ups, hubo un error al obtener imagen", error.message);
+      throw new Error(error.message || "Error en la solicitud");
     }
   };
 

@@ -43,7 +43,7 @@ export const CrudProvider = ({ children }) => {
 
       return result;
     } catch (error) {
-      setError(error.message);
+      setError(error.message || "Error en la solicitud");
     } finally {
       if (!setLoadingFilter) setLoading(false);
       else setLoadingFilter(false);
@@ -78,7 +78,7 @@ export const CrudProvider = ({ children }) => {
               ? "actualizar el registro"
               : "dar de alta el registro"
           }`,
-        error.message
+        error.message || "Error en la solicitud"
       );
     } finally {
       setLoading(false);
@@ -104,7 +104,7 @@ export const CrudProvider = ({ children }) => {
     } catch (error) {
       alertSwalErrorAdmin(
         "Ups,hubo un error al dar de alta los registros",
-        error.message
+        error.message || "Error en la solicitud"
       );
     } finally {
       setLoading(false);
@@ -132,7 +132,7 @@ export const CrudProvider = ({ children }) => {
     } catch (error) {
       alertSwalErrorAdmin(
         "Ups,hubo un error al dar de baja el registro",
-        error.message
+        error.message || "Error en la solicitud"
       );
     } finally {
       setLoading(false);

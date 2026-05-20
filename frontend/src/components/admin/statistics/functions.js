@@ -17,7 +17,7 @@ export const loadData = async (endpoint, setUser) => {
         setUser();
         location.href = LOCALHOST_FRONTEND + "/admin/login";
       }
-      throw new Error(result.messageError);
+      throw new Error(result.messageError || "Error en la solicitud");
     }
 
     return result;

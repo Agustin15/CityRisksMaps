@@ -68,7 +68,7 @@ export const ActivateUserProvider = ({ children }) => {
     } catch (error) {
       alertSwalErrorAdmin(
         "Ups,hubo un error al activar el usuario",
-        error.message
+        error.message || "Error en la solicitud"
       );
     } finally {
       setLoading(false);
@@ -102,7 +102,7 @@ export const ActivateUserProvider = ({ children }) => {
 
       if (result) setValidToken(true);
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message || "Error en la solicitud");
     } finally {
       setLoadingValidation(false);
     }

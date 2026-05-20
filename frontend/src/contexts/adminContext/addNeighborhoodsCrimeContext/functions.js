@@ -45,7 +45,7 @@ export const fetchGetNeighborhoodsCrimeFromFile = async (
   } catch (error) {
     alertSwalErrorAdmin(
       "Ups, error al cargar datos a partir del archivo subido",
-      error.message
+      error.message || "Error en la solicitud"
     );
   } finally {
     setLoadingFromFile(false);
@@ -143,7 +143,7 @@ export const fetchGetAmountsOfAnCrimeInNeighborhoodsByYear = async (
   } catch (error) {
     alertSwalErrorAdmin(
       "Ups,hubo un error en la busqueda de los datos",
-      error.message
+      error.message || "Error en la solicitud"
     );
   } finally {
     setLoadingSearch(false);

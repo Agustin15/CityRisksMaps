@@ -1,7 +1,7 @@
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 const LOCALHOST_FRONTEND = import.meta.env.VITE_LOCALHOST_FRONTEND;
 
-export const fetchVerifyAllowToAccess = async (setLoading) => {
+export const fetchVerifyAllowToAccess = async (setLoading, setAllowAccess) => {
   try {
     const response = await fetch(LOCALHOST_BACKEND + "/admin/login/", {
       method: "GET"
@@ -13,7 +13,7 @@ export const fetchVerifyAllowToAccess = async (setLoading) => {
       if (response.status == 403)
         location.href = LOCALHOST_FRONTEND + "/admin/permiso-denegado";
       else throw new Error(result.messageError);
-    }
+    } else setAllowAccess(true);
   } catch (error) {
     throw error;
   } finally {

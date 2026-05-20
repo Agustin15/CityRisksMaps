@@ -41,7 +41,10 @@ export const getSuggestions = async (
 
     setSuggestions(result.suggestions);
   } catch (error) {
-    alertSwalError("Ups algo salio mal al buscar el sitio", error.message);
+    alertSwalError(
+      "Ups algo salio mal al buscar el sitio",
+      error.message || "Error en la solicitud"
+    );
   } finally {
     setLoadingPlace(false);
   }

@@ -48,7 +48,7 @@ export const getNewRoute = async (
   } catch (error) {
     alertSwalError(
       "Ups,ruta no encontrada",
-      "Hubo un error al recalcular la ruta"
+      error.message || "Error en la solicitud"
     );
   }
 };

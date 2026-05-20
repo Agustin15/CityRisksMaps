@@ -77,7 +77,7 @@ export const RoutesProvider = ({ children }) => {
     } catch (error) {
       alertSwalError(
         "Ups,rutas no encontradas",
-        "Hubo un error al obtener las rutas"
+        error.message || "Error en la solicitud"
       );
     } finally {
       setLoadingRoutes(false);

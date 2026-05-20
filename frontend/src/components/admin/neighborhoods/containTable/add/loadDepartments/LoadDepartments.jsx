@@ -45,7 +45,7 @@ export const LoadDepartaments = ({
       result.unshift({ idDepartment: 0, name: "Seleccionar" });
       setDepartments(result);
     } catch (error) {
-      setErrorLoad(error.message);
+      setErrorLoad(error.message || "Error en la solicitud");
     } finally {
       setLoadingDepartments(false);
     }

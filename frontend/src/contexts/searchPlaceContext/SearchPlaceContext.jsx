@@ -78,7 +78,7 @@ export const SearchPlaceProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      alertSwalError("Ups,algo salio mal al buscar sitio", error.message);
+      alertSwalError("Ups,algo salio mal al buscar sitio", error.message || "Error en la solicitud");
     } finally {
       setLoadingPlace(false);
     }
@@ -116,6 +116,7 @@ export const SearchPlaceProvider = ({ children }) => {
 
       return true;
     } catch (error) {
+      console.log(error.message || "Error en la solicitud");
       return false;
     } finally {
       setLoadingPlace(false);

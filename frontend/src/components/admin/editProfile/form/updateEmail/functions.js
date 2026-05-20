@@ -30,7 +30,7 @@ export const fetchUpdateEmail = async (setLoading, setUser, values, idUser) => {
   } catch (error) {
     alertSwalErrorAdmin(
       "Ups, no se pudo actualizar el correo electronico",
-      error.message
+      error.message || "Error en la solicitud"
     );
   } finally {
     setLoading(false);

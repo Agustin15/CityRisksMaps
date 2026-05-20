@@ -45,7 +45,7 @@ export const LoadNeighborhoods = ({
       result.unshift({ idNeighborhood: 0, name: "Seleccionar" });
       setNeighborhoods(result);
     } catch (error) {
-      setErrorLoad(error.message);
+      setErrorLoad(error.message || "Error en la solicitud");
     } finally {
       setLoadingNeighborhoods(false);
     }

@@ -44,7 +44,7 @@ export const NeighborhoodsCrimesProvider = ({ children }) => {
       if (result) return result;
       else return null;
     } catch (error) {
-      setErrorLoad(error.message);
+      setErrorLoad(error.message || "Error en la solicitud");
     } finally {
       setLoading(false);
     }

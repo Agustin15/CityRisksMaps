@@ -8,14 +8,15 @@ import { Helmet } from "react-helmet-async";
 
 export const LoginAdmin = () => {
   const [loading, setLoading] = useState(true);
+  const [allowAccess, setAllowAccess] = useState(false);
 
   useEffect(() => {
-    fetchVerifyAllowToAccess(setLoading);
+    fetchVerifyAllowToAccess(setLoading, setAllowAccess);
   }, []);
 
   return (
     <>
-      {!loading && (
+      {loading == false && allowAccess == true && (
         <div className={styles.background}>
           <Helmet>
             <title>Login-Administracion</title>
