@@ -77,7 +77,7 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
 * [jose](https://github.com/panva/jose)
 * [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
 * [multer](https://github.com/expressjs/multer)
-* [csvtojson](https://github.com/Keyang/node-csvtojson)
+* [csv-parser](https://csv.js.org/parse/)
 * [iconv-lite](https://github.com/pillarjs/iconv-lite)
 * [mssql](https://tediousjs.github.io/node-mssql/)
 * [nodemailer](https://nodemailer.com/)
