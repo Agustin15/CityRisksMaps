@@ -1,3 +1,4 @@
+IF NOT EXISTS(select * from sys.databases where name='CityRisksMap')
 CREATE DATABASE CityRisksMap;
  
 USE CityRisksMap;
