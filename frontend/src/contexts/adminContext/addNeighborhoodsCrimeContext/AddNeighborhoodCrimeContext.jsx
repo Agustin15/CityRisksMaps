@@ -27,9 +27,8 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     crimes,
     crimeSelected
   } = useCrud();
-  const { setUser } = useAuth();
 
-  const [loadingFromFile, setLoadingFromFile] = useState(false);
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const refCheckboxSelectAll = useRef();
@@ -47,41 +46,6 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     year: ""
   });
 
-  const handleLoadCrimesFromFile = async () => {
-    const valuesLoadFile = {
-      file: values.file,
-      department: "Montevideo",
-      crime: values.crime,
-      year: values.year,
-      neighborhoodsCrimeToSelect: values.neighborhoodsCrime.filter(
-        (hoodCrime) => hoodCrime.amount != null
-      )
-    };
-
-    const errorsValues = validationLoadFromFile(valuesLoadFile);
-    setErrors(errorsValues);
-
-    if (Object.values(errorsValues).some((error) => error.length > 0)) {
-      return;
-    }
-
-    const result = await fetchGetNeighborhoodsCrimeFromFile(
-      setLoadingFromFile,
-      valuesLoadFile,
-      setUser
-    );
-
-    if (!result) return;
-
-    const neighborhoodCrimeWithNewValues =
-      replaceNeighborhoodsCrimeWithValuesFound(result, values);
-
-    setValues({
-      ...values,
-      neighborhoodsCrime: neighborhoodCrimeWithNewValues
-    });
-  };
-
   const getAmountsOfAnCrimeInNeighborhoodsByYear = async () => {
     const valuesToSend = {
       crime: values.crime,
@@ -92,6 +56,10 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     };
 
     const errorsValues = validationForm(valuesToSend);
+    if (valuesToSend.neighborhoodsCrimeToGet.length == 0)
+      errorsValues["neighborhoodsCrime"] =
+        "*Debe seleccionar al menos un barrio para la busqueda";
+
     setErrors(errorsValues);
 
     if (Object.values(errorsValues).some((error) => error.length > 0)) return;
@@ -132,7 +100,7 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
     }
 
     const result = await fetchPostOrPut(
-      "/admin/neighborhoodCrime/",
+      "/neighborhoodCrime/",
       method,
       setLoading,
       valuesToSend
@@ -160,14 +128,14 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
   const loadDataAfterChanges = async () => {
     if (values.crime == crimeSelected) {
       let url =
-        "/admin/neighborhoodCrime/neighborhoodsCrimesByYearOffset/" +
+        "/neighborhoodCrime/neighborhoodsCrimesByYearOffset/" +
         crimeSelected +
         "/" +
         values.year;
 
       if (values.year != yearSelected) {
         await loadYears(
-          "/admin/neighborhoodCrime/yearsNeighborhoodsCrime/" + crimeSelected
+          "/neighborhoodCrime/yearsNeighborhoodsCrime/" + crimeSelected
         );
         url += "/0";
         setIndex(0);
@@ -198,9 +166,8 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
   return (
     <AddNeighborhoodCrimeContext.Provider
       value={{
-        handleSubmit,
-        handleLoadCrimesFromFile,
         getAmountsOfAnCrimeInNeighborhoodsByYear,
+        handleSubmit,
         cleanValues,
         errors,
         setErrors,
@@ -208,8 +175,6 @@ export const AddNeighborhoodCrimeProvider = ({ children }) => {
         setValues,
         loading,
         setLoading,
-        setLoadingFromFile,
-        loadingFromFile,
         loadingSearch,
         setLoadingSearch,
         refCheckboxSelectAll

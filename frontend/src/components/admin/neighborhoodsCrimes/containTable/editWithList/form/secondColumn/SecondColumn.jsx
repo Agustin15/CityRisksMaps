@@ -1,7 +1,7 @@
 import styles from "./SecondColumn.module.css";
+import iconInfo from "../../../../../../../assets/img/informationAdd.png";
 import { useAddNeighborhoodCrime } from "../../../../../../../contexts/adminContext/addNeighborhoodsCrimeContext/AddNeighborhoodCrimeContext";
 import { useCrud } from "../../../../../../../contexts/adminContext/CrudContext";
-import { UploadFile } from "./uploadFile/UploadFile";
 import { LoadingFromFile } from "../loading/LoadingFromFile";
 import { Modal } from "../../../../../modal/Modal";
 import { createPortal } from "react-dom";
@@ -13,29 +13,12 @@ export const SecondColumn = ({ neighborhoods }) => {
     errors,
     loading,
     loadingSearch,
-    loadingFromFile,
-    handleLoadCrimesFromFile,
     getAmountsOfAnCrimeInNeighborhoodsByYear
   } = useAddNeighborhoodCrime();
   const { crimes } = useCrud();
 
   return (
     <div className={styles.secondColumn}>
-      <div className={styles.columnInput}>
-        <label>Año:</label>
-        <input
-          autoComplete="off"
-          name="year"
-          onChange={(event) =>
-            setValues({ ...values, ["year"]: event.target.value })
-          }
-          maxLength={4}
-          placeholder="Ingrese año para filtrar los delitos"
-          value={values.year}
-        ></input>
-        {errors && <p>{errors.year}</p>}
-      </div>
-
       <div className={styles.columnInput}>
         <label>Categoria de delito:</label>
         <select
@@ -54,7 +37,23 @@ export const SecondColumn = ({ neighborhoods }) => {
         {errors.crime && <p>{errors.crime}</p>}
       </div>
 
+      <div className={styles.columnInput}>
+        <label>Año:</label>
+        <input
+          autoComplete="off"
+          name="year"
+          onChange={(event) =>
+            setValues({ ...values, ["year"]: event.target.value })
+          }
+          maxLength={4}
+          placeholder="Ingrese año para filtrar los delitos"
+          value={values.year}
+        ></input>
+        {errors && <p>{errors.year}</p>}
+      </div>
+
       <button
+        disabled={loadingSearch || loading}
         type="button"
         onClick={() => {
           getAmountsOfAnCrimeInNeighborhoodsByYear();
@@ -64,23 +63,13 @@ export const SecondColumn = ({ neighborhoods }) => {
         {!loadingSearch ? "Buscar datos" : "Buscando datos..."}
       </button>
 
-      <UploadFile />
-
-      {loadingFromFile &&
-        createPortal(
-          <Modal>
-            <LoadingFromFile crime={values.crime} />
-          </Modal>,
-          document.body
-        )}
-
-      <button
-        onClick={() => handleLoadCrimesFromFile()}
-        className={styles.load}
-        type="button"
-      >
-        Cargar informacion
-      </button>
+      <div className={styles.info}>
+        <img src={iconInfo}></img>
+        <p>
+          Si no se ingresan delitos de ningun barrio, se actualizaran los datos
+          a partir del archivo fuente CSV de AECA
+        </p>
+      </div>
     </div>
   );
 };

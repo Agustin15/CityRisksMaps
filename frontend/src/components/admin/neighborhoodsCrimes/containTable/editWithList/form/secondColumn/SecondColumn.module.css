@@ -22,11 +22,13 @@
 }
 
 .secondColumn .columnInput p {
+    position: absolute;
+    top: 3.3rem;
     width: 16rem;
     font-size: 12px;
     text-align: start;
-    position: absolute;
 }
+
 .secondColumn select {
     height: 2.3rem;
     width: 16.5rem;
@@ -36,6 +38,24 @@
     background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
     font-size: 15px;
     outline: none;
+}
+.secondColumn .info {
+    width: 97%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 0.5rem;
+}
+
+.secondColumn .info img {
+    width: 31px;
+    height: 31px;
+}
+
+.secondColumn .info p {
+    margin: 0;
+    position: static;
+    color: black;
 }
 
 .secondColumn .btnSearch {
@@ -48,24 +68,9 @@
     background: rgb(34, 103, 207);
     font-size: 14px;
     font-weight: bold;
-    margin: -0.5rem 0 0 0;
+    margin: 0;
 }
 
 .secondColumn .btnSearch:hover {
-    background: rgb(34, 98, 194);
-}
-
-.secondColumn .load {
-    background: rgb(34, 207, 63);
-    border-radius: 5px;
-    box-shadow: none;
-    width: 16rem;
-    height: 2rem;
-    color: white;
-    margin: 0.5rem 0 0 0;
-    font-size: 15px;
-    font-weight: bold;
-}
-.secondColumn .load:hover {
-    background: rgb(30, 184, 55);
+    background: rgb(30, 86, 170);
 }

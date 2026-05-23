@@ -76,7 +76,7 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
 * [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
 * [jose](https://github.com/panva/jose)
 * [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-* [multer](https://github.com/expressjs/multer)
+* [string-similarity-js](https://github.com/stephenjjbrown/string-similarity-js)
 * [csv-parser](https://csv.js.org/parse/)
 * [iconv-lite](https://github.com/pillarjs/iconv-lite)
 * [mssql](https://tediousjs.github.io/node-mssql/)
@@ -99,7 +99,7 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
      SECRET_KEY_CONFIRM_EMAIL_TOKEN=<SECRET CONFIRM EMAIL KEY FOR JSONWEBTOKEN ENCRYPT>
      ALGORITM_ENCRYPT_JWE_PAYLOAD=<ALGORITM OF ENCRYPT THE JSONWEBTOKEN JWE PAYLOAD (FOR SIMETRIC KEY)>
      ALGORITM_ENCRYPT_JWE_IV=<ALGORITM OF ENCRYPT THE IV JSONWEBTOKEN JWE (FOR SIMETRIC KEY)>
-  
+     URL_DATASET_OTHER_CRIMES=<URL OF DATASET CSV FILE catalogodatos.gub.uy>
 
   ![](/frontend/src/assets/Captures/screenApp1.PNG)
     

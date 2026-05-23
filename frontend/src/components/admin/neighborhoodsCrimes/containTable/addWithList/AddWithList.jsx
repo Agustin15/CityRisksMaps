@@ -11,7 +11,7 @@ export const AddWithList = ({ setAddForm }) => {
     <div className={styles.containAdd}>
       <div className={styles.header}>
         <img src={iconAdd}></img>
-        <h3>Agregar denuncias de delitos de barrios</h3>
+        <h3>Agregar denuncias de delitos en barrios</h3>
         <button onClick={() => setAddForm(false)} className={styles.close}>
           Cerrar
         </button>

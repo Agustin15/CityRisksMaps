@@ -1168,7 +1168,7 @@ END
 
 IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
 BEGIN
-RAISERROR('Año debe ser mayor al año actual',16,1)
+RAISERROR('Año debe ser mayor igual o menor al año actual',16,1)
 RETURN 
 END
 
@@ -1227,7 +1227,7 @@ END
 
 IF (@year>YEAR(GETDATE()))
 BEGIN
-RAISERROR('Año debe ser mayor al año actual',16,1)
+RAISERROR('Año debe ser igual o menor al año actual',16,1)
 RETURN 
 END
 
@@ -1279,7 +1279,7 @@ END
 
 IF EXISTS (select * from @table where @year>YEAR(GETDATE()))
 BEGIN
-RAISERROR('Año debe ser mayor al año actual',16,1)
+RAISERROR('Año debe ser igual o menor al año actual',16,1)
 RETURN 
 END
 

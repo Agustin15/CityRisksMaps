@@ -1,16 +1,9 @@
 import express from "express";
-import multer from "multer";
-const upload = multer({
-  dest: "uploads/",
-  limits: { fileSize: 600000000 }
-});
-
 import {
   addThroughtTable,
   updateThroughtTable,
   getCategoryCrimeInNeighborhood,
   getNeighborhoodsCrimeByYearOffset,
-  loadNeighborhoodsCrimeFromFile,
   getYearsNeighborhoodsCrime,
   getAmountAnCrimeInNeighborhoodByYear,
   getAmountOfDifferentsCrimesInNeighborhoodInYear,
@@ -76,11 +69,4 @@ RoutesNeighborhoodCrimeAdmin.delete(
   "/:idCompound",
   verifyAuthorization,
   deleteById
-);
-
-RoutesNeighborhoodCrimeAdmin.post(
-  "/loadNeighborhoodsCrimeFromFile",
-  upload.single("file"),
-  verifyAuthorization,
-  loadNeighborhoodsCrimeFromFile
 );

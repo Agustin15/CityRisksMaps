@@ -92,15 +92,6 @@ export const validationForm = (valuesToSend) => {
     case valuesToSend.year.length == 0:
       errorsValues["year"] = "*Debe ingresar el año";
 
-    case valuesToSend.neighborhoodsCrime &&
-      valuesToSend.neighborhoodsCrime.length == 0:
-      errorsValues["neighborhoodsCrime"] =
-        "*Debe indicar al menos un delito de barrio";
-
-    case valuesToSend.neighborhoodsCrimeToGet &&
-      valuesToSend.neighborhoodsCrimeToGet.length == 0:
-      errorsValues["neighborhoodsCrime"] =
-        "*Debe indicar al menos un barrio para buscar la informacion";
   }
 
   return errorsValues;
