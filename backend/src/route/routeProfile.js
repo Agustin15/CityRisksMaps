@@ -1,9 +1,4 @@
 import express from "express";
-import multer from "multer";
-const upload = multer({
-  dest: "uploads/",
-  limits: { fileSize: 2000000 }
-});
 import {
   getProfile,
   resetPassword,

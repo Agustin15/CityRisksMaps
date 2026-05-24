@@ -25,6 +25,10 @@ export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
     if (!routeNavigation) focusPolygon(neighborhoodCrime.name);
   };
 
+  const yearNotFinished = (year) => {
+    return year == new Date().getFullYear() && new Date().getMonth() < 12;
+  };
+
   return (
     <>
       <tr
@@ -48,15 +52,19 @@ export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
         <td>{neighborhoodCrime.rate}</td>
         <td
           className={
-            neighborhoodCrime.increase < 0
-              ? styles.decrease
-              : neighborhoodCrime.increase > 0
-                ? styles.increase
-                : ""
+            yearNotFinished(neighborhoodCrime.yearCrime)
+              ? ""
+              : neighborhoodCrime.increase < 0
+                ? styles.decrease
+                : neighborhoodCrime.increase > 0
+                  ? styles.increase
+                  : ""
           }
         >
-          {neighborhoodCrime.increase != null &&
-            neighborhoodCrime.increase != 0 && (
+          {!yearNotFinished(neighborhoodCrime.yearCrime) &&
+            neighborhoodCrime.increase != null &&
+            neighborhoodCrime.increase != 0 &&
+            new Date().getFullYear() != neighborhoodCrime.year && (
               <img
                 src={
                   neighborhoodCrime.increase > 0 ? iconIncrease : iconDecrease
@@ -64,9 +72,11 @@ export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
               ></img>
             )}
 
-          {neighborhoodCrime.increase != null
-            ? neighborhoodCrime.increase + "%"
-            : "Sin datos"}
+          {yearNotFinished(neighborhoodCrime.yearCrime)
+            ? "En curso"
+            : neighborhoodCrime.increase != null
+              ? neighborhoodCrime.increase + "%"
+              : "Sin datos"}
         </td>
       </tr>
 

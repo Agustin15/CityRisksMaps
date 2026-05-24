@@ -13,6 +13,10 @@ export const BodyTable = () => {
   const { user } = useAuth();
   const { focusNeighborhoodPolygon } = useInteractionNeighborhoodsPolygons();
 
+  const yearNotFinished = (year) => {
+    return year == new Date().getFullYear() && new Date().getMonth() < 12;
+  };
+
   return (
     <tbody>
       {registers &&
@@ -33,7 +37,9 @@ export const BodyTable = () => {
             <td>{nhCrime.rate}</td>
             <td>
               <div className={styles.containIncrease}>
-                {nhCrime.increase != null ? (
+                {yearNotFinished(nhCrime.year) ? (
+                  <span>En curso</span>
+                ) : nhCrime.increase != null ? (
                   <span
                     className={
                       nhCrime.increase > 0 ? styles.increase : styles.decrease
@@ -44,11 +50,14 @@ export const BodyTable = () => {
                 ) : (
                   "Sin datos"
                 )}
-                {nhCrime.increase != null && nhCrime.increase != 0 && (
-                  <img
-                    src={nhCrime.increase > 0 ? iconIncrease : iconDecrease}
-                  ></img>
-                )}
+
+                {!yearNotFinished(nhCrime.year) &&
+                  nhCrime.increase != null &&
+                  nhCrime.increase != 0 && (
+                    <img
+                      src={nhCrime.increase > 0 ? iconIncrease : iconDecrease}
+                    ></img>
+                  )}
               </div>
             </td>
 

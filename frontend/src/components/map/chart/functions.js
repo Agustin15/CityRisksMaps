@@ -45,7 +45,7 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
       titleFontColor: "white",
       titleFontSize: 15,
       labelFontColor: "white",
-      labelFontSize:14,
+      labelFontSize: 14,
       lineColor: "white",
       valueFormatString: "#.###",
       interval: 1
@@ -55,9 +55,7 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
       labelFontColor: "white",
       tickColor: "white",
       gridColor: "white",
-      labelFormatter: function (e) {
-        return categoryCrime ? e.value : e.value + "%";
-      }
+      valueFormatString: "#,###"
     },
     data: [
       {
@@ -65,7 +63,6 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
         type: "spline",
         lineColor: "white",
         yValueFormatString: "#,###",
-        xValueFormatString: "#.###",
         dataPoints:
           dataChart &&
           dataChart.map((neighborhoodCrime) => {

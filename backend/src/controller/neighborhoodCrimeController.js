@@ -6,6 +6,7 @@ import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js
 import { NeighborhoodService } from "../service/neighborhoodService.js";
 import { rejects } from "assert";
 import { Readable } from "stream";
+import { CrimeService } from "../service/crimeService.js";
 
 export const addThroughtTable = async (req, res) => {
   try {
@@ -95,6 +96,61 @@ export const updateThroughtTable = async (req, res) => {
   }
 };
 
+export const reviewNewsCrimesToUpdate = async () => {
+  const neighborhoodsCrimes = [];
+
+  try {
+    const years = await NeighborhoodCrimeService.getAllYearsOfCrimes();
+
+    if (years.length == 0)
+      throw new Error("No se encontraron anios de delitos en el sistema");
+
+    let crimes = await CrimeService.getAllTypeCrimes();
+
+    if (crimes.length == 0)
+      throw new Error("No se encontraron categorias de delitos en el sistema");
+
+    crimes = crimes.filter((crime) => crime.category != "Homicidio");
+
+    const currentYearFound = years.find(
+      (objectYear) => objectYear.year == new Date().getFullYear()
+    );
+
+    for (const crime of crimes) {
+      const neighborhoodsCrime = await loadNeighborhoodsCrimeFromFile(
+        crime.category,
+        new Date().getFullYear()
+      );
+
+      neighborhoodsCrimes.push({
+        neighborhoodsCrime: neighborhoodsCrime,
+        crime: crime.category,
+        year: new Date().getFullYear()
+      });
+    }
+
+    if (currentYearFound) {
+      for (const dataNeighborhoodsCrime of neighborhoodsCrimes) {
+        await NeighborhoodCrimeService.updateThroughtTable(
+          dataNeighborhoodsCrime.neighborhoodsCrime,
+          dataNeighborhoodsCrime.crime,
+          dataNeighborhoodsCrime.year
+        );
+      }
+    } else {
+      for (const dataNeighborhoodsCrime of neighborhoodsCrimes) {
+        await NeighborhoodCrimeService.addThroughtTable(
+          dataNeighborhoodsCrime.neighborhoodsCrime,
+          dataNeighborhoodsCrime.crime,
+          dataNeighborhoodsCrime.year
+        );
+      }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const loadNeighborhoodsCrimeFromFile = async (crime, year) => {
   try {
     if (!process.env.URL_DATASET_OTHER_CRIMES)
@@ -104,18 +160,34 @@ export const loadNeighborhoodsCrimeFromFile = async (crime, year) => {
 
     const response = await fetch(URL_DATASET_OTHER_CRIMES);
 
+    if (!response.ok) throw new Error("Archivo no encontrado");
+
     const neighborhoods = await NeighborhoodService.getNeighborhoods();
 
     if (neighborhoods.length == 0)
       throw new Error("No se encontraron registros de barrios en el sistema");
 
-    const neighborhoodsCrime = await readerFile(
+    let neighborhoodsCrime = await readerFile(
       Readable.fromWeb(response.body),
       "Montevideo",
       crime,
       year,
       neighborhoods
     );
+
+    neighborhoodsCrime = neighborhoods.map((neighborhood) => {
+      const found = neighborhoodsCrime.find(
+        (nhCrime) => nhCrime.name == neighborhood.name
+      );
+
+      if (found) return found;
+      else
+        return {
+          idNeighborhood: neighborhood.idNeighborhood,
+          name: neighborhood.name,
+          amount: 0
+        };
+    });
 
     return neighborhoodsCrime;
   } catch (error) {

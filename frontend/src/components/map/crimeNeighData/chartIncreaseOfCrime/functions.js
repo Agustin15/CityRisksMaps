@@ -25,6 +25,10 @@ export const getIncreaseOfCrime = async (setError, setLoading, crime) => {
   }
 };
 
+const yearNotFinished = (year) => {
+  return year == new Date().getFullYear() && new Date().getMonth() < 12;
+};
+
 export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
   CanvasJSReact.CanvasJS.addColorSet("customBlue", ["#2492d1"]);
 

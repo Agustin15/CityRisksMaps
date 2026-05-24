@@ -36,7 +36,10 @@ export const ChartIncreaseOfCrime = ({ setShowChart }) => {
       <div className={styles.containChart}>
         <div className={styles.header}>
           <h3>
-            {crimeSelected}s {years[years.length - 1] + " - " + years[0]}{" "}
+            {crimeSelected}s{" "}
+            {dataChart
+              ? dataChart[0].year + " - " + dataChart[dataChart.length - 1].year
+              : "..."}
           </h3>
           <button className={styles.close} onClick={() => setShowChart(false)}>
             Cerrar

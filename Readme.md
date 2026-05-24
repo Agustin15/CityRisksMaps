@@ -79,6 +79,7 @@ Los datos de las cantidad de denuncias fueron obtenidos de [Datos abiertos del M
 * [string-similarity-js](https://github.com/stephenjjbrown/string-similarity-js)
 * [csv-parser](https://csv.js.org/parse/)
 * [iconv-lite](https://github.com/pillarjs/iconv-lite)
+* [node-cron](https://www.nodecron.com/getting-started.html)
 * [mssql](https://tediousjs.github.io/node-mssql/)
 * [nodemailer](https://nodemailer.com/)
 

@@ -60,10 +60,7 @@ export const loadOptions = (dataChart, crime) => {
       labelFontSize: 15,
       tickColor: "#2c2c2c",
       gridThickness: 0,
-      interval: crime == "Homicidio" ? 10 : 500,
-      labelFormatter: function (e) {
-        return e.value;
-      }
+      interval: crime == "Homicidio" ? 10 : 500
     },
     data: [
       {

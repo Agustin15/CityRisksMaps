@@ -27,10 +27,7 @@ export const loadOptionsLineChart = (
       labelFontSize: 16,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: crime == "Homicidio" ? intervalOne : intervalTwo,
-      labelFormatter: function (e) {
-        return e.value;
-      }
+      interval: crime == "Homicidio" ? intervalOne : intervalTwo
     },
     data: [
       {

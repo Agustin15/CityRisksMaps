@@ -1375,7 +1375,7 @@ GO
 CREATE OR ALTER PROCEDURE QuantityCategoryCrimeInNeighborhood @idNeighborhood INT,@crime VARCHAR(20) AS
 BEGIN 
 
-select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime ORDER BY YEAR;
+select * from Neighborhoods_Crimes where neighborhood=@idNeighborhood and crime=@crime and year<YEAR(GETDATE()) ORDER BY YEAR;
 END
 
 GO
@@ -1440,7 +1440,7 @@ CREATE OR ALTER PROCEDURE IncreaseOfOneCrimeInYears @crime VARCHAR(20) AS
 BEGIN 
 
 select year,SUM(quantity) as 'amount',dbo.CalculateAmountIncrease(@crime,year,SUM(quantity)) as 'increase' 
-from Neighborhoods_Crimes where crime=@crime GROUP BY year ORDER BY year ASC; 
+from Neighborhoods_Crimes where crime=@crime and year<YEAR(GETDATE()) GROUP BY year ORDER BY year ASC; 
 
 END
 
@@ -1450,7 +1450,8 @@ CREATE OR ALTER PROCEDURE IncreaseOfOneCrimeOfInNeighborhood @crime VARCHAR(20),
 
 BEGIN 
 select NC.year, N.name as 'nameNeighborhood',NC.quantity as 'amount',increase from Neighborhoods_Crimes NC 
-INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood where NC.crime=@crime and NC.neighborhood=@idNeighborhood ORDER BY year ASC;
+INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood where NC.crime=@crime and NC.neighborhood=@idNeighborhood and 
+year<YEAR(GETDATE()) ORDER BY year ASC;
 END
 
 GO
@@ -1493,7 +1494,7 @@ CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodsByYear @crime VARCHAR(20
 
 BEGIN 
 select N.name,NC.quantity as 'amount',year from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime and NC.year=@year ORDER BY N.name ASC OFFSET 0 ROWS FETCH NEXT 14 ROWS ONLY;
+where NC.crime=@crime and NC.year=@year ORDER BY NC.quantity DESC OFFSET @offset ROWS FETCH NEXT 15 ROWS ONLY;
 
 END
 GO

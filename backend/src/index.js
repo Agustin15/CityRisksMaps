@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import cron from "node-cron";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
@@ -15,6 +16,9 @@ import { RoutesProfile } from "./route/routeProfile.js";
 import { RoutesRol } from "./route/routeRol.js";
 import { RoutesUser } from "./route/routeUser.js";
 import { RoutesConfirmEmail } from "./route/routeConfirmEmail.js";
+import {
+  reviewNewsCrimesToUpdate
+} from "./controller/neighborhoodCrimeController.js";
 
 dotenv.config();
 const app = express();
@@ -50,4 +54,9 @@ app.use("/admin/role/", RoutesRol);
 app.use("/admin/user/", RoutesUser);
 app.use("/", (req, res) => {
   return res.status(200).send("Servidor corriendo");
+});
+
+
+cron.schedule("0 0 6 1 * *", () => {
+  reviewNewsCrimesToUpdate();
 });
