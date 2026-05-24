@@ -74,11 +74,12 @@ export const createPolygonsNeighbordhood = (
       data: {
         name: neighborhoodCrime.name,
         population: neighborhoodCrime.quantityPopulation,
+        categoryCrime: categoryCrime,
+        yearCrime: neighborhoodCrime.yearCrime,
         quantityCrime: neighborhoodCrime.quantityCrime,
         rate: neighborhoodCrime.rate,
         rateLevel: levelRange ? levelRange : "Sin datos",
         rateColor: colorRange ? colorRange : "#bbbbbbff",
-        categoryCrime: categoryCrime,
         coordinates: neighborhoodFound.coordinates
       }
     });
@@ -88,4 +89,3 @@ export const createPolygonsNeighbordhood = (
 
   return polygons;
 };
-

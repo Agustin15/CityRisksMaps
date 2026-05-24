@@ -13,9 +13,7 @@ export const BodyTable = () => {
   const { user } = useAuth();
   const { focusNeighborhoodPolygon } = useInteractionNeighborhoodsPolygons();
 
-  const yearNotFinished = (year) => {
-    return year == new Date().getFullYear() && new Date().getMonth() < 12;
-  };
+  const yearNotFinished = (year) => year == new Date().getFullYear();
 
   return (
     <tbody>
@@ -38,7 +36,7 @@ export const BodyTable = () => {
             <td>
               <div className={styles.containIncrease}>
                 {yearNotFinished(nhCrime.year) ? (
-                  <span>En curso</span>
+                  <span>Año en curso</span>
                 ) : nhCrime.increase != null ? (
                   <span
                     className={

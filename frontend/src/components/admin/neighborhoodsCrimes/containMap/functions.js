@@ -102,6 +102,7 @@ export const createPolygons = (
         data: {
           neighborhood: neighborhoodCrime.name,
           crime: neighborhoodCrime.crime,
+          yearCrime: neighborhoodCrime.year,
           amount: neighborhoodCrime.quantity,
           rate: neighborhoodCrime.rate,
           rateLevel: levelRange ? levelRange : "Sin datos",
@@ -118,4 +119,3 @@ export const createPolygons = (
 
   return polygonsCreated;
 };
-

@@ -16,9 +16,7 @@ import { RoutesProfile } from "./route/routeProfile.js";
 import { RoutesRol } from "./route/routeRol.js";
 import { RoutesUser } from "./route/routeUser.js";
 import { RoutesConfirmEmail } from "./route/routeConfirmEmail.js";
-import {
-  reviewNewsCrimesToUpdate
-} from "./controller/neighborhoodCrimeController.js";
+import { reviewNewsCrimesToUpdate } from "./controller/neighborhoodCrimeController.js";
 
 dotenv.config();
 const app = express();
@@ -32,6 +30,10 @@ try {
 
   app.listen(process.env.PORT, () => {
     console.log("Listening in http://localhost:" + process.env.PORT);
+  });
+
+  cron.schedule("0 0 6 1 * *", () => {
+    reviewNewsCrimesToUpdate();
   });
 } catch (error) {
   console.log("Internal server error:", error.message);
@@ -52,11 +54,7 @@ app.use("/admin/department/", RoutesDepartment);
 app.use("/admin/population/", RoutesPopulation);
 app.use("/admin/role/", RoutesRol);
 app.use("/admin/user/", RoutesUser);
+
 app.use("/", (req, res) => {
   return res.status(200).send("Servidor corriendo");
-});
-
-
-cron.schedule("0 0 6 1 * *", () => {
-  reviewNewsCrimesToUpdate();
 });

@@ -73,7 +73,7 @@ export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
             )}
 
           {yearNotFinished(neighborhoodCrime.yearCrime)
-            ? "En curso"
+            ? "Año en curso"
             : neighborhoodCrime.increase != null
               ? neighborhoodCrime.increase + "%"
               : "Sin datos"}

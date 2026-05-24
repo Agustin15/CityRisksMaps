@@ -4,7 +4,6 @@ import csv from "csv-parser";
 import { stringSimilarity } from "string-similarity-js";
 import { NeighborhoodCrimeService } from "../service/neighborhoodCrimeService.js";
 import { NeighborhoodService } from "../service/neighborhoodService.js";
-import { rejects } from "assert";
 import { Readable } from "stream";
 import { CrimeService } from "../service/crimeService.js";
 
@@ -147,7 +146,7 @@ export const reviewNewsCrimesToUpdate = async () => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    throw error;
   }
 };
 
