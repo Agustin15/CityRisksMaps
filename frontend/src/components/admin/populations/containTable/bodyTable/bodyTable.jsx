@@ -29,7 +29,7 @@ export const BodyTable = () => {
           <tr key={index} className={index % 2 == 0 ? styles.trGray : ""}>
             <td>{population.idPopulation}</td>
             <td>{population.nameNeighborhood}</td>
-            <td>{population.quantity.toLocaleString()}</td>
+            <td>{population.quantity.toLocaleString("es-ES")}</td>
             <td>{population.year}</td>
 
             <td>

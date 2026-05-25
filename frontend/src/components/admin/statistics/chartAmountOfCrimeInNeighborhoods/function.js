@@ -2,8 +2,13 @@ import CanvasJSReact from "@canvasjs/react-charts";
 
 export const loadOptionsColumnChart = (dataChart, crime) => {
   CanvasJSReact.CanvasJS.addColorSet("blue", ["#20599b"]);
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
 
   const options = {
+    culture: "es",
     backgroundColor: "",
     colorSet: "blue",
     animationEnabled: true,
@@ -17,7 +22,6 @@ export const loadOptionsColumnChart = (dataChart, crime) => {
       labelFontSize: 10,
       interval: 1,
       gridColor: "#d6d6d6",
-      valueFormatString: "#.###"
     },
     axisY: {
       title: "Cantidad de denuncias",
@@ -35,8 +39,6 @@ export const loadOptionsColumnChart = (dataChart, crime) => {
       {
         type: "column",
         width: 25,
-        yValueFormatString: "#,###",
-        xValueFormatString: "#.###",
         dataPoints: dataChart.map((item) => ({
           label: item.name,
           y: item.amount,

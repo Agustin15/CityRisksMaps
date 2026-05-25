@@ -1,10 +1,18 @@
+import CanvasJSReact from "@canvasjs/react-charts";
+
 export const loadOptionsLineChart = (
   dataChart,
   crime,
   intervalOne,
   intervalTwo
 ) => {
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
+
   const options = {
+    culture: "es",
     backgroundColor: "",
     animationEnabled: true,
     axisX: {
@@ -14,8 +22,7 @@ export const loadOptionsLineChart = (
       labelFontColor: "#0f0f0f",
       labelFontSize: 16,
       gridColor: "#d6d6d6",
-      interval: 1,
-      valueFormatString: "#.###"
+      interval: 1
     },
     axisY: {
       title: "Denuncias",
@@ -34,8 +41,6 @@ export const loadOptionsLineChart = (
         type: "spline",
         markerColor: "rgb(202, 47, 47)",
         lineColor: "rgb(206, 38, 38)",
-        yValueFormatString: "#,###",
-        xValueFormatString: "#.###",
         type: "spline",
         dataPoints: dataChart.map((item) => ({
           x: item.year,

@@ -1,3 +1,5 @@
+import CanvasJSReact from "@canvasjs/react-charts";
+
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getDataChart = async (
@@ -35,7 +37,13 @@ export const getDataChart = async (
 };
 
 export const loadOptions = (dataChart, crime) => {
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
+
   const options = {
+    culture: "es",
     backgroundColor: "",
     animationEnabled: true,
     title: {

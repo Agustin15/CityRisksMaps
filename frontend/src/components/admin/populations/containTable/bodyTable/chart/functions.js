@@ -1,3 +1,5 @@
+import CanvasJSReact from "@canvasjs/react-charts";
+
 const LOCALHOST_BACKEND = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getDataChart = async (
@@ -33,7 +35,13 @@ export const getDataChart = async (
 };
 
 export const loadOptions = (dataChart) => {
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
+
   const options = {
+    culture: "es",
     backgroundColor: "",
     animationEnabled: true,
     title: {
@@ -46,8 +54,7 @@ export const loadOptions = (dataChart) => {
       labelFontColor: "#2c2c2c",
       labelFontSize: 15,
       lineColor: "#2c2c2c",
-      interval: 1,
-      valueFormatString: "#.###"
+      interval: 1
     },
     axisY: {
       title: "Habitantes",
@@ -58,17 +65,13 @@ export const loadOptions = (dataChart) => {
       labelFontSize: 15,
       tickColor: "#2c2c2c",
       gridThickness: 0,
-      interval: 1000,
-      labelFormatter: function (e) {
-        return e.value;
-      }
+      interval: 1000
     },
     data: [
       {
         type: "spline",
         markerColor: "rgb(228, 74, 74)",
         lineColor: "rgb(255, 255, 255)",
-        yValueFormatString: "#,###",
         xValueFormatString: "Habitantes",
         type: "spline",
         dataPoints: dataChart

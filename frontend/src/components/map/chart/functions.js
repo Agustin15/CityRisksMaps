@@ -1,3 +1,5 @@
+import CanvasJSReact from "@canvasjs/react-charts";
+
 const localhostBackend = import.meta.env.VITE_LOCALHOST_BACKEND;
 
 export const getDataChart = async (
@@ -29,7 +31,15 @@ export const getDataChart = async (
 };
 
 export const setOptionsChart = (dataChart, categoryCrime) => {
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
+
   return {
+    culture: "es",
+    animationEnabled: true,
+    height: 225,
     backgroundColor: "",
     title: {
       text: `Crecimiento de denuncias de ${categoryCrime}s`,
@@ -38,8 +48,7 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
       fontWeight: "bold",
       fontColor: "white"
     },
-    height: 225,
-    animationEnabled: true,
+
     axisX: {
       title: "Años",
       titleFontColor: "white",
@@ -47,22 +56,19 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
       labelFontColor: "white",
       labelFontSize: 14,
       lineColor: "white",
-      valueFormatString: "#.###",
       interval: 1
     },
     axisY: {
       lineColor: "white",
       labelFontColor: "white",
       tickColor: "white",
-      gridColor: "white",
-      valueFormatString: "#,###"
+      gridColor: "white"
     },
     data: [
       {
         markerColor: "#e04b4bff",
         type: "spline",
         lineColor: "white",
-        yValueFormatString: "#,###",
         dataPoints:
           dataChart &&
           dataChart.map((neighborhoodCrime) => {

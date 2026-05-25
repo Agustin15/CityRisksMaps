@@ -1,5 +1,13 @@
+import CanvasJSReact from "@canvasjs/react-charts";
+
 export const loadOptionsColumnChart = (dataChart) => {
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
+
   const options = {
+    culture: "es",
     backgroundColor: "",
     animationEnabled: true,
     dataPointWidth: 65,
@@ -9,8 +17,7 @@ export const loadOptionsColumnChart = (dataChart) => {
       titleFontWeight: "bold",
       labelFontColor: "#0f0f0f",
       labelFontSize: 16,
-      gridColor: "#d6d6d6",
-      valueFormatString: "#.###"
+      gridColor: "#d6d6d6"
     },
     axisY: {
       title: "Cantidad",
@@ -22,16 +29,11 @@ export const loadOptionsColumnChart = (dataChart) => {
       labelFontSize: 16,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: 100,
-      labelFormatter: function (e) {
-        return e.value;
-      }
+      interval: 100
     },
     data: [
       {
         type: "column",
-        yValueFormatString: "#,###",
-        xValueFormatString: "#.###",
         dataPoints: dataChart.map((item) => ({
           label: item.crime,
           y: item.amount,

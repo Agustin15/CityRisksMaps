@@ -50,7 +50,9 @@ export const PolygonDraw = ({ neighborhoodCrime, categoryCrime }) => {
         <li>
           <img src={iconPopulation}></img>
           <label>Poblacion:</label>
-          <span>{neighborhoodCrime.quantityPopulation}</span>
+          <span>
+            {neighborhoodCrime.quantityPopulation.toLocaleString("es-ES")}
+          </span>
         </li>
         <li>
           <img src={iconRate}></img>

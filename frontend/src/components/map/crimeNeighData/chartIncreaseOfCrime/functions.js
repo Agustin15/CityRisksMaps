@@ -31,8 +31,13 @@ const yearNotFinished = (year) => {
 
 export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
   CanvasJSReact.CanvasJS.addColorSet("customBlue", ["#2492d1"]);
+  CanvasJSReact.CanvasJS.addCultureInfo("es", {
+    decimalSeparator: ",",
+    digitGroupSeparator: "."
+  });
 
   const options = {
+    culture: "es",
     backgroundColor: "",
     animationEnabled: true,
     colorSet: "customBlue",
@@ -44,8 +49,7 @@ export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
       labelFontColor: "#0f0f0f",
       labelFontSize: windowWidth >= 1200 ? 15 : 14,
       gridColor: "#d6d6d6",
-      interval: 1,
-      valueFormatString: "####"
+      interval: 1
     },
     axisY: {
       title: "Denuncias",
@@ -57,14 +61,11 @@ export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
       labelFontSize: windowWidth >= 1200 ? 15 : 14,
       tickColor: "gray",
       gridColor: "#d6d6d6",
-      interval: crime == "Homicidio" ? 5 : 2000,
-      valueFormatString: "#,###"
+      interval: crime == "Homicidio" ? 5 : 2000
     },
     data: [
       {
         type: "column",
-        yValueFormatString: "#,###",
-        xValueFormatString: "#.###",
         dataPoints: dataChart.map((item) => ({
           x: item.year,
           y: item.amount,
