@@ -1,15 +1,14 @@
 .containSearcher {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
-    width: 99%;
-    gap: 1rem;
+    width: 39%;
 }
 
 .containSearcher input {
-    width: 52%;
+    width: 100%;
     height: 2rem;
     border: none;
     border-radius: 8px;
@@ -24,69 +23,32 @@
     border: none;
 }
 
-.btnIncrease {
-    width: 3rem;
-    height: 2rem;
-    border-radius: 4px;
-    background-color: #37b8b1;
-    color: white;
-    border: none;
-    box-shadow: 2px 2px 2px rgb(49, 49, 49);
-}
-
-.btnIncrease:hover {
-    box-shadow: none;
-}
-
-.btnIncrease img {
-    width: 23px;
-    height: 23px;
-}
-
 @media (width<=650px) {
+    .containSearcher {
+        width: 99%;
+    }
     .containSearcher input {
-        width: 85%;
         background: #e0e0e0;
         color: rgb(36, 36, 36);
     }
     .containSearcher input:hover {
         box-shadow: none;
         border: none;
-    }
-
-    .btnIncrease {
-        width: 3rem;
-        height: 2rem;
-        box-shadow: 2px 2px 2px rgb(199, 199, 199);
-    }
-    .btnIncrease img {
-        width: 21px;
-        height: 21px;
     }
 }
 
 @media (width>650px) and (width<1200px) {
     .containSearcher {
-        width: 99%;
+        width: 44%;
         justify-content: start;
     }
     .containSearcher input {
-        width: 52%;
+        height: 2.1rem;
         background: #e0e0e0;
         color: rgb(36, 36, 36);
     }
     .containSearcher input:hover {
         box-shadow: none;
         border: none;
-    }
-
-    .btnIncrease {
-        width: 2.9rem;
-        height: 2rem;
-        box-shadow: 2px 2px 2px rgb(199, 199, 199);
-    }
-    .btnIncrease img {
-        width: 21px;
-        height: 21px;
     }
 }
