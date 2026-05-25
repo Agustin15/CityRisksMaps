@@ -41,32 +41,13 @@
     margin-top: 0;
 }
 
-.containDetails .rowSearcher,
-.containDetails .rowYears {
+.containDetails .columnSearcher {
     display: flex;
+    flex-direction: column;
     justify-content: start;
-    align-items: center;
-    gap: 1rem;
+    align-items: start;
+    gap: 0;
     width: 100%;
-}
-
-.containDetails .rowYears .btnIncrease {
-    width: 10%;
-    height: 2rem;
-    border-radius: 4px;
-    background-color: #37b8b1;
-    color: white;
-    border: none;
-    box-shadow: 2px 2px 2px rgb(49, 49, 49);
-}
-
-.containDetails .rowYears .btnIncrease:hover {
-    box-shadow: none;
-}
-
-.containDetails .rowYears .btnIncrease img {
-    width: 25px;
-    height: 22px;
 }
 
 @media (width<=650px) {
@@ -77,24 +58,13 @@
         box-shadow: none;
         background: rgb(241, 241, 241);
     }
-    .containDetails .rowSearcher {
+    .containDetails .columnSearcher {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: start;
         gap: 0;
         width: 100%;
-    }
-    .containDetails .rowYears .btnIncrease {
-        width: 12%;
-        height: 2rem;
-        margin-top: 0.5rem;
-        box-shadow: 2px 2px 2px rgb(180, 180, 180);
-    }
-
-    .containDetails .rowYears .btnIncrease img {
-        width: 21px;
-        height: 21px;
     }
 }
 
@@ -105,18 +75,5 @@
         border-bottom: 1px solid rgb(224, 224, 224);
         box-shadow: none;
         background: rgb(241, 241, 241);
-    }
-    .containDetails .rowYears .btnIncrease {
-        width: 9%;
-        height: 2rem;
-        border-radius: 4px;
-        background-color: #37b8b1;
-        color: white;
-        border: none;
-        box-shadow: 2px 2px 2px rgb(180, 180, 180);
-    }
-    .containDetails .rowYears .btnIncrease img {
-        width: 20px;
-        height: 20px;
     }
 }

@@ -2,10 +2,9 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 89%;
-    margin: 0;
-    margin-top: 0.3rem;
-    padding: 0 0 0.5rem 0.5%;
+    width: 99%;
+    margin: 1rem 0 0 0;
+    padding: 0 0 0.5rem 0;
     gap: 1rem;
     list-style: none;
     overflow-x: scroll;
@@ -46,7 +45,7 @@
 
 @media (width<=650px) {
     .years {
-        width: 88%;
+        width: 99%;
         gap: 0.4rem;
         margin-top: 1rem;
         scrollbar-color: #c9c9c9 #ffffff;
@@ -70,7 +69,7 @@
 @media (width>650px) and (width<1200px) {
     .years {
         gap: 0.4rem;
-        width: 91%;
+        width: 99%;
         scrollbar-color: #c9c9c9 #ffffff;
     }
 
