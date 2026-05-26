@@ -8,7 +8,7 @@ export const loadOptionsColumnChart = (dataChart) => {
 
   const options = {
     culture: "es",
-    backgroundColor: "",
+    backgroundColor: "white",
     animationEnabled: true,
     dataPointWidth: 65,
     axisX: {

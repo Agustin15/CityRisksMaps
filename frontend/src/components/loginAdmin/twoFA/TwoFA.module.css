@@ -50,6 +50,10 @@
     font-size: 19px;
     margin: 0;
 }
+.containForm img {
+    width: 100px;
+    height: 100px;
+}
 
 .containForm p {
     font-size: 15px;
@@ -70,9 +74,4 @@
 .containForm .header .errorAuth img {
     width: 69px;
     height: 69px;
-}
-
-.containForm img {
-    width: 62px;
-    height: 62px;
 }

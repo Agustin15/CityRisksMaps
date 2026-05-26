@@ -38,7 +38,7 @@ export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
 
   const options = {
     culture: "es",
-    backgroundColor: "",
+    backgroundColor: "white",
     animationEnabled: true,
     colorSet: "customBlue",
     dataPointWidth: windowWidth >= 1200 ? 45 : windowWidth > 650 ? 40 : 28,
@@ -65,7 +65,9 @@ export const loadOptionsColumnChart = (dataChart, crime, windowWidth) => {
     },
     data: [
       {
-        type: "column",
+        markerColor: "rgb(145, 39, 39)",
+        type: "spline",
+        lineColor: "#e04b4bff",
         dataPoints: dataChart.map((item) => ({
           x: item.year,
           y: item.amount,

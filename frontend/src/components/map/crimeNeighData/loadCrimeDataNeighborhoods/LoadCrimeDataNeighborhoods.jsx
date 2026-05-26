@@ -1,5 +1,5 @@
 import styles from "./LoadCrimeDataNeighborhoods.module.css";
-import iconIncreaseColumnChart from "../../../../assets/img/increaseColumnChart.png";
+import iconIncreaseColumnChart from "../../../../assets/img/increaseLineChart.png";
 import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { Loading } from "../../loading/Loading";
 import { References } from "../references/References";
@@ -21,8 +21,8 @@ export const LoadCrimesInNeighborhoods = ({
       {loadingYears == false && years && (
         <>
           <p>
-            Los datos mostrados a continuacion son estadisticas de denuncias
-            obtenidas de documentacion perteneciente a{" "}
+            Los datos mostrados a continuacion son estadisticas de denuncias de
+            delitos consumados, obtenidas de documentacion perteneciente a{" "}
             <a href="https://catalogodatos.gub.uy/dataset/ministerio-del-interior-delitos_denunciados_en_el_uruguay">
               AECA
             </a>

@@ -9,7 +9,7 @@ export const loadOptionsColumnChart = (dataChart, crime) => {
 
   const options = {
     culture: "es",
-    backgroundColor: "",
+    backgroundColor: "white",
     colorSet: "blue",
     animationEnabled: true,
     dataPointWidth: 35,
@@ -21,7 +21,7 @@ export const loadOptionsColumnChart = (dataChart, crime) => {
       labelFontColor: "#0f0f0f",
       labelFontSize: 10,
       interval: 1,
-      gridColor: "#d6d6d6",
+      gridColor: "#d6d6d6"
     },
     axisY: {
       title: "Cantidad de denuncias",

@@ -3,6 +3,7 @@ import { LoadData } from "../../departments/containTable/LoadData";
 import { Pagination } from "../../departments/containTable/pagination/Pagination";
 import { BodyTable } from "./bodyTable/BodyTable";
 import { FooterTable } from "../../departments/containTable/footerTable/FooterTable";
+import { References } from "./references/References";
 import { useEffect } from "react";
 import { useCrud } from "../../../../contexts/adminContext/CrudContext";
 import { Filter } from "./filter/Filter";
@@ -25,10 +26,7 @@ export const ContainTable = () => {
 
   useEffect(() => {
     const getCrimes = async () => {
-      const categoryCrimes = await fetchGet(
-        "/crime/crimes",
-        setLoadingFilter
-      );
+      const categoryCrimes = await fetchGet("/crime/crimes", setLoadingFilter);
       if (categoryCrimes) {
         setCrimes(categoryCrimes);
         setCrimeSelected(categoryCrimes[0].category);
@@ -66,6 +64,7 @@ export const ContainTable = () => {
       )}
 
       {crimes && <Filter crimes={crimes} />}
+      <References categoryCrime={crimeSelected} />
       <div className={styles.scrollTable}>
         <table>
           <thead>

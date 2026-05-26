@@ -1,5 +1,5 @@
 import styles from "./TwoFA.module.css";
-import logo from "../../../assets/img/logo.png";
+import logo from "../../../assets/img/admin.png";
 import iconForbidden from "../../../assets/img/forbidden.png";
 import { useParams } from "react-router";
 import { useEffect } from "react";

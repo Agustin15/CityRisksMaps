@@ -52,8 +52,8 @@
 }
 
 .containDetails .rowYears .btnIncrease img {
-    width: 23px;
-    height: 23px;
+    width: 33px;
+    height: 33px;
 }
 
 @media (width<=650px) {
@@ -80,8 +80,8 @@
     }
 
     .containDetails .rowYears .btnIncrease img {
-        width: 21px;
-        height: 21px;
+        width: 33px;
+        height: 33px;
     }
 }
 
@@ -103,7 +103,7 @@
         box-shadow: 2px 2px 2px rgb(180, 180, 180);
     }
     .containDetails .rowYears .btnIncrease img {
-        width: 20px;
-        height: 20px;
+        width: 33px;
+        height: 33px;
     }
 }
