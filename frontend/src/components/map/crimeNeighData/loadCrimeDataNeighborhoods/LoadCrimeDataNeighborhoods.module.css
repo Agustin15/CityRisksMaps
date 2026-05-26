@@ -14,8 +14,7 @@
 .containDetails p {
     width: 98%;
     font-size: 12px;
-    margin: 0.7rem;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0.7rem 0.7rem 0.7rem;
 }
 
 .containDetails p a {
@@ -26,6 +25,18 @@
 .containDetails p a:hover {
     color: rgb(67, 169, 216);
     text-decoration: underline;
+    cursor: pointer;
+}
+
+.containDetails .author {
+    width: 98%;
+    font-weight: bold;
+    margin: -0.5rem 0 0 0;
+    padding: 0;
+    font-size: 11px;
+}
+.containDetails .author a {
+    color: white;
 }
 
 .containDetails .rowSearcher,
@@ -35,6 +46,10 @@
     align-items: center;
     gap: 1rem;
     width: 100%;
+}
+
+.containDetails .rowSearcher {
+    margin-top: 0.5rem;
 }
 
 .containDetails .rowYears .btnIncrease {
@@ -72,6 +87,17 @@
         gap: 0;
         width: 100%;
     }
+    .containDetails .author {
+        width: 98%;
+        font-weight: bold;
+        margin: -0.5rem 0 0 0;
+        padding: 0;
+        font-size: 11px;
+    }
+    .containDetails .author a {
+        color: black;
+    }
+
     .containDetails .rowYears .btnIncrease {
         width: 12%;
         height: 2rem;
@@ -92,6 +118,10 @@
         border-bottom: 1px solid rgb(224, 224, 224);
         box-shadow: none;
         background: rgb(241, 241, 241);
+    }
+
+    .containDetails .author a {
+        color: black;
     }
     .containDetails .rowYears .btnIncrease {
         width: 3rem;

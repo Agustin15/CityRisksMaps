@@ -29,12 +29,18 @@ export const LoadCrimesInNeighborhoods = ({
             , de esta forma la tasa de criminalidad esta basada en la cantidad
             de denuncias por cada numero de habitantes en los barrios.
           </p>
+          <p className={styles.author}>
+            Sistema desarrollado por{" "}
+            <a href="https://www.linkedin.com/in/agustin-miranda-953634239">
+              Agustín Miranda
+            </a>
+            .
+          </p>
 
           <div className={styles.rowSearcher}>
             <References categoryCrime={categoryCrime} />
             <Searcher setElementSearchedNotFound={setElementSearchedNotFound} />
           </div>
-
           <div className={styles.rowYears}>
             <FilterYears categoryCrime={categoryCrime} />
             <button
