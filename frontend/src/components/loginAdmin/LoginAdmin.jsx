@@ -1,5 +1,4 @@
 import styles from "./LoginAdmin.module.css";
-import iconLogo from "../../assets/img/logo.png";
 import iconAdmin from "../../assets/img/admin.png";
 import { useEffect, useState } from "react";
 import { fetchVerifyAllowToAccess } from "./functions.js";
@@ -26,7 +25,7 @@ export const LoginAdmin = () => {
             <div className={styles.containForm}>
               <div className={styles.header}>
                 <div className={styles.title}>
-                  <img src={iconLogo}></img>
+                  <img src={iconAdmin}></img>
                   <h3>Indice delitos Montevideo</h3>
                   <span>Iniciar sesión</span>
                 </div>

@@ -12,8 +12,7 @@
     width: 23rem;
     height: 28rem;
     background: white;
-    border: 1px solid rgb(233, 233, 233);
-    box-shadow: 2px 2px 2px gray;
+    box-shadow: rgba(100, 100, 111, 0.6) 0px 7px 29px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,6 +40,7 @@
     align-items: center;
     gap: 0.4rem;
     width: 100%;
+    height: 14rem;
     background: url("../../assets/img/backgroundFormLogin.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -54,8 +54,9 @@
     gap: 0.2rem;
     padding: 0.5rem 0 0.5rem 0;
     width: 100%;
+    height: 100%;
     color: white;
-    background: rgba(43, 104, 173, 0.562);
+    background: rgba(60, 120, 189, 0.649);
 }
 
 .containForm .title span {
@@ -64,10 +65,11 @@
 
 .containForm .title h3 {
     font-size: 19px;
+    margin: -0.8rem 0 0 0;
 }
 .containForm .title img {
-    width: 61px;
-    height: 61px;
+    width: 100px;
+    height: 100px;
 }
 
 .containForm form {
@@ -142,10 +144,10 @@
     border-radius: 5px;
     font-size: 15px;
     color: white;
-    background-color: #3e6bce;
+    background-color: #315bb8;
     font-weight: bold;
     margin-top: 0.3rem;
 }
 .containForm button:hover {
-    background-color: #375eb3;
+    background-color: #3458a5;
 }
