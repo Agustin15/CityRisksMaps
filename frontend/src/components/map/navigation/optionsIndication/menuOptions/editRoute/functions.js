@@ -40,7 +40,9 @@ export const createIntermediates = (
     polygons.forEach((polygon) => {
       const bounds = new google.maps.LatLngBounds();
 
-      polygon.getPath().mh.forEach((latLng) => {
+      const pathPolygon = polygon.getPath().getArray();
+      
+      pathPolygon.forEach((latLng) => {
         bounds.extend(latLng);
       });
 

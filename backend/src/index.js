@@ -31,13 +31,17 @@ try {
   app.listen(process.env.PORT, () => {
     console.log("Listening in http://localhost:" + process.env.PORT);
   });
+} catch (error) {
+  console.log("Internal server error:", error.message);
+  process.exit(1);
+}
 
+try {
   cron.schedule("0 0 6 1 * *", () => {
     reviewNewsCrimesToUpdate();
   });
 } catch (error) {
   console.log("Internal server error:", error.message);
-  process.exit(1);
 }
 
 app.use("/crime/", RoutesCrime);
