@@ -68,6 +68,18 @@ year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
 
+CREATE TABLE Auditory_Neighborhoods_Crimes(
+idAuditory INT IDENTITY(1,1) Primary key NOT NULL,
+neighborhood INT NOT NULL,
+crime VARCHAR(20) NOT NULL,
+year INT NOT NULL,
+auditoryDate DATETIME NOT NULL DEFAULT GETDATE(),
+actionName VARCHAR(6) NOT NULL,
+oldValues VARCHAR(70),
+newValues VARCHAR(70),
+FOREIGN KEY(neighborhood,crime,year) REFERENCES Neighborhoods_Crimes
+);
+
 
 CREATE TABLE Zones(
 idZone INT Primary key,
@@ -1305,8 +1317,9 @@ END
 
 BEGIN TRANSACTION
 
-UPDATE Neighborhoods_Crimes SET quantity=T.quantity FROM Neighborhoods_Crimes NC 
-INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and NC.neighborhood=T.idNeighborhood
+UPDATE Neighborhoods_Crimes SET quantity=T.quantity,increase=dbo.CalculateIncrease(T.idNeighborhood,T.crime,T.quantity,T.year),
+rate=dbo.CalculateRate(T.idNeighborhood,T.quantity,T.year) 
+FROM Neighborhoods_Crimes NC INNER JOIN @table T ON T.crime=NC.crime and T.year=NC.year and NC.neighborhood=T.idNeighborhood
 
 
 IF(@@ERROR<>0)
@@ -1820,3 +1833,38 @@ CREATE NONCLUSTERED INDEX IX_PopulationsByNeighborhood ON Population(neighborhoo
 
 GO
 
+------------------------------------------------------------------------------------------------------------------
+--Neighborhoods_Crimes TRIGGERS
+
+CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterInsert ON Neighborhoods_Crimes AFTER INSERT AS
+BEGIN
+
+INSERT INTO Auditory_Neighborhoods_Crimes(neighborhood,crime,year,actionName,newValues) 
+(select neighborhood,crime,year,'INSERT',
+('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+'Crecimiento:'+CAST(increase as varchar(6))) from inserted)
+
+END
+
+GO
+
+CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterUpdate ON Neighborhoods_Crimes AFTER UPDATE AS
+BEGIN
+
+INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues,newValues) 
+(select D.neighborhood,D.crime,D.year,GETDATE(),'UPDATE',
+('Cantidad:'+CAST(D.quantity as varchar(6))+',Tasa:'+CAST(D.rate as varchar(6))+'Crecimiento:'+CAST(D.increase as varchar(6))),
+('Cantidad:'+CAST(I.quantity as varchar(6))+',Tasa:'+CAST(I.rate as varchar(6))+'Crecimiento:'+CAST(I.increase as varchar(6)))
+from inserted I INNER JOIN deleted D ON D.neighborhood=I.neighborhood and D.crime=I.crime and D.year=I.year)
+
+END
+
+GO
+
+CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterDelete ON Neighborhoods_Crimes AFTER DELETE AS
+BEGIN
+
+INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues) 
+(select neighborhood,crime,year,GETDATE(),'DELETE',
+('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+'Crecimiento:'+CAST(increase as varchar(6))) from deleted)
+
+END

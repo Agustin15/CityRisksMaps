@@ -24,7 +24,7 @@ export class NeighborhoodCrimeDAL {
       });
 
       request.input("table", sql.TVP, table);
-      request.input("categoryCrime", sql.VarChar(30), categoryCrime);
+      request.input("categoryCrime", sql.VarChar(20), categoryCrime);
       request.input("year", sql.Int, year);
 
       await request.execute("AddNeighborhoodsCrime");
@@ -42,7 +42,7 @@ export class NeighborhoodCrimeDAL {
       const table = new sql.Table("NeighborhoodsCrimeTableType");
 
       table.columns.add("idNeighborhood", sql.Int);
-      table.columns.add("crime", sql.VarChar(30));
+      table.columns.add("crime", sql.VarChar(20));
       table.columns.add("quantity", sql.Int);
       table.columns.add("year", sql.Int);
 
@@ -56,7 +56,7 @@ export class NeighborhoodCrimeDAL {
       });
 
       request.input("table", sql.TVP, table);
-      request.input("categoryCrime", sql.VarChar(30), categoryCrime);
+      request.input("categoryCrime", sql.VarChar(20), categoryCrime);
       request.input("year", sql.Int, year);
 
       await request.execute("UpdateNeighborhoodsCrime");

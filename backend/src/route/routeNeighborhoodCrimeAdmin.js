@@ -12,7 +12,7 @@ import {
   getAllYearsOfCrimes,
   getAmountOfAnCrimeInNeighborhoodsByYear,
   deleteById
-} from "../controller/neighborhoodCrimeController.js";
+} from "../controller/neighborhoodCrime/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
 

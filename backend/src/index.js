@@ -16,7 +16,7 @@ import { RoutesProfile } from "./route/routeProfile.js";
 import { RoutesRol } from "./route/routeRol.js";
 import { RoutesUser } from "./route/routeUser.js";
 import { RoutesConfirmEmail } from "./route/routeConfirmEmail.js";
-import { reviewNewsCrimesToUpdate } from "./controller/neighborhoodCrimeController.js";
+import { reviewNewsCrimesToUpdate } from "./controller/neighborhoodCrime/neighborhoodCrimeController.js";
 
 dotenv.config();
 const app = express();
@@ -36,13 +36,13 @@ try {
   process.exit(1);
 }
 
-try {
-  cron.schedule("0 0 6 1 * *", () => {
-    reviewNewsCrimesToUpdate();
-  });
-} catch (error) {
-  console.log("Internal server error:", error.message);
-}
+cron.schedule("0 0 6 1 * *", async () => {
+  try {
+    await reviewNewsCrimesToUpdate();
+  } catch (error) {
+    console.log("Error to update neighborhoods crimes data:", error.message);
+  }
+});
 
 app.use("/crime/", RoutesCrime);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);

@@ -4,7 +4,7 @@ import {
   getIncreaseOfCrimeInYears,
   getNeighborhoodsCrimeByYear,
   getYearsNeighborhoodsCrime
-} from "../controller/neighborhoodCrimeController.js";
+} from "../controller/neighborhoodCrime/neighborhoodCrimeController.js";
 
 export const RoutesNeighborhoodCrime = express.Router();
 
