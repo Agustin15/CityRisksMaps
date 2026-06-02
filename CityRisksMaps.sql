@@ -77,7 +77,7 @@ auditoryDate DATETIME NOT NULL DEFAULT GETDATE(),
 actionName VARCHAR(6) NOT NULL,
 oldValues VARCHAR(70),
 newValues VARCHAR(70),
-FOREIGN KEY(neighborhood,crime,year) REFERENCES Neighborhoods_Crimes
+FOREIGN KEY(neighborhood,crime,year) REFERENCES Neighborhoods_Crimes ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -1841,7 +1841,7 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes(neighborhood,crime,year,actionName,newValues) 
 (select neighborhood,crime,year,'INSERT',
-('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+'Crecimiento:'+CAST(increase as varchar(6))) from inserted)
+('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+',Crecimiento:'+CAST(increase as varchar(6))) from inserted)
 
 END
 
@@ -1852,8 +1852,8 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues,newValues) 
 (select D.neighborhood,D.crime,D.year,GETDATE(),'UPDATE',
-('Cantidad:'+CAST(D.quantity as varchar(6))+',Tasa:'+CAST(D.rate as varchar(6))+'Crecimiento:'+CAST(D.increase as varchar(6))),
-('Cantidad:'+CAST(I.quantity as varchar(6))+',Tasa:'+CAST(I.rate as varchar(6))+'Crecimiento:'+CAST(I.increase as varchar(6)))
+('Cantidad:'+CAST(D.quantity as varchar(6))+',Tasa:'+CAST(D.rate as varchar(6))+',Crecimiento:'+CAST(D.increase as varchar(6))),
+('Cantidad:'+CAST(I.quantity as varchar(6))+',Tasa:'+CAST(I.rate as varchar(6))+',Crecimiento:'+CAST(I.increase as varchar(6)))
 from inserted I INNER JOIN deleted D ON D.neighborhood=I.neighborhood and D.crime=I.crime and D.year=I.year)
 
 END
@@ -1865,6 +1865,6 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues) 
 (select neighborhood,crime,year,GETDATE(),'DELETE',
-('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+'Crecimiento:'+CAST(increase as varchar(6))) from deleted)
+('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+',Crecimiento:'+CAST(increase as varchar(6))) from deleted)
 
 END
