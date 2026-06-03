@@ -18,11 +18,13 @@ import { Users } from "./components/admin/users/Users.jsx";
 import { ActivateUser } from "./components/admin/activateUser/ActivateUser.jsx";
 import { EmailConfirmedPage } from "./pages/EmailConfirmedPage.jsx";
 import { NeighborhoodsCrimes } from "./components/admin/neighborhoodsCrimes/NeighborhoodsCrimes.jsx";
+import { Auditory } from "./components/admin/neighborhoodsCrimes/auditory/Auditory.jsx";
 import { EditProfile } from "./components/admin/editProfile/EditProfile.jsx";
 import { Statistics } from "./components/admin/statistics/Statistics.jsx";
 import { HelmetProvider } from "react-helmet-async";
 import { TwoFA } from "./components/loginAdmin/twoFA/TwoFA.jsx";
 import { TwoStepAuthProvider } from "./contexts/adminContext/TwoStepAuthContext.jsx";
+
 
 function App() {
   return (
@@ -74,7 +76,10 @@ function App() {
                   path="/admin/indice-delitos-barrios/"
                   element={<NeighborhoodsCrimes />}
                 ></Route>
-
+                <Route
+                  path="/admin/indice-delitos-barrios/auditoria"
+                  element={<Auditory />}
+                ></Route>
                 <Route
                   path="/admin/estadisticas/"
                   element={<Statistics />}

@@ -53,6 +53,8 @@
         display: flex;
         justify-content: end;
         align-items: center;
+        margin-top: 0.7rem;
+        margin-right: 0.6rem;
         width: 95%;
         position: absolute;
     }
@@ -60,7 +62,6 @@
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        margin-top: 0.6rem;
         background: rgb(221, 221, 221);
         box-shadow: none;
         color: white;

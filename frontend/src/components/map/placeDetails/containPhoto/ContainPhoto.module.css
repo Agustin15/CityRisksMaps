@@ -44,7 +44,7 @@
 .optionWatchPhotos {
     position: absolute;
     height: 93%;
-    width: 100%;
+    width: 93%;
     display: flex;
     flex-direction: column;
     justify-content: end;
