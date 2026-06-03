@@ -34,7 +34,13 @@ export const Options = ({ user }) => {
       title: "Indice delitos barrios",
       paths: ["/admin/indice-delitos-barrios"],
       divStyle: styles.iconNeighborhoodsCrimes,
-      allow: true
+      allow: true,
+      submenu: {
+        title: "Auditoria",
+        paths: ["/admin/indice-delitos-barrios/auditoria"],
+        divStyle: styles.iconAuditoryNeighborhoodsCrimes,
+        allow: user.rol == "Admin"
+      }
     },
 
     {
@@ -62,16 +68,28 @@ export const Options = ({ user }) => {
   return (
     <ul className={styles.options}>
       {optionsAllowed.map((option, index) => (
-        <li
-          key={index}
-          className={
-            option.paths.some((path) => matchPath(path, location.pathname))
-              ? styles.selected
-              : ""
-          }
-        >
-          <div className={option.divStyle}></div>
-          <a href={LOCALHOST_FRONTEND + option.paths[0]}>{option.title}</a>
+        <li key={index}>
+          <div
+            className={
+              option.paths.some((path) => matchPath(path, location.pathname))
+                ? styles.selected
+                : styles.mainOption
+            }
+          >
+            <div className={option.divStyle}></div>
+            <a href={LOCALHOST_FRONTEND + option.paths[0]}>{option.title}</a>
+          </div>
+
+          {option.submenu && option.submenu.allow && (
+            <ul className={styles.submenu}>
+              <li>
+                <div className={option.submenu.divStyle}></div>
+                <a href={LOCALHOST_FRONTEND + option.submenu.paths[0]}>
+                  {option.submenu.title}
+                </a>
+              </li>
+            </ul>
+          )}
         </li>
       ))}
     </ul>

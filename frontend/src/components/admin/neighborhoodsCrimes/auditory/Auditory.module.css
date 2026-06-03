@@ -1,0 +1,65 @@
+.auditory {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(247, 247, 247);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: end;
+    gap: 1rem;
+    width: 85%;
+    height: 100vh;
+    background-repeat: no-repeat;
+}
+
+.body .row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    height: 81%;
+}
+
+.body .header {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    position: relative;
+    width: 100%;
+    height: 3.5rem;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    background: rgb(255, 255, 255);
+    padding: 0.5rem 0 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 0.7rem;
+    color: rgb(59, 59, 59);
+}
+
+.body .header img {
+    width: 38px;
+    height: 38px;
+}
+
+.body .header .title {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 96%;
+    margin-left: 2%;
+}
+.body .header h3 {
+    font-weight: bold;
+    font-size: 23px;
+    margin: 0 0 0 2%;
+}

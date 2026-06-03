@@ -6,6 +6,7 @@ import cron from "node-cron";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
+import { RoutesAuditoryNeighborhoodCrime } from "./route/routeAuditoryNeighborhoodCrime.js";
 import { RoutesNeighbordhood } from "./route/routeNeighborhood.js";
 import { RoutesLogin } from "./route/routeLogin.js";
 import { RoutesLogout } from "./route/routeLogout.js";
@@ -57,6 +58,7 @@ app.use("/admin/neighborhoodCrime/", RoutesNeighborhoodCrimeAdmin);
 app.use("/admin/department/", RoutesDepartment);
 app.use("/admin/population/", RoutesPopulation);
 app.use("/admin/role/", RoutesRol);
+app.use("/admin/auditoryNeighborhoodCrime/", RoutesAuditoryNeighborhoodCrime);
 app.use("/admin/user/", RoutesUser);
 
 app.use("/", (req, res) => {

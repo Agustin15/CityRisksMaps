@@ -74,6 +74,7 @@ function App() {
                   path="/admin/indice-delitos-barrios/"
                   element={<NeighborhoodsCrimes />}
                 ></Route>
+
                 <Route
                   path="/admin/estadisticas/"
                   element={<Statistics />}

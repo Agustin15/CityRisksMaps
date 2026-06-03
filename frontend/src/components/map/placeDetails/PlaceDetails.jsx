@@ -19,14 +19,11 @@ export const PlaceDetails = () => {
 
       <div className={styles.column}>
         <h3 className={styles.title}>{selectedPlace.displayName.text}</h3>
-
         {selectedPlace.rating || selectedPlace.primaryTypeDisplayName ? (
           <About place={selectedPlace} />
         ) : (
           <div className={styles.row}>
             <span>{selectedPlace.addressComponents[1].longText}</span>
-
-            <BtnIndications place={selectedPlace}></BtnIndications>
           </div>
         )}
 

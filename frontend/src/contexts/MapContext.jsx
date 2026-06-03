@@ -90,9 +90,9 @@ export const MapProvider = ({ children }) => {
     setLoadingMyLocation(false);
 
     alertSwalError(
-      "Ups, no pudimos encontrar la ubicacion",
+      "Ups, no pudimos encontrar donde se encuentra",
       error.code == 1
-        ? "Permiso para acceder a la ubicacion, no habilitada"
+        ? "Permiso para acceder a su ubicacion, no habilitada"
         : "No se pudo obtener su ubicacion"
     );
   };

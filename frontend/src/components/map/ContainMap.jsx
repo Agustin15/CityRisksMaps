@@ -32,14 +32,8 @@ export const ContainMap = () => {
         defaultCenter={
           userLocation ? userLocation : { lat: -34.8340562, lng: -56.3622838 }
         }
-        streetViewControl={true}
-        streetViewControlOptions={{
-          position: ControlPosition.RIGHT_BOTTOM
-        }}
-        zoomControl={true}
-        zoomControlOptions={{
-          position: ControlPosition.RIGHT_BOTTOM
-        }}
+        streetViewControl={false}
+        zoomControl={false}
         onClick={(event) => {
           if (event.detail.placeId && !routeNavigation) {
             event.stop();

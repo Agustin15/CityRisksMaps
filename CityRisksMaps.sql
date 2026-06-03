@@ -1410,11 +1410,42 @@ END
 GO
 
 
-CREATE OR ALTER  PROCEDURE NeighborhoodsCrimeByYearOffset @crime VARCHAR(20), @year INT,@offset INT AS 
+CREATE OR ALTER PROCEDURE NeighborhoodsCrimeByYearOffset @crime VARCHAR(20), @year INT,@offset INT AS 
 
 BEGIN 
 select NC.*,N.name from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood where 
 crime=@crime and year=@year ORDER BY rate desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+END
+
+GO
+
+----------------------------------------------------------------------------------------------------------------
+-- Auditory_Neighborhoods_Crimes 
+
+
+CREATE OR ALTER PROCEDURE DatesOfAuditoryNeighborhoodsCrimes AS
+BEGIN
+
+select auditoryDate from Auditory_Neighborhoods_Crimes ORDER BY auditoryDate;
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AuditoryNeighborhoodsCrimesByDate @datetime DATETIME AS
+BEGIN
+
+select COUNT(*) from Auditory_Neighborhoods_Crimes where auditoryDate=@datetime;
+
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE AuditoryNeighborhoodsCrimesOffsetByDate @datetime DATETIME ,@offset INT AS
+BEGIN
+
+select * from Auditory_Neighborhoods_Crimes where auditoryDate=@datetime ORDER BY auditoryDate desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+
 END
 
 GO
@@ -1808,32 +1839,6 @@ END
 GO
 
 ------------------------------------------------------------------------------------------------------------------
---Users INDEXES
-
-CREATE NONCLUSTERED INDEX IX_UserByEmailAndState ON Users(email,activated) 
-
-GO
-------------------------------------------------------------------------------------------------------------------
---Neighborhoods INDEXES
-
-CREATE NONCLUSTERED INDEX IX_NeighborhoodByName ON Neighborhoods(name) 
-
-GO
---------------------------------------------------------------------------------------------------------------
---Neighborhoods_Crimes INDEXES
-
-CREATE NONCLUSTERED INDEX IX_CrimeInNeighborhood ON Neighborhoods_Crimes(crime,neighborhood) 
-
-GO
---------------------------------------------------------------------------------------------------------------
---Populations INDEXES
-CREATE NONCLUSTERED INDEX IX_PopulationByNeighborhoodAndYear ON Population(neighborhood,year)
-
-CREATE NONCLUSTERED INDEX IX_PopulationsByNeighborhood ON Population(neighborhood)
-
-GO
-
-------------------------------------------------------------------------------------------------------------------
 --Neighborhoods_Crimes TRIGGERS
 
 CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterInsert ON Neighborhoods_Crimes AFTER INSERT AS
@@ -1868,3 +1873,29 @@ INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,
 ('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+',Crecimiento:'+CAST(increase as varchar(6))) from deleted)
 
 END
+
+------------------------------------------------------------------------------------------------------------------
+--Users INDEXES
+
+CREATE NONCLUSTERED INDEX IX_UserByEmailAndState ON Users(email,activated) 
+
+GO
+------------------------------------------------------------------------------------------------------------------
+--Neighborhoods INDEXES
+
+CREATE NONCLUSTERED INDEX IX_NeighborhoodByName ON Neighborhoods(name) 
+
+GO
+--------------------------------------------------------------------------------------------------------------
+--Neighborhoods_Crimes INDEXES
+
+CREATE NONCLUSTERED INDEX IX_CrimeInNeighborhood ON Neighborhoods_Crimes(crime,neighborhood) 
+
+GO
+--------------------------------------------------------------------------------------------------------------
+--Populations INDEXES
+CREATE NONCLUSTERED INDEX IX_PopulationByNeighborhoodAndYear ON Population(neighborhood,year)
+
+CREATE NONCLUSTERED INDEX IX_PopulationsByNeighborhood ON Population(neighborhood)
+
+GO

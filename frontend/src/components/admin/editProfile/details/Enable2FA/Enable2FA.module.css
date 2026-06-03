@@ -19,8 +19,8 @@
     background: rgb(15, 29, 51);
 }
 
-.btnAuth2FAEnable img,
-.btnAuth2FADisable img {
+.btnAuth2FA  img,
+.btnAuth2FA  img {
     width: 27px;
     height: 27px;
 }

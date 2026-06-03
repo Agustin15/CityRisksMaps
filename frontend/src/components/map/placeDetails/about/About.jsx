@@ -63,8 +63,6 @@ export const About = ({ place }) => {
               ></img>
             )}
         </div>
-
-        <BtnIndications />
       </div>
     </div>
   );

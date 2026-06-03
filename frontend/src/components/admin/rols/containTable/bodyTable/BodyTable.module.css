@@ -10,28 +10,21 @@ tbody .options {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
 }
 tbody .options button {
-    width: 2.8rem;
-    height: 2.4rem;
-    border-radius: 6px;
+    width: 2.6rem;
+    height: 2.3rem;
+    border-radius: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-tbody .options button {
-    width: 2.9rem;
-    height: 2.5rem;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 tbody .options button img {
-    width: 23px;
-    height: 23px;
+    width: 21px;
+    height: 21px;
 }
 tbody .options .delete {
     background: rgb(216, 10, 10);
@@ -41,7 +34,7 @@ tbody .options .edit {
     background: rgb(10, 123, 216);
 }
 
-tbody .options .users{
+tbody .options .users {
     background: rgb(10, 178, 190);
 }
 tbody .options .users img {

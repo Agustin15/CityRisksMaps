@@ -11,18 +11,13 @@
 
 .options li {
     display: flex;
+    flex-direction: column;
     justify-content: start;
     align-items: center;
     width: 96%;
+    height: auto;
     font-size: 16px;
-    height: 2.6rem;
-    gap: 0.8rem;
     cursor: pointer;
-}
-
-.options li:hover {
-    background: rgba(180, 180, 180, 0.274);
-    border-radius: 3px;
 }
 
 .options li a {
@@ -30,59 +25,19 @@
     text-decoration: none;
 }
 
-.options li div {
-    height: 24px;
-    width: 24px;
-    margin-left: 0.5rem;
-    background: url("../../../../assets/img/departments.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.options li .iconDepartments {
-    background: url("../../../../assets/img/departments.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+.options .mainOption,
+.options .selected {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 0 0.6rem 0;
 }
 
-.options li .iconNeighborhoods {
-    background: url("../../../../assets/img/neighborhoods.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.options li .iconPopulation {
-    background: url("../../../../assets/img/populationsTwo.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options li .iconCrimes {
-    background: url("../../../../assets/img/crimes.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options li .iconNeighborhoodsCrimes {
-    background: url("../../../../assets/img/zones.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options li .iconRols {
-    background: url("../../../../assets/img/rols.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options li .iconUsers {
-    background: url("../../../../assets/img/users.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options li .iconStatistics {
-    background: url("../../../../assets/img/statistics.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+.options .mainOption:hover {
+    background: rgba(180, 180, 180, 0.274);
+    border-radius: 3px;
 }
 
 .options .selected {
@@ -98,53 +53,135 @@
     color: rgb(34, 34, 34);
 }
 
-.options .selected .iconDepartments {
+.options .mainOption div,
+.options .selected div {
+    height: 24px;
+    width: 24px;
+    margin-left: 0.5rem;
+}
+
+.options li .mainOption .iconDepartments {
+    background: url("../../../../assets/img/departments.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconNeighborhoods {
+    background: url("../../../../assets/img/neighborhoods.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.options li .mainOption .iconPopulation {
+    background: url("../../../../assets/img/populationsTwo.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconCrimes {
+    background: url("../../../../assets/img/crimes.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconNeighborhoodsCrimes {
+    background: url("../../../../assets/img/zones.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .submenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    height: auto;
+}
+
+.options li .submenu li {
+    width: 100%;
+    gap: 0.6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    padding: 0.6rem 0 0.6rem 0;
+}
+
+.options li .submenu li:hover {
+    background: rgba(180, 180, 180, 0.274);
+}
+
+.options li .submenu li div {
+    height: 24px;
+    width: 24px;
+    margin-left: 0.5rem;
+    background: url("../../../../assets/img/auditories.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconRols {
+    background: url("../../../../assets/img/rols.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconUsers {
+    background: url("../../../../assets/img/users.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .mainOption .iconStatistics {
+    background: url("../../../../assets/img/statistics.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .selected .iconDepartments {
     background: url("../../../../assets/img/departmentsSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
-.options .selected .iconNeighborhoods {
+.options li .selected .iconNeighborhoods {
     background: url("../../../../assets/img/neighbrohoodsSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.options .selected .iconCrimes {
+.options li .selected .iconNeighborhoodsCrimes {
+    background: url("../../../../assets/img/zonesSelected.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.options li .iconCrimes {
     background: url("../../../../assets/img/crimesSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.options .selected .iconPopulation {
+.options li .selected .iconPopulation {
     background: url("../../../../assets/img/populationSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.options .selected .iconNeighborhoodsCrimes {
-    background: url("../../../../assets/img/zonesSelected.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options .selected .iconStatistics {
+.options li .selected .iconStatistics {
     background: url("../../../../assets/img/statisticsSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.options .selected .iconZones {
-    background: url("../../../../assets/img/zonesSelected.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.options .selected .iconRols {
+.options li .selected .iconRols {
     background: url("../../../../assets/img/rolsSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
-.options .selected .iconUsers {
+.options li .selected .iconUsers {
     background: url("../../../../assets/img/usersSelected.png");
     background-repeat: no-repeat;
     background-size: cover;

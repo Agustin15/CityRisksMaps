@@ -21,7 +21,6 @@ export const HandleUserLocation = () => {
     if ((new Date() - lastCheck) / 1000 < seconds) return;
 
     map.panTo(userLocation);
-    map.setZoom(25);
     userLocationChanged();
   }, [userLocation]);
 

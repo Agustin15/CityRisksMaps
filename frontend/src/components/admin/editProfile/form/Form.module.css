@@ -47,9 +47,13 @@
 
 .columnInputPassword button,
 .columnInputEmail button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: row-reverse;
     border-radius: 3px;
     box-shadow: none;
+    border: none;
     color: white;
     background: rgb(49, 155, 204);
     box-shadow: 1px 1px 1px rgb(202, 202, 202);

@@ -6,6 +6,9 @@
 }
 .options button {
     min-width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: auto;
     height: auto;
     padding: 0.4rem 1rem 0.4rem 1rem;
