@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { MapPage } from "./Pages/MapPage.jsx";
+import { AboutPage } from "./pages/AboutPage.jsx";
 import { WindowResizeProvider } from "./contexts/WindowResizeContext.jsx";
 import { ActivateUserProvider } from "./contexts/adminContext/ActivateUserContext.jsx";
 import { CrudProvider } from "./contexts/adminContext/CrudContext.jsx";
@@ -35,6 +36,7 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<MapPage />}></Route>
+                <Route path="/about" element={<AboutPage />}></Route>
                 <Route path="/*" element={<NotFoundPage />}></Route>
                 <Route path="/admin/login" element={<LoginAdmin />}></Route>
                 <Route

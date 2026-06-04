@@ -22,19 +22,10 @@ export const LoadCrimesInNeighborhoods = ({
         <>
           <p>
             Los datos mostrados a continuacion son estadisticas de denuncias de
-            delitos consumados, obtenidas de documentacion perteneciente a{" "}
+            delitos consumados, obtenidas de documentacion perteneciente al{" "}
             <a href="https://catalogodatos.gub.uy/dataset/ministerio-del-interior-delitos_denunciados_en_el_uruguay">
-              AECA
+              Área de Estadística y Criminología Aplicada (AECA)
             </a>
-            , de esta forma la tasa de criminalidad esta basada en la cantidad
-            de denuncias por cada numero de habitantes en los barrios.
-          </p>
-          <p className={styles.author}>
-            Sistema desarrollado por{" "}
-            <a href="https://www.linkedin.com/in/agustin-miranda-953634239">
-              Agustín Miranda
-            </a>
-            .
           </p>
 
           <div className={styles.rowSearcher}>

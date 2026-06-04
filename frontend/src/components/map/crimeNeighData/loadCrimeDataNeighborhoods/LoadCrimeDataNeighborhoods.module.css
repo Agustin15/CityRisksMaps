@@ -28,16 +28,6 @@
     cursor: pointer;
 }
 
-.containDetails .author {
-    width: 98%;
-    font-weight: bold;
-    margin: -0.5rem 0 0 0;
-    padding: 0;
-    font-size: 11px;
-}
-.containDetails .author a {
-    color: white;
-}
 
 .containDetails .rowSearcher,
 .containDetails .rowYears {
