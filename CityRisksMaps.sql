@@ -68,6 +68,7 @@ year INT NOT NULL CHECK(year<=YEAR(GETDATE())),
 Primary key(neighborhood,crime,year)
 );
 
+
 CREATE TABLE Auditory_Neighborhoods_Crimes(
 idAuditory INT IDENTITY(1,1) Primary key NOT NULL,
 neighborhood INT NOT NULL,
@@ -1839,7 +1840,6 @@ GO
 
 ------------------------------------------------------------------------------------------------------------------
 --Neighborhoods_Crimes TRIGGERS
---Update Neighborhoods_Crimes set quantity=369 where neighborhood=8 and crime='Hurto' and year=2026
 
 CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterInsert ON Neighborhoods_Crimes AFTER INSERT AS
 BEGIN

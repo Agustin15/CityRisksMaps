@@ -23,12 +23,12 @@ export const getDatesOfAuditoryNeighborhoodsCrimes = async (req, res) => {
 export const getAuditoryNeighborhoodsCrimesOffsetByDate = async (req, res) => {
   try {
     if (!req.params.datetime)
-      throw new Error("Fecha no indicada en los parámetros", {
+      throw new Error("Fecha no indicada", {
         cause: { code: 400 }
       });
 
     if (!req.params.offset)
-      throw new Error("Offset no indicado en los parámetros", {
+      throw new Error("Offset no indicado", {
         cause: { code: 400 }
       });
 
