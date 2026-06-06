@@ -4,11 +4,11 @@ import sql from "mssql";
 export class AuditoryNeighborhoodCrimeDal {
   static async getDatesOfAuditoryNeighborhoodsCrimes() {
     try {
-      const request = new sql.Request(connection);
+      const request = new sql.Request(connection.pool);
       const results = await request.execute(
         "DatesOfAuditoryNeighborhoodsCrimes"
       );
-      return results.recordsets;
+      return results.recordset;
     } catch (error) {
       throw error;
     }
@@ -16,14 +16,14 @@ export class AuditoryNeighborhoodCrimeDal {
 
   static async getAuditoryNeighborhoodsCrimesByDate(datetime) {
     try {
-      const request = new sql.Request(connection);
+      const request = new sql.Request(connection.pool);
       request.input("datetime", sql.Date, datetime);
 
       const results = await request.execute(
         "AuditoryNeighborhoodsCrimesByDate"
       );
 
-      return results.recordsets;
+      return results.recordset;
     } catch (error) {
       throw error;
     }
@@ -31,7 +31,7 @@ export class AuditoryNeighborhoodCrimeDal {
 
   static async getAuditoryNeighborhoodsCrimesOffsetByDate(datetime, offset) {
     try {
-      const request = new sql.Request(connection);
+      const request = new sql.Request(connection.pool);
       request.input("datetime", sql.Date, datetime);
       request.input("offset", sql.Int, offset);
 
@@ -39,7 +39,7 @@ export class AuditoryNeighborhoodCrimeDal {
         "AuditoryNeighborhoodsCrimesOffsetByDate"
       );
 
-      return results.recordsets;
+      return results.recordset;
     } catch (error) {
       throw error;
     }

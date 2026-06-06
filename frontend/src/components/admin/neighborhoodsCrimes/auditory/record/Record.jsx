@@ -1,32 +1,55 @@
 import styles from "./Record.module.css";
 import iconAuditory from "../../../../../assets/img/auditoryTitle.png";
-import iconDelete from "../../../../../assets/img/deleteDML.png";
-import iconInsert from "../../../../../assets/img/insertDML.png";
-import iconUpdate from "../../../../../assets/img/updateDML.png";
-import iconPK from "../../../../../assets/img/primaryKey.png";
+import { useEffect, useState } from "react";
+import { useCrud } from "../../../../../contexts/adminContext/CrudContext";
+import { List } from "./list/List";
+import { Pagination } from "./pagination/Pagination";
 
-export const Record = () => {
+export const Record = ({ dateSelected, loadingFilter }) => {
+  const { loading, fetchGet, error, setRegisters, registers, setPages, pages } =
+    useCrud();
+
+  useEffect(() => {
+    if (!dateSelected) return;
+    loadRegisters();
+  }, [dateSelected]);
+
+  const loadRegisters = async () => {
+    const result = await fetchGet(
+      "/auditoryNeighborhoodCrime/auditoryNeighborhoodsCrimesOffsetByDate/" +
+        encodeURIComponent(dateSelected) +
+        "/" +
+        0
+    );
+
+    if (result) {
+      setPages(result.pages);
+      setRegisters(result.registersOffset);
+    }
+  };
+
   return (
     <div className={styles.record}>
-      {/* <div className={styles.noData}>
-        <img src={iconAuditory} />
-        <h3>No hay registros de auditoria en esta fecha</h3>
-      </div> */}
-      <ul className={styles.recordList}>
-        <li>
-          <div className={styles.row}>
-            <div className={styles.action}>
-              <h2>Eliminación</h2>
-              <img src={iconDelete} />
-            </div>
-            <div className={styles.foreignKey}>
-              <img src={iconPK} />
-              <b>Identificador de delito:</b>
-              <p>Buceo,Hurto,2023</p>
-            </div>
-          </div>
-        </li>
-      </ul>
+      {(loadingFilter || loading) && (
+        <div className={styles.loading}>
+          <h3>Cargando datos...</h3>
+        </div>
+      )}
+
+      {error && !loadingFilter && !loading && (
+        <div className={styles.noData}>
+          <img src={iconAuditory} />
+          <h3>{error}</h3>
+        </div>
+      )}
+
+      {!loading && !loadingFilter && registers && (
+        <List registers={registers} />
+      )}
+
+      {!loading && !loadingFilter && pages && (
+        <Pagination dateSelected={dateSelected} />
+      )}
     </div>
   );
 };

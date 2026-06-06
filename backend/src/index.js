@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import cron from "node-cron";
+import { sendConsultation } from "./controller/sendConsultation.js";
 import { RoutesCrime } from "./route/routeCrime.js";
 import { RoutesNeighborhoodCrime } from "./route/routeNeighborhoodCrime.js";
 import { RoutesNeighborhoodCrimeAdmin } from "./route/routeNeighborhoodCrimeAdmin.js";
@@ -45,6 +46,7 @@ cron.schedule("0 0 6 1 * *", async () => {
   }
 });
 
+app.post("/sendConsultation/", sendConsultation);
 app.use("/crime/", RoutesCrime);
 app.use("/neighborhoodCrime/", RoutesNeighborhoodCrime);
 

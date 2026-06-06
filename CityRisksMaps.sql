@@ -1422,20 +1422,18 @@ GO
 ----------------------------------------------------------------------------------------------------------------
 -- Auditory_Neighborhoods_Crimes 
 
-
 CREATE OR ALTER PROCEDURE DatesOfAuditoryNeighborhoodsCrimes AS
 BEGIN
 
-select auditoryDate from Auditory_Neighborhoods_Crimes ORDER BY auditoryDate;
+select DISTINCT CAST(auditoryDate AS date) as auditoryDate from Auditory_Neighborhoods_Crimes ORDER BY CAST(auditoryDate AS date);
 
 END
-
 GO
 
 CREATE OR ALTER PROCEDURE AuditoryNeighborhoodsCrimesByDate @datetime DATETIME AS
 BEGIN
 
-select COUNT(*) from Auditory_Neighborhoods_Crimes where auditoryDate=@datetime;
+select * from Auditory_Neighborhoods_Crimes where CAST(auditoryDate  as date)=CAST(@datetime as date);
 
 END
 
@@ -1444,7 +1442,8 @@ GO
 CREATE OR ALTER PROCEDURE AuditoryNeighborhoodsCrimesOffsetByDate @datetime DATETIME ,@offset INT AS
 BEGIN
 
-select * from Auditory_Neighborhoods_Crimes where auditoryDate=@datetime ORDER BY auditoryDate desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+select * from Auditory_Neighborhoods_Crimes where CAST(auditoryDate  as date)=CAST(@datetime as date)
+ORDER BY CAST(auditoryDate as date) desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 
 END
 
@@ -1840,13 +1839,14 @@ GO
 
 ------------------------------------------------------------------------------------------------------------------
 --Neighborhoods_Crimes TRIGGERS
+--Update Neighborhoods_Crimes set quantity=369 where neighborhood=8 and crime='Hurto' and year=2026
 
 CREATE OR ALTER TRIGGER AddHoodCrimeAuditoryAfterInsert ON Neighborhoods_Crimes AFTER INSERT AS
 BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes(neighborhood,crime,year,actionName,newValues) 
 (select neighborhood,crime,year,'INSERT',
-('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+',Crecimiento:'+CAST(increase as varchar(6))) from inserted)
+('Cantidad:'+CAST(quantity as varchar(6))+' - Tasa:'+CAST(rate as varchar(6))+' - Crecimiento:'+CAST(increase as varchar(6))) from inserted)
 
 END
 
@@ -1857,8 +1857,8 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues,newValues) 
 (select D.neighborhood,D.crime,D.year,GETDATE(),'UPDATE',
-('Cantidad:'+CAST(D.quantity as varchar(6))+',Tasa:'+CAST(D.rate as varchar(6))+',Crecimiento:'+CAST(D.increase as varchar(6))),
-('Cantidad:'+CAST(I.quantity as varchar(6))+',Tasa:'+CAST(I.rate as varchar(6))+',Crecimiento:'+CAST(I.increase as varchar(6)))
+('Cantidad:'+CAST(D.quantity as varchar(6))+' - Tasa:'+CAST(D.rate as varchar(6))+' - Crecimiento:'+CAST(D.increase as varchar(6))),
+('Cantidad:'+CAST(I.quantity as varchar(6))+' - Tasa:'+CAST(I.rate as varchar(6))+' - Crecimiento:'+CAST(I.increase as varchar(6)))
 from inserted I INNER JOIN deleted D ON D.neighborhood=I.neighborhood and D.crime=I.crime and D.year=I.year)
 
 END
@@ -1870,7 +1870,7 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes (neighborhood,crime,year,auditoryDate,actionName,oldValues) 
 (select neighborhood,crime,year,GETDATE(),'DELETE',
-('Cantidad:'+CAST(quantity as varchar(6))+',Tasa:'+CAST(rate as varchar(6))+',Crecimiento:'+CAST(increase as varchar(6))) from deleted)
+('Cantidad:'+CAST(quantity as varchar(6))+' - Tasa:'+CAST(rate as varchar(6))+' - Crecimiento:'+CAST(increase as varchar(6))) from deleted)
 
 END
 

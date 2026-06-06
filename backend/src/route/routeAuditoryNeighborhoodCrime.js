@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getDatesOfAuditoryNeighborhoodsCrimes,
-  getAuditoryNeighborhoodsCrimesByDate,
   getAuditoryNeighborhoodsCrimesOffsetByDate
 } from "../controller/auditoryNeighborhoodCrimeController.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -15,12 +14,6 @@ RoutesAuditoryNeighborhoodCrime.get(
   "/datesOfAuditoryNeighborhoodsCrimes",
   verifyAuthorization,
   getDatesOfAuditoryNeighborhoodsCrimes
-);
-
-RoutesAuditoryNeighborhoodCrime.get(
-  "/auditoryNeighborhoodsCrimesByDate/:datetime",
-  verifyAuthorization,
-  getAuditoryNeighborhoodsCrimesByDate
 );
 
 RoutesAuditoryNeighborhoodCrime.get(

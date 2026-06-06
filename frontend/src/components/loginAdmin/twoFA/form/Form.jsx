@@ -14,7 +14,7 @@ export const Form = () => {
           value={code}
           onKeyDown={(event) => event.preventDefault()}
           inputMode="numeric"
-          type="text"
+          type="password"
           placeholder="* * * * * *"
         ></input>
         {error.length > 0 && <p className={styles.msjError}>{error}</p>}

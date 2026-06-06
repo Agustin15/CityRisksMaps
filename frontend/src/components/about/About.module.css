@@ -2,36 +2,84 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: start;
+    height: auto;
     width: 100vw;
     font-family: Arial, Helvetica, sans-serif;
-    background: url("../../assets/img/backgroundAbout.svg");
+    background: url("../../assets/img/backgroundAbout.png");
     background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+.about .navbar {
+    width: 100vw;
+    padding: 1rem 0 0 0;
+}
+.about .navbar ul {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.about .navbar ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.about .navbar ul li h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+.about .navbar ul li img {
+    margin-left: 1rem;
+    width: 46px;
+    height: 46px;
+}
+
+.about .navbar ul li button {
+    margin-right: 2rem;
+    width: 7rem;
+    height: 2rem;
+    color: white;
+    background: rgb(73, 125, 185);
+    border-radius: 5px;
+}
+
+.about .navbar ul li button:hover {
+    background: rgb(62, 107, 158);
 }
 
 .about .row {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
+    padding: 3rem 0 7rem 0;
     gap: 5rem;
+    height: auto;
 }
 
-.about .row a {
-    color: rgb(73, 125, 185);
-    text-decoration: none;
-}
-
-.about .row a:hover {
-    color: rgb(73, 125, 185);
-    text-decoration: underline;
-}
-
-.about .circle {
-    width: 16rem;
-    height: 16rem;
+.about .icon {
+    width: 19rem;
+    height: 19rem;
     border-radius: 150px;
-    background: rgb(215, 236, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about .icon img {
+    width: 89%;
+    height: 89%;
+    border-radius: 100%;
 }
 
 .about .description {
@@ -42,8 +90,384 @@
 
 .about .description h4 {
     font-weight: bold;
-    color: rgb(34, 101, 163);
+    color: rgb(74, 135, 204);
     padding: 0;
     margin: 0;
     font-size: 22px;
+}
+.about .credits {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 0.8rem;
+    list-style: none;
+    width: 100%;
+}
+
+.about .credits li {
+    background: rgb(231, 231, 231);
+    color: black;
+    border-radius: 4px;
+    padding: 0.5rem;
+    width: 100%;
+}
+.about .credits li a {
+    color: rgb(41, 96, 158);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.about .credits li a:hover {
+    color: rgb(41, 96, 158);
+    text-decoration: underline;
+}
+
+.about footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    height: auto;
+    padding: 1.5rem 0 1rem 0;
+    background: linear-gradient(rgb(43, 43, 43), rgb(17, 17, 17));
+    position: relative;
+}
+
+.about footer .links {
+    padding: 0;
+    margin: 0;
+    gap: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    list-style: none;
+    color: white;
+    position: absolute;
+    left: 2rem;
+    top: 3rem;
+}
+
+.about footer .links span {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.about footer .links a {
+    color: white;
+    text-decoration: none;
+}
+
+.about footer .links a:hover {
+    text-decoration: underline;
+}
+
+.about footer .author {
+    color: white;
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+}
+.about footer .author a {
+    color: white;
+    text-decoration: none;
+}
+
+.about footer .author a:hover {
+    color: rgb(31, 91, 146);
+    text-decoration: underline;
+}
+
+@media (width<=650px) {
+    .about .navbar {
+        padding-bottom: 0;
+    }
+    .about .navbar ul {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        list-style: none;
+        gap: 1rem;
+    }
+    .about .navbar ul li {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .about .navbar ul li img {
+        margin-left: 0;
+        width: 56px;
+        height: 56px;
+    }
+    .about .navbar ul li h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .about .navbar ul li button {
+        margin-right: 0;
+    }
+    .about .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        height: auto;
+        padding: 1rem 0 4rem 0;
+    }
+
+    .about .icon {
+        width: 13rem;
+        height: 13rem;
+        border-radius: 150px;
+    }
+
+    .about .description {
+        width: 88%;
+    }
+
+    .about .description h4 {
+        font-size: 19px;
+    }
+    .about .credits {
+        font-size: 15px;
+        width: 95%;
+    }
+
+    .about .credits li {
+        background: rgb(231, 231, 231);
+        color: black;
+        border-radius: 4px;
+        padding: 0.5rem;
+        width: 100%;
+    }
+    .about .credits li a {
+        color: rgb(41, 96, 158);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .about .credits li a:hover {
+        color: rgb(41, 96, 158);
+        text-decoration: underline;
+    }
+
+    .about footer {
+        align-items: center;
+        width: 100%;
+        padding: 1.5rem 0 1.5rem 0;
+    }
+
+    .about footer .links {
+        position: static;
+        width: 93%;
+        align-items: start;
+    }
+
+    .about footer .author {
+        color: white;
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .about {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        height: auto;
+        width: 100vw;
+        font-family: Arial, Helvetica, sans-serif;
+        background: url("../../assets/img/backgroundAbout.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: white;
+    }
+
+    .about .navbar {
+        width: 100vw;
+        height: auto;
+        padding: 1rem 0 0 0;
+    }
+    .about .navbar ul {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .about .navbar ul li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .about .navbar ul li h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .about .navbar ul li img {
+        margin-left: 2rem;
+        width: 46px;
+        height: 46px;
+    }
+
+    .about .navbar ul li button {
+        margin-right: 2rem;
+        width: 7rem;
+        height: 2rem;
+        color: white;
+        background: rgb(73, 125, 185);
+        border-radius: 5px;
+    }
+
+    .about .navbar ul li button:hover {
+        background: rgb(62, 107, 158);
+    }
+
+    .about .row {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding-top: 3rem;
+        gap: 3rem;
+        height: auto;
+        padding-bottom: 2rem;
+    }
+
+    .about .icon {
+        width: 15rem;
+        height: 15rem;
+        border-radius: 150px;
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .about .icon img {
+        width: 89%;
+        height: 89%;
+        border-radius: 100%;
+    }
+
+    .about .description {
+        width: 51%;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+
+    .about .description h4 {
+        font-weight: bold;
+        color: rgb(74, 135, 204);
+        padding: 0;
+        margin: 0;
+        font-size: 22px;
+    }
+    .about .credits {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        gap: 0.8rem;
+        list-style: none;
+        width: 100%;
+    }
+
+    .about .credits li {
+        background: rgb(231, 231, 231);
+        color: black;
+        border-radius: 4px;
+        padding: 0.5rem;
+        width: 100%;
+    }
+    .about .credits li a {
+        color: rgb(41, 96, 158);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .about .credits li a:hover {
+        color: rgb(41, 96, 158);
+        text-decoration: underline;
+    }
+
+    .about footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        height: auto;
+        padding: 1.5rem 0 1rem 0;
+        background: linear-gradient(rgb(43, 43, 43), rgb(17, 17, 17));
+        position: relative;
+    }
+
+    .about footer .links {
+        padding: 0;
+        margin: 0;
+        gap: 0.6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        list-style: none;
+        color: white;
+        position: absolute;
+        left: 2rem;
+        top: 3rem;
+    }
+
+    .about footer .links span {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .about footer .links a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .about footer .links a:hover {
+        text-decoration: underline;
+    }
+
+    .about footer .author {
+        color: white;
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+    }
+    .about footer .author a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .about footer .author a:hover {
+        color: rgb(31, 91, 146);
+        text-decoration: underline;
+    }
 }

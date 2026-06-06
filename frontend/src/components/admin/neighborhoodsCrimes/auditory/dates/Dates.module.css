@@ -1,0 +1,37 @@
+.dates {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    height: auto;
+    width: 100%;
+}
+
+.dates span {
+    margin-left: 1.3rem;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.dates select {
+    width: 12rem;
+    height: 2rem;
+    border-radius: 5px;
+    border: 1px solid rgb(185, 185, 185);
+    outline: none;
+    background: linear-gradient(rgb(240, 240, 240), rgb(231, 231, 231));
+}
+
+.dates button {
+    font-size: 13px;
+    width: 5rem;
+    height: 1.7rem;
+    background: rgb(30, 115, 194);
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.dates button:hover {
+    background: rgb(23, 94, 160);
+}

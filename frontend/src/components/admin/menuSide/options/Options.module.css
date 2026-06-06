@@ -14,7 +14,7 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    width: 96%;
+    width: 100%;
     height: auto;
     font-size: 16px;
     cursor: pointer;
@@ -37,12 +37,12 @@
 
 .options .mainOption:hover {
     background: rgba(180, 180, 180, 0.274);
-    border-radius: 3px;
 }
 
 .options .selected {
     background: white;
-    border-radius: 3px;
+    width: 98%;
+    border-radius: 4px;
 }
 
 .options .selected:hover {
@@ -89,8 +89,42 @@
     background-size: cover;
 }
 
-.options li .submenu {
+.options li:hover > div > .btnSubmenu {
     display: flex;
+}
+
+.btnSubmenu {
+    width: auto;
+    height: auto;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.btnSubmenu input {
+    display: none;
+}
+
+.btnSubmenu img {
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+.options li:has(input:checked) > .submenu {
+    display: flex;
+}
+.options li:has(input:checked) > div > .btnSubmenu img {
+    transform: rotate(90deg);
+}
+
+.options li .submenu {
+    display: none;
     flex-direction: column;
     justify-content: start;
     align-items: center;

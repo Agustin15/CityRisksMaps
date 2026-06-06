@@ -1,0 +1,336 @@
+.questions {
+    width: 39%;
+    display: flex;
+    flex-direction: column;
+    background: none;
+    align-items: center;
+    color: white;
+}
+
+.questions .title {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 15px;
+}
+.questions .title h3 {
+    margin: 0;
+    padding: 0;
+}
+.questions .title img {
+    width: 65px;
+    height: 65px;
+}
+
+.questions form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+}
+
+.questions form .rowInputs {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.questions form .input,
+.questions form .message {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 50%;
+    position: relative;
+}
+
+.questions form .input p,
+.questions form .message p {
+    top: 1.5rem;
+    color: rgb(206, 43, 43);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.questions form .message p {
+    top: 8rem;
+}
+
+.questions form .message {
+    width: 100%;
+}
+
+.questions form input {
+    border: none;
+    background: white;
+    width: 99%;
+    color: rgb(36, 36, 36);
+    border-radius: 3px;
+}
+
+.questions form input:focus {
+    box-shadow: none;
+}
+
+.questions form input::placeholder {
+    color: rgb(36, 36, 36);
+    opacity: 94%;
+}
+
+.questions form input:hover {
+    border: none;
+    border-bottom: 1px solid white;
+    box-shadow: none;
+}
+
+.questions form .message textarea {
+    width: 99%;
+    height: 8rem;
+    background-color: white;
+    color: rgb(36, 36, 36);
+}
+
+.questions form .message textarea:hover {
+    box-shadow: none;
+}
+
+.questions form .message textarea::placeholder {
+    color: rgb(36, 36, 36);
+    opacity: 94%;
+}
+
+.questions form button {
+    background: rgb(30, 179, 79);
+    border-radius: 3px;
+    height: 2rem;
+    width: 14rem;
+    margin-top: 1rem;
+    color: white;
+}
+
+.questions form button:hover {
+    background: rgb(28, 146, 67);
+}
+
+@media (width<=650px) {
+    .questions {
+        width: 89%;
+    }
+
+    .questions .title {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .questions .title img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .questions form .rowInputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+    }
+    .questions form .input,
+    .questions form .message {
+        width: 100%;
+    }
+
+    .questions form .input p,
+    .questions form .message p {
+        top:1.7rem;
+        color: rgb(206, 43, 43);
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .questions form .message p {
+        top: 8.2rem;
+    }
+
+    .questions form .message {
+        width: 100%;
+    }
+
+    .questions form input {
+        border: none;
+        background: white;
+        width: 99%;
+        color: rgb(36, 36, 36);
+        border-radius: 3px;
+    }
+
+    .questions form input:focus {
+        box-shadow: none;
+    }
+
+    .questions form input::placeholder {
+        color: rgb(36, 36, 36);
+        opacity: 94%;
+    }
+
+    .questions form input:hover {
+        border: none;
+        border-bottom: 1px solid white;
+        box-shadow: none;
+    }
+
+    .questions form .message textarea {
+        width: 99%;
+        height: 8rem;
+        background-color: white;
+        color: rgb(36, 36, 36);
+    }
+
+    .questions form .message textarea:hover {
+        box-shadow: none;
+    }
+
+    .questions form .message textarea::placeholder {
+        color: rgb(36, 36, 36);
+        opacity: 94%;
+    }
+
+    .questions form button {
+        background: rgb(30, 179, 79);
+        border-radius: 3px;
+        height: 2rem;
+        width: 14rem;
+        margin-top: 1rem;
+        color: white;
+    }
+
+    .questions form button:hover {
+        background: rgb(28, 146, 67);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .questions {
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+        background: none;
+        align-items: center;
+        color: white;
+    }
+
+    .questions .title {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: start;
+        align-items: center;
+        text-align: center;
+        gap: 0.3rem;
+        font-size: 15px;
+        margin-top: 2rem;
+    }
+    .questions .title h3 {
+        margin: 0;
+        padding: 0;
+    }
+    .questions .title img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .questions form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: none;
+    }
+
+    .questions form .rowInputs {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+    }
+    .questions form .input,
+    .questions form .message {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        width: 50%;
+        position: relative;
+    }
+
+    .questions form .input p,
+    .questions form .message p {
+        top: 1.5rem;
+        color: rgb(206, 43, 43);
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .questions form .message p {
+        top: 8rem;
+    }
+
+    .questions form .message {
+        width: 100%;
+    }
+
+    .questions form input {
+        border: none;
+        background: white;
+        width: 99%;
+        color: rgb(36, 36, 36);
+        border-radius: 3px;
+    }
+
+    .questions form input:focus {
+        box-shadow: none;
+    }
+
+    .questions form input::placeholder {
+        color: rgb(36, 36, 36);
+        opacity: 94%;
+    }
+
+    .questions form input:hover {
+        border: none;
+        border-bottom: 1px solid white;
+        box-shadow: none;
+    }
+
+    .questions form .message textarea {
+        width: 99%;
+        height: 8rem;
+        background-color: white;
+        color: rgb(36, 36, 36);
+    }
+
+    .questions form .message textarea:hover {
+        box-shadow: none;
+    }
+
+    .questions form .message textarea::placeholder {
+        color: rgb(36, 36, 36);
+        opacity: 94%;
+    }
+
+    .questions form button {
+        background: rgb(30, 179, 79);
+        border-radius: 3px;
+        height: 2rem;
+        width: 14rem;
+        margin-top: 1rem;
+        color: white;
+    }
+
+    .questions form button:hover {
+        background: rgb(28, 146, 67);
+    }
+}

@@ -37,6 +37,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<MapPage />}></Route>
                 <Route path="/about" element={<AboutPage />}></Route>
+                
                 <Route path="/*" element={<NotFoundPage />}></Route>
                 <Route path="/admin/login" element={<LoginAdmin />}></Route>
                 <Route
