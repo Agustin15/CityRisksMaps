@@ -1,0 +1,8 @@
+.menuOnMap {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 0.6rem;
+    margin-right: 0.7rem;
+    margin-bottom: 1rem;
+}

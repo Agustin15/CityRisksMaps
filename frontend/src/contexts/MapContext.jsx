@@ -8,6 +8,7 @@ export const MapProvider = ({ children }) => {
   const [neighborhoodsCoordinates, setNeighborhoodsCoordinates] = useState();
   const [loadingMyLocation, setLoadingMyLocation] = useState(false);
   const [userLocation, setUserLocation] = useState();
+  const [errorLocation, setErrorLocation] = useState();
   const apiIsLoaded = useApiIsLoaded();
   const watchIdRef = useRef();
   const userLocationRef = useRef();
@@ -38,6 +39,7 @@ export const MapProvider = ({ children }) => {
   };
 
   const handleMyLocation = async (option) => {
+    setErrorLocation();
     setLoadingMyLocation(true);
 
     if (option == "current" && userLocation) {
@@ -68,6 +70,7 @@ export const MapProvider = ({ children }) => {
 
     setLoadingMyLocation(false);
   };
+
   const successWatchPosition = (position) => {
     success(position);
     if (!userLocationRef.current) configMapGeolocation(position);
@@ -89,10 +92,9 @@ export const MapProvider = ({ children }) => {
   const error = (error) => {
     setLoadingMyLocation(false);
 
-    alertSwalError(
-      "Ups, no pudimos encontrar donde se encuentra",
+    setErrorLocation(
       error.code == 1
-        ? "Permiso para acceder a su ubicacion, no habilitada"
+        ? "Habilite la ubicacion de su dispositivo"
         : "No se pudo obtener su ubicacion"
     );
   };
@@ -168,6 +170,7 @@ export const MapProvider = ({ children }) => {
     <MapContext.Provider
       value={{
         handleMyLocation,
+        errorLocation,
         userLocation,
         setUserLocation,
         loadingMyLocation,

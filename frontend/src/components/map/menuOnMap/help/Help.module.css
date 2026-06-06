@@ -1,0 +1,21 @@
+.help {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.help button {
+    width: 2.3rem;
+    height: 2.3rem;
+    background: linear-gradient(#4758aa, #313e7a);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+}
+
+.help button img {
+    width: 21px;
+    height: 21px;
+}

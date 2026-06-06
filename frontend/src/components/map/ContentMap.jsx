@@ -17,7 +17,7 @@ import { MapHandlerClick } from "./MapHandlerClick/MapHandlerClick";
 import { MyLocation } from "./myLocation/MyLocation";
 import { Navigation } from "./navigation/Navigation";
 import { SearchPlace } from "./searchPlace/SearchPlace";
-import { Geolocation } from "./geolocation/Geolocation";
+import { MenuOnMap } from "./menuOnMap/MenuOnMap";
 
 export const ContentMap = () => {
   const { userLocation } = useMapControls();
@@ -47,7 +47,7 @@ export const ContentMap = () => {
 
       {!routeNavigation && (
         <MapControl position={ControlPosition.RIGHT_BOTTOM}>
-          <Geolocation />
+          <MenuOnMap />
         </MapControl>
       )}
 

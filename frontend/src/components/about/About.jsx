@@ -3,9 +3,14 @@ import iconAboutUs from "../../assets/img/aboutUs.gif";
 import iconLogo from "../../assets/img/logo.png";
 import { Questions } from "./questions/Questions";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export const About = () => {
   let navigate = useNavigate();
+
+  useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
+  }, []);
 
   return (
     <div className={styles.about}>
