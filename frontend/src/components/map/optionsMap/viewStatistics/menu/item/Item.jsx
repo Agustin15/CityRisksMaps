@@ -51,7 +51,7 @@ export const Item = ({ crime, setShowViewStatistics, showViewStatistics }) => {
                 : ""
         }
       ></div>
-      {crime.category}
+      {crime.category}s
     </li>
   );
 };

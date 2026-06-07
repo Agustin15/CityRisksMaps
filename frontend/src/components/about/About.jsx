@@ -95,7 +95,7 @@ export const About = () => {
         <Questions />
 
         <p className={styles.author}>
-          © IndiceDelitosMontevideo 2025 | Desarrollado por{" "}
+          © IndiceDelitosMontevideo 2026 | Desarrollado por{" "}
           <a href="https://www.linkedin.com/in/agustin-miranda-953634239">
             Agustin Miranda
           </a>
