@@ -1,15 +1,23 @@
 import { connection } from "../config/connection.js";
 import { getCodeHttpError } from "../httpCodeErrors.js";
-import sql, { MAX } from "mssql";
+import sql, { MAX, Table } from "mssql";
 
 export class ZoneDAL {
   static async add(zone) {
     try {
       const request = new sql.Request(connection.pool);
+      const table = new Table("NeighborhoodsOfZoneTableType");
+
+      table.columns.add("idNeighborhood", sql.Int);
+
+      for (const neighborhood of zone.neighborhoos) {
+        table.rows.add(neighborhood.idNeighborhood);
+      }
 
       request.input("description", sql.VarChar(250), zone.description);
       request.input("coordinates", sql.VarChar(MAX), zone.coordinates);
       request.input("enable", sql.Bit, zone.enable);
+      request.input("neighborhoods", sql.TVP, table);
 
       await request.execute("AddZone");
     } catch (error) {

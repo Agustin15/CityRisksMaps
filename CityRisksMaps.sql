@@ -1545,12 +1545,20 @@ GO
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
 
-CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit AS
+GO
+
+CREATE TYPE NeighborhoodsOfZoneTableType AS TABLE(
+idNeighborhood INT
+)
+GO
+
+CREATE OR ALTER PROCEDURE AddZone @description VARCHAR(250),@coordinates NVARCHAR(MAX),@enable bit,
+@neighborhoods NeighborhoodsOfZoneTableType READONLY AS
 BEGIN 
 
 IF(@enable!=0 or @enable!=1)
 BEGIN
-RAISERROR('Habilitado debe ser cero o 1',16,1)
+RAISERROR('Habilitado debe ser verdadero o falso',16,1)
 RETURN 
 END
 
@@ -1560,6 +1568,8 @@ RAISERROR('Descripcion no puede estar vacia',16,1)
 RETURN 
 END
 
+BEGIN TRAN
+
 INSERT INTO Zones(description,coordinates,enable) VALUES(@description,@coordinates,@enable);
 IF(@@ERROR<>0)
 BEGIN
@@ -1567,7 +1577,15 @@ RAISERROR('Error inesperado al agregar zona',16,4)
 RETURN 
 END
 
-RETURN SCOPE_IDENTITY(); 
+INSERT INTO Zones_Neighborhoods(zone,neighborhood) SELECT SCOPE_IDENTITY(),idNeighborhood from @neighborhoods
+IF(@@ERROR<>0)
+BEGIN
+ROLLBACK TRAN
+RAISERROR('Error inesperado al agregar zona',16,4)
+RETURN 
+END
+
+COMMIT TRAN
 
 END
 
@@ -1603,7 +1621,7 @@ BEGIN
 
 IF(@enable!=0 or @enable!=1)
 BEGIN
-RAISERROR('Habilitado debe ser cero o 1',16,1)
+RAISERROR('Habilitado debe ser verdadero o falso',16,1)
 RETURN 
 END
 
@@ -1656,30 +1674,6 @@ GO
 
 ------------------------------------------------------------------------------------------------------------------
 --Zones_Neighborhoods PROCEDURES
-
-CREATE OR ALTER PROCEDURE AddZoneNeighborhood @idZone INT,@idNeighborhood INT AS
-BEGIN 
-
-IF NOT EXISTS(select * from Neighborhoods where idNeighborhood=@idNeighborhood)
-RETURN -1
-
-IF NOT EXISTS(select * from Zones where idZone=@idZone)
-RETURN -2
-
-IF EXISTS(select * from Zones_Neighborhoods where zone=@idZone and neighborhood=@idNeighborhood)
-RETURN -3
-
-INSERT INTO Zones_Neighborhoods VALUES (@idZone,@idNeighborhood);
-
-IF(@@ERROR<>0)
-BEGIN
-RAISERROR('Error inesperado al agregar zona de barrio',16,4)
-RETURN 
-END
-
-END
-
-GO
 
 CREATE OR ALTER PROCEDURE DeleteZoneNeighborhood @idZone INT,@idNeighborhood INT AS
 BEGIN 

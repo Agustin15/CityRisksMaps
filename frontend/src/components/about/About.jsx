@@ -1,6 +1,7 @@
 import styles from "./About.module.css";
 import iconAboutUs from "../../assets/img/aboutUs.gif";
 import iconLogo from "../../assets/img/logo.png";
+import backgroundAbout from "../../assets/img/backgroundAbout.png";
 import { Questions } from "./questions/Questions";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
@@ -13,7 +14,12 @@ export const About = () => {
   }, []);
 
   return (
-    <div className={styles.about}>
+    <div
+      style={{
+        backgroundImage: `url(${backgroundAbout})`
+      }}
+      className={styles.about}
+    >
       <nav className={styles.navbar}>
         <ul>
           <li>
