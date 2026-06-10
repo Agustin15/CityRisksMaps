@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear,
   getCategoryCrimeInNeighborhood,
   getIncreaseOfCrimeInYears,
   getNeighborhoodsCrimeByYear,
@@ -26,4 +27,9 @@ RoutesNeighborhoodCrime.get(
 RoutesNeighborhoodCrime.get(
   "/increaseOfCategoryCrimeInYears/:categoryCrime/",
   getIncreaseOfCrimeInYears
+);
+
+RoutesNeighborhoodCrime.get(
+  "/amountOfAnCrimeInNeighborhoodsByCurrentAndPastYear/:crime/:year/:offset",
+  getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear
 );

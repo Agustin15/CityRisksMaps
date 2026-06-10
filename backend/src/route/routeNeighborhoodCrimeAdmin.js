@@ -10,8 +10,8 @@ import {
   getIncreaseOfCrimeInYears,
   getIncreaseOfCrimeInNeighborhood,
   getAllYearsOfCrimes,
-  getAmountOfAnCrimeInNeighborhoodsByYear,
-  deleteById
+  deleteById,
+  getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear
 } from "../controller/neighborhoodCrime/neighborhoodCrimeController.js";
 import { verifyAuthToken } from "../controller/authentication.js";
 import { verifyAuthorization } from "../controller/authorization.js";
@@ -58,8 +58,8 @@ RoutesNeighborhoodCrimeAdmin.get(
 );
 
 RoutesNeighborhoodCrimeAdmin.get(
-  "/amountOfAnCrimeInNeighborhoodsByYear/:crime/:year/:offset",
-  getAmountOfAnCrimeInNeighborhoodsByYear
+  "/amountOfAnCrimeInNeighborhoodsByCurrentAndPastYear/:crime/:year/:offset",
+  getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear
 );
 
 RoutesNeighborhoodCrimeAdmin.post("/", verifyAuthorization, addThroughtTable);

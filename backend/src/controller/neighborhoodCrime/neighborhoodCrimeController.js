@@ -415,7 +415,7 @@ export const getAmountOfDifferentsCrimesInNeighborhoodInYear = async (
   }
 };
 
-export const getAmountOfAnCrimeInNeighborhoodsByYear = async (req, res) => {
+export const getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear = async (req, res) => {
   try {
     const year = req.params.year;
     const crime = req.params.crime;
@@ -425,24 +425,32 @@ export const getAmountOfAnCrimeInNeighborhoodsByYear = async (req, res) => {
 
     if (!crime) throw new Error("Debe ingresar un crimen para la busqueda");
 
-    if (offset == null)
-      throw new Error(
-        "Debe indicar desde que numero de barrio quiere obtener los datos"
-      );
+    if (!offset) throw new Error("Debe indicar offset para la busqueda");
 
-    const result =
-      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodsByYear(
+    const resultFirstYear =
+      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear(
         crime,
         year,
         offset
       );
 
-    if (!result || result.length == 0)
+    if (!resultFirstYear || resultFirstYear.length == 0)
       throw new Error(
         "No se encontraron registros de este crimen en este año en el sistema"
       );
 
-    return res.status(200).json(result);
+    const resultSecondYear =
+      await NeighborhoodCrimeService.getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear(
+        crime,
+        year - 1,
+        offset
+      );
+
+      
+    return res.status(200).json({
+      registersFirstYear: resultFirstYear,
+      registersSecondYear: resultSecondYear
+    });
   } catch (error) {
     return res
       .status(error.cause ? error.cause.code : 404)

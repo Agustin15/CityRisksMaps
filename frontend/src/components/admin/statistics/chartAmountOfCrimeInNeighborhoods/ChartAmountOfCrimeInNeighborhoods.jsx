@@ -28,7 +28,7 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
     setError("");
     try {
       const result = await loadData(
-        "/admin/neighborhoodCrime/amountOfAnCrimeInNeighborhoodsByYear/" +
+        "/admin/neighborhoodCrime/amountOfAnCrimeInNeighborhoodsByCurrentAndPastYear/" +
           crimeSelected +
           "/" +
           yearSelected +
@@ -67,10 +67,12 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
             setError={setError}
           />
           <select onChange={(event) => setOffset(event.target.value)}>
-            <option value={0}>0 a 15</option>
-            <option value={16}>16 a 31</option>
-            <option value={32}>32 a 47</option>
-              <option value={48}>48 a 62</option>
+            <option value={0}>0 a 10</option>
+            <option value={11}>11 a 21</option>
+            <option value={22}>22 a 32</option>
+            <option value={33}>33 a 43</option>
+            <option value={44}>44 a 54</option>
+            <option value={55}>55 a 62</option>
           </select>
         </div>
       </div>
@@ -89,7 +91,11 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
       )}
       {!loading && error.length == 0 && dataChart && (
         <CanvasJSChart
-          options={loadOptionsColumnChart(dataChart, crimeSelected)}
+          options={loadOptionsColumnChart(
+            dataChart,
+            crimeSelected,
+            yearSelected
+          )}
         ></CanvasJSChart>
       )}
     </div>

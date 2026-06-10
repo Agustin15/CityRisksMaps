@@ -40,7 +40,7 @@ export const Options = ({ user }) => {
 
             {option.submenu && option.submenu.allow && (
               <button className={styles.btnSubmenu}>
-                <label htmlFor="checkbox">
+                <label htmlFor="checkboxSubmenu">
                   <img
                     src={
                       option.paths.some(
@@ -51,7 +51,7 @@ export const Options = ({ user }) => {
                     }
                   ></img>
                 </label>
-                <input ref={checkbox} id="checkbox" type="checkbox"></input>
+                <input ref={checkbox} id="checkboxSubmenu" type="checkbox"></input>
               </button>
             )}
           </div>

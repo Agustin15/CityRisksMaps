@@ -3,9 +3,9 @@ import iconKill from "../../../assets/img/kill.png";
 import iconTheft from "../../../assets/img/theft.png";
 import iconMinimize from "../../../assets/img/minimize.png";
 import iconHoldup from "../../../assets/img/holdup.png";
+import { useState } from "react";
 import { Table } from "./table/Table";
 import { LoadCrimesInNeighborhoods } from "./loadCrimeDataNeighborhoods/LoadCrimeDataNeighborhoods";
-import { useState } from "react";
 import { ChartIncreaseOfCrime } from "./chartIncreaseOfCrime/ChartIncreaseOfCrime";
 
 export const CrimeNeighbordhoods = ({

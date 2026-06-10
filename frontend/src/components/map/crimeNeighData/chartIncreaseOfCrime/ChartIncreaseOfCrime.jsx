@@ -4,7 +4,7 @@ import iconNotData from "../../../../assets/img/notDataAlert.png";
 import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { useNeighborhoodsCrimes } from "../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useEffect, useState } from "react";
-import { getIncreaseOfCrime, loadOptionsColumnChart } from "./functions.js";
+import { getIncreaseOfCrime, loadOptionsLineChart } from "./functions.js";
 
 const CanvasChart = CanvasJSReact.CanvasJSChart;
 
@@ -61,7 +61,7 @@ export const ChartIncreaseOfCrime = ({ setShowChart }) => {
 
         {dataChart && (
           <CanvasChart
-            options={loadOptionsColumnChart(
+            options={loadOptionsLineChart(
               dataChart,
               crimeSelected,
               windowWidth

@@ -160,10 +160,10 @@ export class NeighborhoodCrimeService {
     }
   }
 
-  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year, offset) {
+  static async getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear(crime, year, offset) {
     try {
       const result =
-        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByYear(
+        await NeighborhoodCrimeDAL.getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear(
           crime,
           year,
           offset

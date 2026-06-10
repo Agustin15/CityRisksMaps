@@ -233,7 +233,7 @@ export class NeighborhoodCrimeDAL {
     }
   }
 
-  static async getAmountOfAnCrimeInNeighborhoodsByYear(crime, year, offset) {
+  static async getAmountOfAnCrimeInNeighborhoodsByCurrentAndPastYear(crime, year, offset) {
     try {
       const request = new sql.Request(connection.pool);
       request.input("crime", sql.VarChar(20), crime);

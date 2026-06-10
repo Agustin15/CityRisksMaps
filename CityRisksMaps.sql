@@ -1529,7 +1529,7 @@ GO
 CREATE OR ALTER PROCEDURE AllYearsOfCrimes AS 
 BEGIN 
 
-select DISTINCT year from Neighborhoods_Crimes ORDER BY year DESC;  
+select DISTINCT year from Neighborhoods_Crimes where year<YEAR(GETDATE()) ORDER BY year DESC;  
 END
 
 GO
@@ -1537,11 +1537,11 @@ GO
 CREATE OR ALTER PROCEDURE AmountOfAnCrimeInNeighborhoodsByYear @crime VARCHAR(20),@year INT,@offset INT AS 
 
 BEGIN 
-select N.name,NC.quantity as 'amount',year from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N ON NC.neighborhood=N.idNeighborhood 
-where NC.crime=@crime and NC.year=@year ORDER BY NC.quantity DESC OFFSET @offset ROWS FETCH NEXT 15 ROWS ONLY;
-
+select N.name,NC.quantity as amount,NC.increase,NC.year from Neighborhoods_Crimes NC INNER JOIN Neighborhoods N 
+ON N.idNeighborhood=NC.neighborhood where year=@year and crime=@crime ORDER BY N.name OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY 
 END
 GO
+
 ------------------------------------------------------------------------------------------------------------------
 --Zones PROCEDURES
 
