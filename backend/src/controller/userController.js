@@ -130,7 +130,7 @@ export const updateAuth2FA = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-  let transaction = null;
+ 
   try {
     if (!req.params.idUser) throw new Error("Usuario no indicado");
     const idUser = req.params.idUser;
@@ -139,16 +139,10 @@ export const deleteById = async (req, res) => {
     if (!userFound)
       throw new Error("No se encontro un usuario con este ID en el sistema");
 
-    transaction = new sql.Transaction(connection.pool);
-
     await UserService.deleteById(idUser);
-
-    await transaction.commit();
 
     return res.status(200).json(true);
   } catch (error) {
-    if (transaction) await transaction.rollback();
-
     return res
       .status(error.cause ? error.cause.code : 404)
       .json({ messageError: error.message });

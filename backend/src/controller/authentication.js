@@ -7,7 +7,7 @@ export const verifyAuthToken = (req, res, next) => {
       throw new Error("SECRET_KEY_TOKEN no declarada");
 
     if (!req.cookies.authenticationToken) {
-      const jwtTokenRefreshed = refreshAuthToken(res, req);
+      const jwtTokenRefreshed = refreshAuthToken(req, res);
 
       if (jwtTokenRefreshed) return next();
     }
@@ -30,7 +30,7 @@ export const verifyAuthToken = (req, res, next) => {
   }
 };
 
-const refreshAuthToken = (res, req) => {
+const refreshAuthToken = (req,res) => {
   try {
     if (!req.cookies.authenticationRefreshToken)
       throw new Error(

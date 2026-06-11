@@ -17,7 +17,7 @@ class Connection {
       this.propDatabase = process.env.DATABASE_NAME;
       this.propHost = process.env.DATABASE_LOCALHOST;
 
-      this.createConnetion();
+      this.#createConnetion();
     } catch (error) {
       throw error;
     }
@@ -58,7 +58,7 @@ class Connection {
     return this.#database;
   }
 
-  async createConnetion() {
+  async #createConnetion() {
     this.pool = new sql.ConnectionPool({
       user: this.propUser,
       password: this.propPassword,
