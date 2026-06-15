@@ -137,33 +137,22 @@ export const MapProvider = ({ children }) => {
   };
 
   const boundsMontevideo = async () => {
-    try {
-      const response = await fetch(LOCALHOST_FRONTEND + "/montevideo.json");
-      const result = await response.json();
+    let bounds = new google.maps.LatLngBounds();
 
-      if (!response.ok)
-        throw new Error(
-          "Hubo un error al cargar las coordenadas de la ciudad de Montevideo"
-        );
+    const coordinates = [
+      { lat: -34.79802331132657, lng: -56.429910548606806 },
+      { lat: -34.700543328543425, lng: -56.345557320152466 },
+      { lat: -34.66250391544962, lng: -56.16161286068436 },
+      { lat: -34.761817117609795, lng: -55.95192235995849 },
+      { lat: -34.865172511112036, lng: -55.97298863391291 },
+      { lat: -34.97521506887102, lng: -56.18232148442671 },
+      { lat: -34.943533158593134, lng: -56.327468652553065 },
+      { lat: -34.88312429821043, lng: -56.43322915194158 }
+    ];
 
-      if (result) {
-        const coordinatesMdveo = result.features[0].geometry.coordinates
-          .flat()
-          .flat();
+    coordinates.map((coordinate) => bounds.extend(coordinate));
 
-        let bounds = new google.maps.LatLngBounds();
-
-        if (coordinatesMdveo) {
-          coordinatesMdveo.forEach((coordinate) =>
-            bounds.extend({ lat: coordinate[1], lng: coordinate[0] })
-          );
-
-          return bounds;
-        }
-      }
-    } catch (error) {
-      alertSwalError("Ups, algo salio mal", error.message);
-    }
+    return bounds;
   };
 
   return (

@@ -71,7 +71,7 @@ export const loadOptionsLineChart = (dataChart, crime, windowWidth) => {
             "Denuncias {x}:{y}" +
             (item.increase !== null
               ? item.increase > 0
-                ? "<span style='color:red'> (+" + item.increase + ")</span>"
+                ? "<span style='color:red'> (+" + item.increase + "%)</span>"
                 : "<span style='color:green'> (" + item.increase + "%)</span>"
               : "")
         }))

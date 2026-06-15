@@ -25,7 +25,8 @@ export const LoadCrimesInNeighborhoods = ({
             delitos consumados, obtenidas de documentacion perteneciente al{" "}
             <a href="https://catalogodatos.gub.uy/dataset/ministerio-del-interior-delitos_denunciados_en_el_uruguay">
               Área de Estadística y Criminología Aplicada (AECA)
-            </a>.
+            </a>
+            .
           </p>
 
           <div className={styles.rowSearcher}>

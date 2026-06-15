@@ -11,33 +11,35 @@ export const InfoWindowNeighborhood = () => {
   return (
     <div ref={window} className={styles.infoWindowPolygon}>
       <div className={styles.row}>
-        <span>
-          {`${polygonSelected.data.name}
-            (Tasa de
-            ${polygonSelected.data.categoryCrime}s ${polygonSelected.data.yearCrime}
-             ${yearNotFinished(polygonSelected.data.yearCrime) ? " (en curso):" : ":"}
-             ${polygonSelected.data.rateLevel})
-            `}
-        </span>
+        <span>Barrio: {polygonSelected.data.name}</span>
 
         <div style={{ background: polygonSelected.data.rateColor }}></div>
       </div>
 
       <p>
-        Poblacion:{polygonSelected.data.population.toLocaleString()} habitantes
+        <a>
+          Tasa de {polygonSelected.data.categoryCrime}s
+          {" " + polygonSelected.data.yearCrime}
+          {yearNotFinished(polygonSelected.data.yearCrime)
+            ? " (en curso): "
+            : ": "}
+        </a>
+        {polygonSelected.data.rateLevel}
+      </p>
+      <p>
+        <a>Poblacion:</a>
+        {polygonSelected.data.population.toLocaleString()} habitantes
       </p>
 
       <p>
-        {`Denuncias de 
-          ${polygonSelected.data.categoryCrime}s: 
-          ${
-            polygonSelected.data.quantityCrime == null
-              ? "Sin Datos"
-              : polygonSelected.data.quantityCrime
-          }`}
+        <a>{`Denuncias de 
+          ${polygonSelected.data.categoryCrime}s:`}</a>
+        {polygonSelected.data.quantityCrime == null
+          ? "Sin Datos"
+          : polygonSelected.data.quantityCrime}
       </p>
       <p>
-        Tasa de denuncias cada 100.000 habitantes:
+        <a> Tasa de denuncias cada 100.000 habitantes:</a>
         {polygonSelected.data.rate}
       </p>
     </div>

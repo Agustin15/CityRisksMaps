@@ -81,7 +81,7 @@ export const setOptionsChart = (dataChart, categoryCrime) => {
                   ? neighborhoodCrime.increase > 0
                     ? "<span style='color:red'> (+" +
                       neighborhoodCrime.increase +
-                      ")</span>"
+                      "%)</span>"
                     : "<span style='color:green'> (" +
                       neighborhoodCrime.increase +
                       "%)</span>"

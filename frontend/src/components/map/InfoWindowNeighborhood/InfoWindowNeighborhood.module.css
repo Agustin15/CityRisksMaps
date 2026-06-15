@@ -8,8 +8,21 @@
     gap: 0.5rem;
     width: auto;
     height: auto;
-    background: rgba(17, 17, 17, 0.61);
+    background: rgba(80, 80, 80, 0.74);
     color: white;
+    border-radius: 5px;
+    animation-duration: 0.5s;
+    animation-name: show;
+    animation-fill-mode: forwards;
+}
+
+@keyframes show {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1.0);
+    }
 }
 
 .infoWindowPolygon .row {
@@ -34,24 +47,14 @@
 .infoWindowPolygon p {
     text-align: start;
     margin: 0;
+    padding: 0;
+}
+.infoWindowPolygon p a {
     font-weight: bold;
 }
 
-.infoWindowPolygon button {
-    width: 8rem;
-    height: 1.5rem;
-    color: white;
-    border-radius: 3px;
-    border: none;
-    background: none;
-    box-shadow: none;
-    font-family: 14px;
-    margin: auto;
-    margin-top: 0.5rem;
-    text-decoration: underline;
+@media (width<1200px) {
+    .infoWindowPolygon p {
+        width: 13rem;
+    }
 }
-
-.infoWindowPolygon button:hover {
-    color: rgb(0, 132, 255);
-}
-
