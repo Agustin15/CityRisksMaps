@@ -86,3 +86,89 @@
     height: 29px;
     margin-left: 1rem;
 }
+.header .displayMenu {
+    display: none;
+}
+
+@media (width<650px) {
+    .editProfile {
+        width: 100vw;
+        height: auto;
+    }
+
+    .body {
+        gap: 0.5rem;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .header h3 {
+        font-size: 19px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .header img {
+        width: 37px;
+        height: 37px;
+    }
+
+    .row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0;
+        width: 98%;
+        height: auto;
+    }
+
+    .row .headerDetails h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+        margin-left: 1rem;
+    }
+
+    .row .headerDetails img {
+        width: 29px;
+        height: 29px;
+        margin-left: 1rem;
+    }
+    .header .displayMenu {
+        display: flex;
+        background: none;
+        width: auto;
+        height: auto;
+        margin-left: 0.4rem;
+    }
+
+    .header .displayMenu img {
+        width: 21px;
+        height: 21px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .editProfile {
+        height: auto;
+    }
+
+    .body {
+        gap: 1rem;
+        width: 71vw;
+        height: auto;
+        margin-left: 29vw;
+    }
+    .row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        gap: 0;
+        width: 98%;
+        height: auto;
+    }
+}

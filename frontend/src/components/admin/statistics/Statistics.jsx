@@ -1,5 +1,6 @@
 import styles from "./Statistics.module.css";
 import iconStatistics from "../../../assets/img/iconStatistics.png";
+import iconMenuBackoffice from "../../../assets/img/menuBackoffice.png";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { useEffect, useState } from "react";
 import { MenuSide } from "../menuSide/MenuSide";
@@ -9,12 +10,15 @@ import { ChartIncreaseOfCrimeInNeighborhood } from "./chartIncreaseOfCrimeInNeig
 import { Helmet } from "react-helmet-async";
 import { ChartAmountDifferentCrimesInNeighborhood } from "./chartAmountDifferentCrimesInNeighborhood/ChartAmountDifferentCrimesInNeighborhood";
 import { ChartAmountOfCrimeInNeighborhoodsByYear } from "./chartAmountOfCrimeInNeighborhoods/ChartAmountOfCrimeInNeighborhoods";
+import { useMenuResponsive } from "../../../contexts/MenuResponsiveContext";
 
 export const Statistics = () => {
   const { user, loadingProfile, getProfile } = useAuth();
+  const { handleClick } = useMenuResponsive();
   const [selected, setSelected] = useState("IncreaseCategoryCrime");
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
     if (user) return;
     getProfile();
   }, []);
@@ -32,6 +36,9 @@ export const Statistics = () => {
               <div className={styles.row}>
                 <h3>Estadisticas</h3>
                 <img src={iconStatistics}></img>
+                <button onClick={handleClick} className={styles.displayMenu}>
+                  <img src={iconMenuBackoffice}></img>
+                </button>
               </div>
               <Menu setSelected={setSelected} selected={selected} />
             </div>

@@ -25,12 +25,15 @@ export const List = ({ registers }) => {
             </div>
             <div className={styles.data}>
               <div className={styles.primaryKey}>
-                <img src={iconPK} />
-                <b>Identificador de delito:</b>
+                <div className={styles.title}>
+                  <img src={iconPK} />
+                  <b>Identificador de delito:</b>
+                </div>
+
                 <ul>
                   <li>
                     <b>Barrio:</b>
-                    {register.neighborhood}
+                    {register.nameNeighborhood}
                   </li>
                   <li>
                     <b>Delito:</b>
@@ -44,13 +47,17 @@ export const List = ({ registers }) => {
               </div>
 
               <div className={styles.oldValues}>
-                <img src={iconDelete} />
-                <b>Valores antiguos:</b>
+                <div className={styles.title}>
+                  <img src={iconDelete} />
+                  <b>Valores antiguos:</b>
+                </div>
                 <p>{register.oldValues}</p>
               </div>
               <div className={styles.newValues}>
-                <img src={iconInsert} />
-                <b>Valores nuevos:</b>
+                <div className={styles.title}>
+                  <img src={iconInsert} />
+                  <b>Valores nuevos:</b>
+                </div>
                 <p>{register.newValues}</p>
               </div>
             </div>

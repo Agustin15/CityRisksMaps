@@ -9,7 +9,7 @@ export const RepeatPassword = () => {
   const { values, setValues, errorForm } = useActivateUser();
 
   return (
-    <div className={styles.columnInput}>
+    <div className={styles.columnInputPassword}>
       <label>Repetir contraseña:</label>
 
       <input

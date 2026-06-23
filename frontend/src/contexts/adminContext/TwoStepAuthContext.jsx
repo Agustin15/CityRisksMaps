@@ -90,9 +90,9 @@ export const TwoStepAuthProvider = ({ children }) => {
 
       const result = await response.json();
       if (!response.ok) throw new Error(result.messageError);
+      return result;
     } catch (error) {
-      console.log(error.message || "Error en la solicitud");
-      throw error;
+      throw error || "Error en la solicitud";
     }
   };
 

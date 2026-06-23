@@ -2,7 +2,7 @@ import styles from "./TwoFA.module.css";
 import logo from "../../../assets/img/admin.png";
 import iconForbidden from "../../../assets/img/forbidden.png";
 import { useParams } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Keyboard } from "./keyboard/Keyboard";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
 import { useTwoStepAuth } from "../../../contexts/adminContext/TwoStepAuthContext";
@@ -11,6 +11,7 @@ import { Form } from "./form/Form";
 
 export const TwoFA = () => {
   const params = useParams();
+  const [email, setEmail] = useState(null);
 
   const {
     handleClick,
@@ -22,13 +23,16 @@ export const TwoFA = () => {
   } = useTwoStepAuth();
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
+
     setLoadingValidation(true);
     loadValidation();
   }, []);
 
   const loadValidation = async () => {
     try {
-      await validateTwo2FAToken(params.token);
+      const email = await validateTwo2FAToken(params.token);
+      setEmail(email);
     } catch (error) {
       setErrorAuth(error.message);
     } finally {
@@ -54,9 +58,7 @@ export const TwoFA = () => {
             </div>
 
             {errorAuth.length == 0 ? (
-              <p>
-                Ingresa el codigo que le enviamos al correo agus20m05@gmail.com
-              </p>
+              <p>Ingresa el codigo que le enviamos al correo {email}</p>
             ) : (
               <p className={styles.errorAuth}>
                 {errorAuth}

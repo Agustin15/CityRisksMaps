@@ -2,6 +2,7 @@ import CanvasJSReact from "@canvasjs/react-charts";
 import styles from "./ChartIncreaseCategoryCrime.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
 import { useEffect, useState } from "react";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { loadData } from "../functions.js";
 import { loadOptionsLineChart } from "./functions.js";
 import { FilterOfCrime } from "../filterOfCrime/FilterOfCrime.jsx";
@@ -14,6 +15,7 @@ export const ChartIncreaseCategoryCrime = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { windowWidth } = useWindowResize();
 
   useEffect(() => {
     if (!crimeSelected) return;
@@ -64,7 +66,13 @@ export const ChartIncreaseCategoryCrime = () => {
       )}
       {!loading && error.length == 0 && dataChart && (
         <CanvasJSChart
-          options={loadOptionsLineChart(dataChart, crimeSelected, 10, 4000)}
+          options={loadOptionsLineChart(
+            dataChart,
+            crimeSelected,
+            10,
+            4000,
+            windowWidth
+          )}
         ></CanvasJSChart>
       )}
     </div>

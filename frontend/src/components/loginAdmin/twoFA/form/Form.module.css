@@ -16,6 +16,7 @@
     width: 99%;
     margin: 0;
     padding: 0;
+    color: red;
 }
 
 .form .columnInput {
@@ -54,4 +55,19 @@
     text-align: center;
     margin-top: 1.5rem;
     font-size: 17px;
+}
+
+@media (width>650px) and (width<1200px) {
+    .form .msjError {
+        position: static;
+        font-size: 14px;
+        width: 99%;
+        color: red;
+    }
+
+    .form .columnInput input {
+        font-size: 21px;
+        width: 89%;
+        height: 2.7rem;
+    }
 }

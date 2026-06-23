@@ -15,6 +15,8 @@ export const EmailConfirmed = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY="scroll";
+
     const fetchConfirmEmail = async () => {
       setLoading(true);
       setError(null);

@@ -59,6 +59,7 @@
     align-items: start;
     gap: 0.8rem;
     margin: 0;
+    padding: 0 0 0 0.8rem;
 }
 .information li {
     display: flex;
@@ -70,4 +71,44 @@
 
 .information li span {
     font-weight: bold;
+}
+
+@media (width<650px) {
+    .details {
+        width: 95%;
+    }
+
+    .details .header h3 {
+        font-size: 15px;
+        width: 65%;
+    }
+
+    .details .header img {
+        width: 22px;
+        height: 22px;
+        margin-left: 1rem;
+    }
+    .header button {
+        font-size: 13px;
+    }
+
+    .information {
+        width: 89%;
+        align-items: start;
+        padding: 0 0 0 0.8rem;
+    }
+    .information li {
+        width: 99%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .details {
+        gap: 1rem;
+        width: 75%;
+        height: auto;
+    }
+    .details .header h3 {
+        font-size: 16px;
+    }
 }

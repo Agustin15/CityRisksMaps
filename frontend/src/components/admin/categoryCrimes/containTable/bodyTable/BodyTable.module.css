@@ -43,3 +43,32 @@ tbody .options .edit {
 tbody .options .details {
     background: rgb(10, 178, 190);
 }
+
+@media (width<650px) {
+    tbody .options button {
+        width: 2.4rem;
+        height: 2.2rem;
+        border-radius: 3px;
+    }
+
+    tbody .options button img {
+        width: 21px;
+        height: 21px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    tbody .options {
+        gap: 0.5rem;
+    }
+    tbody .options button {
+        width: 2.5rem;
+        height: 2.1rem;
+        border-radius: 3px;
+    }
+
+    tbody .options button img {
+        width: 20px;
+        height: 20px;
+    }
+}

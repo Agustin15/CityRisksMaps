@@ -3,9 +3,11 @@ import styles from "./ChartAmountOfCrimeInNeighborhoods.module.css";
 import iconNotData from "../../../../assets/img/notDataAlert.png";
 import { loadOptionsColumnChart } from "./function.js";
 import { useState, useEffect } from "react";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 import { FilterOfYears } from "../filterOfYears/FilterOfYears";
 import { FilterOfCrime } from "../filterOfCrime/FilterOfCrime";
 import { loadData } from "../functions";
+
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -18,6 +20,7 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { windowWidth } = useWindowResize();
 
   useEffect(() => {
     if (!crimeSelected || !yearSelected) return;
@@ -94,7 +97,8 @@ export const ChartAmountOfCrimeInNeighborhoodsByYear = () => {
           options={loadOptionsColumnChart(
             dataChart,
             crimeSelected,
-            yearSelected
+            yearSelected,
+            windowWidth
           )}
         ></CanvasJSChart>
       )}

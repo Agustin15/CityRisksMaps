@@ -1,3 +1,11 @@
+.containOptions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 100%;
+}
+
 .options {
     padding: 0.3rem 0 0 0;
     margin: 0;
@@ -219,4 +227,15 @@
     background: url("../../../../assets/img/usersSelected.png");
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+@media (width>650px) and (width<1200px) {
+    .containOptions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 55vh;
+        overflow-y: scroll;
+        width: 100%;
+    }
 }

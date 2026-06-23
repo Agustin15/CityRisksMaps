@@ -18,3 +18,32 @@
     height: 100vh;
     background-repeat: no-repeat;
 }
+
+@media (width<650px) {
+    .body {
+        width: 100%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .departments {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        background: rgb(247, 247, 247);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .body {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 71vw;
+        margin-left: 29vw;
+        height: 100vh;
+        background-repeat: no-repeat;
+    }
+}

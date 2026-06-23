@@ -40,3 +40,15 @@
 .options .clean:hover {
     background-color: rgb(194, 45, 45);
 }
+
+@media (width<650px) {
+    .options {
+        width: 99%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .options {
+        width: 90%;
+    }
+}

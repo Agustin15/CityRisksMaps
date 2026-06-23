@@ -6,7 +6,7 @@ export const Form = ({ handleSubmit, loading, values, setValues, errors }) => {
   const [neighborhoods, setNeighborhoods] = useState();
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)}>
+    <form className={styles.formEdit} onSubmit={(event) => handleSubmit(event)}>
       <LoadNeighborhoods
         errors={errors}
         values={values}

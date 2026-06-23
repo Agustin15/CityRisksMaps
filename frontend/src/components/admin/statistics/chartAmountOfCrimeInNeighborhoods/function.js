@@ -1,6 +1,11 @@
 import CanvasJSReact from "@canvasjs/react-charts";
 
-export const loadOptionsColumnChart = (dataChart, crime, yearSelected) => {
+export const loadOptionsColumnChart = (
+  dataChart,
+  crime,
+  yearSelected,
+  windowWidth
+) => {
   CanvasJSReact.CanvasJS.addCultureInfo("es", {
     decimalSeparator: ",",
     digitGroupSeparator: "."
@@ -10,15 +15,15 @@ export const loadOptionsColumnChart = (dataChart, crime, yearSelected) => {
     culture: "es",
     backgroundColor: "white",
     animationEnabled: true,
-    dataPointWidth: 35,
+    dataPointWidth: windowWidth < 650 ? 11 : windowWidth < 1200 ? 18 : 35,
     theme: "blue",
 
     axisX: {
       title: "Barrios",
-      titleFontSize: 19,
+      titleFontSize: windowWidth < 690 ? 16 : 19,
       titleFontWeight: "bold",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 13,
+      labelFontSize: windowWidth < 690 ? 12 : 13,
       interval: 1,
       gridColor: "#d6d6d6"
     },
@@ -26,10 +31,10 @@ export const loadOptionsColumnChart = (dataChart, crime, yearSelected) => {
       title: "Cantidad de denuncias",
       titleFontWeight: "bold",
       labelFontColor: "#030303",
-      titleFontSize: 18,
+      titleFontSize: windowWidth < 690 ? 16 : 18,
       lineColor: "#383838",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 15,
+      labelFontSize: windowWidth < 690 ? 13 : 15,
       tickColor: "gray",
       gridColor: "#d6d6d6",
       interval: crime == "Homicidio" ? 3 : crime == "Hurto" ? 200 : 50

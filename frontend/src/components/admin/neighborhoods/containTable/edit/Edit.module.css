@@ -115,3 +115,183 @@
     background: rgb(35, 157, 187);
     cursor: auto;
 }
+
+@media (width<650px) {
+    .containEdit {
+        width: 82%;
+    }
+    .header {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        height: 3rem;
+        gap: 0.5rem;
+        background: rgb(31, 44, 59);
+        position: relative;
+        color: white;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .header img {
+        width: 27px;
+        height: 27px;
+        margin-left: 1rem;
+    }
+    .header .close {
+        font-size: 13px;
+    }
+    .header .close:hover {
+        opacity: 100%;
+    }
+
+    .containEdit form input {
+        height: 2.5rem;
+        font-size: 14px;
+    }
+
+    .containEdit form label {
+        font-weight: bold;
+        font-size: 15px;
+        width: 16rem;
+        text-align: start;
+    }
+    .containEdit form p {
+        color: red;
+        position: absolute;
+        top: 3.8rem;
+        font-size: 12px;
+    }
+
+    .containEdit form .save,
+    .containEdit form .saveDisabled {
+        color: white;
+        margin: 1rem 0 0 0;
+        font-size: 14px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containEdit {
+        width: 52%;
+        height: auto;
+        padding-bottom: 1rem;
+        background: white;
+        border-radius: 4px;
+        font-family: Arial, Helvetica, sans-serif;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .header {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        height: 3rem;
+        gap: 0.5rem;
+        background: rgb(31, 44, 59);
+        position: relative;
+        color: white;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .header img {
+        width: 29px;
+        height: 29px;
+        margin-left: 1rem;
+    }
+    .header .close {
+        font-size: 14px;
+        background: none;
+        box-shadow: none;
+        color: white;
+        opacity: 75%;
+        font-weight: bold;
+        position: absolute;
+        width: auto;
+        height: auto;
+        top: 0.5rem;
+        right: 0.2rem;
+        margin: 0;
+    }
+    .header .close:hover {
+        opacity: 100%;
+    }
+    .containEdit form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.8rem;
+        margin-top: 1rem;
+    }
+
+    .containEdit form .columnInput {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+        position: relative;
+    }
+
+    .containEdit form input {
+        height: 2.1rem;
+        border: 1px solid rgb(207, 207, 207);
+        width: 15.5rem;
+        padding-left: 0.5rem;
+        border-radius: 3px;
+        font-size: 15px;
+        outline: none;
+    }
+
+    .containEdit form label {
+        font-weight: bold;
+        font-size: 15px;
+        width: 16rem;
+        text-align: start;
+    }
+    .containEdit form p {
+        color: red;
+        position: absolute;
+        top: 3.3rem;
+        font-size: 13px;
+    }
+
+    .containEdit form .save,
+    .containEdit form .saveDisabled {
+        background: rgb(35, 157, 187);
+        border-radius: 5px;
+        box-shadow: none;
+        width: 16rem;
+        height: 2rem;
+        color: white;
+        margin: 1rem 0 0 0;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .containEdit form .saveDisabled {
+        opacity: 84%;
+        cursor: auto;
+    }
+
+    .containAdd form .save:hover {
+        background: rgb(25, 119, 143);
+    }
+
+    .containAdd form .saveDisabled:hover {
+        background: rgb(35, 157, 187);
+        cursor: auto;
+    }
+}

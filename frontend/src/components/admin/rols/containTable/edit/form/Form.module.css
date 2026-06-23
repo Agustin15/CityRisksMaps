@@ -1,4 +1,4 @@
-form {
+.formEdit {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,7 +8,7 @@ form {
     width: 100%;
 }
 
-form {
+.formEdit {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,7 +16,7 @@ form {
     margin-top: 1rem;
 }
 
-form .columnInput {
+.formEdit .columnInput {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -24,7 +24,7 @@ form .columnInput {
     position: relative;
 }
 
-form input {
+.formEdit input {
     height: 2.1rem;
     width: 15.5rem;
     padding-left: 0.5rem;
@@ -34,21 +34,21 @@ form input {
     outline: none;
 }
 
-form label {
+.formEdit label {
     font-weight: bold;
     font-size: 15px;
     width: 16rem;
     text-align: start;
 }
-form p {
+.formEdit p {
     color: red;
     position: absolute;
     top: 3rem;
     font-size: 14px;
 }
 
-form .save,
-form .saveDisabled {
+.formEdit .save,
+.formEdit .saveDisabled {
     background: rgb(35, 157, 187);
     border-radius: 5px;
     box-shadow: none;
@@ -60,15 +60,29 @@ form .saveDisabled {
     font-weight: bold;
     cursor: pointer;
 }
-form .saveDisabled {
+.formEdit .saveDisabled {
     opacity: 84%;
     cursor: auto;
 }
-form .save:hover {
+.formEdit .save:hover {
     background: rgb(25, 119, 143);
 }
 
-form .saveDisabled:hover {
+.formEdit .saveDisabled:hover {
     background: rgb(35, 157, 187);
     cursor: auto;
+}
+
+@media (width<650px) {
+    .formEdit input {
+        height: 2.4rem;
+    }
+
+    .formEdit p {
+        color: red;
+        position: absolute;
+        top: 3.6rem;
+        font-size: 12px;
+    }
+
 }

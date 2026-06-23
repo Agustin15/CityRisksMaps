@@ -108,3 +108,60 @@
         transform: rotate(360deg);
     }
 }
+
+@media (width<650px) {
+    .containDetails {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 99%;
+        margin: 2.5rem 0 0 0;
+        border-top: 1px solid rgb(224, 224, 224);
+        outline: none;
+    }
+
+    .avatar {
+        width: 100%;
+        gap: 0.5rem;
+        padding-top: 0.8rem;
+    }
+    .avatar .avatarImg {
+        font-size: 41px;
+        width: 7.2rem;
+        height: 7.2rem;
+    }
+
+    .avatarImg img {
+        width: 99%;
+        height: 99%;
+        border-radius: 100%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containDetails {
+        width: 99%;
+        margin: 4rem 0 0 0;
+        border-top: 1px solid rgb(224, 224, 224);
+    }
+
+    .avatar .containTable {
+        width: 85%;
+    }
+    .avatar {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        gap: 0.5rem;
+        padding-top: 0.8rem;
+    }
+
+    .avatar .avatarImg {
+        font-size: 48px;
+        width: 8rem;
+        height: 8rem;
+    }
+}

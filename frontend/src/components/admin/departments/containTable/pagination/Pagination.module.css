@@ -29,3 +29,11 @@
 .pagination ul li .disabled {
     box-shadow: none;
 }
+
+@media (width<650px) {
+    .pagination ul li button {
+        width: 2rem;
+        height: 1.9rem;
+        font-size: 15px;
+    }
+}

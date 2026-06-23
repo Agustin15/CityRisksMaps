@@ -66,3 +66,31 @@
 .containTable .pagination ul li .disabled {
     box-shadow: none;
 }
+
+@media (width<650px) {
+    .containTable {
+        margin-top: 0.3rem;
+    }
+
+    .containTable table {
+        height: auto;
+        width: 210%;
+    }
+    .containTable table thead th {
+        font-size: 13px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containTable {
+        width: 99%;
+        height: 79vh;
+    }
+    .containTable table {
+        height: auto;
+        width: 120%;
+        border-collapse: collapse;
+        font-size: 13px;
+        table-layout: fixed;
+    }
+}

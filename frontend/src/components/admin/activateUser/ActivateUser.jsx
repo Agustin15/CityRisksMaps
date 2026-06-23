@@ -21,6 +21,7 @@ export const ActivateUser = () => {
   } = useActivateUser();
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
     if (params.token) {
       fetchValidateToken(params.token);
     }

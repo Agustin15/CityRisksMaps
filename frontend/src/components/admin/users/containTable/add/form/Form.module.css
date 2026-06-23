@@ -1,4 +1,4 @@
-form {
+.containAdd {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@ form {
     margin-top: 1rem;
 }
 
-form .columnInput {
+.containAdd .columnInput {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -14,7 +14,7 @@ form .columnInput {
     position: relative;
 }
 
-form input {
+.containAdd input {
     height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
@@ -24,24 +24,24 @@ form input {
     outline: none;
 }
 
-form label {
+.containAdd label {
     font-weight: bold;
     font-size: 15px;
     width: 16rem;
     text-align: start;
 }
-form p {
+.containAdd p {
     color: red;
     position: absolute;
     top: 3.2rem;
     font-size: 13px;
 }
 
-form span {
+.containAdd span {
     font-size: 17px;
 }
 
-form .columnInput select {
+.containAdd .columnInput select {
     width: 16.5rem;
     height: 2.3rem;
     border-radius: 3px;
@@ -49,4 +49,22 @@ form .columnInput select {
     background: linear-gradient(rgb(236, 236, 236), rgb(219, 219, 219));
     font-size: 15px;
     outline: none;
+}
+
+@media (width<650px) {
+    .containAdd input {
+        height: 2.5rem;
+    }
+
+    .containAdd p {
+        color: red;
+        position: absolute;
+        top: 3.8rem;
+        font-size: 12px;
+    }
+
+    .containAdd .columnInput select {
+        width: 16.5rem;
+        height: 2.8rem;
+    }
 }

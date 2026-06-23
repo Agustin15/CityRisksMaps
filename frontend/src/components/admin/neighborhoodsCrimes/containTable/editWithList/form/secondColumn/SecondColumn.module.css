@@ -21,12 +21,20 @@
     text-align: start;
 }
 
+.secondColumn .columnInput input {
+    width: 99%;
+    height: 2rem;
+    outline: none;
+    border-radius: 0;
+}
+
 .secondColumn .columnInput p {
     position: absolute;
     top: 3.3rem;
     width: 16rem;
     font-size: 12px;
     text-align: start;
+    color: red;
 }
 
 .secondColumn select {
@@ -45,6 +53,7 @@
     justify-content: center;
     align-items: start;
     gap: 0.5rem;
+    font-size: 12px;
 }
 
 .secondColumn .info img {
@@ -73,4 +82,44 @@
 
 .secondColumn .btnSearch:hover {
     background: rgb(30, 86, 170);
+}
+
+@media (width<650px) {
+    .secondColumn {
+        width: 95%;
+    }
+
+    .secondColumn .columnInput {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+        position: relative;
+    }
+
+    .secondColumn .columnInput label {
+        width: 16rem;
+        font-size: 14px;
+        text-align: start;
+    }
+
+    .secondColumn .columnInput input {
+        width: 99%;
+        height: 2.3rem;
+        outline: none;
+        border-radius: 0;
+    }
+
+    .secondColumn .columnInput p {
+        color: red;
+    }
+
+    .secondColumn .info {
+        width: 99%;
+        font-size: 14px;
+    }
+
+    .secondColumn .btnSearch {
+        font-size: 14px;
+    }
 }

@@ -85,3 +85,51 @@
         transform: rotate(360deg);
     }
 }
+
+@media (width<650px) {
+    .containChart {
+        width: 92%;
+        height: 92%;
+        margin: 0;
+    }
+
+    .containChart .header h3 {
+        text-align: center;
+        font-size: 16px;
+        margin: 0.3rem 0 0 0;
+        width: 75%;
+    }
+
+    .containLoader,
+    .containError {
+        height: 65%;
+        gap: 0.5rem;
+    }
+
+    .containError img {
+        width: 75px;
+        height: 75px;
+        opacity: 75%;
+    }
+
+    .containLoader h3,
+    .containError h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+    }
+    .containError h3 {
+        margin: -1rem 0 0 0;
+        padding: 0;
+        font-size: 16px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containChart .header h3 {
+        text-align: center;
+        font-size: 16px;
+        margin: 0.3rem 0 0 0;
+        width: 75%;
+    }
+}

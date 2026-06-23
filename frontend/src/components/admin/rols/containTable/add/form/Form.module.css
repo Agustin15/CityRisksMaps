@@ -1,4 +1,4 @@
-form {
+.formAdd {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@ form {
     margin-top: 1rem;
 }
 
-form .columnInput {
+.formAdd .columnInput {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -14,7 +14,7 @@ form .columnInput {
     position: relative;
 }
 
-form input {
+.formAdd input {
     height: 2.1rem;
     width: 16rem;
     padding-left: 0.5rem;
@@ -24,20 +24,20 @@ form input {
     outline: none;
 }
 
-form label {
+.formAdd label {
     font-weight: bold;
     font-size: 15px;
     width: 16rem;
     text-align: start;
 }
-form p {
+.formAdd p {
     color: red;
     position: absolute;
     top: 3rem;
     font-size: 14px;
 }
 
-form .add {
+.formAdd .add {
     background: rgb(34, 207, 63);
     border-radius: 5px;
     box-shadow: none;
@@ -48,6 +48,28 @@ form .add {
     font-size: 15px;
     font-weight: bold;
 }
-form .add:hover {
+.formAdd .add:hover {
     background: rgb(30, 184, 55);
+}
+
+@media (width<650px) {
+    .formAdd input {
+        height: 2.5rem;
+    }
+
+    .formAdd p {
+        color: red;
+        position: absolute;
+        top: 3.8rem;
+        font-size: 12px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .formAdd p {
+        color: red;
+        position: absolute;
+        top: 3.3rem;
+        font-size: 13px;
+    }
 }

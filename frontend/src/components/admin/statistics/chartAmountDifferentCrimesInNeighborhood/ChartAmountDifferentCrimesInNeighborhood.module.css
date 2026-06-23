@@ -85,3 +85,16 @@
         transform: rotate(360deg);
     }
 }
+
+@media (width<650px) {
+    .containChart .header h3 {
+        text-align: center;
+        font-size: 15px;
+    }
+}
+@media (width>650px) and (width<1200px) {
+    .containChart .header h3 {
+        text-align: center;
+        font-size: 16px;
+    }
+}

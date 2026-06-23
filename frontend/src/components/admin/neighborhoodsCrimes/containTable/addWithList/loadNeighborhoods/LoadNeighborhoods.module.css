@@ -73,3 +73,29 @@
     height: 1rem;
     cursor: pointer;
 }
+
+@media (width<650px) {
+    .loadNeighborhoods {
+        height: 34vh;
+    }
+
+    .loadNeighborhoods p {
+        font-size: 16px;
+        color: rgb(37, 37, 54);
+    }
+
+    .loadNeighborhoods table td input {
+        border: 1px solid rgb(211, 211, 211);
+        width: 4.4rem;
+        height: 1.9rem;
+        font-size: 14px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .loadNeighborhoods {
+        height: 19rem;
+        gap: 1rem;
+        width: 100%;
+    }
+}

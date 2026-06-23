@@ -10,7 +10,7 @@ export const getListOptions = (user) => {
     },
     {
       title: "Barrios",
-      paths: ["/admin/barrios", "/admin/barrios/departamento/:nombre"],
+      paths: ["/admin/barrios", "admin/barrios/departamento/:nombre"],
       divStyle: styles.iconNeighborhoods,
       allow: true
     },

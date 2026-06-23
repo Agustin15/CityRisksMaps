@@ -8,6 +8,7 @@ import { Modal } from "../modal/Modal";
 import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
+import { MenuResponsiveProvider } from "../../../contexts/MenuResponsiveContext";
 
 export const CategoryCrimes = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -22,24 +23,26 @@ export const CategoryCrimes = () => {
   return (
     <>
       {user && !loadingProfile && (
-        <div className={styles.categoryCrimes}>
-          <Helmet>
-            <title>Administracion-Categoria de crimenes</title>
-            <meta name="robots" content="noindex"></meta>
-          </Helmet>
-          <MenuSide />
-          <div className={styles.body}>
-            <Header title={"Categorias de delitos"} setAddForm={setAddForm} />
-            {addForm &&
-              createPortal(
-                <Modal>
-                  <Add setAddForm={setAddForm} />
-                </Modal>,
-                document.body
-              )}
-            <ContainTable />
+        <MenuResponsiveProvider>
+          <div className={styles.categoryCrimes}>
+            <Helmet>
+              <title>Administracion-Categoria de crimenes</title>
+              <meta name="robots" content="noindex"></meta>
+            </Helmet>
+            <MenuSide />
+            <div className={styles.body}>
+              <Header title={"Categorias de delitos"} setAddForm={setAddForm} />
+              {addForm &&
+                createPortal(
+                  <Modal>
+                    <Add setAddForm={setAddForm} />
+                  </Modal>,
+                  document.body
+                )}
+              <ContainTable />
+            </div>
           </div>
-        </div>
+        </MenuResponsiveProvider>
       )}
     </>
   );

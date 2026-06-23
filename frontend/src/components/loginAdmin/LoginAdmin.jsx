@@ -10,6 +10,7 @@ export const LoginAdmin = () => {
   const [allowAccess, setAllowAccess] = useState(false);
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
     fetchVerifyAllowToAccess(setLoading, setAllowAccess);
   }, []);
 

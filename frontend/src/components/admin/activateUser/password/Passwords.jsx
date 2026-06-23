@@ -25,7 +25,7 @@ export const Passwords = () => {
 
   return (
     <>
-      <div className={styles.columnInput}>
+      <div className={styles.columnInputPassword}>
         <label>Contraseña:</label>
         <input
           autoComplete="off"

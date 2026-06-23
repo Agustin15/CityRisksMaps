@@ -6,10 +6,13 @@ import iconLogout from "../../../assets/img/logout.png";
 import { alertSwalErrorAdmin } from "../../sweetAlert/sweetAlert.js";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../contexts/adminContext/AuthContext";
+import { useMenuResponsive } from "../../../contexts/MenuResponsiveContext.jsx";
 import { Options } from "./options/Options";
 
 export const MenuSide = () => {
   const { setUser, user } = useAuth();
+  const { classname, handleClick } = useMenuResponsive();
+
   let navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -35,7 +38,7 @@ export const MenuSide = () => {
   };
 
   return (
-    <nav className={styles.menu}>
+    <nav className={classname}>
       <div className={styles.contentMenu}>
         <div className={styles.title}>
           <div className={styles.background}>
@@ -43,6 +46,10 @@ export const MenuSide = () => {
           </div>
           <h3>IndiceDelitosMdveo</h3>
         </div>
+
+        <button onClick={handleClick} className={styles.btnHideMenu}>
+          <img src={iconSubmenu}></img>
+        </button>
 
         <Options user={user} />
 
@@ -57,6 +64,7 @@ export const MenuSide = () => {
                 {user.name + " " + user.lastname}
               </a>
             </div>
+            
             <label htmlFor="checkboxLogout">
               <img src={iconSubmenu}></img>
             </label>

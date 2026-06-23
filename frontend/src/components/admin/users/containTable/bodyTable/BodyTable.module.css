@@ -50,3 +50,23 @@ tbody .options .detailsDisabled {
     cursor: auto;
     background: rgb(17, 122, 129);
 }
+
+@media (width<650px) {
+    tbody .options {
+        gap: 0.8rem;
+    }
+    tbody .options button {
+        width: 2.5rem;
+        height: 2.3rem;
+    }
+
+    tbody .options button img {
+        width: 20px;
+        height: 20px;
+    }
+    tbody .options .details img,
+    tbody .options .detailsDisabled img {
+        width: 21px;
+        height: 21px;
+    }
+}

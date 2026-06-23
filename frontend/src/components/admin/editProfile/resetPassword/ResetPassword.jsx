@@ -1,7 +1,7 @@
 import styles from "./ResetPassword.module.css";
 import iconChangePassword from "../../../../assets/img/resetPassword.png";
 import { NewPassword } from "./newPassword/NewPassword";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../../contexts/adminContext/AuthContext.jsx";
 import {
   arrayRegex,
@@ -25,6 +25,7 @@ export const ResetPassword = ({ setChangePassword }) => {
   const { setUser, user } = useAuth();
 
   const [regex, setRegex] = useState(arrayRegex);
+
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
 

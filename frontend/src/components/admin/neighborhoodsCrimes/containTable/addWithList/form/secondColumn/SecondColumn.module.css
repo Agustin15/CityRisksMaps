@@ -16,15 +16,25 @@
     position: relative;
 }
 
+.secondColumn .columnInput input {
+    height: 2.2rem;
+    width: 99%;
+    outline: none;
+    border-radius: 3px;
+}
+
 .secondColumn .columnInput label {
     width: 16rem;
     text-align: start;
 }
 
 .secondColumn .columnInput p {
+    font-size: 12px;
     width: 16rem;
     text-align: start;
     position: absolute;
+    top: 3.6rem;
+    color: rgb(223, 3, 3);
 }
 
 .secondColumn select {
@@ -44,6 +54,7 @@
     justify-content: center;
     align-items: start;
     gap: 0.5rem;
+    font-size: 12px;
 }
 
 .secondColumn .info img {
@@ -55,4 +66,43 @@
     margin: 0;
     position: static;
     color: black;
+}
+
+@media (width<650px) {
+    .secondColumn {
+        width: 99%;
+        gap: 1.5rem;
+    }
+
+    .secondColumn .columnInput input {
+        height: 2.3rem;
+        width: 99%;
+        outline: none;
+        border-radius: 3px;
+    }
+
+    .secondColumn .columnInput label {
+        width: 16rem;
+        text-align: start;
+        font-size: 14px;
+    }
+
+    .secondColumn .columnInput p {
+        width: 16rem;
+        text-align: start;
+        position: absolute;
+        font-size: 12px;
+        top: 3.4rem;
+        color: red;
+    }
+
+    .secondColumn .info {
+        width: 97%;
+        font-size: 13px;
+    }
+
+    .secondColumn .info img {
+        width: 31px;
+        height: 31px;
+    }
 }

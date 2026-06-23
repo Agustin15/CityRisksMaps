@@ -48,7 +48,10 @@ export const Form = ({
   }, []);
 
   return (
-    <form onSubmit={(event) => handleSubmit(event)}>
+    <form
+      className={styles.containAdd}
+      onSubmit={(event) => handleSubmit(event)}
+    >
       <InputText
         label={"Nombre:"}
         name={"name"}

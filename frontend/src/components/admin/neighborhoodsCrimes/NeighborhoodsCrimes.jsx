@@ -14,6 +14,7 @@ import { ContainMap } from "./containMap/ContainMap";
 import { InteractionNeighborhoodsPolygonsProvider } from "../../../contexts/adminContext/InteractionNeighborhoodsPolygons";
 import { EditWithList } from "./containTable/editWithList/EditWithList";
 import { Helmet } from "react-helmet-async";
+import { MenuResponsiveProvider } from "../../../contexts/MenuResponsiveContext";
 
 export const NeighborhoodsCrimes = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -21,6 +22,7 @@ export const NeighborhoodsCrimes = () => {
   const [editForm, setEditForm] = useState(false);
 
   useEffect(() => {
+    document.querySelector("body").style.overflowY = "scroll";
     if (!user) {
       getProfile();
     }
@@ -29,45 +31,47 @@ export const NeighborhoodsCrimes = () => {
   return (
     <>
       {user && !loadingProfile && (
-        <div className={styles.neighborhoodsCrimes}>
-          <Helmet>
-            <title>Administracion-Indice delitos en barrios</title>
-            <meta name="robots" content="noindex"></meta>
-          </Helmet>
-          <MenuSide />
+        <MenuResponsiveProvider>
+          <div className={styles.neighborhoodsCrimes}>
+            <Helmet>
+              <title>Administracion-Indice delitos en barrios</title>
+              <meta name="robots" content="noindex"></meta>
+            </Helmet>
+            <MenuSide />
 
-          <div className={styles.body}>
-            <Header setAddForm={setAddForm} setEditForm={setEditForm} />
-            {addForm &&
-              createPortal(
-                <Modal>
-                  <AddNeighborhoodCrimeProvider>
-                    <AddWithList setAddForm={setAddForm} />
-                  </AddNeighborhoodCrimeProvider>
-                </Modal>,
-                document.body
-              )}
+            <div className={styles.body}>
+              <Header setAddForm={setAddForm} setEditForm={setEditForm} />
+              {addForm &&
+                createPortal(
+                  <Modal>
+                    <AddNeighborhoodCrimeProvider>
+                      <AddWithList setAddForm={setAddForm} />
+                    </AddNeighborhoodCrimeProvider>
+                  </Modal>,
+                  document.body
+                )}
 
-            {editForm &&
-              createPortal(
-                <Modal>
-                  <AddNeighborhoodCrimeProvider>
-                    <EditWithList setEditForm={setEditForm} />
-                  </AddNeighborhoodCrimeProvider>
-                </Modal>,
-                document.body
-              )}
+              {editForm &&
+                createPortal(
+                  <Modal>
+                    <AddNeighborhoodCrimeProvider>
+                      <EditWithList setEditForm={setEditForm} />
+                    </AddNeighborhoodCrimeProvider>
+                  </Modal>,
+                  document.body
+                )}
 
-            <div className={styles.row}>
-              <APIProvider apiKey={MAPS_API_KEY_BACKOFFICE}>
-                <InteractionNeighborhoodsPolygonsProvider>
-                  <ContainMap />
-                  <ContainTable />
-                </InteractionNeighborhoodsPolygonsProvider>
-              </APIProvider>
+              <div className={styles.row}>
+                <APIProvider apiKey={MAPS_API_KEY_BACKOFFICE}>
+                  <InteractionNeighborhoodsPolygonsProvider>
+                    <ContainMap />
+                    <ContainTable />
+                  </InteractionNeighborhoodsPolygonsProvider>
+                </APIProvider>
+              </div>
             </div>
           </div>
-        </div>
+        </MenuResponsiveProvider>
       )}
     </>
   );

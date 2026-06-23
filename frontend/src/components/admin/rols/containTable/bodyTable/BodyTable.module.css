@@ -21,7 +21,6 @@ tbody .options button {
     align-items: center;
 }
 
-
 tbody .options button img {
     width: 21px;
     height: 21px;
@@ -40,4 +39,23 @@ tbody .options .users {
 tbody .options .users img {
     width: 25px;
     height: 25px;
+}
+
+@media (width<650px) {
+    tbody .options {
+        gap: 0.8rem;
+    }
+    tbody .options button {
+        width: 2.4rem;
+        height: 2.3rem;
+    }
+
+    tbody .options button img {
+        width: 20px;
+        height: 20px;
+    }
+    tbody .options .users img {
+        width: 23px;
+        height: 23px;
+    }
 }

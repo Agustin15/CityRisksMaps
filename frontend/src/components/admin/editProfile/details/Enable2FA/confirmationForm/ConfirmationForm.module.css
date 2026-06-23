@@ -50,10 +50,12 @@
     margin-left: 1rem;
 }
 
-.form {   
+.form {
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .containInput {
@@ -80,11 +82,11 @@
     color: rgb(240, 36, 36);
     font-size: 13px;
     font-weight: bold;
-    margin-top: 1.5rem;
+    margin-top: -0.2rem;
 }
 
 .button {
-    margin-top: 0.5rem;
+    margin-top: 0;
     width: 8rem;
     height: 2.2rem;
     border: none;
@@ -119,4 +121,90 @@
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+}
+
+@media (width<650px) {
+    .container {
+        width: 92%;
+        height: auto;
+        padding-bottom: 2rem;
+    }
+
+    .header {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        position: relative;
+        height: 3.2rem;
+        gap: 0.6rem;
+        color: white;
+        font-size: 12px;
+        background: rgb(41, 58, 78);
+    }
+
+    .header h2 {
+        margin: 0;
+        font-size: 15px;
+        width: 75%;
+    }
+
+    .icon {
+        width: 35px;
+        height: 35px;
+        margin-left: 1rem;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+    .containInput {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        position: relative;
+    }
+
+    .containInput label {
+        font-size: 16px;
+    }
+
+    .containInput input {
+        width: 19rem;
+        height: 2.5rem;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .error {
+        color: rgb(240, 36, 36);
+        font-size: 13px;
+        font-weight: bold;
+        margin-top: 0;
+    }
+
+    .button {
+        margin-top: 0;
+        width: 8rem;
+        height: 2.2rem;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .container {
+        width: 59%;
+        height: auto;
+    }
+
+    .header h2 {
+        margin: 0;
+        font-size: 16px;
+    }
 }

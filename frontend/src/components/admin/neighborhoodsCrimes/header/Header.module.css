@@ -28,7 +28,8 @@
     margin: 0 0 0 2%;
 }
 
-.header button {
+.header .btnAdd,
+.header .btnUpdate {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,7 +43,7 @@
     border-radius: 3px;
 }
 
-.header button img {
+.header .btnAdd img {
     width: 25px;
     height: 25px;
 }
@@ -65,4 +66,33 @@
 .header .btnUpdate img {
     width: 23px;
     height: 23px;
+}
+
+.displayMenu {
+    display: none;
+}
+
+@media (width<650px) {
+    .header h3 {
+        font-weight: bold;
+        font-size: 19px;
+        margin: 0 0 0 2%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 0.4rem;
+  
+    }
+
+    .header .displayMenu {
+        display: flex;
+        background: none;
+        width: auto;
+        height: auto;
+    }
+
+    .header .displayMenu img {
+        width: 21px;
+        height: 21px;
+    }
 }

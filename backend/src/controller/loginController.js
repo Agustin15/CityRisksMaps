@@ -89,8 +89,13 @@ const createAuthenticacionTokens = async (res, userFound, rolFound) => {
 
 export const validateTwoStepAuthToken = async (req, res) => {
   try {
-    verifyTwoStepAuthToken(req, res);
-    return res.status(200).json(true);
+    const idUser = verifyTwoStepAuthToken(req, res);
+
+    const userFound = await UserService.getUserById(idUser);
+
+    if (!userFound) throw new Error("Usuario no encontrado");
+
+    return res.status(200).json(userFound.email);
   } catch (error) {
     return res.status(401).json({ messageError: error.message });
   }

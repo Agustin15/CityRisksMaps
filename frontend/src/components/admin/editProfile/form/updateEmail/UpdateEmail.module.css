@@ -58,6 +58,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1.2rem;
+    margin-top: 1rem;
 }
 
 .updateEmail .columnInput {
@@ -72,7 +73,8 @@
 .updateEmail .columnInput p {
     position: absolute;
     top: 3.4rem;
-    font-size: 12px;
+    font-size: 11px;
+    color: red;
 }
 
 .updateEmail .columnInput input {
@@ -98,4 +100,103 @@
 
 .updateEmail .save:hover {
     background: rgb(42, 127, 153);
+}
+
+@media (width<650px) {
+    .updateEmail {
+        width: 92%;
+        height: auto;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .header img {
+        width: 29px;
+        height: 29px;
+        margin-left: 1rem;
+    }
+    .header .close {
+        font-size: 13px;
+    }
+
+    .updateEmail form {
+        width: 99%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+        margin-top: 1rem;
+    }
+
+    .updateEmail form label {
+        font-size: 14px;
+    }
+
+    .updateEmail .columnInput {
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+        position: relative;
+    }
+
+    .updateEmail .columnInput p {
+        position: absolute;
+        top: 3.7rem;
+        font-size: 12px;
+    }
+
+    .updateEmail .columnInput input {
+        width: 100%;
+        height: 2.4rem;
+        border: 1px solid rgb(228, 227, 227);
+        outline: none;
+    }
+
+    .updateEmail .columnInput input::placeholder {
+        font-size: 15px;
+    }
+
+    .updateEmail .columnInput input:hover {
+        border-color: rgba(82, 168, 236, 0.8);
+    }
+
+    .updateEmail .save {
+        margin-top: 1rem;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 3px;
+        width: 12rem;
+        height: 2rem;
+        color: white;
+        background: rgb(47, 144, 173);
+    }
+
+    .updateEmail .save:hover {
+        background: rgb(42, 127, 153);
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .updateEmail {
+        width: 62%;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .updateEmail .columnInput p {
+        position: absolute;
+        top: 3.4rem;
+        font-size: 12px;
+        color: red;
+    }
 }

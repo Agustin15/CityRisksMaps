@@ -74,7 +74,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
         center: neighborhoodCenter,
         heading: map.getHeading() + 0.5,
         tilt: map.getTilt() + 0.5,
-        zoom: map.getZoom() >= 18 ? map.getZoom() : map.getZoom() + 0.09
+        zoom: map.getZoom() >= 14 ? map.getZoom() : map.getZoom() + 0.09
       });
     }, 10);
 
@@ -82,7 +82,7 @@ export const InteractionNeighborhoodsPolygonsProvider = ({ children }) => {
 
     setTimeout(() => {
       clearInterval(refIdIntervalAnimation.current);
-    }, 5000);
+    }, 4000);
   };
 
   const handleMouseNeighborhoohdPolygon = (event) => {

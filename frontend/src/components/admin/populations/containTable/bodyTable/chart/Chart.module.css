@@ -78,3 +78,121 @@
     margin: 0;
     opacity: 85%;
 }
+
+@media (width<650px) {
+    .containChart {
+        width: 92%;
+        height: 67%;
+    }
+
+    .containChart h3 {
+        font-size: 14px;
+    }
+    .containChart .close {
+        position: absolute;
+        margin: 0;
+        font-size: 12px;
+        opacity: 85%;
+    }
+
+    .containChart .chart p {
+        font-size: 16px;
+    }
+
+    .containChart .noData {
+        height: 85%;
+        gap: 0.2rem;
+    }
+
+    .containChart .noData p {
+        height: auto;
+    }
+
+    .containChart .noData img {
+        width: 77px;
+        height: 77px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containChart {
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: none;
+        position: relative;
+        width: 75%;
+        height: 92%;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .containChart h3 {
+        text-align: center;
+        padding: 0.8rem 0 0.8rem 0;
+        font-size: 16px;
+        color: white;
+        margin: 0;
+        background: rgb(20, 42, 70);
+        width: 100%;
+    }
+    .containChart .close {
+        position: absolute;
+        margin: 0;
+        right: 0.1rem;
+        box-shadow: none;
+        background: none;
+        color: rgb(255, 255, 255);
+        width: auto;
+        height: auto;
+        font-size: 14px;
+        opacity: 85%;
+    }
+
+    .containChart .close:hover {
+        opacity: 99%;
+    }
+    .containChart .chart p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 85%;
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .containChart .chart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 96%;
+        height: 79%;
+        padding: 2%;
+        background: linear-gradient(345deg, #f0f0f0, #f7f7f7);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .containChart .noData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 85%;
+        gap: 0.2rem;
+    }
+
+    .containChart .noData p {
+        height: auto;
+    }
+
+    .containChart .noData img {
+        width: 83px;
+        height: 83px;
+        margin: 0;
+        opacity: 85%;
+    }
+}

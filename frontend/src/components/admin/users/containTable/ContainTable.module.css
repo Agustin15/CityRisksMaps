@@ -35,3 +35,27 @@
 .containTable table thead th {
     padding: 0.8rem;
 }
+
+@media (width<650px) {
+    .containTable table {
+        height: auto;
+        max-height: 65%;
+        width: 240%;
+        font-size: 13px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containTable table {
+        height: auto;
+        max-height: 65%;
+        width: 180%;
+        border-collapse: collapse;
+        font-size: 14px;
+        table-layout: fixed;
+    }
+
+    .containTable table thead th {
+        padding: 0.5rem;
+    }
+}

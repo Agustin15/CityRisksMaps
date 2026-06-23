@@ -4,7 +4,8 @@ export const loadOptionsLineChart = (
   dataChart,
   crime,
   intervalOne,
-  intervalTwo
+  intervalTwo,
+  windowWidth
 ) => {
   CanvasJSReact.CanvasJS.addCultureInfo("es", {
     decimalSeparator: ",",
@@ -17,10 +18,10 @@ export const loadOptionsLineChart = (
     animationEnabled: true,
     axisX: {
       title: "Años",
-      titleFontSize: 21,
+      titleFontSize: windowWidth < 650 ? 17 : 21,
       titleFontWeight: "bold",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 16,
+      labelFontSize: windowWidth < 650 ? 14 : 16,
       gridColor: "#d6d6d6",
       interval: 1
     },
@@ -28,10 +29,10 @@ export const loadOptionsLineChart = (
       title: "Denuncias",
       titleFontWeight: "bold",
       labelFontColor: "#030303",
-      titleFontSize: 21,
+      titleFontSize: windowWidth < 650 ? 17 : 21,
       lineColor: "#383838",
       labelFontColor: "#0f0f0f",
-      labelFontSize: 16,
+      labelFontSize: windowWidth < 650 ? 14 : 16,
       tickColor: "gray",
       gridColor: "#d6d6d6",
       interval: crime == "Homicidio" ? intervalOne : intervalTwo

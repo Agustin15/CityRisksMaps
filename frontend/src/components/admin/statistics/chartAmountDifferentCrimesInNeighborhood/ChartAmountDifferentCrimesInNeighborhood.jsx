@@ -6,6 +6,7 @@ import { loadData } from "../functions.js";
 import { loadOptionsColumnChart } from "./function.js";
 import { FilterOfNeighborhood } from "../filterOfNeighborhood/FilterOfNeighborhood.jsx";
 import { FilterOfYears } from "../filterOfYears/FilterOfYears.jsx";
+import { useWindowResize } from "../../../../contexts/WindowResizeContext.jsx";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -17,6 +18,7 @@ export const ChartAmountDifferentCrimesInNeighborhood = () => {
   const [dataChart, setDataChart] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { windowWidth } = useWindowResize();
 
   useEffect(() => {
     if (!neighborhoodSelected || !yearSelected) return;
@@ -86,7 +88,7 @@ export const ChartAmountDifferentCrimesInNeighborhood = () => {
       )}
       {!loading && error.length == 0 && dataChart && (
         <CanvasJSChart
-          options={loadOptionsColumnChart(dataChart)}
+          options={loadOptionsColumnChart(dataChart, windowWidth)}
         ></CanvasJSChart>
       )}
     </div>

@@ -1,4 +1,4 @@
-form {
+.formAdd {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,7 +6,7 @@ form {
     margin-top: 1rem;
 }
 
-form .columnInput {
+.formAdd .columnInput {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -14,7 +14,7 @@ form .columnInput {
     position: relative;
 }
 
-form input {
+.formAdd input {
     height: 2.1rem;
     width: 15.5rem;
     padding-left: 0.5rem;
@@ -24,21 +24,21 @@ form input {
     outline: none;
 }
 
-form label {
+.formAdd label {
     font-weight: bold;
     font-size: 15px;
     width: 16rem;
     text-align: start;
 }
-form p {
+.formAdd p {
     color: red;
     position: absolute;
     top: 3rem;
     font-size: 14px;
 }
 
-form .add,
-form .addDisabled {
+.formAdd .add,
+.formAdd .addDisabled {
     background: rgb(34, 207, 63);
     border-radius: 5px;
     box-shadow: none;
@@ -50,14 +50,41 @@ form .addDisabled {
     font-weight: bold;
     cursor: pointer;
 }
-form .addDisabled {
+.formAdd .addDisabled {
     opacity: 84%;
     cursor: alias;
 }
-form .add:hover {
+.formAdd .add:hover {
     background: rgb(41, 167, 25);
 }
-
-form .addDisabled:hover {
+.formAdd .addDisabled:hover {
     background: rgb(34, 207, 63);
+}
+
+@media (width<650px) {
+    .formAdd input {
+        height: 2.5rem;
+        width: 17rem;
+        padding-left: 0.5rem;
+        border-radius: 3px;
+        border: 1px solid rgb(211, 211, 211);
+        font-size: 15px;
+        outline: none;
+    }
+
+    .formAdd p {
+        color: red;
+        position: absolute;
+        top: 3.7rem;
+        font-size: 12px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .formAdd p {
+        color: red;
+        position: absolute;
+        top: 3.3rem;
+        font-size: 13px;
+    }
 }

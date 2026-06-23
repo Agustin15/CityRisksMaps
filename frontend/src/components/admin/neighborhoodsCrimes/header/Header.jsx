@@ -1,14 +1,22 @@
 import styles from "./Header.module.css";
 import iconAdd from "../../../../assets/img/add.png";
+import iconMenuBackoffice from "../../../../assets/img/menuBackoffice.png";
 import iconUpdate from "../../../../assets/img/edit.png";
 import { useAuth } from "../../../../contexts/adminContext/AuthContext";
+import { useMenuResponsive } from "../../../../contexts/MenuResponsiveContext";
 
 export const Header = ({ setAddForm, setEditForm }) => {
   const { user } = useAuth();
+  const { handleClick } = useMenuResponsive();
 
   return (
     <div className={styles.header}>
-      <h3>Indice de delitos en barrios</h3>
+      <h3>
+        <button onClick={handleClick} className={styles.displayMenu}>
+          <img src={iconMenuBackoffice}></img>
+        </button>
+        Indice de delitos en barrios
+      </h3>
 
       <div className={styles.row}>
         {user.rol == "Admin" && (

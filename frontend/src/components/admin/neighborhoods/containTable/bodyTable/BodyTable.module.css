@@ -40,3 +40,41 @@ tbody .options .population img {
     width: 26px;
     height: 26px;
 }
+
+@media (width<650px) {
+    tbody .options button {
+        width: 2.2rem;
+        height: 2.1rem;
+        border-radius: 3px;
+    }
+
+    tbody .options button img {
+        width: 19px;
+        height: 19px;
+    }
+
+    tbody .options .population img {
+        width: 23px;
+        height: 23px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    tbody .options button {
+        width: 2.7rem;
+        height: 2rem;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    tbody .options button img {
+        width: 19px;
+        height: 19px;
+    }
+    tbody .options .population img {
+        width: 23px;
+        height: 23px;
+    }
+}

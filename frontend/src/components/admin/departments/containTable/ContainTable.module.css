@@ -35,3 +35,61 @@
 .containTable table thead th {
     padding: 0.8rem;
 }
+
+@media (width<650px) {
+    .containTable {
+        width: 96%;
+        height: 79vh;
+    }
+
+    .containTable .scrollTable {
+        overflow-y: scroll;
+        overflow-x: scroll;
+    }
+
+    .containTable table {
+        height: auto;
+        max-height: 65%;
+        width: 160%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containTable {
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        width: 96%;
+        height: 79vh;
+        background: white;
+        border: 1px solid rgb(223, 223, 223);
+        position: relative;
+    }
+
+    .containTable .scrollTable {
+        height: 100%;
+        width: 100%;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+    }
+
+    .containTable table {
+        height: auto;
+        max-height: 65%;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        table-layout: fixed;
+    }
+
+    .containTable table thead {
+        color: white;
+        background: rgb(31, 44, 59);
+    }
+
+    .containTable table thead th {
+        padding: 0.8rem;
+    }
+}

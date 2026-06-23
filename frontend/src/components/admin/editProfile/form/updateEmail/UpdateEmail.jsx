@@ -1,9 +1,12 @@
 import styles from "./UpdateEmail.module.css";
 import iconChangeEmail from "../../../../../assets/img/changeEmail.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchUpdateEmail } from "./functions.js";
 import { useAuth } from "../../../../../contexts/adminContext/AuthContext";
-import { alertSwalSuccess } from "../../../../sweetAlert/sweetAlert";
+import {
+  alertSwalSuccess,
+  alertSwalWarning
+} from "../../../../sweetAlert/sweetAlert";
 
 export const UpdateEmail = ({ setChangeEmail }) => {
   const [values, setValues] = useState({
@@ -40,6 +43,9 @@ export const UpdateEmail = ({ setChangeEmail }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (Object.values(values).some((value) => value.length == 0))
+      return alertSwalWarning("Debe completar los campos");
 
     if (Object.values(errors).some((error) => error.length > 0)) return;
 

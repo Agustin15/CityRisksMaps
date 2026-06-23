@@ -1,4 +1,4 @@
-.formEdit   {
+.formEdit {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,13 +26,13 @@
     outline: none;
 }
 
-.formEdit .columnInput  label {
+.formEdit .columnInput label {
     font-weight: bold;
     font-size: 15px;
     width: 94%;
     text-align: start;
 }
-.formEdit .columnInput  p {
+.formEdit .columnInput p {
     color: red;
     position: absolute;
     width: 92%;
@@ -53,4 +53,29 @@
 }
 .formEdit .save:hover {
     background: rgb(13, 90, 134);
+}
+
+@media (width<650px) {
+    .formEdit input,
+    .formEdit textarea {
+        height: 2.5rem;
+        width: 16rem;
+    }
+
+    .formEdit textarea {
+        height: 15rem;
+        width: 100%;
+    }
+
+    .formEdit p,
+    .formEdit .errorDescription {
+        color: red;
+        position: absolute;
+        top: 3.7rem;
+        font-size: 12px;
+    }
+
+    .formEdit .errorDescription {
+        top: 96%;
+    }
 }

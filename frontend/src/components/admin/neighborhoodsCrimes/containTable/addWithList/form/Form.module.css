@@ -92,3 +92,54 @@ fieldset {
 .btnReset:hover {
     background: rgb(163, 30, 30);
 }
+
+@media (width<650px) {
+    .form .row {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: start;
+        align-items: center;
+        gap: 1.5rem;
+        height: 99%;
+        overflow-y: scroll;
+    }
+
+    .form .columnNeighborhoods {
+        width: 91%;
+        height: auto;
+        padding-bottom: 1rem;
+        gap: 0.5rem;
+  
+    }
+
+    .form .lblNeighborhoodsCrime {
+        font-size: 14px;
+        text-align: start;
+    }
+
+    .form .errorNeighborhoodsCrime {
+        color: red;
+        position: absolute;
+        font-size: 12px;
+    }
+
+    .form .errorNeighborhoodsCrime {
+        top: 90%;
+    }
+
+    .options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .btnAdd,
+    .btnReset {
+        margin: 1rem 0 0 0;
+        font-size: 14px;
+        min-width: 9rem;
+        width: auto;
+        height: 1.9rem;
+    }
+}

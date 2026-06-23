@@ -28,7 +28,7 @@
     margin: 0 0 0 2%;
 }
 
-.header input {
+.header .row input {
     outline: none;
     width: 15rem;
     height: 2rem;
@@ -38,7 +38,7 @@
     padding-left: 1rem;
 }
 
-.header button {
+.header .row button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,7 +53,71 @@
     border-radius: 3px;
 }
 
-.header button img {
+.header .row button img {
     width: 25px;
     height: 25px;
+}
+.header .displayMenu {
+    display: none;
+}
+
+@media (width<650px) {
+    .header {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .header h3 {
+        font-weight: bold;
+        font-size: 21px;
+        margin: 0 0 0 2%;
+        gap: 1rem;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+
+    .header .row {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        width: 96%;
+        margin-left: 2%;
+    }
+
+    .header .row input {
+        width: 12rem;
+        height: 2rem;
+    }
+
+    .header .row button {
+        height: 2rem;
+    }
+    .header .displayMenu {
+        display: flex;
+        background: none;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+    }
+    .header .displayMenu img {
+        width: 21px;
+        height: 21px;
+    }
+
+    .header .displayMenu {
+        width: auto;
+        height: auto;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .header h3 {
+        font-weight: bold;
+        font-size: 22px;
+        margin: 0 0 0 2%;
+    }
 }

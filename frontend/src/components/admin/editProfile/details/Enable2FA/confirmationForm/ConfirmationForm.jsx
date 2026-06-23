@@ -1,6 +1,6 @@
 import styles from "./ConfirmationForm.module.css";
 import iconAuth2FA from "../../../../../../assets/img/auth2FA.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../../../../contexts/adminContext/AuthContext";
 import { fetchUpdateStateAuth2FA } from "./functions.js";
 import { alertSwalErrorAdmin } from "../../../../../sweetAlert/sweetAlert.js";
@@ -38,12 +38,17 @@ export const ConfirmationForm = ({ setShow2FAForm }) => {
     }
   };
 
+  const close = () => {
+    document.querySelector("body").style.overflowY = "scroll";
+    setShow2FAForm(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <img src={iconAuth2FA} className={styles.icon} />
         <h2>{title}</h2>
-        <button onClick={() => setShow2FAForm(false)}>Cerrar</button>
+        <button onClick={close}>Cerrar</button>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>

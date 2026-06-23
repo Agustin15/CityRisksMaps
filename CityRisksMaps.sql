@@ -1443,8 +1443,8 @@ GO
 CREATE OR ALTER PROCEDURE AuditoryNeighborhoodsCrimesOffsetByDate @datetime DATETIME ,@offset INT AS
 BEGIN
 
-select * from Auditory_Neighborhoods_Crimes where CAST(auditoryDate  as date)=CAST(@datetime as date)
-ORDER BY CAST(auditoryDate as date) desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
+select N.name as nameNeighborhood,A.* from Auditory_Neighborhoods_Crimes A INNER JOIN Neighborhoods N ON A.neighborhood=N.idNeighborhood
+where CAST(auditoryDate  as date)=CAST(@datetime as date) ORDER BY CAST(auditoryDate as date) desc OFFSET @offset ROWS FETCH NEXT 10 ROWS ONLY;
 
 END
 

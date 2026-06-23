@@ -35,3 +35,31 @@
 .dates button:hover {
     background: rgb(23, 94, 160);
 }
+
+@media (width<650px) {
+    .dates span {
+        margin-left: 0.3rem;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .dates select {
+        width: 9rem;
+        height: 2rem;
+        border-radius: 5px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .dates span {
+        margin-left: 1rem;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .dates select {
+        width: 9rem;
+        height: 2rem;
+        border-radius: 5px;
+    }
+}

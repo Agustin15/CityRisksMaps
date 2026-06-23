@@ -8,7 +8,7 @@ import { Modal } from "../modal/Modal";
 import { Add } from "./containTable/add/Add";
 import { createPortal } from "react-dom";
 import { Header } from "../header/Header";
-
+import { MenuResponsiveProvider } from "../../../contexts/MenuResponsiveContext";
 import { Helmet } from "react-helmet-async";
 
 export const Neighborhoods = () => {
@@ -29,24 +29,26 @@ export const Neighborhoods = () => {
   return (
     <>
       {user && !loadingProfile && (
-        <div className={styles.neighborhoods}>
-          <Helmet>
-            <title>Administracion-Barrios</title>
-            <meta name="robots" content="noindex"></meta>
-          </Helmet>
-          <MenuSide />
-          <div className={styles.body}>
-            <Header title={title} setAddForm={setAddForm} />
-            {addForm &&
-              createPortal(
-                <Modal>
-                  <Add setAddForm={setAddForm} />
-                </Modal>,
-                document.body
-              )}
-            <ContainTable />
+        <MenuResponsiveProvider>
+          <div className={styles.neighborhoods}>
+            <Helmet>
+              <title>Administracion-Barrios</title>
+              <meta name="robots" content="noindex"></meta>
+            </Helmet>
+            <MenuSide />
+            <div className={styles.body}>
+              <Header title={title} setAddForm={setAddForm} />
+              {addForm &&
+                createPortal(
+                  <Modal>
+                    <Add setAddForm={setAddForm} />
+                  </Modal>,
+                  document.body
+                )}
+              <ContainTable />
+            </div>
           </div>
-        </div>
+        </MenuResponsiveProvider>
       )}
     </>
   );

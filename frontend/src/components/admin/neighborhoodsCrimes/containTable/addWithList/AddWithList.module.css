@@ -53,3 +53,42 @@
 .header .close:hover {
     opacity: 100%;
 }
+
+@media (width<650px) {
+    .containAdd {
+        width: 92%;
+        height: 82%;
+        padding-bottom: 5rem;
+        background: white;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        width: 65%;
+    }
+
+    .header img {
+        width: 29px;
+        height: 29px;
+        margin-left: 1rem;
+    }
+    .header .close {
+        font-size: 12px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containAdd {
+        width: 82%;
+        height: 71%;
+        overflow-y: scroll;
+    }
+
+    .header h3 {
+        padding: 0;
+        margin: 0;
+        font-size: 16px;
+    }
+}

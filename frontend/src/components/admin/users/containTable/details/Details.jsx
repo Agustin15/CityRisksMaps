@@ -23,7 +23,7 @@ export const Details = ({ user, setDetailsUser }) => {
           {user.lastname}
         </li>
         <li>
-          <span>Correo electrónico:</span>
+          <span>Correo:</span>
           {user.email}
         </li>
         <li>

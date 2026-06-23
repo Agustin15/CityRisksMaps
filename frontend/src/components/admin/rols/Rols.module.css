@@ -18,3 +18,18 @@
     height: 100vh;
     background-repeat: no-repeat;
 }
+
+@media (width<650px) {
+    .body {
+        width: 100%;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .body {
+        gap: 1rem;
+        width: 71vw;
+        margin-left: 29vw;
+        height: 100vh;
+    }
+}

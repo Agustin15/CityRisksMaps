@@ -4,6 +4,7 @@
     justify-content: start;
     align-items: center;
     overflow-y: scroll;
+    overflow-x: hidden;
     margin: 0;
     padding: 0;
     gap: 0;
@@ -17,7 +18,7 @@
     justify-content: start;
     gap: 0.5rem;
     padding: 1% 0 0 1%;
-    width: 99%;
+    width: 100%;
     height: 6rem;
     list-style: none;
     border-bottom: 1px solid rgb(204, 204, 204);
@@ -91,12 +92,29 @@
     height: auto;
     border: 0;
 }
+.recordList .primaryKey .title,
+.recordList .oldValues .title,
+.recordList .newValues .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.recordList .primaryKey .title {
+    margin-top: 0.2rem;
+}
+
+.recordList .primaryKey .title img {
+    width: 21px;
+    height: 21px;
+}
 
 .recordList .primaryKey ul {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.2rem;
+    gap: 0.5rem;
     margin: 0 0 0 0.4rem;
     padding: 0;
     height: auto;
@@ -109,6 +127,7 @@
     gap: 0.2rem;
     align-items: center;
     height: auto;
+    width: auto;
     margin: 0;
     border: none;
 }
@@ -132,4 +151,163 @@
 .recordList .oldValues img {
     width: 17px;
     height: 17px;
+}
+
+@media (width<650px) {
+    .recordList {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        overflow-y: scroll;
+        margin: 0;
+        padding: 0;
+        gap: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .recordList li {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        gap: 0.5rem;
+        padding: 1% 0 0 1%;
+        width: 99%;
+        height: 15.5rem;
+    }
+
+    .recordList .auditoryDate {
+        position: absolute;
+        display: none;
+        margin-top: 1rem;
+        font-size: 15px;
+        width: 99%;
+    }
+
+    .recordList .liWhite {
+        background: white;
+    }
+    .recordList .liGray {
+        background: rgb(241, 246, 248);
+    }
+
+    .recordList li .row {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0.7rem;
+        margin: 0.5rem 0 0 0;
+        padding: 0;
+    }
+
+    .recordList li .action img {
+        width: 27px;
+        height: 27px;
+        margin: 0;
+    }
+
+    .recordList li .data {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.7rem;
+        width: 99%;
+    }
+    .recordList li .data p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .recordList .primaryKey,
+    .recordList .oldValues,
+    .recordList .newValues {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        font-size: 15px;
+        height: auto;
+        border: 0;
+    }
+
+    .recordList .primaryKey .title,
+    .recordList .oldValues .title,
+    .recordList .newValues .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .recordList .primaryKey ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 99%;
+        gap: 0.2rem;
+        margin: 0 0 0 0.4rem;
+        padding: 0;
+        height: auto;
+        border: none;
+    }
+    .recordList .primaryKey li {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.2rem;
+        align-items: center;
+        height: auto;
+        margin: 0;
+        border: none;
+    }
+
+    .recordList .oldValues,
+    .recordList .newValues {
+        gap: 0.4rem;
+        margin-left: 0.1rem;
+    }
+
+    .recordList .primaryKey img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .recordList .oldValues img,
+    .recordList .newValues img {
+        width: 18px;
+        height: 18px;
+    }
+    .recordList .oldValues img {
+        width: 17px;
+        height: 17px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .recordList li {
+        overflow-x: scroll;
+        list-style: none;
+        border-bottom: 1px solid rgb(204, 204, 204);
+        position: relative;
+    }
+
+    .recordList .auditoryDate {
+        position: absolute;
+        top: 0.5rem;
+        left: 135%;
+        font-size: 15px;
+        width: 19rem;
+    }
+
+    .recordList .primaryKey li {
+        overflow-x: hidden;
+    }
+    .recordList li .row {
+        gap: 1.5rem;
+        width: 181%;
+        margin: 0;
+        padding: 0;
+    }
 }

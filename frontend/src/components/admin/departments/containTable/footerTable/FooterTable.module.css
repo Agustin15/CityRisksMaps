@@ -3,3 +3,11 @@ tfoot .loading,
 tfoot .noData {
     font-size: 15px;
 }
+
+@media (width<650px) {
+    tfoot .elementNotFound,
+    tfoot .loading,
+    tfoot .noData {
+        font-size: 14px;
+    }
+}

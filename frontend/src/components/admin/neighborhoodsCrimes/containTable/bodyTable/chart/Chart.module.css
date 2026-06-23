@@ -83,3 +83,58 @@
     margin: 0;
     opacity: 85%;
 }
+@media (width<650px) {
+    .containChart {
+        width: 92%;
+        height: auto;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .containChart h3 {
+        text-align: center;
+        padding: 0.8rem 0 0.8rem 0;
+        font-size: 13px;
+        margin: 0;
+        color: white;
+        width: 100%;
+    }
+
+    .containChart .close {
+        font-size: 13px;
+        opacity: 85%;
+    }
+
+    .containChart .chart .loading {
+        font-size: 15px;
+    }
+
+    .containChart .chart {
+        width: 96%;
+        height: 79%;
+        padding: 2%;
+    }
+
+    .containChart .noData p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .containChart .noData img {
+        width: 71px;
+        height: 71px;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .containChart {
+        width: 82%;
+        height: 92%;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .containChart h3 {
+        font-size: 15px;
+    }
+}

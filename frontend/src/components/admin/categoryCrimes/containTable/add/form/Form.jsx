@@ -2,7 +2,7 @@ import styles from "./Form.module.css";
 
 export const Form = ({ handleSubmit, errors, values, setValues, loading }) => {
   return (
-    <form onSubmit={(event) => handleSubmit(event)}>
+    <form className={styles.formAdd} onSubmit={(event) => handleSubmit(event)}>
       <div className={styles.columnInput}>
         <label>Categoria:</label>
         <input

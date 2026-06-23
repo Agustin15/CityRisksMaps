@@ -35,3 +35,11 @@
 .filter .crimes button:hover {
     background: linear-gradient(rgb(241, 241, 241), rgb(218, 217, 217));
 }
+
+@media (width<650px) {
+    .filter {
+        width: 98%;
+        height: 4rem;
+        overflow-x: scroll;
+    }
+}

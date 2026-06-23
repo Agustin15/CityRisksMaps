@@ -9,6 +9,7 @@ import { Modal } from "../modal/Modal";
 import { Header } from "../header/Header";
 import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
+import { MenuResponsiveProvider } from "../../../contexts/MenuResponsiveContext";
 
 export const Users = () => {
   const { loadingProfile, user, getProfile } = useAuth();
@@ -24,27 +25,29 @@ export const Users = () => {
   return (
     <>
       {user && user.rol == "Admin" && !loadingProfile && (
-        <div className={styles.users}>
-          <Helmet>
-            <title>Administracion-Usuarios</title>
-            <meta name="robots" content="noindex"></meta>
-          </Helmet>
-          <MenuSide />
-          <div className={styles.body}>
-            <Header
-              title={"Lista de Usuarios" + (roleName ? ` ${roleName}` : "")}
-              setAddForm={setAddForm}
-            />
-            {addForm &&
-              createPortal(
-                <Modal>
-                  <Add setAddForm={setAddForm} />
-                </Modal>,
-                document.body
-              )}
-            <ContainTable />
+        <MenuResponsiveProvider>
+          <div className={styles.users}>
+            <Helmet>
+              <title>Administracion-Usuarios</title>
+              <meta name="robots" content="noindex"></meta>
+            </Helmet>
+            <MenuSide />
+            <div className={styles.body}>
+              <Header
+                title={"Lista de Usuarios" + (roleName ? ` ${roleName}` : "")}
+                setAddForm={setAddForm}
+              />
+              {addForm &&
+                createPortal(
+                  <Modal>
+                    <Add setAddForm={setAddForm} />
+                  </Modal>,
+                  document.body
+                )}
+              <ContainTable />
+            </div>
           </div>
-        </div>
+        </MenuResponsiveProvider>
       )}
     </>
   );

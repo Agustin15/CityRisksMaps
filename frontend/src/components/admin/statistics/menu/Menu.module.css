@@ -9,6 +9,13 @@
     height: 4rem;
     font-size: 12px;
 }
+.menu ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
 .menu li {
     list-style: none;
     display: flex;
@@ -35,4 +42,64 @@
 
 .selected:hover {
     opacity: 100%;
+}
+
+@media (width<650px) {
+    .menu {
+        width: 100%;
+        justify-content: start;
+        align-items: start;
+        overflow-y: hidden;
+        overflow-x: scroll;
+        height: 6.2rem;
+        font-size: 12px;
+    }
+    .menu ul {
+        width: auto;
+    }
+
+    .menu li {
+        width: 12rem;
+    }
+}
+
+@media (width>650px) and (width<1200px) {
+    .menu {
+        overflow-y: hidden;
+        overflow-x: scroll;
+        width: 99%;
+        height: 7rem;
+        font-size: 12px;
+    }
+    .menu ul {
+        margin: 0;
+        padding: 0;
+        width: auto;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+    .menu li {
+        list-style: none;
+        width: 12rem;
+    }
+
+    .menu li:hover {
+        cursor: pointer;
+        background: rgb(243, 243, 243);
+    }
+    .menu li img {
+        width: 25px;
+        height: 25px;
+        margin: 0;
+    }
+
+    .selected {
+        border-bottom: 3px solid rgb(55, 197, 216);
+        background: rgb(243, 243, 243);
+    }
+
+    .selected:hover {
+        opacity: 100%;
+    }
 }

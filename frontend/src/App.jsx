@@ -25,7 +25,7 @@ import { Statistics } from "./components/admin/statistics/Statistics.jsx";
 import { HelmetProvider } from "react-helmet-async";
 import { TwoFA } from "./components/loginAdmin/twoFA/TwoFA.jsx";
 import { TwoStepAuthProvider } from "./contexts/adminContext/TwoStepAuthContext.jsx";
-
+import { MenuResponsiveProvider } from "./contexts/MenuResponsiveContext.jsx";
 
 function App() {
   return (
@@ -37,7 +37,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<MapPage />}></Route>
                 <Route path="/about" element={<AboutPage />}></Route>
-                
+
                 <Route path="/*" element={<NotFoundPage />}></Route>
                 <Route path="/admin/login" element={<LoginAdmin />}></Route>
                 <Route
@@ -81,11 +81,19 @@ function App() {
                 ></Route>
                 <Route
                   path="/admin/indice-delitos-barrios/auditoria"
-                  element={<Auditory />}
+                  element={
+                    <MenuResponsiveProvider>
+                      <Auditory />
+                    </MenuResponsiveProvider>
+                  }
                 ></Route>
                 <Route
                   path="/admin/estadisticas/"
-                  element={<Statistics />}
+                  element={
+                    <MenuResponsiveProvider>
+                      <Statistics />
+                    </MenuResponsiveProvider>
+                  }
                 ></Route>
 
                 <Route path="/admin/roles/" element={<Rols />}></Route>
@@ -104,7 +112,11 @@ function App() {
                 ></Route>
                 <Route
                   path="/admin/editar-perfil/"
-                  element={<EditProfile />}
+                  element={
+                    <MenuResponsiveProvider>
+                      <EditProfile />
+                    </MenuResponsiveProvider>
+                  }
                 ></Route>
                 <Route
                   path="/admin/activar-usuario/:token"
