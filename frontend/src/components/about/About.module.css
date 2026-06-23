@@ -38,8 +38,17 @@
     font-size: 16px;
 }
 
-.about .navbar ul li img {
+.about .logo {
     margin-left: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    background: white;
+    border-radius: 99px;
+}
+.about .navbar ul li img {
     width: 46px;
     height: 46px;
 }
@@ -85,6 +94,17 @@
     width: 45%;
     padding: 0.5rem;
     border-radius: 5px;
+    animation-name: scale;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+@keyframes scale {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
 }
 
 .about .description h4 {
@@ -202,6 +222,11 @@
         gap: 0.7rem;
     }
 
+    .about .logo {
+        margin: 0;
+        width: 3.6rem;
+        height: 3.6rem;
+    }
     .about .navbar ul li img {
         margin-left: 0;
         width: 56px;
@@ -313,11 +338,21 @@
         margin: 0;
         padding: 0;
     }
+
     .about .navbar ul li {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.7rem;
+    }
+    .about .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        margin-left: 1rem;
+        width: 3rem;
+        height: 3rem;
     }
 
     .about .navbar ul li h3 {
@@ -327,7 +362,6 @@
     }
 
     .about .navbar ul li img {
-        margin-left: 2rem;
         width: 46px;
         height: 46px;
     }

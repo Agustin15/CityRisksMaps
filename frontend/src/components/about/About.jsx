@@ -23,7 +23,9 @@ export const About = () => {
       <nav className={styles.navbar}>
         <ul>
           <li>
+            <div className={styles.logo}>
             <img src={iconLogo}></img>
+            </div>
             <h3>IndiceDelitosMontevideo</h3>
           </li>
           <li>
