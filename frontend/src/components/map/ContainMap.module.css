@@ -1,30 +1,24 @@
 .map {
-    width: 58.3vw;
-    height: 60vh;
-    border: 5px solid #2e355c;
-}
-
-.mapNavigation {
-    width: 58.3vw;
-    height: 98.5vh;
-    border: 5px solid #2e355c;
+    width: 100vw;
+    height: 92vh;
+    margin-top: 8vh;
 }
 
 @media (width<=650px) {
-    .map,
-    .mapNavigation {
+    .map {
         width: 100vw;
         height: 86vh;
         border: none;
+        margin-top: 0;
     }
 }
 
 @media (width>650px) and (width<1200px) {
-    .map,
-    .mapNavigation {
-        width: 92vw;
-        height: 85vh;
+    .map {
+        width: 91vw;
+        height: 84vh;
         border: none;
-        margin-left: 8vw;
+        margin-top: 0;
+        margin-left: 9vw;
     }
 }

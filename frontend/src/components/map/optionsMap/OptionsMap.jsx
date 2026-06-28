@@ -17,8 +17,7 @@ export const OptionsMap = () => {
     <>
       <ViewStatistics />
 
-      {((windowWidth >= 1200 && !routeNavigation) ||
-        ((selectedPlace || streetSelected) && !routeNavigation) ||
+      {(((selectedPlace || streetSelected) && !routeNavigation) ||
         placesSearched) && <ViewPlaces />}
 
       {showPhotos && (

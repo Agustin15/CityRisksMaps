@@ -18,21 +18,7 @@ export const ContainPhoto = () => {
         </div>
       )}
 
-      {photosList &&
-        (windowWidth >= 1200 ? (
-          <img className={styles.mainPhoto} src={photosList[1].url}></img>
-        ) : (
-          <Preview photosList={photosList} />
-        ))}
-
-      {photosList.length > 1 && windowWidth >= 1200 && (
-        <div className={styles.optionWatchPhotos}>
-          <button onClick={() => setShowPhotos(true)}>
-            Ver fotos
-            <img src={gallery}></img>
-          </button>
-        </div>
-      )}
+      {photosList && <Preview photosList={photosList} />}
     </div>
   );
 };

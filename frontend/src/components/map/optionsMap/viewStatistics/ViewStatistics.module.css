@@ -1,16 +1,21 @@
 .viewStatistics {
     position: absolute;
-    top: 0;
+    top: 7vh;
     right: 0;
+    z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: start;
     gap: 0;
-    width: 41vw;
-    height: 100vh;
+    width: 42vw;
+    height: 96%;
     border-left: none;
-    background: linear-gradient(#262c4b, #242d57);
+    background: none;
+}
+
+.containCheckDeploy {
+    display: none;
 }
 
 .containOptionsCrimes {
@@ -25,10 +30,13 @@
     width: 100%;
     height: 95%;
     border-left: none;
-}
-
-.containCheckDeploy {
-    display: none;
+    margin-top: 1rem;
+    height: 100%;
+    overflow-y: scroll;
+    border-top-left-radius: 23px;
+    border-top-right-radius: 23px;
+    background: white;
+    position: relative;
 }
 
 @media (width<=650px) {
@@ -54,19 +62,19 @@
 
     @keyframes deployDown {
         from {
-            margin-top: 11vh;
+            margin-top: 4vh;
         }
         to {
-            margin-top: 83vh;
+            margin-top: 75vh;
         }
     }
 
     @keyframes deployUp {
         from {
-            margin-top: 83vh;
+            margin-top: 75vh;
         }
         to {
-            margin-top: 11vh;
+            margin-top: 4vh;
         }
     }
     .containOptionsCrimes {
@@ -101,7 +109,7 @@
 
 @media (width>650px) and (width<1200px) {
     .viewStatistics {
-        right: 7.5%;
+        top: 0;
         gap: 0;
         width: 85%;
         height: 85vh;
@@ -121,18 +129,18 @@
 
     @keyframes deployRight {
         from {
-            right: 88vw;
+            right: 87vw;
         }
         to {
-            right: 7.5vw;
+            right: 6vw;
         }
     }
     @keyframes deployLeft {
         from {
-            right: 7.5vw;
+            right: 6vw;
         }
         to {
-            right: 88vw;
+            right: 87vw;
         }
     }
 

@@ -5,8 +5,8 @@
     list-style: none;
     width: 98%;
     height: auto;
-    box-shadow: 2px 2px 2px rgb(7, 7, 7);
-    background: linear-gradient(#1b2450, #243064);
+    box-shadow: none;
+    background: rgb(222, 228, 255);
     margin: 0;
     padding: 0.5rem 0.5rem 1rem 0.5rem;
     gap: 1.5rem;
@@ -17,12 +17,14 @@
     align-items: center;
     gap: 1rem;
     width: 100%;
+    font-size: 15px;
 }
 
 .info li p {
     padding: 0;
     margin: 0;
     width: 82%;
+    font-size: 15px;
 }
 
 .address,
@@ -36,18 +38,18 @@
 }
 
 .address {
-    background-image: url("../../../../assets/img/address.png");
+    background-image: url("../../../../assets/img/addressMobile.png");
 }
 
 .phone {
-    background-image: url("../../../../assets/img/phone.png");
+    background-image: url("../../../../assets/img/phoneMobile.png");
 }
 
 .web {
-    background-image: url("../../../../assets/img/web.png");
+    background-image: url("../../../../assets/img/webMobile.png");
 }
 .info li a {
-    color: white;
+    color: rgb(41, 107, 151);
     text-decoration: none;
 }
 

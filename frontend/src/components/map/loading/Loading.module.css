@@ -9,13 +9,13 @@
     width: 95%;
     font-size: 15px;
     font-weight: bold;
-    color: white;
+    color: rgb(46, 46, 46);
 }
 
 .loader {
     width: 1.5rem;
     height: 1.5rem;
-    border: 3px solid #3283c5;
+    border: 3px solid #363636;
     border-bottom: none;
     border-radius: 50%;
     animation: rotation 1s linear infinite;

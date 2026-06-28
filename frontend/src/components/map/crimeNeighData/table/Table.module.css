@@ -6,10 +6,9 @@
     height: auto;
     overflow-y: scroll;
     scrollbar-width: none;
-    box-shadow:
-        rgb(37, 37, 37) 2px 1px 2px 0px,
-        rgb(37, 37, 37) 2px 1px 3px 1px;
-    background: linear-gradient(#2e3453, #313e7a);
+    box-shadow: none;
+    background: white;
+    color: black;
 }
 
 .table {
@@ -36,11 +35,11 @@ td {
 }
 
 .trGray {
-    background-color: #3a457c;
+    background-color: #eeeeee;
     cursor: pointer;
 }
 .trWhite {
-    background-color: #252e5a;
+    background-color: #ffffff;
     cursor: pointer;
 }
 
@@ -77,6 +76,10 @@ td {
     text-align: start;
     font-weight: bold;
     padding-left: 1.2rem;
+}
+
+.table tfoot {
+    border-top: 1px solid rgb(165, 165, 165);
 }
 
 @media (width<=650px) {

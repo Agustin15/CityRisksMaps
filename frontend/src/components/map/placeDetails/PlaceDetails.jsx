@@ -15,9 +15,8 @@ export const PlaceDetails = () => {
 
   return (
     <div className={styles.containDetails}>
-      {photosList && windowWidth >= 1200 && <ContainPhoto />}
-
       <div className={styles.column}>
+        
         <h3 className={styles.title}>{selectedPlace.displayName.text}</h3>
         {selectedPlace.rating || selectedPlace.primaryTypeDisplayName ? (
           <About place={selectedPlace} />
@@ -27,7 +26,7 @@ export const PlaceDetails = () => {
           </div>
         )}
 
-        {photosList && windowWidth < 1200 && <ContainPhoto />}
+        {photosList && <ContainPhoto />}
 
         {selectedPlace.editorialSummary && (
           <div className={styles.description}>

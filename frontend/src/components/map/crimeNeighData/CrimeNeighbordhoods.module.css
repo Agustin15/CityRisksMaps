@@ -17,9 +17,34 @@
     font-size: 13px;
 }
 .containData .header .close {
-    display: none;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 0.7rem;
+    margin-right: 0.6rem;
+    width: 95%;
+    position: absolute;
 }
 
+.containData .header .close button {
+    width: 3rem;
+    height: 1.3rem;
+    background: linear-gradient(rgb(219, 32, 32), rgb(167, 19, 19));
+    box-shadow: none;
+    color: white;
+    border-left-color: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+}
+.containData .header .close button img {
+    width: 15px;
+    height: 15px;
+}
 .containData .title {
     display: flex;
     justify-content: center;
@@ -30,10 +55,10 @@
     gap: 1rem;
     width: 99%;
     font-size: 15px;
-    background: linear-gradient(#2e3453, #313e7a);
-    box-shadow:
-        rgb(37, 37, 37) 2px 1px 2px 0px,
-        rgb(37, 37, 37) 2px 1px 3px 1px;
+    color: black;
+    box-shadow: none;
+    margin-top: 2.3rem;
+    background: rgb(243, 243, 243);
 }
 .containData .title h3 {
     margin: 0;
@@ -62,7 +87,6 @@
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        background: rgb(221, 221, 221);
         box-shadow: none;
         color: white;
         border-left-color: 3px;
@@ -101,15 +125,15 @@
         display: flex;
         justify-content: end;
         align-items: center;
-        width: 95%;
+        width: 99%;
         position: absolute;
     }
 
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        margin-top: 0.6rem;
-        background: rgb(221, 221, 221);
+        margin: 0;
+        background: linear-gradient(rgb(219, 32, 32), rgb(167, 19, 19));
         box-shadow: none;
         color: white;
         display: flex;

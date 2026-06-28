@@ -8,10 +8,10 @@
     flex-direction: row;
     justify-content: start;
     align-items: start;
-    gap: 0.8rem;
-    width: 41vw;
-    height: 3.3rem;
-    background: linear-gradient(#2e3453, #313e7a);
+    gap: 1rem;
+    width: 100%;
+    height: 8vh;
+    background: linear-gradient(#424c7e, #3c4a8a);
     color: white;
     padding: 0;
     padding-top: 0.5rem;
@@ -21,10 +21,10 @@
 
 .menuOptionsCrimes li {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 99%;
+    width: 4.5rem;
     font-size: 12px;
     gap: 0.3rem;
     height: 91%;
@@ -32,30 +32,49 @@
     color: white;
 }
 
+.menuOptionsCrimes .logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    margin-left: 0.5rem;
+    font-size: 13px;
+    width: 79vw;
+}
+
+.menuOptionsCrimes .logo img {
+    width: 41px;
+    height: 41px;
+}
+
 .menuOptionsCrimes .holdup,
 .menuOptionsCrimes .theft,
 .menuOptionsCrimes .kill {
-    background-image: url("../../../../../assets/img/holdup.png");
+    background-image: url("../../../../../assets/img/holdupMobile.png");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
 .menuOptionsCrimes .theft {
-    background-image: url("../../../../../assets/img/theft.png");
+    background-image: url("../../../../../assets/img/theftMobile.png");
 }
 
 .menuOptionsCrimes .kill {
-    background-image: url("../../../../../assets/img/kill.png");
+    background-image: url("../../../../../assets/img/killMobile.png");
 }
 
 .menuOptionsCrimes li:hover,
 .menuOptionsCrimes .selected {
-    border-bottom: 2px solid rgb(91, 244, 255);
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+.menuOptionsCrimes .logo:hover {
+    border: none;
+    cursor: auto;
 }
 
 .menuOptionsCrimes li div {
-    width: 26px;
-    height: 26px;
+    width: 21px;
+    height: 21px;
 }
 
 @media (width<=650px) {
@@ -70,9 +89,14 @@
         margin: 0;
         background: linear-gradient(#3e54b3, #1d2e7c);
     }
+
+    .menuOptionsCrimes .logo {
+        display: none;
+    }
     .menuOptionsCrimes li {
         flex-direction: column;
         font-size: 11px;
+        width: 99%;
         height: 99%;
         opacity: 75%;
     }
@@ -108,14 +132,17 @@
     .menuOptionsCrimes {
         z-index: 8;
         left: 0;
-        width: 8vw;
+        width: 9vw;
         height: 84vh;
-        padding: 0.2rem 0 0.2rem 0;
+        padding: 0;
         margin: 0;
         flex-direction: column;
         background: linear-gradient(#3e54b3, #1d2e7c);
     }
 
+    .menuOptionsCrimes .logo {
+        display: none;
+    }
     .menuOptionsCrimes li:hover,
     .menuOptionsCrimes .selected {
         border-bottom: none;

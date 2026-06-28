@@ -1,11 +1,8 @@
 import styles from "./InfoStreet.module.css";
-import { useWindowResize } from "../../../../contexts/WindowResizeContext";
 import { ButtonIndications } from "./buttonIndications/ButtonIndicatios";
 import { findComponentAddress } from "../functions";
 
 export const InfoStreet = ({ streetSelected, lat, lng }) => {
-  const { windowWidth } = useWindowResize();
-
   let street = findComponentAddress(["route", "establishment"], streetSelected);
   let streetNumber = findComponentAddress(["street_number"], streetSelected);
   let postalCode = findComponentAddress(["postal_code"], streetSelected);
@@ -36,9 +33,7 @@ export const InfoStreet = ({ streetSelected, lat, lng }) => {
         </li>
       </div>
 
-      {windowWidth >= 1200 && (
-        <li className={styles.containBtnIndications}></li>
-      )}
+      <li className={styles.containBtnIndications}></li>
     </ul>
   );
 };

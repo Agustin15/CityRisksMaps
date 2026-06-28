@@ -1,6 +1,6 @@
 import style from "./ContainMap.module.css";
-import { Map, ControlPosition } from "@vis.gl/react-google-maps";
 const MAP_ID = import.meta.env.VITE_MAP_ID;
+import { Map, ControlPosition } from "@vis.gl/react-google-maps";
 import { useWindowResize } from "../../contexts/WindowResizeContext.jsx";
 import { useMapControls } from "../../contexts/MapContext";
 import { useInteractionNeighborhoodsPolygons } from "../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext.jsx";
@@ -21,6 +21,7 @@ export const ContainMap = () => {
 
   return (
     <>
+      <OptionsMap />
       <Map
         renderingType="VECTOR"
         gestureHandling="greedy"
@@ -28,7 +29,7 @@ export const ContainMap = () => {
         mapId={MAP_ID}
         defaultZoom={15}
         disableDefaultUI
-        className={!routeNavigation ? style.map : style.mapNavigation}
+        className={style.map}
         defaultCenter={
           userLocation ? userLocation : { lat: -34.8340562, lng: -56.3622838 }
         }
@@ -57,8 +58,6 @@ export const ContainMap = () => {
       >
         <ContentMap />
       </Map>
-
-      <OptionsMap />
     </>
   );
 };

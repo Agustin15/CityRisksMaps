@@ -1,5 +1,5 @@
 .infoStreet {
-    padding: 0.5rem 0 0.5rem 0;
+    padding: 0.5rem 0 0 0;
     margin: 0;
     gap: 1rem;
     width: 96%;
@@ -7,11 +7,9 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: start;
-    height: 99%;
-    background: linear-gradient(#1b2450, #2d3b7c);
-    box-shadow: 2px 2px 2px rgb(20, 20, 20);
+    height: auto;
+    box-shadow: none;
     padding-left: 1rem;
-    overflow-y: scroll;
     scrollbar-width: none;
 }
 
@@ -41,20 +39,20 @@
 .infoStreet li p {
     padding: 0;
     margin: 0;
-    width: 13rem;
+    width: auto;
     overflow-x: scroll;
     scrollbar-width: none;
 }
 
 .address {
-    background: url("../../../../assets/img/address.png");
+    background: url("../../../../assets/img/addressMobile.png");
 }
 
 .postalCode {
-    background: url("../../../../assets/img/postalCode.png");
+    background: url("../../../../assets/img/postalCodeMobile.png");
 }
 .coordinates {
-    background: url("../../../../assets/img/coordinates.png");
+    background: url("../../../../assets/img/coordinatesMobile.png");
 }
 
 .address,
@@ -147,12 +145,13 @@
         scrollbar-width: none;
     }
     .infoStreet .columnOne {
-        gap: 0;
+        gap: 0.8rem;
         width: 100%;
+        margin-top: 0.5rem;
     }
     .infoStreet li {
         background: none;
-        height: 2.4rem;
+        height: auto;
         width: 97%;
         padding-left: 0.5rem;
         border-radius: 5px;

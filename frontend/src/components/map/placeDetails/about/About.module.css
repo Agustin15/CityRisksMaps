@@ -6,8 +6,9 @@
     font-size: 13px;
     width: 98%;
     padding: 0.5rem;
-    background: linear-gradient(#1b2450, #243064);
-    box-shadow: 2px 2px 2px rgb(7, 7, 7);
+    border-radius: 5px;
+    background: rgb(222, 228, 255);
+    box-shadow: none;
 }
 
 .about .stars {

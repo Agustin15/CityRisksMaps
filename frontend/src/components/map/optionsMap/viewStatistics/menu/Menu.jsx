@@ -1,4 +1,5 @@
 import styles from "./Menu.module.css";
+import iconLogo from "../../../../../assets/img/logo.png";
 import { useState, useEffect } from "react";
 import { useNeighborhoodsCrimes } from "../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext.jsx";
@@ -21,7 +22,6 @@ export const Menu = ({
     useNeighborhoodsCrimes();
 
   useEffect(() => {
-
     if (!neighborhoodsCoordinates) return;
     loadData();
   }, [neighborhoodsCoordinates]);
@@ -57,6 +57,11 @@ export const Menu = ({
       )}
 
       <ul className={styles.menuOptionsCrimes}>
+        <li className={styles.logo}>
+          <img src={iconLogo}></img>
+          <h3>IndiceDelitosMontevideo</h3>
+        </li>
+
         {loadingMenu == false &&
           crimes &&
           crimes.map((crime, index) => (

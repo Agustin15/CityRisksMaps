@@ -1,4 +1,6 @@
 .btnIndications {
+    position: absolute;
+    right: 0;
     width: 9rem;
     height: 1.9rem;
     box-shadow: none;
@@ -24,6 +26,6 @@
 @media (width<1200px) {
     .btnIndications {
         position: absolute;
-        right:0;
+        right: 0;
     }
 }

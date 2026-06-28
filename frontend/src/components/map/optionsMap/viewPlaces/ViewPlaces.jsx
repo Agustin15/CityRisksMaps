@@ -34,16 +34,6 @@ export const ViewPlaces = () => {
       )}
 
       {showMenuRoutes && <MenuRoute />}
-
-      {!showMenuRoutes &&
-        !placesSearched &&
-        !selectedPlace &&
-        !streetSelected && (
-          <div className={styles.placeNotSelected}>
-            <img src={iconMap}></img>
-            <h3>No se selecciono ningun lugar aun</h3>
-          </div>
-        )}
     </div>
   );
 };

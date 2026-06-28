@@ -5,10 +5,13 @@
     padding: 0.4rem;
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
+    border-top: 1px solid rgb(224, 224, 224);
+    border-bottom: 1px solid rgb(224, 224, 224);
     width: 96%;
+    color: black;
     height: auto;
-    box-shadow: 2px 2px 2px rgb(36, 36, 36);
-    background: linear-gradient(#2e3453, #313e7a);
+    box-shadow: none;
+    background: rgb(241, 241, 241);
 }
 
 .containDetails p {
@@ -27,7 +30,6 @@
     text-decoration: underline;
     cursor: pointer;
 }
-
 
 .containDetails .rowSearcher,
 .containDetails .rowYears {
@@ -53,7 +55,7 @@
     background-color: #37b8b1;
     color: white;
     border: none;
-    box-shadow: 2px 2px 2px rgb(49, 49, 49);
+    box-shadow: 2px 2px 2px rgb(160, 160, 160);
 }
 
 .containDetails .rowYears .btnIncrease:hover {
