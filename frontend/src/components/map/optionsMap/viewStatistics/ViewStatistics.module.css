@@ -43,8 +43,7 @@
     .viewStatistics {
         gap: 0;
         width: 100vw;
-        height: 76vh;
-        margin-top: 11vh;
+        height: 80vh;
         border-left: none;
         background: none;
     }
@@ -62,7 +61,7 @@
 
     @keyframes deployDown {
         from {
-            margin-top: 4vh;
+            margin-top: 0vh;
         }
         to {
             margin-top: 75vh;
@@ -74,7 +73,7 @@
             margin-top: 75vh;
         }
         to {
-            margin-top: 4vh;
+            margin-top: 0vh;
         }
     }
     .containOptionsCrimes {

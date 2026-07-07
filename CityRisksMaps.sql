@@ -1,4 +1,3 @@
-IF NOT EXISTS(select * from sys.databases where name='CityRisksMap')
 CREATE DATABASE CityRisksMap;
  
 USE CityRisksMap;
@@ -9,6 +8,7 @@ name VARCHAR(10) UNIQUE NOT NULL CHECK(LEN(name)>0),
 created DATETIME NOT NULL DEFAULT GETDATE(),
 lastModified DATETIME,
 );
+
 
 CREATE TABLE Users(
 idUser INT IDENTITY(1,1) Primary key ,
