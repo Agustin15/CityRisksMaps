@@ -1,5 +1,5 @@
 CREATE DATABASE CityRisksMap;
- 
+
 USE CityRisksMap;
 
 CREATE TABLE Rols(
@@ -78,7 +78,7 @@ auditoryDate DATETIME NOT NULL DEFAULT GETDATE(),
 actionName VARCHAR(6) NOT NULL,
 oldValues VARCHAR(70),
 newValues VARCHAR(70),
-FOREIGN KEY(neighborhood,crime,year) REFERENCES Neighborhoods_Crimes ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY(neighborhood,crime,year) REFERENCES Neighborhoods_Crimes(neighborhood,crime,year)  ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -1840,7 +1840,7 @@ BEGIN
 
 INSERT INTO Auditory_Neighborhoods_Crimes(neighborhood,crime,year,actionName,newValues) 
 (select neighborhood,crime,year,'INSERT',
-('Cantidad:'+CAST(quantity as varchar(6))+' - Tasa:'+CAST(rate as varchar(6))+' - Crecimiento:'+CAST(increase as varchar(6))) from inserted)
+('Cantidad:'+CAST(quantity as varchar(7))+' - Tasa:'+CAST(rate as varchar(7))+' - Crecimiento:'+CAST(increase as varchar(7))) from inserted)
 
 END
 

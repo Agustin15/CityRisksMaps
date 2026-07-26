@@ -71,7 +71,7 @@ class Connection {
       },
       options: {
         encrypt: true,
-        trustServerCertificate: true
+        trustServerCertificate:true
       }
     });
     await this.pool.connect();

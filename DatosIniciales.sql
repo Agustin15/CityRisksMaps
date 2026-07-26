@@ -400,7 +400,6 @@ EXEC AddNeighborhoodCrime 'Villa Española','Hurto',989,2022;
 EXEC AddNeighborhoodCrime 'Villa García, Manga Rural','Hurto',671,2022;
 EXEC AddNeighborhoodCrime 'Villa Muñoz, Retiro','Hurto',614,2022;
 
-
 EXEC AddNeighborhoodCrime 'Aguada','Hurto',1108,2023;
 EXEC AddNeighborhoodCrime 'Aires Puros','Hurto',519,2023;
 EXEC AddNeighborhoodCrime 'Atahualpa','Hurto',344,2023;
