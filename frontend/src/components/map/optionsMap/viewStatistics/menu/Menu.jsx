@@ -10,7 +10,7 @@ import { getCrimes } from "../functions.js";
 export const Menu = ({
   neighborhoodsCoordinates,
   showViewStatistics,
-  setShowViewStatistics
+  setShowViewStatistics,
 }) => {
   const [crimes, setCrimes] = useState();
   const [loadingMenu, setLoadingMenu] = useState(true);
@@ -58,7 +58,10 @@ export const Menu = ({
 
       <ul className={styles.menuOptionsCrimes}>
         <li className={styles.logo}>
-          <img src={iconLogo}></img>
+          <div className={styles.containIconLogo}>
+            <img src={iconLogo}></img>
+          </div>
+
           <h3>IndiceDelitosMontevideo</h3>
         </li>
 
