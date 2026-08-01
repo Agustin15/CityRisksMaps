@@ -1,15 +1,12 @@
 import styles from "./viewPlaces.module.css";
 import iconMap from "../../../../assets/img/map.png";
 import { Activity, useId } from "react";
-import { useRoutes } from "../../../../contexts/routesContext/RoutesContext";
 import { useSearchPlace } from "../../../../contexts/searchPlaceContext/SearchPlaceContext";
-import { MenuRoute } from "../../menuRoute/MenuRoute";
 import { PlaceDetails } from "../../placeDetails/PlaceDetails.jsx";
 import { PlacesSearched } from "../../placesSearched/PlacesSearched";
 import { StreetSelected } from "../../streetSelected/StreetSelected.jsx";
 
 export const ViewPlaces = () => {
-  const { showMenuRoutes } = useRoutes();
   const { selectedPlace, placesSearched, streetSelected } = useSearchPlace();
   const viewPlacesId = useId();
 
@@ -24,8 +21,8 @@ export const ViewPlaces = () => {
         />
       </div>
 
-      {selectedPlace && showMenuRoutes == false && <PlaceDetails />}
-      {streetSelected && showMenuRoutes == false && <StreetSelected />}
+      {selectedPlace && <PlaceDetails />}
+      {streetSelected && <StreetSelected />}
 
       {placesSearched && (
         <Activity mode={selectedPlace ? "hidden" : "display"}>
@@ -33,7 +30,6 @@ export const ViewPlaces = () => {
         </Activity>
       )}
 
-      {showMenuRoutes && <MenuRoute />}
     </div>
   );
 };

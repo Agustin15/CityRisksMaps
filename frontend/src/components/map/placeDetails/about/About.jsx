@@ -10,7 +10,6 @@ import fourStars from "../../../../assets/img/fourStars.png";
 import fourHalfStars from "../../../../assets/img/fourHalfStars.png";
 import fiveStars from "../../../../assets/img/fiveStars.png";
 import iconWheelchair from "../../../../assets/img/wheelchair.png";
-import { BtnIndications } from "../../BtnIndications/BtnIndications";
 import styles from "./About.module.css";
 
 export const About = ({ place }) => {

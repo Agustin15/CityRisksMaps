@@ -1,5 +1,4 @@
 import styles from "./InfoStreet.module.css";
-import { ButtonIndications } from "./buttonIndications/ButtonIndicatios";
 import { findComponentAddress } from "../functions";
 
 export const InfoStreet = ({ streetSelected, lat, lng }) => {

@@ -3,7 +3,6 @@ import iconDecrease from "../../../../../assets/img/decrease.png";
 import iconIncrease from "../../../../../assets/img/increase.png";
 import { useNeighborhoodsCrimes } from "../../../../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext";
 import { useWindowResize } from "../../../../../contexts/WindowResizeContext";
-import { useNavigation } from "../../../../../contexts/navigationContext/NavigationContext";
 import { useInteractionNeighborhoodsPolygons } from "../../../../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext";
 import { ColorRate } from "../colorRate/ColorRate";
 import { Activity } from "react";
@@ -12,7 +11,6 @@ import { DetailsRow } from "./detailsRow/DetailsRow";
 export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
   const { indexChartActive, setIndexChartActive } = useNeighborhoodsCrimes();
   const { windowWidth } = useWindowResize();
-  const { routeNavigation } = useNavigation();
   const { focusPolygon } = useInteractionNeighborhoodsPolygons();
 
   const handleClickRow = () => {
@@ -22,7 +20,7 @@ export const Rows = ({ neighborhoodCrime, crime, numberRow }) => {
       setIndexChartActive(numberRow);
     }
 
-    if (!routeNavigation) focusPolygon(neighborhoodCrime.name);
+     focusPolygon(neighborhoodCrime.name);
   };
 
   const yearNotFinished = (year) => {

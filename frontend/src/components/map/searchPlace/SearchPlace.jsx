@@ -4,14 +4,12 @@ import iconSearch from "../../../assets/img/search.png";
 import { useEffect, useState } from "react";
 import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
 import { useMapControls } from "../../../contexts/MapContext";
-import { useRoutes } from "../../../contexts/routesContext/RoutesContext.jsx";
 import { Suggestions } from "./suggestions/Suggestions.jsx";
 import { getSuggestions } from "./functions.js";
 
 export const SearchPlace = () => {
   const [suggestions, setSuggestions] = useState();
   const { userLocation } = useMapControls();
-  const { handleClose, showRoutes } = useRoutes();
 
   const {
     setSelectedPlace,
@@ -24,10 +22,6 @@ export const SearchPlace = () => {
     setLoadingPlace
   } = useSearchPlace();
 
-  useEffect(() => {
-    inputRef.current.value = valueInput;
-    if (valueInput.length == 0 && showRoutes) handleClose(setSuggestions);
-  }, [valueInput]);
 
   const handleSearch = async () => {
     const places = await searchByText();

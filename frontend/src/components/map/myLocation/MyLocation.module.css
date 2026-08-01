@@ -23,18 +23,4 @@
     height: 75%;
     background: linear-gradient(rgb(41, 137, 216), rgb(43, 124, 190));
 }
-.containMyNavigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.myLocationNavigate {
-    background: url("../../../assets/img/currentNavigation.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 4rem;
-    height: 4rem;
-  
- 
-}

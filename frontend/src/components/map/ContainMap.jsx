@@ -6,7 +6,6 @@ import { useMapControls } from "../../contexts/MapContext";
 import { useInteractionNeighborhoodsPolygons } from "../../contexts/neighborhoodsCrimesContext/InteractionNeighborhoodsPolygonsContext.jsx";
 import { useNeighborhoodsCrimes } from "../../contexts/neighborhoodsCrimesContext/NeighborhoodsCrimesContextContext.jsx";
 import { useSearchPlace } from "../../contexts/searchPlaceContext/SearchPlaceContext";
-import { useNavigation } from "../../contexts/navigationContext/NavigationContext.jsx";
 import { OptionsMap } from "./optionsMap/OptionsMap.jsx";
 import { ContentMap } from "./ContentMap.jsx";
 
@@ -14,7 +13,6 @@ export const ContainMap = () => {
   const { userLocation } = useMapControls();
   const { polygons } = useNeighborhoodsCrimes();
   const { handleClickOnMap } = useSearchPlace();
-  const { routeNavigation, editRoute } = useNavigation();
   const { handleMouseNeighborhoohdPolygon, setPolygonSelected } =
     useInteractionNeighborhoodsPolygons();
   const { windowWidth } = useWindowResize();
@@ -36,23 +34,22 @@ export const ContainMap = () => {
         streetViewControl={false}
         zoomControl={false}
         onClick={(event) => {
-          if (event.detail.placeId && !routeNavigation) {
+          if (event.detail.placeId) {
             event.stop();
             handleClickOnMap(event);
           }
-          if (windowWidth < 1200 && !editRoute)
+          if (windowWidth < 1200)
             handleMouseNeighborhoohdPolygon(
               event,
               polygons,
-              setPolygonSelected
+              setPolygonSelected,
             );
         }}
         onMousemove={(event) => {
-          if (windowWidth < 1200 || editRoute) return;
+          if (windowWidth < 1200) return;
           handleMouseNeighborhoohdPolygon(event, polygons, setPolygonSelected);
         }}
         onDblclick={(event) => {
-          if (routeNavigation) return;
           handleClickOnMap(event);
         }}
       >

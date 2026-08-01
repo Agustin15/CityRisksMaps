@@ -6,13 +6,11 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useEffect } from "react";
 import { useSearchPlace } from "../../../contexts/searchPlaceContext/SearchPlaceContext";
-import { useNavigation } from "../../../contexts/navigationContext/NavigationContext";
 import { StreetView } from "../streetView/StreetView";
 
 export const MapHandlerClick = () => {
   const map = useMap("mainMap");
   const { selectedPlace, streetSelected } = useSearchPlace();
-  const { routeNavigation } = useNavigation();
 
   useEffect(() => {
     if (!selectedPlace && !streetSelected) return;
@@ -43,7 +41,7 @@ export const MapHandlerClick = () => {
         }
       ></AdvancedMarker>
 
-      {selectedPlace && !routeNavigation && (
+      {selectedPlace && (
         <MapControl position={ControlPosition.LEFT_BOTTOM}>
           <StreetView />
         </MapControl>

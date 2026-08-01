@@ -35,6 +35,7 @@
 .recordList .liWhite {
     background: white;
 }
+
 .recordList .liGray {
     background: rgb(241, 246, 248);
 }
@@ -48,6 +49,7 @@
     margin: 0;
     padding: 0;
 }
+
 .recordList li .action {
     display: flex;
     flex-direction: column-reverse;
@@ -76,6 +78,7 @@
     gap: 0.7rem;
     width: 99%;
 }
+
 .recordList li .data p {
     margin: 0;
     padding: 0;
@@ -92,6 +95,7 @@
     height: auto;
     border: 0;
 }
+
 .recordList .primaryKey .title,
 .recordList .oldValues .title,
 .recordList .newValues .title {
@@ -113,21 +117,22 @@
 .recordList .primaryKey ul {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: start;
     gap: 0.5rem;
     margin: 0 0 0 0.4rem;
     padding: 0;
+    width: auto;
     height: auto;
     border: none;
 }
+
 .recordList .primaryKey li {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 0.2rem;
+    justify-content: start;
     align-items: center;
+    gap: 0.2rem;
     height: auto;
-    width: auto;
     margin: 0;
     border: none;
 }
@@ -148,6 +153,7 @@
     width: 18px;
     height: 18px;
 }
+
 .recordList .oldValues img {
     width: 17px;
     height: 17px;
@@ -188,6 +194,7 @@
     .recordList .liWhite {
         background: white;
     }
+
     .recordList .liGray {
         background: rgb(241, 246, 248);
     }
@@ -215,6 +222,7 @@
         gap: 0.7rem;
         width: 99%;
     }
+
     .recordList li .data p {
         margin: 0;
         padding: 0;
@@ -252,6 +260,7 @@
         height: auto;
         border: none;
     }
+
     .recordList .primaryKey li {
         display: flex;
         flex-direction: row;
@@ -279,6 +288,7 @@
         width: 18px;
         height: 18px;
     }
+
     .recordList .oldValues img {
         width: 17px;
         height: 17px;
@@ -304,6 +314,7 @@
     .recordList .primaryKey li {
         overflow-x: hidden;
     }
+
     .recordList li .row {
         gap: 1.5rem;
         width: 181%;

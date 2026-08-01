@@ -6,7 +6,7 @@ import { alertSwalError } from "../../components/sweetAlert/sweetAlert.js";
 import {
   getGeocodification,
   getMoreDetailsPlace,
-  getPlacesByText
+  getPlacesByText,
 } from "./functions.js";
 
 const SearchPlaceContext = createContext();
@@ -56,7 +56,7 @@ export const SearchPlaceProvider = ({ children }) => {
         event.detail.latLng,
         null,
         setValueInput,
-        setStreetSelected
+        setStreetSelected,
       );
     }
   };
@@ -74,11 +74,14 @@ export const SearchPlaceProvider = ({ children }) => {
         map.setZoom(15);
         map.panTo({
           lat: result.location.latitude,
-          lng: result.location.longitude
+          lng: result.location.longitude,
         });
       }
     } catch (error) {
-      alertSwalError("Ups,algo salio mal al buscar sitio", error.message || "Error en la solicitud");
+      alertSwalError(
+        "Ups,algo salio mal al buscar sitio",
+        error.message || "Error en la solicitud",
+      );
     } finally {
       setLoadingPlace(false);
     }
@@ -89,7 +92,7 @@ export const SearchPlaceProvider = ({ children }) => {
     try {
       const result = await getPlacesByText(
         inputRef.current.value,
-        userLocation
+        userLocation,
       );
 
       await Promise.all(
@@ -97,7 +100,7 @@ export const SearchPlaceProvider = ({ children }) => {
           const list = await createPhotosList(place);
           place.photosList = list;
           return place;
-        })
+        }),
       );
 
       if (result.places.length == 1) {
@@ -111,7 +114,7 @@ export const SearchPlaceProvider = ({ children }) => {
       map.setZoom(15);
       map.panTo({
         lat: result.places[0].location.latitude,
-        lng: result.places[0].location.longitude
+        lng: result.places[0].location.longitude,
       });
 
       return true;
@@ -145,7 +148,7 @@ export const SearchPlaceProvider = ({ children }) => {
         handleClickOnSuggestionAddress,
         searchByText,
         loadingPlace,
-        setLoadingPlace
+        setLoadingPlace,
       }}
     >
       {children}
