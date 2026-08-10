@@ -16,40 +16,16 @@
     width: 100%;
     font-size: 13px;
 }
+
 .containData .header .close {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    margin-top: 0.7rem;
-    margin-right: 0.6rem;
-    width: 95%;
-    position: absolute;
+    display: none;
 }
 
-.containData .header .close button {
-    width: 3rem;
-    height: 1.3rem;
-    background: linear-gradient(rgb(219, 32, 32), rgb(167, 19, 19));
-    box-shadow: none;
-    color: white;
-    border-left-color: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 3px;
-    border: none;
-    font-size: 17px;
-    cursor: pointer;
-}
-.containData .header .close button img {
-    width: 15px;
-    height: 15px;
-}
+
 .containData .title {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     gap: 1rem;
@@ -60,6 +36,7 @@
     margin-top: 2.3rem;
     background: rgb(243, 243, 243);
 }
+
 .containData .title h3 {
     margin: 0;
 }
@@ -87,6 +64,7 @@
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
+        background: linear-gradient(rgb(219, 32, 32), rgb(167, 19, 19));
         box-shadow: none;
         color: white;
         border-left-color: 3px;
@@ -98,10 +76,12 @@
         font-size: 17px;
         cursor: pointer;
     }
+
     .containData .header .close button img {
         width: 15px;
         height: 15px;
     }
+
     .containData .title {
         color: black;
         box-shadow: none;
@@ -109,6 +89,7 @@
         font-size: 13px;
         background: rgb(243, 243, 243);
     }
+
     .containData .title img {
         width: 27px;
         height: 27px;
@@ -121,33 +102,38 @@
         overflow-y: visible;
     }
 
+
     .containData .header .close {
         display: flex;
         justify-content: end;
         align-items: center;
-        width: 99%;
+        margin-top: 0.7rem;
+        margin-right: 0.6rem;
+        width: 95%;
         position: absolute;
     }
 
     .containData .header .close button {
         width: 3rem;
         height: 1.3rem;
-        margin: 0;
         background: linear-gradient(rgb(219, 32, 32), rgb(167, 19, 19));
         box-shadow: none;
         color: white;
+        border-left-color: 3px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom-left-radius: 3px;
+        border-radius: 3px;
         border: none;
         font-size: 17px;
         cursor: pointer;
     }
+
     .containData .header .close button img {
         width: 15px;
         height: 15px;
     }
+
     .containData .title {
         width: 98%;
         margin-top: 2.3rem;
@@ -156,6 +142,7 @@
         background: rgb(243, 243, 243);
         box-shadow: none;
     }
+
     .containData .title img {
         width: 29px;
         height: 29px;
