@@ -8,7 +8,7 @@
     gap: 0.8rem;
     list-style: none;
     overflow-x: scroll;
-    scrollbar-color: rgb(116, 116, 116) rgb(241, 241, 241);
+    scrollbar-color: rgb(246, 246, 246) rgb(51, 60, 118);
     scrollbar-width: thin;
 }
 
@@ -37,7 +37,7 @@
 .years li .yearUnselected {
     background-color: rgb(255, 255, 255);
     color: #30a39d;
-    box-shadow: 2px 2px 2px rgb(141, 141, 141);
+    box-shadow: 2px 2px 2px rgb(13, 13, 13);
 }
 
 .years li .yearUnselected:hover {

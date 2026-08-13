@@ -9,6 +9,8 @@
     background: white;
     color: black;
     font-family: Arial, Helvetica, sans-serif;
+    border-top-right-radius: 27px;
+    border-top-left-radius: 27px;
 }
 
 .containStreetView {
@@ -75,6 +77,7 @@
         scrollbar-width: none;
         color: black;
     }
+
     .containStreetView {
         width: 96%;
         height: 59%;
@@ -132,6 +135,7 @@
         color: black;
         padding-bottom: 0.5rem;
     }
+
     .containStreetView {
         width: 92%;
         height: 100%;

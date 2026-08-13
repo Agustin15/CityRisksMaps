@@ -1,6 +1,6 @@
 .viewStatistics {
     position: absolute;
-    top: 7vh;
+    top: 8vh;
     right: 0;
     z-index: 4;
     display: flex;
@@ -11,7 +11,7 @@
     width: 42vw;
     height: 96%;
     border-left: none;
-    background: none;
+    background: linear-gradient(#2e3453, #313e7a);
 }
 
 .containCheckDeploy {
@@ -21,7 +21,6 @@
 .containOptionsCrimes {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
-    margin-top: 3.8rem;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -30,10 +29,10 @@
     width: 100%;
     height: 95%;
     border-left: none;
-    margin-top: 1rem;
     height: 100%;
     overflow-y: scroll;
-    background: white;
+    scrollbar-width: none;
+    background: linear-gradient(#2e3453, #313e7a);
     position: relative;
 }
 
@@ -118,6 +117,7 @@
         width: 85%;
         height: 85vh;
         border-left: none;
+        background: none;
     }
 
     .viewStatistics:not(.deploy:checked) {

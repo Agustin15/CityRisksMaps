@@ -9,13 +9,13 @@
     width: 95%;
     font-size: 15px;
     font-weight: bold;
-    color: rgb(46, 46, 46);
+    color: rgb(253, 253, 253);
 }
 
 .loader {
     width: 1.5rem;
     height: 1.5rem;
-    border: 3px solid #363636;
+    border: 3px solid #18429e;
     border-bottom: none;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
@@ -26,6 +26,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -36,11 +37,13 @@
         width: 1.5rem;
         height: 1.5rem;
         border: 3px solid #363636;
+        color: rgb(46, 46, 46);
         border-bottom: none;
         border-radius: 50%;
         animation: rotation 1s linear infinite;
         font-family: Arial, Helvetica, sans-serif;
     }
+
     .containLoader {
         position: absolute;
         display: flex;

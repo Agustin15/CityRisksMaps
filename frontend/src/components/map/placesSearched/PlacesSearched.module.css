@@ -8,6 +8,8 @@
     background: white;
     color: black;
     font-family: Arial, Helvetica, sans-serif;
+    border-top-right-radius: 27px;
+    border-top-left-radius: 27px;
 }
 
 .containPlaces h4 {
@@ -45,6 +47,7 @@
     box-shadow: none;
     cursor: pointer;
 }
+
 .containPlaces ul li .row {
     display: flex;
     align-items: center;
@@ -67,6 +70,7 @@
     background: rgb(222, 228, 255);
     box-shadow: none;
 }
+
 .containPlaces ul li .details h4 {
     font-size: 16px;
     margin: 0;
@@ -92,6 +96,7 @@
         color: black;
         position: relative;
     }
+
     .deploy {
         display: flex;
         position: absolute;
@@ -158,6 +163,7 @@
         box-shadow: none;
         border-radius: 5px;
     }
+
     .containPlaces ul li .details h4 {
         font-size: 15px;
         margin: 0;
@@ -183,6 +189,7 @@
         padding-left: 0.5rem;
         color: black;
     }
+
     .deploy {
         display: flex;
         position: absolute;

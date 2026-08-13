@@ -5,13 +5,15 @@
     padding: 0.4rem;
     margin-top: 0.4rem;
     margin-bottom: 0.4rem;
-    border-top: 1px solid rgb(224, 224, 224);
-    border-bottom: 1px solid rgb(224, 224, 224);
     width: 96%;
     color: black;
     height: auto;
     box-shadow: none;
-    background: rgb(241, 241, 241);
+    border-top: 1px solid #3a4371;
+    border-bottom: 1px solid #495488;
+    box-shadow: 2px 2px 2px black;
+    background: linear-gradient(#2e3453, #313e7a);
+    color: white;
 }
 
 .containDetails p {
@@ -55,7 +57,7 @@
     background-color: #37b8b1;
     color: white;
     border: none;
-    box-shadow: 2px 2px 2px rgb(160, 160, 160);
+    box-shadow: 2px 2px 2px rgb(35, 35, 35);
 }
 
 .containDetails .rowYears .btnIncrease:hover {
@@ -75,6 +77,7 @@
         box-shadow: none;
         background: rgb(241, 241, 241);
     }
+
     .containDetails .rowSearcher {
         display: flex;
         flex-direction: column;
@@ -83,6 +86,7 @@
         gap: 0;
         width: 100%;
     }
+
     .containDetails .author {
         width: 98%;
         font-weight: bold;
@@ -90,6 +94,7 @@
         padding: 0;
         font-size: 11px;
     }
+
     .containDetails .author a {
         color: black;
     }
@@ -119,6 +124,7 @@
     .containDetails .author a {
         color: black;
     }
+
     .containDetails .rowYears .btnIncrease {
         width: 2.7rem;
         height: 2rem;
@@ -129,6 +135,7 @@
         border: none;
         box-shadow: 2px 2px 2px rgb(180, 180, 180);
     }
+
     .containDetails .rowYears .btnIncrease img {
         width: 31px;
         height: 31px;

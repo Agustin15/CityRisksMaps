@@ -7,7 +7,7 @@
     position: absolute;
     z-index: 3;
     background: none;
-    background: rgba(226, 226, 226, 0.774);
+    background: rgba(61, 61, 61, 0.488);
 }
 
 .containChart {
@@ -17,7 +17,7 @@
     align-items: center;
     gap: 1rem;
     background: white;
-    box-shadow: 2px 2px 2px rgb(204, 204, 204);
+    box-shadow: 2px 2px 2px rgb(39, 39, 39);
     width: 96%;
     height: 8%;
     padding-bottom: 0.1rem;
@@ -34,10 +34,12 @@
     from {
         height: 8%;
     }
+
     to {
         height: 69%;
     }
 }
+
 .containChart .header {
     position: relative;
     width: 100%;
@@ -50,6 +52,7 @@
     align-items: center;
     text-align: center;
 }
+
 .containChart .header h3 {
     margin: 0;
 }
@@ -99,6 +102,7 @@
     padding: 0;
     font-size: 15px;
 }
+
 .containError h3 {
     margin: -1rem 0 0 0;
     padding: 0;
@@ -120,6 +124,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -135,6 +140,10 @@
         background: rgba(133, 133, 133, 0.774);
     }
 
+    .containChart {
+        box-shadow: 2px 2px 2px rgb(39, 39, 39);
+    }
+
     .containChart .header {
         width: 100%;
         height: 2.6rem;
@@ -145,6 +154,7 @@
         from {
             height: 8%;
         }
+
         to {
             height: 82%;
         }
@@ -187,10 +197,12 @@
         from {
             height: 8%;
         }
+
         to {
             height: 92%;
         }
     }
+
     .containChart .header {
         position: relative;
         width: 100%;
@@ -203,6 +215,7 @@
         align-items: center;
         text-align: center;
     }
+
     .containChart .header h3 {
         margin: 0;
     }
@@ -252,6 +265,7 @@
         padding: 0;
         font-size: 15px;
     }
+
     .containError h3 {
         margin: -1rem 0 0 0;
         padding: 0;
@@ -273,6 +287,7 @@
         0% {
             transform: rotate(0deg);
         }
+
         100% {
             transform: rotate(360deg);
         }

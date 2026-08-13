@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     color: white;
-    margin-top: -0.6rem;
+    background: linear-gradient(#2e3453, #313e7a);
 }
 
 .containData .header {
@@ -26,15 +26,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
     gap: 1rem;
+    margin-top: 1rem;
     width: 99%;
     font-size: 15px;
-    color: black;
-    box-shadow: none;
-    margin-top: 2.3rem;
-    background: rgb(243, 243, 243);
+    color: white;
+    border-top: 1px solid #3a4371;
+    border-bottom: 1px solid #495488;
+    box-shadow: 2px 2px 2px black;
+    background: linear-gradient(#2e3453, #313e7a);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .containData .title h3 {
@@ -49,6 +51,7 @@
 @media (width<=650px) {
     .containData {
         height: 100%;
+        background: white;
     }
 
     .containData .header .close {
@@ -88,6 +91,7 @@
         margin-top: 2.3rem;
         font-size: 13px;
         background: rgb(243, 243, 243);
+        border: none;
     }
 
     .containData .title img {
@@ -100,6 +104,7 @@
     .containData {
         height: auto;
         overflow-y: visible;
+        background: white;
     }
 
 
@@ -141,6 +146,7 @@
         color: black;
         background: rgb(243, 243, 243);
         box-shadow: none;
+        border: none;
     }
 
     .containData .title img {
